@@ -1,8 +1,7 @@
 package com.tfg.futstats.controllers.DTOs;
 
-public class TeamDTO 
-{
-    //dto attributes
+public class TeamDTO {
+    // dto attributes
     private long id;
     private String name;
     private int trophies;
@@ -13,94 +12,324 @@ public class TeamDTO
     private String stadium;
     private int points;
 
-    //Getters & setters
-    public long getId()
-    {
+    // team stats
+    private int totalMatches;
+
+    // offensive
+    private int totalShoots;
+    private int totalGoals;
+    private int penaltys;
+    private int fautlsReceived;
+    private int offsides;
+
+    // defensive
+    private int commitedFaults;
+    private int recovers;
+    private int duels;
+    private int wonDuels;
+    private int lostDuels;
+    private int cards;
+    private int yellowCards;
+    private int redCards;
+
+    // creation
+    private int passes;
+    private int goodPasses;
+    private int badPasses;
+    private int shortPasses;
+    private int longPasses;
+    private int assists;
+    private int dribles;
+    private int centers;
+    private int ballLosses;
+
+    // matches
+    private int playedMatches;
+    private int wonMatches;
+    private int lostMatches;
+    private int drawMatches;
+
+    // We dont put the averages here because we only need the stadistics from were
+    // it`s made
+
+    // Getters & setters
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id)
-    {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public void setTrophies(int trophies)
-    {
+    public void setTrophies(int trophies) {
         this.trophies = trophies;
     }
- 
-    public int getTrophies()
-    {
-        return trophies;    
+
+    public int getTrophies() {
+        return trophies;
     }
 
-    public void setNationality(String nationality)
-    {
+    public void setNationality(String nationality) {
         this.nationality = nationality;
     }
- 
-    public String getNationality()
-    {
+
+    public String getNationality() {
         return nationality;
     }
 
-    public void setTrainer(String trainer)
-    {
+    public void setTrainer(String trainer) {
         this.trainer = trainer;
     }
 
-    public String getTrainer()
-    {
+    public String getTrainer() {
         return trainer;
     }
 
-    public void setSecondTrainer(String secondTrainer)
-    {
+    public void setSecondTrainer(String secondTrainer) {
         this.secondTrainer = secondTrainer;
     }
- 
-    public String getSecondTrainer()
-    {
+
+    public String getSecondTrainer() {
         return secondTrainer;
     }
 
-    public void setPresident(String president)
-    {
+    public void setPresident(String president) {
         this.president = president;
     }
 
-    public String getPresident()
-    {
+    public String getPresident() {
         return president;
     }
 
-    public void setStadium(String stadium)
-    {
+    public void setStadium(String stadium) {
         this.stadium = stadium;
     }
 
-    public String getStadium()
-    {
+    public String getStadium() {
         return stadium;
     }
-         
-    public void setPoints(int points)
-    {
+
+    public void setPoints(int points) {
         this.points = points;
     }
 
-    public int getPoints()
-    {
+    public int getPoints() {
         return points;
+    }
+
+    public void setTotalShoots(int totalShoots) {
+        this.totalShoots = totalShoots;
+    }
+
+    public int getTotalShoots() {
+        return totalShoots;
+    }
+
+    public void setTotalGoals(int totalGoals) {
+        this.totalGoals = totalGoals;
+    }
+
+    public int getTotalGoals() {
+        return totalGoals;
+    }
+
+    public void setPenaltys(int penaltys) {
+        this.penaltys = penaltys;
+    }
+
+    public int getPenaltys() {
+        return penaltys;
+    }
+
+    public void setFaultsReceived(int fautlsReceived) {
+        this.fautlsReceived = fautlsReceived;
+    }
+
+    public int getFaultsReceived() {
+        return fautlsReceived;
+    }
+
+    public void setOffsides(int offsides) {
+        this.offsides = offsides;
+    }
+
+    public int getOffsides() {
+        return offsides;
+    }
+
+    public void setCommitedFaults(int commitedFaults) {
+        this.commitedFaults = commitedFaults;
+    }
+
+    public int getCommitedFaults() {
+        return commitedFaults;
+    }
+
+    public void setRecovers(int recovers) {
+        this.recovers = recovers;
+    }
+
+    public int getRecovers() {
+        return recovers;
+    }
+
+    public void setDuels(int duels) {
+        this.duels = duels;
+    }
+
+    public int getDuels() {
+        return duels;
+    }
+
+    public void setWonDuels(int wonDuels) {
+        this.wonDuels = wonDuels;
+    }
+
+    public int getWonDuels() {
+        return wonDuels;
+    }
+
+    public void setLostDuels(int lostDuels) {
+        this.lostDuels = lostDuels;
+    }
+
+    public int getLostDuels() {
+        return lostDuels;
+    }
+
+    public void setCards(int cards) {
+        this.cards = cards;
+    }
+
+    public int getCards() {
+        return cards;
+    }
+
+    public void setYellowCards(int yellowCards) {
+        this.yellowCards = yellowCards;
+    }
+
+    public int getYellowCards() {
+        return yellowCards;
+    }
+
+    public void setRedCards(int redCards) {
+        this.redCards = redCards;
+    }
+
+    public int getRedCards() {
+        return redCards;
+    }
+
+    public void setPasses(int passes) {
+        this.passes = passes;
+    }
+
+    public int getPasses() {
+        return passes;
+    }
+
+    public void setGoodPasses(int goodPasses) {
+        this.goodPasses = goodPasses;
+    }
+
+    public int getGoodPasses() {
+        return goodPasses;
+    }
+
+    public void setBadPasses(int badPasses) {
+        this.badPasses = badPasses;
+    }
+
+    public int getBadPasses() {
+        return badPasses;
+    }
+
+    public void setShortPasses(int shortPasses) {
+        this.shortPasses = shortPasses;
+    }
+
+    public int getShortPasses() {
+        return shortPasses;
+    }
+
+    public void setLongPasses(int longPasses) {
+        this.longPasses = longPasses;
+    }
+
+    public int getLongPasses() {
+        return longPasses;
+    }
+
+    public void setAssists(int assists) {
+        this.assists = assists;
+    }
+
+    public int getAssists() {
+        return assists;
+    }
+
+    public void setDribles(int dribles) {
+        this.dribles = dribles;
+    }
+
+    public int getDribles() {
+        return dribles;
+    }
+
+    public void setCenters(int centers) {
+        this.centers = centers;
+    }
+
+    public int getCenters() {
+        return centers;
+    }
+
+    public void setBallLosses(int ballLosses) {
+        this.ballLosses = ballLosses;
+    }
+
+    public int getBallLosses() {
+        return ballLosses;
+    }
+
+    public void setPlayedMatches(int playedMatches) {
+        this.playedMatches = playedMatches;
+    }
+
+    public int getPlayedMatches() {
+        return playedMatches;
+    }
+
+    public void setWonMatches(int wonMatches) {
+        this.wonMatches = wonMatches;
+    }
+
+    public int getWonMatches() {
+        return wonMatches;
+    }
+
+    public void setLostMatches(int lostMatches) {
+        this.lostMatches = lostMatches;
+    }
+
+    public int getLostMatches() {
+        return lostMatches;
+    }
+
+    public void setDrawMatches(int drawMatches) {
+        this.drawMatches = drawMatches;
+    }
+
+    public int getDrawMatches() {
+        return drawMatches;
     }
 }
