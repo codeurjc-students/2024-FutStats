@@ -13,6 +13,9 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>futstats</name>
 	<description>Demo project for Spring Boot</description>
+	<properties>
+		<java.version>21</java.version>
+	</properties>
 	<url/>
 	<licenses>
 		<license/>
@@ -37,6 +40,11 @@
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web-services</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
@@ -45,6 +53,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+ 			<groupId>mysql</groupId>
+ 			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.22</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 	</dependencies>
 
