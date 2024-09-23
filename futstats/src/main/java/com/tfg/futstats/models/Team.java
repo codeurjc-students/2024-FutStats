@@ -1,5 +1,8 @@
 package com.tfg.futstats.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.management.InvalidAttributeValueException;
 
 import jakarta.persistence.Entity;
@@ -17,6 +20,16 @@ public class Team
     @GeneratedValue(strategy = GenerationType.AUTO) // Auto generated ID
     private long id;
 
+    //Realtions with other models in DB
+    @ManyToOne
+    private League league;
+
+    @OneToMany
+    private List<Match> matches;
+
+    @OneToMany
+    private List<Player> players;
+
     //Team attributes
     private String name;
     private int trophies;
@@ -33,8 +46,11 @@ public class Team
         
     }
 
-    public Team(String name, int trophies, String nationality,String trainer, String secondTrainer, String president, String stadium, int points)
+    public Team(League league, String name, int trophies, String nationality,String trainer, String secondTrainer, String president, String stadium, int points)
     {
+        this.matches = new ArrayList<Match>();
+        this.players = new ArrayList<Player>();
+        this.league = league;
         this.name = name;
         this.trophies = trophies;
         this.nationality = nationality;
@@ -46,6 +62,72 @@ public class Team
     }
 
     //Getters & Setters
+    //------------------------------------ LEAGUE ------------------------------------- 
+    public void setLeague(League league)
+    {
+        this.league = league;
+    }
+
+    public League getLeague()
+    {
+        return this.league;
+    }
+
+    public void updateLeague(League league)
+    {
+        this.league = league;
+    }
+
+    public void deleteLeague()
+    {
+        this.league = null;
+    }
+
+    //--------------------------------------- MATCH ---------------------------------
+    public List<Match> getMatches()
+    {
+        return this.matches;
+    }
+
+    public void setMatches(List<Match> matches)
+    {
+        this.matches = matches;
+    }
+
+    public void setMatch(Match match)
+    {
+        this.matches.add(match);
+        match.setLeague(this);
+    }
+
+    public void deleteMatch(Match match)
+    {
+        this.matches.remove(match);
+    }
+
+    //--------------------------------------- PLAYER --------------------------------
+    public List<Player> getPlayers()
+    {
+        return this.players;
+    }
+
+    public void setPlayers(List<Player> players)
+    {
+        this.players = players;
+    }
+
+    public void setPlayers(Player player)
+    {
+        this.players.add(player);
+        player.setLeague(this);
+    }
+
+    public void deletePlayer(Player player)
+    {
+        this.players.remove(player);
+    }
+
+    //------------------------------------------------------------------------
     public long getId()
     {
         return id;

@@ -16,6 +16,13 @@ public class Player
     @GeneratedValue(strategy = GenerationType.AUTO) // Auto generated ID
     private long id;
 
+    //Realtions with other models in DB
+    @ManyToOne
+    private League league;
+
+    @ManyToOne
+    private Team team;
+
     //  player info
     private String name;
     private int age;
@@ -27,14 +34,59 @@ public class Player
          
     }
  
-    public Player(String name, int age, String nationality)
+    public Player(League league, Team team, String name, int age, String nationality)
     {
+        this.league = league;
+        this.team = team;
         this.name = name;
         this.age = age;
         this.nationality = nationality;
     }
  
     //Getters & Setters
+    //------------------------------------ LEAGUE ------------------------------------- 
+    public void setLeague(League league)
+    {
+        this.league = league;
+    }
+
+    public League getLeague()
+    {
+        return this.league;
+    }
+
+    public void updateLeague(League league)
+    {
+        this.league = league;
+    }
+
+    public void deleteLeague()
+    {
+        this.league = null;
+    }
+
+    //------------------------------------ TEAM ------------------------------------
+    public void setTeam(Team team)
+    {
+        this.team = team;
+    }
+
+    public Team getTeam()
+    {
+        return this.team;
+    }
+
+    public void updateTeam(Team team)
+    {
+        this.team = team;
+    }
+
+    public void deleteTeam()
+    {
+        this.team = null;
+    }
+
+    //------------------------------------------------------------------------
     public long getId()
     {
         return id;
