@@ -2,11 +2,13 @@ package com.tfg.futstats.controllers.DTOs;
 
 public class LeagueDTO 
 {
+    //dto attributes
     private long id;
     private String name;
     private String president;
     private String nationality;
 
+    //Getters & setters
     public long getId()
     {
         return id;

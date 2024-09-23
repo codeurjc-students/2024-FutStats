@@ -4,6 +4,8 @@ import java.sql.Date;
 
 import javax.management.InvalidAttributeValueException;
 
+import com.tfg.futstats.controllers.DTOs.MatchDTO;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -49,6 +51,15 @@ public class Match
         this.place = place;
     }
 
+    public Match(MatchDTO match)
+    {
+        this.league = match.getLeague();
+        this.team1 = match.getTeam1();
+        this.team2 = match.getTeam2();
+        this.date = match.getDate();
+        this.place = match.getPlace();
+    }
+
     //Getters & Setters
     //------------------------------------ LEAGUE ------------------------------------- 
     public void setLeague(League league)
@@ -60,16 +71,7 @@ public class Match
     {
         return this.league;
     }
-
-    public void updateLeague(League league)
-    {
-        this.league = league;
-    }
-
-    public void deleteLeague()
-    {
-        this.league = null;
-    }
+    //league doesn´t need delete or update because it cannot be change
 
     //------------------------------------ TEAM1 ------------------------------------- 
     public void setTeam1(Team team1)

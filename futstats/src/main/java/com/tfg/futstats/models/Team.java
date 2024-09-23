@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.management.InvalidAttributeValueException;
 
+import com.tfg.futstats.controllers.DTOs.TeamDTO;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -59,6 +61,18 @@ public class Team
         this.president = president;
         this.stadium = stadium;
         this.points = points;
+    }
+
+    public Team(TeamDTO team)
+    {
+      this.name = team.getName();
+      this.trophies = team.getTrophies();
+      this.nationality = team.getNationality();
+      this.trainer = team.getTrainer();
+      this.secondTrainer = team.getSecondTrainer();
+      this.president = team.getPresident();
+      this.stadium = team.getStadium();
+      this.points = team.getPoints();
     }
 
     //Getters & Setters

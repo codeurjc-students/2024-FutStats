@@ -2,7 +2,8 @@ package com.tfg.futstats.controllers.DTOs;
 
 public class TeamDTO 
 {
-    //Team attributes
+    //dto attributes
+    private long id;
     private String name;
     private int trophies;
     private String nationality;
@@ -11,6 +12,17 @@ public class TeamDTO
     private String president;
     private String stadium;
     private int points;
+
+    //Getters & setters
+    public long getId()
+    {
+        return id;
+    }
+
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
 
     public String getName()
     {
@@ -23,73 +35,72 @@ public class TeamDTO
     }
 
     public void setTrophies(int trophies)
-      {
-         this.trophies = trophies;
-      }
+    {
+        this.trophies = trophies;
+    }
  
-      public int getTrophies()
-      {
-         return trophies;    
-      }
+    public int getTrophies()
+    {
+        return trophies;    
+    }
 
-      public void setNationality(String nationality)
-      {
-         this.nationality = nationality;
-      }
+    public void setNationality(String nationality)
+    {
+        this.nationality = nationality;
+    }
  
-      public String getNationality()
-      {
-         return nationality;
-      }
+    public String getNationality()
+    {
+        return nationality;
+    }
 
-      public void setTrainer(String trainer)
-      {
+    public void setTrainer(String trainer)
+    {
         this.trainer = trainer;
-      }
+    }
 
-      public String getTrainer()
-      {
+    public String getTrainer()
+    {
         return trainer;
-      }
+    }
 
-      public void setSecondTrainer(String secondTrainer)
-      {
+    public void setSecondTrainer(String secondTrainer)
+    {
         this.secondTrainer = secondTrainer;
-      }
+    }
  
-      public String getSecondTrainer()
-      {
+    public String getSecondTrainer()
+    {
         return secondTrainer;
-      }
+    }
 
-      public void setPresident(String president)
-      {
+    public void setPresident(String president)
+    {
         this.president = president;
-      }
+    }
 
-      public String getPresident()
-      {
+    public String getPresident()
+    {
         return president;
-      }
+    }
 
-      public void setStadium(String stadium)
-      {
+    public void setStadium(String stadium)
+    {
         this.stadium = stadium;
-      }
+    }
 
-      public String getStadium()
-      {
+    public String getStadium()
+    {
         return stadium;
-      }
+    }
          
-      public void setPoints(int points)
-      {
+    public void setPoints(int points)
+    {
         this.points = points;
-      }
+    }
 
-      public int getPoints()
-      {
+    public int getPoints()
+    {
         return points;
-      }
-
+    }
 }

@@ -2,6 +2,8 @@ package com.tfg.futstats.models;
 
 import javax.management.InvalidAttributeValueException;
 
+import com.tfg.futstats.controllers.DTOs.PlayerDTO;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -41,6 +43,15 @@ public class Player
         this.name = name;
         this.age = age;
         this.nationality = nationality;
+    }
+
+    public Player(PlayerDTO player)
+    {
+        this.league = player.getLeague();
+        this.team = player.getTeam();
+        this.name = player.getName();
+        this.age = player.getAge();
+        this.nationality = player.getNationality();
     }
  
     //Getters & Setters

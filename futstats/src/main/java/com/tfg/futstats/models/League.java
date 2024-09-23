@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.management.InvalidAttributeValueException;
 
+import com.tfg.futstats.controllers.DTOs.LeagueDTO;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -49,6 +51,16 @@ public class League
         this.name = name;
         this.president = president;
         this.nationality = nationality;
+    }
+
+    public League(LeagueDTO league)
+    {
+        this.teams = new ArrayList<Team>();
+        this.matches = new ArrayList<Match>();
+        this.players = new ArrayList<Player>();
+        this.name = league.getName();
+        this.president = league.getPresident();
+        this.nationality = league.getNationality();
     }
 
     //Getters & Setters
