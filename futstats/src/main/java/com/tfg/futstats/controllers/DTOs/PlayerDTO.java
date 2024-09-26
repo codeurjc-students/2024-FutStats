@@ -1,4 +1,4 @@
-package com.tfg.futstats.controllers.DTOs;
+package com.tfg.futstats.controllers.dtos;
 
 import com.tfg.futstats.models.League;
 import com.tfg.futstats.models.Team;
@@ -83,7 +83,7 @@ public class PlayerDTO {
       this.age = age;
    }
 
-   public String getAge() {
+   public int getAge() {
       return age;
    }
 

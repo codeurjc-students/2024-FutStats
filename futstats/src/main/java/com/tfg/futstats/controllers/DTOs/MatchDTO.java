@@ -1,4 +1,4 @@
-package com.tfg.futstats.controllers.DTOs;
+package com.tfg.futstats.controllers.dtos;
 
 import java.sql.Date;
 
@@ -98,7 +98,7 @@ public class MatchDTO {
         this.shoots1 = shoots1;
     }
 
-    public int getScoress1()
+    public int getScores1()
     {
         return scores1;
     }
@@ -115,7 +115,7 @@ public class MatchDTO {
 
     public void setPossesion1(double possesion1)
     {
-        this.possesion1 = possesion1
+        this.possesion1 = possesion1;
     }
 
     public int getPasses1()
@@ -155,7 +155,7 @@ public class MatchDTO {
 
     public void setYellowCards1(int yellowCards1)
     {
-        return yellowCards1;
+        this.yellowCards1 = yellowCards1;
     }
 
     public int getRedCards1()
@@ -245,7 +245,7 @@ public class MatchDTO {
 
     public void setYellowCards2(int yellowCards2)
     {
-        return yellowCards2;
+        this.yellowCards2 = yellowCards2;
     }
 
     public int getRedCards2()

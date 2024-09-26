@@ -1,4 +1,4 @@
-package com.tfg.futstats.controllers.DTOs;
+package com.tfg.futstats.controllers.dtos;
 
 public class LeagueDTO {
     // dto attributes

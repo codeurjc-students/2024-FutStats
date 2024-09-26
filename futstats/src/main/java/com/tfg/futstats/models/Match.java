@@ -5,15 +5,13 @@ import java.util.List;
 
 import javax.management.InvalidAttributeValueException;
 
-import com.tfg.futstats.controllers.DTOs.MatchDTO;
+import com.tfg.futstats.controllers.dtos.MatchDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 
 //As we want that this class be kept in the database we have to put this notation
 @Entity
@@ -250,7 +248,7 @@ public class Match {
 
     public void setPossesion1(double possesion1)
     {
-        this.possesion1 = possesion1
+        this.possesion1 = possesion1;
     }
 
     public int getPasses1()
@@ -299,7 +297,7 @@ public class Match {
 
     public void setYellowCards1(int yellowCards1)
     {
-        return yellowCards1;
+        this.yellowCards1 = yellowCards1;
     }
 
     public int getRedCards1()
@@ -398,7 +396,7 @@ public class Match {
 
     public void setYellowCards2(int yellowCards2)
     {
-        return yellowCards2;
+        this.yellowCards2 = yellowCards1;
     }
 
     public int getRedCards2()

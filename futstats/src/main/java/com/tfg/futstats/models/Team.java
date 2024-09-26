@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.management.InvalidAttributeValueException;
 
-import com.tfg.futstats.controllers.DTOs.TeamDTO;
+import com.tfg.futstats.controllers.dtos.TeamDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
 
 //As we want that this class be kept in the database we have to put this notation
 @Entity
@@ -114,7 +115,7 @@ public class Team {
             int wonDuels,
             int lostDuels,
             int cards,
-            int yellowCrads,
+            int yellowCards,
             int redCards,
             int passes,
             int goodPasses,
@@ -178,6 +179,7 @@ public class Team {
         this.president = team.getPresident();
         this.stadium = team.getStadium();
         this.points = team.getPoints();
+        this.totalMatches = team.getTotalMatches();
         this.totalShoots = team.getTotalShoots();
         this.totalGoals = team.getTotalGoals();
         this.penaltys = team.getPenaltys();
@@ -237,7 +239,7 @@ public class Team {
 
     public void setMatch(Match match) {
         this.matches.add(match);
-        match.setLeague(this);
+        match.setLeague(this.league);
     }
 
     public void deleteMatch(Match match) {
@@ -256,7 +258,7 @@ public class Team {
 
     public void setPlayers(Player player) {
         this.players.add(player);
-        player.setLeague(this);
+        player.setLeague(this.league);
     }
 
     public void deletePlayer(Player player) {
@@ -381,7 +383,7 @@ public class Team {
 
     public double getGoalsPerMatch()
     {
-        goalsPerMatch = (totalGoals/totalMatches)
+        goalsPerMatch = (totalGoals/totalMatches);
         return goalsPerMatch;
     }
 
@@ -390,7 +392,7 @@ public class Team {
 
     public double getScoreAvg()
     {
-        scoreAvg = (totalGoals/totalShoots)
+        scoreAvg = (totalGoals/totalShoots);
         return scoreAvg;
     }
 
@@ -406,7 +408,7 @@ public class Team {
     }
 
     public void setFaultsReceived(int fautlsReceived) {
-        this.fautlsReceived = fautlsReceived;
+        this.faultsReceived = fautlsReceived;
     }
 
     public int getFaultsReceived() {
@@ -463,7 +465,7 @@ public class Team {
 
     public double getDuelAvg()
     {
-        duelAvg = (wonDuels/duels)
+        duelAvg = (wonDuels/duels);
         return duelAvg;
     }
 
@@ -521,7 +523,7 @@ public class Team {
     }
 
     public void setBadPasses(int badPasses) {
-        this.badPases = badPasses;
+        this.badPasses = badPasses;
     }
 
     public int getBadPasses() {
@@ -616,8 +618,8 @@ public class Team {
         return drawMatches;
     }
 
-    public int getWonMatchesAvg() {
-        wonMatchesAvg = (wonMatches / totalMatches)
+    public double getWonMatchesAvg() {
+        wonMatchesAvg = (wonMatches / totalMatches);
         return wonMatchesAvg;
     }
 

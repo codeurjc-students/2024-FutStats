@@ -2,6 +2,8 @@ package com.tfg.futstats.services;
 
 import org.springframework.stereotype.Service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.tfg.futstats.models.League;
 import com.tfg.futstats.models.Match;
 import com.tfg.futstats.models.Player;
@@ -10,6 +12,10 @@ import com.tfg.futstats.models.User;
 import com.tfg.futstats.repositories.LeagueRepository;
 import com.tfg.futstats.repositories.PlayerRepository;
 import com.tfg.futstats.repositories.TeamRepository;
+import com.tfg.futstats.repositories.MatchRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import java.util.Optional;
 
 @Service
 public class RestService {
@@ -23,11 +29,22 @@ public class RestService {
     @Autowired
     private PlayerRepository playerRepository;
 
+    @Autowired
+    private MatchRepository matchRepository;
+
     // --------------------------------------- LEAGUE CRUD OPERATIONS
     // ---------------------------------------
 
-    public Page<League> findAllLeagues() {
-        return leagueRepository.findAll(5);
+    public Page<League> findAllLeagues(Pageable pageable) {
+        return leagueRepository.findAll(pageable);
+    }
+
+    public Optional<League> findLeagueById(long id) {
+        return leagueRepository.findById(id);
+    }
+
+    public Optional<League> findLeagueByName(String name) {
+        return leagueRepository.findByNameIgnoreCase(name);
     }
 
     public void createLeague(League league) {
@@ -39,7 +56,7 @@ public class RestService {
     }
 
     public void updateLeague(long id, League modLeague) {
-        League oldLeague = findLeagueById(id);
+        League oldLeague = findLeagueById(id).get();
 
         modLeague.setTeams(oldLeague.getTeams());
         modLeague.setMatches(oldLeague.getMatches());
@@ -49,20 +66,31 @@ public class RestService {
         leagueRepository.save(modLeague);
     }
 
-    public Page<Team> findLeaguesByUser(User u)
-    {
-        return leagueRepository.findAllByUser(u,5)
+    public Page<League> findLeaguesByUser(User u, Pageable pageable) {
+        return leagueRepository.findAllByUser(u, pageable);
     }
 
     // --------------------------------------- TEAM CRUD OPERATIONS
     // ---------------------------------------
 
-    public Page<Team> findAllTeams() {
-        return teamRepository.findAll(5);
+    public Page<Team> findAllTeams(Pageable pageable) {
+        return teamRepository.findAll(pageable);
+    }
+
+    public Optional<Team> findTeamById(long id) {
+        return teamRepository.findById(id);
+    }
+
+    public Page<Team> findTeamsByLeague(long leagueId, Pageable pageable) {
+        return teamRepository.findTeamsByLeague(leagueRepository.findById(leagueId).get(),pageable);
+    }
+
+    public Optional<Team> findTeamByName(String name) {
+        return teamRepository.findByNameIgnoreCase(name);
     }
 
     public void createTeam(Team team) {
-        teamepository.save(team);
+        teamRepository.save(team);
     }
 
     public void deleteTeam(Team team) {
@@ -70,7 +98,7 @@ public class RestService {
     }
 
     public void updateTeam(long id, Team modTeam) {
-        Team oldTeam = findTeamById(id);
+        Team oldTeam = findTeamById(id).get();
 
         modTeam.setLeague(oldTeam.getLeague());
         modTeam.setMatches(oldTeam.getMatches());
@@ -80,16 +108,31 @@ public class RestService {
         teamRepository.save(modTeam);
     }
 
-    public Page<Team> findTeamsByUser(User u)
-    {
-        return teamRepository.findAllByUser(u,5)
+    public Page<Team> findTeamsByUser(User u, Pageable pageable) {
+        return teamRepository.findAllByUser(u, pageable);
     }
 
     // --------------------------------------- PLAYER CRUD OPERATIONS
     // ---------------------------------------
 
-    public Page<Player> findAllPlayers() {
-        return playerRepository.findAll(5);
+    public Page<Player> findAllPlayers(Pageable pageable) {
+        return playerRepository.findAll(pageable);
+    }
+
+    public Optional<Player> findPlayerById(long id) {
+        return playerRepository.findById(id);
+    }
+
+    public Optional<Player> findPlayerByName(String name) {
+        return playerRepository.findByNameIgnoreCase(name);
+    }
+    
+    public Page<Player> findPlayersByLeague(long leagueId, Pageable pageable) {
+        return playerRepository.findPlayersByLeague(leagueRepository.findById(leagueId).get(), pageable);
+    }
+
+    public Page<Player> findPlayersByTeam(long teamId, Pageable pageable) {
+        return playerRepository.findPlayersByTeam(teamRepository.findById(teamId).get(), pageable);
     }
 
     public void createPlayer(Player player) {
@@ -101,7 +144,7 @@ public class RestService {
     }
 
     public void updatePlayer(long id, Player modPlayer) {
-        Player oldPlayer = findPlayerById(id);
+        Player oldPlayer = findPlayerById(id).get();
 
         modPlayer.setLeague(oldPlayer.getLeague());
         modPlayer.setTeam(oldPlayer.getTeam());
@@ -110,16 +153,27 @@ public class RestService {
         playerRepository.save(modPlayer);
     }
 
-    public Page<Team> findPlayersByUser(User u)
-    {
-        return playerRepository.findAllByUser(u,5)
+    public Page<Player> findPlayersByUser(User u, Pageable pageable) {
+        return playerRepository.findAllByUser(u, pageable);
     }
 
     // --------------------------------------- MATCH CRUD OPERATIONS
     // ---------------------------------------
 
-    public Page<Match> findAllMatches() {
-        return matchRepository.findAll(5);
+    public Page<Match> findAllMatches(Pageable pageable) {
+        return matchRepository.findAll(pageable);
+    }
+
+    public Optional<Match> findMatchById(long id) {
+        return matchRepository.findById(id);
+    }
+
+    public Page<Match> findMatchesByLeague(long leagueId, Pageable pageable) {
+        return matchRepository.findAllByLeague(leagueRepository.findById(leagueId).get(), pageable);
+    }
+
+    public Page<Match> findMatchesByTeam(long teamId, Pageable pageable) {
+        return matchRepository.findAllByTeam(teamRepository.findById(teamId).get(), pageable);
     }
 
     public void createMatch(Match match) {
@@ -131,7 +185,7 @@ public class RestService {
     }
 
     public void updateMatch(long id, Match modMatch) {
-        Match oldMatch = findMatchById(id);
+        Match oldMatch = findMatchById(id).get();
 
         modMatch.setLeague(oldMatch.getLeague());
         modMatch.setTeam1(oldMatch.getTeam1());

@@ -5,13 +5,14 @@ import java.util.List;
 
 import javax.management.InvalidAttributeValueException;
 
-import com.tfg.futstats.controllers.DTOs.LeagueDTO;
+import com.tfg.futstats.controllers.dtos.LeagueDTO;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Column;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.ManyToMany;
 
@@ -36,6 +37,7 @@ public class League {
     private List<User> users;
 
     // League attributes
+    @Column(unique = true)
     private String name;
     private String president;
     private String nationality;

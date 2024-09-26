@@ -1,6 +1,12 @@
 package com.tfg.futstats.services;
 
+import org.springframework.stereotype.Service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.tfg.futstats.models.User;
 import com.tfg.futstats.repositories.UserRepository;
@@ -19,8 +25,14 @@ public class UserService {
         return userRepository.findAll(pageable);
     }
 
+    public Optional<User> findUserByName(String userName) {
+        return userRepository.findByNameIgnoreCase(userName);
+    }
+
     public User createUser(String userName, String password) {
-        User user = new User(userName, passwordEncoder.encode(password));
+        User user = new User();
+        user.setName(userName);
+        user.setPassword(password);
         return userRepository.save(user);
     }
 

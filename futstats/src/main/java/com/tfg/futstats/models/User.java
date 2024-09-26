@@ -3,14 +3,11 @@ package com.tfg.futstats.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.demo.controllers.DTOs.UserDTO;
-import com.example.demo.models.leagueModels.League;
-import com.example.demo.models.leagueModels.Player;
-import com.example.demo.models.leagueModels.Team;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.tfg.futstats.controllers.dtos.UserDTO;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,14 +17,13 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class User 
-{
+public class User {
 
-    //User attributes
+    // User attributes
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Auto generated ID
-    private long id;    
+    private long id;
 
     @Column(unique = true)
     private String name;
@@ -47,15 +43,13 @@ public class User
     // other class that relate to, to inform JPA which attribute "connects" the
     // entities
 
-    //Constructors
+    // Constructors
 
-    public User() 
-    {
+    public User() {
 
     }
 
-    public User(String name, String password) 
-    {
+    public User(String name, String password) {
         this.name = name;
         this.password = password;
         this.belongedLeagues = new ArrayList<>();
@@ -63,71 +57,58 @@ public class User
         this.belongedPlayers = new ArrayList<>();
     }
 
-    public User(UserDTO user)
-    {
+    public User(UserDTO user) {
         this.name = user.getName();
         this.password = user.getPassword();
     }
 
-    //Getters & Setters
+    // Getters & Setters
 
-    public long getId() 
-    {
+    public long getId() {
         return this.id;
     }
 
-    public void setId(long id) 
-    {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getName() 
-    {
+    public String getName() {
         return name;
     }
 
-    public List<League> getLeagues() 
-    {
+    public List<League> getLeagues() {
         return this.belongedLeagues;
     }
 
-    public void setLeague(League newLeague) 
-    {
+    public void setLeague(League newLeague) {
         this.belongedLeagues.add(newLeague);
     }
 
-    public List<Team> getTeams() 
-    {
+    public List<Team> getTeams() {
         return this.belongedTeams;
     }
 
-    public void setTeam(Team newTeam) 
-    {
+    public void setTeam(Team newTeam) {
         this.belongedTeams.add(newTeam);
     }
 
-    public List<Player> getPlayers() 
-    {
+    public List<Player> getPlayers() {
         return this.belongedPlayers;
     }
 
-    public void setPlayer(Player newPlayer) 
-    {
+    public void setPlayer(Player newPlayer) {
         this.belongedPlayers.add(newPlayer);
     }
 
-    public String getPassword() 
-    {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) 
-    {
+    public void setPassword(String password) {
         this.password = password;
     }
 
@@ -139,11 +120,4 @@ public class User
     public String toString() {
         return "User [id=" + id + ", name=" + name + ", password=" + password + "]";
     }
-
-    @JsonIgnore
-    public String getRole() {
-        return "user";
-    }
 }
-
-

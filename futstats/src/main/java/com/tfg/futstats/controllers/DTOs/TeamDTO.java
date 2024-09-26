@@ -1,4 +1,4 @@
-package com.tfg.futstats.controllers.DTOs;
+package com.tfg.futstats.controllers.dtos;
 
 public class TeamDTO {
     // dto attributes
@@ -123,6 +123,14 @@ public class TeamDTO {
 
     public int getPoints() {
         return points;
+    }
+
+    public void setTotalMatches(int totalMatches) {
+        this.totalMatches = totalMatches;
+    }
+
+    public int getTotalMatches() {
+        return totalMatches;
     }
 
     public void setTotalShoots(int totalShoots) {

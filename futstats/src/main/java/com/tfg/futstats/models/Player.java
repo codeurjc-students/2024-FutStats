@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.management.InvalidAttributeValueException;
 
-import com.tfg.futstats.controllers.DTOs.PlayerDTO;
+import com.tfg.futstats.controllers.dtos.PlayerDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -95,7 +95,7 @@ public class Player {
             int wonDuels,
             int lostDuels,
             int cards,
-            int yellowCrads,
+            int yellowCards,
             int redCards,
             int passes,
             int goodPasses,
@@ -116,7 +116,7 @@ public class Player {
         this.totalShoots = totalShoots;
         this.totalGoals = totalGoals;
         this.penaltys = penaltys;
-        this.fautlsReceived = fautlsReceived;
+        this.faultsReceived = fautlsReceived;
         this.offsides = offsides;
         this.commitedFaults = commitedFaults;
         this.recovers = recovers;
@@ -147,7 +147,7 @@ public class Player {
         this.totalShoots = player.getTotalShoots();
         this.totalGoals = player.getTotalGoals();
         this.penaltys = player.getPenaltys();
-        this.fautlsReceived = player.getFaultsReceived();
+        this.faultsReceived = player.getFaultsReceived();
         this.offsides = player.getOffsides();
         this.commitedFaults = player.getCommitedFaults();
         this.recovers = player.getRecovers();
@@ -246,7 +246,7 @@ public class Player {
         this.age = age;
     }
 
-    public String getAge() {
+    public int getAge() {
         return age;
     }
 
