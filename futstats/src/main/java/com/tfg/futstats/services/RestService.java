@@ -6,6 +6,7 @@ import com.tfg.futstats.models.League;
 import com.tfg.futstats.models.Match;
 import com.tfg.futstats.models.Player;
 import com.tfg.futstats.models.Team;
+import com.tfg.futstats.models.User;
 import com.tfg.futstats.repositories.LeagueRepository;
 import com.tfg.futstats.repositories.PlayerRepository;
 import com.tfg.futstats.repositories.TeamRepository;
@@ -43,8 +44,14 @@ public class RestService {
         modLeague.setTeams(oldLeague.getTeams());
         modLeague.setMatches(oldLeague.getMatches());
         modLeague.setPlayers(oldLeague.getPlayers());
+        modLeague.setUsers(oldLeague.getUsers());
 
         leagueRepository.save(modLeague);
+    }
+
+    public Page<Team> findLeaguesByUser(User u)
+    {
+        return leagueRepository.findAllByUser(u,5)
     }
 
     // --------------------------------------- TEAM CRUD OPERATIONS
@@ -68,8 +75,14 @@ public class RestService {
         modTeam.setLeague(oldTeam.getLeague());
         modTeam.setMatches(oldTeam.getMatches());
         modTeam.setPlayers(oldTeam.getPlayers());
+        modTeam.setUsers(oldTeam.getUsers());
 
         teamRepository.save(modTeam);
+    }
+
+    public Page<Team> findTeamsByUser(User u)
+    {
+        return teamRepository.findAllByUser(u,5)
     }
 
     // --------------------------------------- PLAYER CRUD OPERATIONS
@@ -92,8 +105,14 @@ public class RestService {
 
         modPlayer.setLeague(oldPlayer.getLeague());
         modPlayer.setTeam(oldPlayer.getTeam());
+        modPlayer.setUsers(oldPlayer.getUsers());
 
         playerRepository.save(modPlayer);
+    }
+
+    public Page<Team> findPlayersByUser(User u)
+    {
+        return playerRepository.findAllByUser(u,5)
     }
 
     // --------------------------------------- MATCH CRUD OPERATIONS

@@ -31,6 +31,9 @@ public class Team {
     @OneToMany
     private List<Player> players;
 
+    @ManyToMany
+    private List<User> users;
+
     // Team attributes
     private String name;
     private int trophies;
@@ -128,6 +131,7 @@ public class Team {
             int drawMatches) {
         this.matches = new ArrayList<Match>();
         this.players = new ArrayList<Player>();
+        this.users = new ArrayList<User>();
         this.league = league;
         this.name = name;
         this.trophies = trophies;
@@ -257,6 +261,25 @@ public class Team {
 
     public void deletePlayer(Player player) {
         this.players.remove(player);
+    }
+
+    // ------------------------------------ USER
+    // ------------------------------------
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public void setUser(User user) {
+        this.users.add(user);
+    }
+
+    public void deleteUser(User user) {
+        this.users.remove(user);
     }
 
     // ------------------------------------------------------------------------
