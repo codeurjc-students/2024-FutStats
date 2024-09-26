@@ -6,8 +6,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tfg.futstats.controllers.dtos.MatchDTO;
+import com.tfg.futstats.errors.ElementNotFoundException;
 import com.tfg.futstats.models.Match;
+import com.tfg.futstats.models.League;
+import com.tfg.futstats.models.Team;
 import com.tfg.futstats.services.RestService;
+
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,19 +44,30 @@ public class MatchController {
         return ResponseEntity.ok(restService.findAllMatches(PageRequest.of(pageable.getPageNumber(), 10)));
     }
 
+    @GetMapping("/matches/{id}")
+    public ResponseEntity<Match> getMatch(@PathVariable long id,Pageable pageable) {
+        return ResponseEntity.ok(restService.findMatchById(id).orElseThrow(() -> new ElementNotFoundException("")));
+    }
+
     @GetMapping("/leagues/{leaguesId}/matches")
-    public ResponseEntity<Page<Match>> getMatchesByLeague(@PathVariable long leagueId, Pageable pageable) {
-        return ResponseEntity.ok(restService.findMatchesByLeague(leagueId,PageRequest.of(pageable.getPageNumber(), 5)));
+    public ResponseEntity<Page<Match>> getMatchesByLeague(@PathVariable long leagueId, Pageable pageable){
+        Optional<League> league = restService.findLeagueById(leagueId);
+
+        return ResponseEntity.ok(restService.findMatchesByLeague(league.orElseThrow(() -> new ElementNotFoundException("")),PageRequest.of(pageable.getPageNumber(), 5)));
     }
 
     @GetMapping("/teams/{teamsId}/matches")
     public ResponseEntity<Page<Match>> getMatchesByTeam(@PathVariable long teamId, Pageable pageable) {
-        return ResponseEntity.ok(restService.findMatchesByTeam(teamId,PageRequest.of(pageable.getPageNumber(), 5)));
+        Optional<Team> team = restService.findTeamById(teamId);
+
+        return ResponseEntity.ok(restService.findMatchesByTeam(team.orElseThrow(() -> new ElementNotFoundException("")),PageRequest.of(pageable.getPageNumber(), 5)));
     }
 
     @GetMapping("/leagues/{leaguesId}/teams/{teamId}/matches")
     public ResponseEntity<Page<Match>> getMatches(@PathVariable long leagueId, @PathVariable long teamId, Pageable pageable) {
-        return ResponseEntity.ok(restService.findMatchesByTeam(teamId,PageRequest.of(pageable.getPageNumber(), 5)));
+        Optional<Team> team = restService.findTeamById(teamId);
+
+        return ResponseEntity.ok(restService.findMatchesByTeam(team.orElseThrow(() -> new ElementNotFoundException("")),PageRequest.of(pageable.getPageNumber(), 5)));
     }
 
     // From this point the only one that can use this methods is the admin so we

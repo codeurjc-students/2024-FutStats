@@ -6,6 +6,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tfg.futstats.controllers.dtos.TeamDTO;
+import com.tfg.futstats.errors.ElementNotFoundException;
+import com.tfg.futstats.models.League;
 import com.tfg.futstats.models.Team;
 import com.tfg.futstats.services.RestService;
 
@@ -39,21 +41,23 @@ public class TeamController {
 
     @GetMapping("leagues/{leagueId}/teams")
     public ResponseEntity<Page<Team>> getTeams(@PathVariable long leagueId, Pageable pageable) {
-        return ResponseEntity.ok(restService.findTeamsByLeague(leagueId,PageRequest.of(pageable.getPageNumber(), 5)));
+        Optional<League> league = restService.findLeagueById(leagueId);
+
+        return ResponseEntity.ok(restService.findTeamsByLeague(league.orElseThrow(() -> new ElementNotFoundException("")),PageRequest.of(pageable.getPageNumber(),10)));
     }
 
-    @GetMapping("/teams/{id}")
+    @GetMapping("/teams/{id}") 
     public ResponseEntity<Team> getTeam(@PathVariable long id) {
         Optional<Team> team = restService.findTeamById(id);
 
-        return ResponseEntity.ok(team.orElseThrow());
+        return ResponseEntity.ok(team.orElseThrow(() -> new ElementNotFoundException("")));
     }
 
     @GetMapping("/teams/{name}")
     public ResponseEntity<Team> getTeamByName(@PathVariable String name) {
         Optional<Team> team = restService.findTeamByName(name);
 
-        return ResponseEntity.ok(team.orElseThrow());
+        return ResponseEntity.ok(team.orElseThrow(() -> new ElementNotFoundException("")));
     }
 
     // From this point the only one that can use this methods is the admin so we

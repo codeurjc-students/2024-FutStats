@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.tfg.futstats.controllers.dtos.LeagueDTO;
 import com.tfg.futstats.models.League;
 import com.tfg.futstats.services.RestService;
+import com.tfg.futstats.errors.ElementNotFoundException;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,14 +46,14 @@ public class LeagueController {
     public ResponseEntity<League> getLeagueById(@PathVariable long id) {
         Optional<League> league = restService.findLeagueById(id);
 
-        return ResponseEntity.ok(league.orElseThrow());
+        return ResponseEntity.ok(league.orElseThrow(() -> new ElementNotFoundException("")));
     }
 
     @GetMapping("/leagues/{name}")
     public ResponseEntity<League> getLeagueByName(@PathVariable String name) {
         Optional<League> league = restService.findLeagueByName(name);
 
-        return ResponseEntity.ok(league.orElseThrow());
+        return ResponseEntity.ok(league.orElseThrow(() -> new ElementNotFoundException("")));
     }
 
     // From this point the only one that can use this methods is the admin so we

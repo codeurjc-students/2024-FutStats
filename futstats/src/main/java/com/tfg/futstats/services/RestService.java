@@ -81,8 +81,8 @@ public class RestService {
         return teamRepository.findById(id);
     }
 
-    public Page<Team> findTeamsByLeague(long leagueId, Pageable pageable) {
-        return teamRepository.findTeamsByLeague(leagueRepository.findById(leagueId).get(),pageable);
+    public Page<Team> findTeamsByLeague(League league, Pageable pageable) {
+        return teamRepository.findTeamsByLeague(league, pageable);
     }
 
     public Optional<Team> findTeamByName(String name) {
@@ -127,12 +127,12 @@ public class RestService {
         return playerRepository.findByNameIgnoreCase(name);
     }
     
-    public Page<Player> findPlayersByLeague(long leagueId, Pageable pageable) {
-        return playerRepository.findPlayersByLeague(leagueRepository.findById(leagueId).get(), pageable);
+    public Page<Player> findPlayersByLeague(League league, Pageable pageable) {
+        return playerRepository.findPlayersByLeague(league, pageable);
     }
 
-    public Page<Player> findPlayersByTeam(long teamId, Pageable pageable) {
-        return playerRepository.findPlayersByTeam(teamRepository.findById(teamId).get(), pageable);
+    public Page<Player> findPlayersByTeam(Team team, Pageable pageable) {
+        return playerRepository.findPlayersByTeam(team, pageable);
     }
 
     public void createPlayer(Player player) {
@@ -168,12 +168,12 @@ public class RestService {
         return matchRepository.findById(id);
     }
 
-    public Page<Match> findMatchesByLeague(long leagueId, Pageable pageable) {
-        return matchRepository.findAllByLeague(leagueRepository.findById(leagueId).get(), pageable);
+    public Page<Match> findMatchesByLeague(League league, Pageable pageable) {
+        return matchRepository.findAllByLeague(league, pageable);
     }
 
-    public Page<Match> findMatchesByTeam(long teamId, Pageable pageable) {
-        return matchRepository.findAllByTeam(teamRepository.findById(teamId).get(), pageable);
+    public Page<Match> findMatchesByTeam(Team team, Pageable pageable) {
+        return matchRepository.findAllByTeam(team, pageable);
     }
 
     public void createMatch(Match match) {

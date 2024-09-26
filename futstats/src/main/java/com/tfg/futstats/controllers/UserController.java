@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tfg.futstats.models.Team;
+import com.tfg.futstats.models.User;
+import com.tfg.futstats.errors.ElementNotFoundException;
 import com.tfg.futstats.models.League;
 import com.tfg.futstats.models.Player;
 import com.tfg.futstats.services.RestService;
@@ -38,18 +40,25 @@ public class UserController {
     // We want that registered users can see their saved leagues
     @GetMapping("users/{id}/leagues")
     public ResponseEntity<Page<League>> getUserLeagues(@PathVariable long id, Pageable pageable) {
-        return ResponseEntity.ok(restService.findLeaguesByUser(userService.findUserById(id).get(),PageRequest.of(pageable.getPageNumber(),10)));
+
+        Optional<User> user = userService.findUserById(id);
+
+        return ResponseEntity.ok(restService.findLeaguesByUser(user.orElseThrow(() -> new ElementNotFoundException("")),PageRequest.of(pageable.getPageNumber(),10)));
     }
 
     // We want that registered users can see their saved teams
     @GetMapping("users/{id}/teams")
     public ResponseEntity<Page<Team>> getUserTeams(@PathVariable long id, Pageable pageable) {
-        return ResponseEntity.ok(restService.findTeamsByUser(userService.findUserById(id).get(),PageRequest.of(pageable.getPageNumber(),10)));
+        Optional<User> user = userService.findUserById(id);
+
+        return ResponseEntity.ok(restService.findTeamsByUser(user.orElseThrow(() -> new ElementNotFoundException("")),PageRequest.of(pageable.getPageNumber(),10)));
     }
 
     // We want that registered users can see their saved teams
     @GetMapping("users/{id}/players")
     public ResponseEntity<Page<Player>> getUserPlayers(@PathVariable long id, Pageable pageable) {
-        return ResponseEntity.ok(restService.findPlayersByUser(userService.findUserById(id).get(),PageRequest.of(pageable.getPageNumber(),10)));
+        Optional<User> user = userService.findUserById(id);
+
+        return ResponseEntity.ok(restService.findPlayersByUser(user.orElseThrow(() -> new ElementNotFoundException("")),PageRequest.of(pageable.getPageNumber(),10)));
     }
 }
