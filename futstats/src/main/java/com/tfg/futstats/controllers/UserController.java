@@ -13,6 +13,8 @@ import com.tfg.futstats.models.Player;
 import com.tfg.futstats.services.RestService;
 import com.tfg.futstats.services.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,26 +41,44 @@ public class UserController {
 
     // We want that registered users can see their saved leagues
     @GetMapping("users/{id}/leagues")
-    public ResponseEntity<Page<League>> getUserLeagues(@PathVariable long id, Pageable pageable) {
+    public ResponseEntity<Page<League>> getUserLeagues(HttpServletRequest request, @PathVariable long id, Pageable pageable) {
+        if(!request.getUserPrincipal().getName().equals(userService.findUserById(id).orElseThrow(() -> new ElementNotFoundException("No existe un usuario con ese id")).getName()))
+        {
+            return ResponseEntity.badRequest().build();
+        }
 
         Optional<User> user = userService.findUserById(id);
 
-        return ResponseEntity.ok(restService.findLeaguesByUser(user.orElseThrow(() -> new ElementNotFoundException("")),PageRequest.of(pageable.getPageNumber(),10)));
+        //We can use directly the method .get() because we have already proved that the user exists
+        return ResponseEntity.ok(restService.findLeaguesByUser(user.get(),PageRequest.of(pageable.getPageNumber(),10)));
     }
 
     // We want that registered users can see their saved teams
     @GetMapping("users/{id}/teams")
-    public ResponseEntity<Page<Team>> getUserTeams(@PathVariable long id, Pageable pageable) {
+    public ResponseEntity<Page<Team>> getUserTeams(HttpServletRequest request, @PathVariable long id, Pageable pageable) {
+        if(!request.getUserPrincipal().getName().equals(userService.findUserById(id).orElseThrow(() -> new ElementNotFoundException("No existe un usuario con ese id")).getName()))
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
         Optional<User> user = userService.findUserById(id);
 
-        return ResponseEntity.ok(restService.findTeamsByUser(user.orElseThrow(() -> new ElementNotFoundException("")),PageRequest.of(pageable.getPageNumber(),10)));
+        //We can use directly the method .get() because we have already proved that the user exists
+        return ResponseEntity.ok(restService.findTeamsByUser(user.get(),PageRequest.of(pageable.getPageNumber(),10)));
     }
 
     // We want that registered users can see their saved teams
     @GetMapping("users/{id}/players")
-    public ResponseEntity<Page<Player>> getUserPlayers(@PathVariable long id, Pageable pageable) {
+    public ResponseEntity<Page<Player>> getUserPlayers(HttpServletRequest request, @PathVariable long id, Pageable pageable) {
+
+        if(!request.getUserPrincipal().getName().equals(userService.findUserById(id).orElseThrow(() -> new ElementNotFoundException("No existe un usuario con ese id")).getName()))
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
         Optional<User> user = userService.findUserById(id);
 
-        return ResponseEntity.ok(restService.findPlayersByUser(user.orElseThrow(() -> new ElementNotFoundException("")),PageRequest.of(pageable.getPageNumber(),10)));
+        //We can use directly the method .get() because we have already proved that the user exists
+        return ResponseEntity.ok(restService.findPlayersByUser(user.get(),PageRequest.of(pageable.getPageNumber(),10)));
     }
 }
