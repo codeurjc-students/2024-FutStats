@@ -26,7 +26,7 @@ public class UserService {
     }
 
     public Optional<User> findUserByName(String userName) {
-        return userRepository.findByNameIgnoreCase(userName);
+        return userRepository.findByName(userName);
     }
 
     public User createUser(String userName, String password) {

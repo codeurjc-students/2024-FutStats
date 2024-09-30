@@ -30,6 +30,8 @@ public class User {
 
     private String password;
 
+    private List<String> roles;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     protected List<League> belongedLeagues;
 
@@ -49,17 +51,19 @@ public class User {
 
     }
 
-    public User(String name, String password) {
+    public User(String name, String password, String... roles) {
         this.name = name;
         this.password = password;
         this.belongedLeagues = new ArrayList<>();
         this.belongedTeams = new ArrayList<>();
         this.belongedPlayers = new ArrayList<>();
+        this.roles = List.of(roles);
     }
 
     public User(UserDTO user) {
         this.name = user.getName();
         this.password = user.getPassword();
+        this.roles = user.getRoles();
     }
 
     // Getters & Setters
@@ -112,8 +116,13 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
-        return "user";
+    public void setRoles(String role)
+    {
+        this.roles.add(role);
+    }
+
+    public List<String> getRoles() {
+        return roles;
     }
 
     @Override

@@ -14,7 +14,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.ManyToMany;
 
 //As we want that this class be kept in the database we have to put this notation
 @Entity
@@ -33,9 +32,6 @@ public class League {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Player> players;
 
-    @ManyToMany
-    private List<User> users;
-
     // League attributes
     @Column(unique = true)
     private String name;
@@ -51,7 +47,6 @@ public class League {
         this.teams = new ArrayList<Team>();
         this.matches = new ArrayList<Match>();
         this.players = new ArrayList<Player>();
-        this.users = new ArrayList<User>();
         this.name = name;
         this.president = president;
         this.nationality = nationality;
@@ -121,25 +116,6 @@ public class League {
 
     public void deletePlayer(Player player) {
         this.players.remove(player);
-    }
-
-    // --------------------------------------- USER
-    // --------------------------------
-
-    public List<User> getUsers() {
-        return users;
-    }
-    
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
-
-    public void setUser(User user) {
-        this.users.add(user);
-    }
-
-    public void deleteUser(User user) {
-        this.users.remove(user);
     }
 
     // ------------------------------------------------------------------------

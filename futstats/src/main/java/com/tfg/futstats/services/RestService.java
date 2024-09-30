@@ -61,7 +61,7 @@ public class RestService {
         modLeague.setTeams(oldLeague.getTeams());
         modLeague.setMatches(oldLeague.getMatches());
         modLeague.setPlayers(oldLeague.getPlayers());
-        modLeague.setUsers(oldLeague.getUsers());
+       
 
         leagueRepository.save(modLeague);
     }
@@ -103,8 +103,7 @@ public class RestService {
         modTeam.setLeague(oldTeam.getLeague());
         modTeam.setMatches(oldTeam.getMatches());
         modTeam.setPlayers(oldTeam.getPlayers());
-        modTeam.setUsers(oldTeam.getUsers());
-
+        
         teamRepository.save(modTeam);
     }
 
@@ -148,7 +147,7 @@ public class RestService {
 
         modPlayer.setLeague(oldPlayer.getLeague());
         modPlayer.setTeam(oldPlayer.getTeam());
-        modPlayer.setUsers(oldPlayer.getUsers());
+        
 
         playerRepository.save(modPlayer);
     }

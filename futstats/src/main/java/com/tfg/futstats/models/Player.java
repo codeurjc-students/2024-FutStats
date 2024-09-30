@@ -1,8 +1,5 @@
 package com.tfg.futstats.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.management.InvalidAttributeValueException;
 
 import com.tfg.futstats.controllers.dtos.PlayerDTO;
@@ -12,7 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.ManyToMany;
 
 //As we want that this class be kept in the database we have to put this notation
 @Entity
@@ -27,9 +23,6 @@ public class Player {
 
     @ManyToOne
     private Team team;
-
-    @ManyToMany
-    private List<User> users;
 
     // player info
     private String name;
@@ -108,7 +101,6 @@ public class Player {
             int ballLosses) {
         this.league = league;
         this.team = team;
-        this.users = new ArrayList<User>();
         this.name = name;
         this.age = age;
         this.nationality = nationality;
@@ -204,26 +196,6 @@ public class Player {
     public void deleteTeam() {
         this.team = null;
     }
-
-    // ------------------------------------ USER
-    // ------------------------------------
-
-     public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
-
-    public void setUser(User user) {
-        this.users.add(user);
-    }
-
-    public void deleteUser(User user) {
-        this.users.remove(user);
-    }
-    
 
     // ------------------------------------------------------------------------
     public long getId() {
