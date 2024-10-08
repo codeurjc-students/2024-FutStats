@@ -27,12 +27,12 @@ public class TeamDTO {
     private int recovers;
     private int duels;
     private int wonDuels;
-    private int lostDuels;
     private int cards;
     private int yellowCards;
     private int redCards;
 
     // creation
+    private double possesion;
     private int passes;
     private int goodPasses;
     private int badPasses;
@@ -205,14 +205,6 @@ public class TeamDTO {
         return wonDuels;
     }
 
-    public void setLostDuels(int lostDuels) {
-        this.lostDuels = lostDuels;
-    }
-
-    public int getLostDuels() {
-        return lostDuels;
-    }
-
     public void setCards(int cards) {
         this.cards = cards;
     }
@@ -235,6 +227,14 @@ public class TeamDTO {
 
     public int getRedCards() {
         return redCards;
+    }
+
+    public void setPossesion(int possesion) {
+        this.possesion = possesion;
+    }
+
+    public double getPossesion() {
+        return possesion;
     }
 
     public void setPasses(int passes) {

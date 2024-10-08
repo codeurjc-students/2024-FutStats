@@ -59,14 +59,13 @@ public class Team {
     private int recovers;
     private int duels;
     private int wonDuels;
-    private int lostDuels;
     private float duelAvg;
     private int cards;
     private int yellowCards;
     private int redCards;
 
     // creation
-    private double possesionPerMatch;
+    private double possesion;
     private int passes;
     private double passesPerMatch;
     private int goodPasses;
@@ -113,6 +112,7 @@ public class Team {
             int cards,
             int yellowCards,
             int redCards,
+            double possesion,
             int passes,
             int goodPasses,
             int badPasses,
@@ -146,10 +146,10 @@ public class Team {
         this.recovers = recovers;
         this.duels = duels;
         this.wonDuels = wonDuels;
-        this.lostDuels = lostDuels;
         this.cards = cards;
         this.yellowCards = yellowCards;
         this.redCards = redCards;
+        this.possesion = possesion;
         this.passes = passes;
         this.goodPasses = goodPasses;
         this.badPasses = badPasses;
@@ -175,7 +175,7 @@ public class Team {
         this.stadium = team.getStadium();
         this.points = team.getPoints();
         this.totalMatches = team.getTotalMatches();
-        this.totalShoots = team.getTotalShoots();
+        this.totalShoots = team.getTotalShoots();   
         this.totalGoals = team.getTotalGoals();
         this.penaltys = team.getPenaltys();
         this.faultsReceived = team.getFaultsReceived();
@@ -184,10 +184,10 @@ public class Team {
         this.recovers = team.getRecovers();
         this.duels = team.getDuels();
         this.wonDuels = team.getWonDuels();
-        this.lostDuels = team.getLostDuels();
         this.cards = team.getCards();
         this.yellowCards = team.getYellowCards();
         this.redCards = team.getRedCards();
+        this.possesion = team.getPossesion();
         this.passes = team.getPasses();
         this.goodPasses = team.getGoodPasses();
         this.badPasses = team.getBadPasses();
@@ -431,14 +431,6 @@ public class Team {
         return wonDuels;
     }
 
-    public void setLostDuels(int lostDuels) {
-        this.lostDuels = lostDuels;
-    }
-
-    public int getLostDuels() {
-        return lostDuels;
-    }
-
     public double getDuelAvg()
     {
         duelAvg = (wonDuels/duels);
@@ -472,9 +464,9 @@ public class Team {
         return redCards;
     }
 
-    public double getPossesionPerMatch()
+    public double getPossesion()
     {
-        return possesionPerMatch;
+        return possesion;
     }
 
     public void setPasses(int passes) {

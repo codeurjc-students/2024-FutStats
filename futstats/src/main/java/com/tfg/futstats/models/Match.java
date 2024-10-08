@@ -37,26 +37,34 @@ public class Match {
     // Team1 attributes
     private int shoots1;
     private int scores1;
+    private int penaltys1;
+    private int faultsReceived1;
+    private int offsides1;
+    private int commitedFaults1;
+    private int recovers1;
+    private int duels1;
+    private int wonDuels1;
+    private int yellowCards1;
+    private int redCards1;
     private double possesion1;
     private int passes1;
     private int goodPasses1;
-    private double passesAvg1;
-    private int faults1;
-    private int yellowCards1;
-    private int redCards1;
-    private int offsides1;
 
     // Team2 attributes
     private int shoots2;
     private int scores2;
+    private int penaltys2;
+    private int faultsReceived2;
+    private int offsides2;
+    private int commitedFaults2;
+    private int recovers2;
+    private int duels2;
+    private int wonDuels2;
+    private int yellowCards2;
+    private int redCards2;
     private double possesion2;
     private int passes2;
     private int goodPasses2;
-    private double passesAvg2;
-    private int faults2;
-    private int yellowCards2;
-    private int redCards2;
-    private int offsides2;
 
     // Constructors
     public Match() {
@@ -69,45 +77,65 @@ public class Match {
             String place,
             int shoots1,
             int scores1,
+            int penaltys1,
+            int faultsReceived1,
+            int offsides1,
+            int commitedFaults1,
+            int recovers1,
+            int duels1,
+            int wonDuels1,
+            int yellowCards1,
+            int redCards1,
             double possesion1,
             int passes1,
             int goodPasses1,
-            int faults1,
-            int yellowCards1,
-            int redCards1,
-            int offsides1,
             int shoots2,
             int scores2,
-            double possesion2,
-            int passes2,
-            int goodPasses2,
-            int faults2,
+            int penaltys2,
+            int faultsReceived2,
+            int offsides2,
+            int commitedFaults2,
+            int recovers2,
+            int duels2,
+            int wonDuels2,
             int yellowCards2,
             int redCards2,
-            int offsides2) {
-        this.league = league;
-        this.team1 = team1;
-        this.team2 = team2;
-        this.date = date;
-        this.place = place;
-        this.shoots1 = shoots1;
-        this.scores1 = scores1;
-        this.possesion1 = possesion1;
-        this.passes1 = passes1;
-        this.goodPasses1 = goodPasses1;
-        this.faults1 = faults1;
-        this.yellowCards1 = yellowCards1;
-        this.redCards1 = redCards1;
-        this.offsides1 = offsides1;
-        this.shoots2 = shoots2;
-        this.scores2 = scores2;
-        this.possesion2 = possesion2;
-        this.passes2 = passes2;
-        this.goodPasses2 = goodPasses2;
-        this.faults2 = faults2;
-        this.yellowCards2 = yellowCards2;
-        this.redCards2 = redCards2;
-        this.offsides2 = offsides2;
+            double possesion2,
+            int passes2,
+            int goodPasses2) {
+            this.league = league;
+            this.team1 = team1;
+            this.team2 = team2;
+            this.date = date;
+            this.place = place;
+            this.shoots1 = shoots1;
+            this.scores1 = scores1;
+            this.penaltys1 = penaltys1;
+            this.faultsReceived1 = faultsReceived1;
+            this.offsides1 = offsides1;
+            this.commitedFaults1 = commitedFaults1;
+            this.recovers1 = recovers1;
+            this.duels1 = duels1;
+            this.wonDuels1 = wonDuels1;
+            this.yellowCards1 = yellowCards1;
+            this.redCards1 = redCards1;
+            this.possesion1 = possesion1;
+            this.passes1 = passes1;
+            this.goodPasses1 = goodPasses1;
+            this.shoots2 = shoots2;
+            this.scores2 = scores2;
+            this.penaltys2 = penaltys2;
+            this.faultsReceived2 = faultsReceived2;
+            this.offsides2 = offsides2;
+            this.commitedFaults2 = commitedFaults2;
+            this.recovers2 = recovers2;
+            this.duels2 = duels2;
+            this.wonDuels2 = wonDuels2;
+            this.yellowCards2 = yellowCards2;
+            this.redCards2 = redCards2;
+            this.possesion2 = possesion2;
+            this.passes2 = passes2;
+            this.goodPasses2 = goodPasses2;
     }
 
     public Match(MatchDTO match) {
@@ -118,22 +146,32 @@ public class Match {
         this.place = match.getPlace();
         this.shoots1 = match.getShoots1();
         this.scores1 = match.getScores1();
+        this.penaltys1 = match.getPenaltys1();
+        this.faultsReceived1 = match.getFaultsReceived1();
+        this.offsides1 = match.getOffsides1();
+        this.commitedFaults1 = match.getCommitedFaults1();
+        this.recovers1 = match.getRecovers1();
+        this.duels1 = match.getDuels1();
+        this.wonDuels1 = match.getWonDuels1();
+        this.yellowCards1 = match.getYellowCards1();
+        this.redCards1 = match.getRedCards1();
         this.possesion1 = match.getPossesion1();
         this.passes1 = match.getPasses1();
         this.goodPasses1 = match.getGoodPasses1();
-        this.faults1 = match.getFaults1();
-        this.yellowCards1 = match.getYellowCards1();
-        this.redCards1 = match.getRedCards1();
-        this.offsides1 = match.getOffsides1();
         this.shoots2 = match.getShoots2();
-        this.scores2 = match.getScoress2();
+        this.scores2 = match.getScores2();
+        this.penaltys2 = match.getPenaltys2();
+        this.faultsReceived2 = match.getFaultsReceived2();
+        this.offsides2 = match.getOffsides2();
+        this.commitedFaults2 = match.getCommitedFaults2();
+        this.recovers2 = match.getRecovers2();
+        this.duels2 = match.getDuels2();
+        this.wonDuels2 = match.getWonDuels2();
+        this.yellowCards2 = match.getYellowCards2();
+        this.redCards2 = match.getRedCards2();
         this.possesion2 = match.getPossesion2();
         this.passes2 = match.getPasses2();
         this.goodPasses2 = match.getGoodPasses2();
-        this.faults2 = match.getFaults2();
-        this.yellowCards2 = match.getYellowCards2();
-        this.redCards2 = match.getRedCards2();
-        this.offsides2 = match.getOffsides2();
     }
 
     // Getters & Setters
@@ -158,18 +196,6 @@ public class Match {
         return team1;
     }
 
-    public String getTeam1Name() {
-        return team1.getName();
-    }
-
-    public String getTeam1Stadium() {
-        return team1.getStadium();
-    }
-
-    public List<Player> getTeam1Players() {
-        return team1.getPlayers();
-    }
-
     // team1 doesn`t need delete or update because there can´t be only one team in a
     // match and there can´t be team change in a single match
     // ------------------------------------ TEAM2
@@ -182,17 +208,6 @@ public class Match {
         return this.team2;
     }
 
-    public String getTeam2Name() {
-        return team2.getName();
-    }
-
-    public String getTeam2Stadium() {
-        return team2.getStadium();
-    }
-
-    public List<Player> getTeam2Players() {
-        return team2.getPlayers();
-    }
 
     // team2 doesn`t need delete or update because there can´t be only one team in a
     // match and there can´t be team change in a single match
@@ -221,201 +236,243 @@ public class Match {
         this.place = place;
     }
 
-    public int getShoots1()
-    {
+    public int getShoots1() {
         return shoots1;
     }
 
-    public void setShoots1(int shoots1)
-    {
+    public void setShoots1(int shoots1) {
         this.shoots1 = shoots1;
     }
 
-    public int getScoress1()
-    {
+    public int getScores1() {
         return scores1;
     }
 
-    public void setScores1(int scores1)
-    {
+    public void setScores1(int scores1) {
         this.scores1 = scores1;
     }
 
-    public double getPossesion1()
+    public int getPenaltys1()
     {
-        return possesion1;
+        return penaltys1;
     }
 
-    public void setPossesion1(double possesion1)
+    public void setPenaltys1(int penaltys)
     {
-        this.possesion1 = possesion1;
+        this.penaltys1 = penaltys;
     }
 
-    public int getPasses1()
+    public int getFaultsReceived1()
     {
-        return passes1;
+        return faultsReceived1;
     }
 
-    public void setPasses1(int passes1)
+    public void setFaultsReceived1(int faultsReceived)
     {
-        this.passes1 = passes1;
+        this.faultsReceived1 = faultsReceived;
     }
 
-    public int getGoodPasses1()
-    {
-        return goodPasses1;
-    }
-
-    public void setGoodPasses1(int goodPasses1)
-    {
-        this.goodPasses1 = goodPasses1;
-    }
-
-    public double getPassesAvg1()
-    {
-        passesAvg1 = (goodPasses1/passes1);
-        return passesAvg1;
-    }
-
-    // As it is an average it only needs a getter it doesn´t need to be setted because
-    // it`s calculated from other stadistics.
-
-    public int getFaults1()
-    {
-        return faults1;
-    }
-
-    public void setFaults1(int faults1)
-    {
-        this.faults1 = faults1;
-    }
-    
-    public int getYellowCards1()
-    {
-        return yellowCards1;
-    }
-
-    public void setYellowCards1(int yellowCards1)
-    {
-        this.yellowCards1 = yellowCards1;
-    }
-
-    public int getRedCards1()
-    {
-        return redCards1;
-    }
-
-    public void setRedCards1(int redCards1)
-    {
-        this.redCards1 = redCards1;
-    }
-
-    public int getOffsides1()
-    {
+    public int getOffsides1() {
         return offsides1;
     }
 
-    public void setOffsides1(int offsides1)
-    {
+    public void setOffsides1(int offsides1) {
         this.offsides1 = offsides1;
     }
 
-    public int getShoots2()
+    public int getCommitedFaults1()
     {
+        return commitedFaults1;
+    }
+
+    public void setCommitedFaults1(int commitedFaults)
+    {
+        this.commitedFaults1 = commitedFaults;
+    }
+
+    public int getRecovers1()
+    {
+        return recovers1;
+    }
+
+    public void setRecovers1(int recovers)
+    {
+        this.recovers1 = recovers;
+    }
+
+    public int getDuels1() {
+        return duels1;
+    }
+
+    public void setDuels1(int duels) {
+        this.duels1 = duels;
+    }
+
+    public int getWonDuels1() {
+        return wonDuels1;
+    }
+
+    public void setWonDuels1(int wonDuels) {
+        this.wonDuels1 = wonDuels;
+    }
+
+    public int getYellowCards1() {
+        return yellowCards1;
+    }
+
+    public void setYellowCards1(int yellowCards1) {
+        this.yellowCards1 = yellowCards1;
+    }
+
+    public int getRedCards1() {
+        return redCards1;
+    }
+
+    public void setRedCards1(int redCards1) {
+        this.redCards1 = redCards1;
+    }
+
+    public double getPossesion1() {
+        return possesion1;
+    }
+
+    public void setPossesion1(double possesion1) {
+        this.possesion1 = possesion1;
+    }
+
+    public int getPasses1() {
+        return passes1;
+    }
+
+    public void setPasses1(int passes1) {
+        this.passes1 = passes1;
+    }
+
+    public int getGoodPasses1() {
+        return goodPasses1;
+    }
+
+    public void setGoodPasses1(int goodPasses1) {
+        this.goodPasses1 = goodPasses1;
+    }
+
+    public int getShoots2() {
         return shoots2;
     }
 
-    public void setShoots2(int shoots2)
-    {
-        this.shoots2 = shoots2;
+    public void setShoots2(int shoots1) {
+        this.shoots2 = shoots1;
     }
 
-    public int getScoress2()
-    {
+    public int getScores2() {
         return scores2;
     }
 
-    public void setScores2(int scores2)
-    {
-        this.scores2 = scores2;
+    public void setScores2(int scores1) {
+        this.scores2 = scores1;
     }
 
-    public double getPossesion2()
+    public int getPenaltys2()
     {
-        return possesion2;
+        return penaltys2;
     }
 
-    public void setPossesion2(double possesion2)
+    public void setPenaltys2(int penaltys)
     {
-        this.possesion2 = possesion2;
+        this.penaltys2 = penaltys;
     }
 
-    public int getPasses2()
+    public int getFaultsReceived2()
     {
-        return passes2;
+        return faultsReceived2;
     }
 
-    public void setPasses2(int passes2)
+    public void setFaultsReceived2(int faultsReceived)
     {
-        this.passes2 = passes2;
+        this.faultsReceived2 = faultsReceived;
     }
 
-    public int getGoodPasses2()
-    {
-        return goodPasses2;
-    }
-
-    public void setGoodPasses2(int goodPasses2)
-    {
-        this.goodPasses2 = goodPasses2;
-    }
-
-    public double getPassesAvg2()
-    {
-        passesAvg2 = (goodPasses2/passes2);
-        return passesAvg2;
-    }
-
-    // As it is an average it only needs a getter it doesn´t need to be setted because
-    // it`s calculated from other stadistics.
-
-    public int getFaults2()
-    {
-        return faults2;
-    }
-
-    public void setFaults2(int faults2)
-    {
-        this.faults2 = faults2;
-    }
-    
-    public int getYellowCards2()
-    {
-        return yellowCards2;
-    }
-
-    public void setYellowCards2(int yellowCards2)
-    {
-        this.yellowCards2 = yellowCards1;
-    }
-
-    public int getRedCards2()
-    {
-        return redCards2;
-    }
-
-    public void setRedCards2(int redCards2)
-    {
-        this.redCards2 = redCards2;
-    }
-
-    public int getOffsides2()
-    {
+    public int getOffsides2() {
         return offsides2;
     }
 
-    public void setOffsides2(int offsides2)
+    public void setOffsides2(int offsides1) {
+        this.offsides2 = offsides1;
+    }
+
+    public int getCommitedFaults2()
     {
-        this.offsides2 = offsides2;
+        return commitedFaults2;
+    }
+
+    public void setCommitedFaults2(int commitedFaults)
+    {
+        this.commitedFaults2 = commitedFaults;
+    }
+
+    public int getRecovers2()
+    {
+        return recovers2;
+    }
+
+    public void setRecovers2(int recovers)
+    {
+        this.recovers2 = recovers;
+    }
+
+    public int getDuels2() {
+        return duels2;
+    }
+
+    public void setDuels2(int duels) {
+        this.duels2 = duels;
+    }
+
+    public int getWonDuels2() {
+        return wonDuels2;
+    }
+
+    public void setWonDuels2(int wonDuels) {
+        this.wonDuels2 = wonDuels;
+    }
+
+    public int getYellowCards2() {
+        return yellowCards2;
+    }
+
+    public void setYellowCards2(int yellowCards) {
+        this.yellowCards2 = yellowCards;
+    }
+
+    public int getRedCards2() {
+        return redCards2;
+    }
+
+    public void setRedCards2(int redCards) {
+        this.redCards2 = redCards;
+    }
+
+    public double getPossesion2() {
+        return possesion2;
+    }
+
+    public void setPossesion2(double possesion) {
+        this.possesion2 = possesion;
+    }
+
+    public int getPasses2() {
+        return passes2;
+    }
+
+    public void setPasses2(int passes) {
+        this.passes2 = passes;
+    }
+
+    public int getGoodPasses2() {
+        return goodPasses2;
+    }
+
+    public void setGoodPasses2(int goodPasses) {
+        this.goodPasses2 = goodPasses;
     }
 }

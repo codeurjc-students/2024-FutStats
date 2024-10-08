@@ -92,6 +92,14 @@ public class User {
         this.belongedLeagues.add(newLeague);
     }
 
+    public void setLeagues(List<League> newLeagues) {
+        this.belongedLeagues = newLeagues;
+    }
+
+    public void removeLeague(League league){
+        this.belongedLeagues.remove(league);
+    }
+
     public List<Team> getTeams() {
         return this.belongedTeams;
     }
@@ -100,12 +108,28 @@ public class User {
         this.belongedTeams.add(newTeam);
     }
 
+    public void setTeams(List<Team> newTeams) {
+        this.belongedTeams = newTeams;
+    }
+
+    public void removeTeam(Team team){
+        this.belongedTeams.remove(team);
+    }
+
     public List<Player> getPlayers() {
         return this.belongedPlayers;
     }
 
     public void setPlayer(Player newPlayer) {
         this.belongedPlayers.add(newPlayer);
+    }
+
+    public void setPlayers(List<Player> newPlayers) {
+        this.belongedPlayers = newPlayers;
+    }
+
+    public void removePlayer(Player player){
+        this.belongedPlayers.remove(player);
     }
 
     public String getPassword() {

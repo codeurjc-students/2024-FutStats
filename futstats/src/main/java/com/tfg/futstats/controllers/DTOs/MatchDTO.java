@@ -14,27 +14,37 @@ public class MatchDTO {
     private Date date;
     private String place;
 
-    // Team1 attributes
-    private int shoots1;
-    private int scores1;
-    private double possesion1;
-    private int passes1;
-    private int goodPasses1;
-    private int faults1;
-    private int yellowCards1;
-    private int redCards1;
-    private int offsides1;
+   // Team1 attributes
+   private int shoots1;
+   private int scores1;
+   private int penaltys1;
+   private int faultsReceived1;
+   private int offsides1;
+   private int commitedFaults1;
+   private int recovers1;
+   private int duels1;
+   private int wonDuels1;
+   private int yellowCards1;
+   private int redCards1;
+   private double possesion1;
+   private int passes1;
+   private int goodPasses1;
 
-    // Team2 attributes
-    private int shoots2;
-    private int scores2;
-    private double possesion2;
-    private int passes2;
-    private int goodPasses2;
-    private int faults2;
-    private int yellowCards2;
-    private int redCards2;
-    private int offsides2;
+   // Team2 attributes
+   private int shoots2;
+   private int scores2;
+   private int penaltys2;
+   private int faultsReceived2;
+   private int offsides2;
+   private int commitedFaults2;
+   private int recovers2;
+   private int duels2;
+   private int wonDuels2;
+   private int yellowCards2;
+   private int redCards2;
+   private double possesion2;
+   private int passes2;
+   private int goodPasses2;
 
     // We dont put the averages here because we only need the stadistics from were
     // it`s made
@@ -88,183 +98,243 @@ public class MatchDTO {
         this.place = place;
     }
 
-    public int getShoots1()
-    {
+    public int getShoots1() {
         return shoots1;
     }
 
-    public void setShoots1(int shoots1)
-    {
+    public void setShoots1(int shoots1) {
         this.shoots1 = shoots1;
     }
 
-    public int getScores1()
-    {
+    public int getScores1() {
         return scores1;
     }
 
-    public void setScores1(int scores1)
-    {
+    public void setScores1(int scores1) {
         this.scores1 = scores1;
     }
 
-    public double getPossesion1()
+    public int getPenaltys1()
     {
-        return possesion1;
+        return penaltys1;
     }
 
-    public void setPossesion1(double possesion1)
+    public void setPenaltys1(int penaltys)
     {
-        this.possesion1 = possesion1;
+        this.penaltys1 = penaltys;
     }
 
-    public int getPasses1()
+    public int getFaultsReceived1()
     {
-        return passes1;
+        return faultsReceived1;
     }
 
-    public void setPasses1(int passes1)
+    public void setFaultsReceived1(int faultsReceived)
     {
-        this.passes1 = passes1;
+        this.faultsReceived1 = faultsReceived;
     }
 
-    public int getGoodPasses1()
-    {
-        return goodPasses1;
-    }
-
-    public void setGoodPasses1(int goodPasses1)
-    {
-        this.goodPasses1 = goodPasses1;
-    }
-
-    public int getFaults1()
-    {
-        return faults1;
-    }
-
-    public void setFaults1(int faults1)
-    {
-        this.faults1 = faults1;
-    }
-    
-    public int getYellowCards1()
-    {
-        return yellowCards1;
-    }
-
-    public void setYellowCards1(int yellowCards1)
-    {
-        this.yellowCards1 = yellowCards1;
-    }
-
-    public int getRedCards1()
-    {
-        return redCards1;
-    }
-
-    public void setRedCards1(int redCards1)
-    {
-        this.redCards1 = redCards1;
-    }
-
-    public int getOffsides1()
-    {
+    public int getOffsides1() {
         return offsides1;
     }
 
-    public void setOffsides1(int offsides1)
-    {
+    public void setOffsides1(int offsides1) {
         this.offsides1 = offsides1;
     }
 
-    public int getShoots2()
+    public int getCommitedFaults1()
     {
+        return commitedFaults1;
+    }
+
+    public void setCommitedFaults1(int commitedFaults)
+    {
+        this.commitedFaults1 = commitedFaults;
+    }
+
+    public int getRecovers1()
+    {
+        return recovers1;
+    }
+
+    public void setRecovers1(int recovers)
+    {
+        this.recovers1 = recovers;
+    }
+
+    public int getDuels1() {
+        return duels1;
+    }
+
+    public void setDuels1(int duels) {
+        this.duels1 = duels;
+    }
+
+    public int getWonDuels1() {
+        return wonDuels1;
+    }
+
+    public void setWonDuels1(int wonDuels) {
+        this.wonDuels1 = wonDuels;
+    }
+
+    public int getYellowCards1() {
+        return yellowCards1;
+    }
+
+    public void setYellowCards1(int yellowCards1) {
+        this.yellowCards1 = yellowCards1;
+    }
+
+    public int getRedCards1() {
+        return redCards1;
+    }
+
+    public void setRedCards1(int redCards1) {
+        this.redCards1 = redCards1;
+    }
+
+    public double getPossesion1() {
+        return possesion1;
+    }
+
+    public void setPossesion1(double possesion1) {
+        this.possesion1 = possesion1;
+    }
+
+    public int getPasses1() {
+        return passes1;
+    }
+
+    public void setPasses1(int passes1) {
+        this.passes1 = passes1;
+    }
+
+    public int getGoodPasses1() {
+        return goodPasses1;
+    }
+
+    public void setGoodPasses1(int goodPasses1) {
+        this.goodPasses1 = goodPasses1;
+    }
+
+    public int getShoots2() {
         return shoots2;
     }
 
-    public void setShoots2(int shoots2)
-    {
-        this.shoots2 = shoots2;
+    public void setShoots2(int shoots1) {
+        this.shoots2 = shoots1;
     }
 
-    public int getScoress2()
-    {
+    public int getScores2() {
         return scores2;
     }
 
-    public void setScores2(int scores2)
-    {
-        this.scores2 = scores2;
+    public void setScores2(int scores1) {
+        this.scores2 = scores1;
     }
 
-    public double getPossesion2()
+    public int getPenaltys2()
     {
-        return possesion2;
+        return penaltys2;
     }
 
-    public void setPossesion2(double possesion2)
+    public void setPenaltys2(int penaltys)
     {
-        this.possesion2 = possesion2;
+        this.penaltys2 = penaltys;
     }
 
-    public int getPasses2()
+    public int getFaultsReceived2()
     {
-        return passes2;
+        return faultsReceived2;
     }
 
-    public void setPasses2(int passes2)
+    public void setFaultsReceived2(int faultsReceived)
     {
-        this.passes2 = passes2;
+        this.faultsReceived2 = faultsReceived;
     }
 
-    public int getGoodPasses2()
-    {
-        return goodPasses2;
-    }
-
-    public void setGoodPasses2(int goodPasses2)
-    {
-        this.goodPasses2 = goodPasses2;
-    }
-
-    public int getFaults2()
-    {
-        return faults2;
-    }
-
-    public void setFaults2(int faults2)
-    {
-        this.faults2 = faults2;
-    }
-    
-    public int getYellowCards2()
-    {
-        return yellowCards2;
-    }
-
-    public void setYellowCards2(int yellowCards2)
-    {
-        this.yellowCards2 = yellowCards2;
-    }
-
-    public int getRedCards2()
-    {
-        return redCards2;
-    }
-
-    public void setRedCards2(int redCards2)
-    {
-        this.redCards2 = redCards2;
-    }
-
-    public int getOffsides2()
-    {
+    public int getOffsides2() {
         return offsides2;
     }
 
-    public void setOffsides2(int offsides2)
+    public void setOffsides2(int offsides1) {
+        this.offsides2 = offsides1;
+    }
+
+    public int getCommitedFaults2()
     {
-        this.offsides2 = offsides2;
+        return commitedFaults2;
+    }
+
+    public void setCommitedFaults2(int commitedFaults)
+    {
+        this.commitedFaults2 = commitedFaults;
+    }
+
+    public int getRecovers2()
+    {
+        return recovers2;
+    }
+
+    public void setRecovers2(int recovers)
+    {
+        this.recovers2 = recovers;
+    }
+
+    public int getDuels2() {
+        return duels2;
+    }
+
+    public void setDuels2(int duels) {
+        this.duels2 = duels;
+    }
+
+    public int getWonDuels2() {
+        return wonDuels2;
+    }
+
+    public void setWonDuels2(int wonDuels) {
+        this.wonDuels2 = wonDuels;
+    }
+
+    public int getYellowCards2() {
+        return yellowCards2;
+    }
+
+    public void setYellowCards2(int yellowCards) {
+        this.yellowCards2 = yellowCards;
+    }
+
+    public int getRedCards2() {
+        return redCards2;
+    }
+
+    public void setRedCards2(int redCards) {
+        this.redCards2 = redCards;
+    }
+
+    public double getPossesion2() {
+        return possesion2;
+    }
+
+    public void setPossesion2(double possesion) {
+        this.possesion2 = possesion;
+    }
+
+    public int getPasses2() {
+        return passes2;
+    }
+
+    public void setPasses2(int passes) {
+        this.passes2 = passes;
+    }
+
+    public int getGoodPasses2() {
+        return goodPasses2;
+    }
+
+    public void setGoodPasses2(int goodPasses) {
+        this.goodPasses2 = goodPasses;
     }
 }
