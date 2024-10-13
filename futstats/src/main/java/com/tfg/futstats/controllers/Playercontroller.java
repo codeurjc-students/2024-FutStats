@@ -81,6 +81,13 @@ public class Playercontroller {
         return ResponseEntity.ok(player.orElseThrow(() -> new ElementNotFoundException("")));
     }
 
+    @GetMapping("/playersMatch/{id}")
+    public ResponseEntity<PlayerMatch> getPlayerMatch(@PathVariable long id) {
+        Optional<PlayerMatch> playerMatch = restService.findPlayerMatchById(id);
+
+        return ResponseEntity.ok(playerMatch.orElseThrow(() -> new ElementNotFoundException("")));
+    }
+
     // From this point the only one that can use this methods is the admin so we
     // have to create security for that
 
@@ -117,6 +124,29 @@ public class Playercontroller {
             modPlayer.setId(id);
             restService.updatePlayer(id, modPlayer);
             return ResponseEntity.ok(player.get());
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/playersMatch")
+    public ResponseEntity<PlayerMatch> postPlayersMatch(@RequestBody PlayerMatchDTO playerMatch) {
+        PlayerMatch newPlayerMatch = new PlayerMatch(playerMatch);
+
+        restService.createPlayerMatch(newPlayerMatch);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newPlayerMatch.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(newPlayerMatch);
+    }
+
+    @DeleteMapping("/playersMatch/{id}")
+    public ResponseEntity<PlayerMatch> deletePlayersMatch(@PathVariable long id) {
+        Optional<PlayerMatch> playerMatch = restService.findPlayerMatchById(id);
+        if (playerMatch.isPresent()) {
+            restService.deletePlayerMatch(playerMatch.get());
+            return ResponseEntity.ok(playerMatch.get());
         }
 
         return ResponseEntity.notFound().build();

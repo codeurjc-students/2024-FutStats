@@ -80,6 +80,10 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.DELETE, "/api/v1/matches/*").hasAnyRole("admin")
                 .requestMatchers(HttpMethod.PUT, "/api/v1/matches/*").hasAnyRole("admin")
 
+				.requestMatchers(HttpMethod.POST, "/api/v1/playersMatch").hasAnyRole("admin")
+				.requestMatchers(HttpMethod.DELETE, "/api/v1/playersMatch/*").hasAnyRole("admin")
+				.requestMatchers(HttpMethod.PUT, "/api/v1/playersMatch/*").hasAnyRole("admin")
+
 				.requestMatchers("users/*").hasAnyRole("user")
 				.anyRequest().authenticated()
             )

@@ -181,8 +181,16 @@ public class RestService {
         playerRepository.save(player);
     }
 
+    public void createPlayerMatch(PlayerMatch playerMatch) {
+        playerMatchRepository.save(playerMatch);
+    }
+
     public void deletePlayer(Player player) {
         playerRepository.delete(player);
+    }
+
+    public void deletePlayerMatch(PlayerMatch playerMatch) {
+        playerMatchRepository.delete(playerMatch);
     }
 
     public void updatePlayer(long id, Player modPlayer) {
