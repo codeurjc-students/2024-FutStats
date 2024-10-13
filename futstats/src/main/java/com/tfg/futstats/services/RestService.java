@@ -61,7 +61,6 @@ public class RestService {
         modLeague.setTeams(oldLeague.getTeams());
         modLeague.setMatches(oldLeague.getMatches());
         modLeague.setPlayers(oldLeague.getPlayers());
-       
 
         leagueRepository.save(modLeague);
     }
@@ -103,12 +102,45 @@ public class RestService {
         modTeam.setLeague(oldTeam.getLeague());
         modTeam.setMatches(oldTeam.getMatches());
         modTeam.setPlayers(oldTeam.getPlayers());
-        
+
         teamRepository.save(modTeam);
     }
 
     public Page<Team> findTeamsByUser(User u, Pageable pageable) {
         return teamRepository.findAllByUser(u, pageable);
+    }
+
+    public void updateTeamInfo(Team team) {
+        team.setTotalMatches(matchRepository.findMatchesByTeam(team.getName()));
+        team.setTotalShoots(matchRepository.findShootsByTeam(team.getName()));
+        team.setTotalGoals(matchRepository.findGoalsByTeam(team.getName()));
+        team.setPenaltys(matchRepository.findPeanltysByTeam(team.getName()));
+        team.setFaultsReceived(matchRepository.findFaultsReceivedByTeam(team.getName()));
+        team.setOffsides(matchRepository.findOffsidesByTeam(team.getName()));
+
+        // defensive
+        team.setCommitedFaults(matchRepository.findCommitedFaultsByTeam(team.getName()));
+        team.setRecovers(matchRepository.findRecoversByTeam(team.getName()));
+        team.setDuels(matchRepository.findDuelsByTeam(team.getName()));
+        team.setWonDuels(matchRepository.findWonDuelsByTeam(team.getName()));
+        team.setYellowCards(matchRepository.findYellowCardsByTeam(team.getName()));
+        team.setRedCards(matchRepository.findRedCardsByTeam(team.getName()));
+
+        // creation
+        team.setPossesion(matchRepository.findAveragePossessionByTeam(team.getName()));
+        team.setPasses(matchRepository.findPassesByTeam(team.getName()));
+        team.setGoodPasses(matchRepository.findGoodPassesByTeam(team.getName()));
+        team.setShortPasses(matchRepository.findShortPassesByTeam(team.getName()));
+        team.setLongPasses(matchRepository.findLongPassesByTeam(team.getName()));
+        team.setAssists(matchRepository.findAssistsByTeam(team.getName()));
+        team.setDribles(matchRepository.findDriblesByTeam(team.getName()));
+        team.setCenters(matchRepository.findCentersByTeam(team.getName()));
+        team.setBallLosses(matchRepository.findBallLossesByTeam(team.getName()));
+
+        // matches
+        team.setWonMatches(matchRepository.findWonMatchesByTeam(team.getName()));
+        team.setLostMatches(matchRepository.findLostMatchesByTeam(team.getName()));
+        team.setDrawMatches(matchRepository.findDrawMatchesByTeam(team.getName()));
     }
 
     // --------------------------------------- PLAYER CRUD OPERATIONS
@@ -125,7 +157,7 @@ public class RestService {
     public Optional<Player> findPlayerByName(String name) {
         return playerRepository.findByNameIgnoreCase(name);
     }
-    
+
     public Page<Player> findPlayersByLeague(League league, Pageable pageable) {
         return playerRepository.findPlayersByLeague(league, pageable);
     }
@@ -147,7 +179,6 @@ public class RestService {
 
         modPlayer.setLeague(oldPlayer.getLeague());
         modPlayer.setTeam(oldPlayer.getTeam());
-        
 
         playerRepository.save(modPlayer);
     }

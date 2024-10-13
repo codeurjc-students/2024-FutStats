@@ -1,7 +1,5 @@
 package com.tfg.futstats.models;
 
-import javax.management.InvalidAttributeValueException;
-
 import com.tfg.futstats.controllers.dtos.PlayerDTO;
 
 import jakarta.persistence.Entity;

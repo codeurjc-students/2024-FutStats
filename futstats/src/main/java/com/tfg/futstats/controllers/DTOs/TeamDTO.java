@@ -19,7 +19,7 @@ public class TeamDTO {
     private int totalShoots;
     private int totalGoals;
     private int penaltys;
-    private int fautlsReceived;
+    private int faultsReceived;
     private int offsides;
 
     // defensive
@@ -27,7 +27,6 @@ public class TeamDTO {
     private int recovers;
     private int duels;
     private int wonDuels;
-    private int cards;
     private int yellowCards;
     private int redCards;
 
@@ -35,7 +34,6 @@ public class TeamDTO {
     private double possesion;
     private int passes;
     private int goodPasses;
-    private int badPasses;
     private int shortPasses;
     private int longPasses;
     private int assists;
@@ -44,7 +42,6 @@ public class TeamDTO {
     private int ballLosses;
 
     // matches
-    private int playedMatches;
     private int wonMatches;
     private int lostMatches;
     private int drawMatches;
@@ -69,275 +66,251 @@ public class TeamDTO {
         this.name = name;
     }
 
-    public void setTrophies(int trophies) {
-        this.trophies = trophies;
-    }
-
     public int getTrophies() {
         return trophies;
     }
 
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
+    public void setTrophies(int trophies) {
+        this.trophies = trophies;
     }
 
     public String getNationality() {
         return nationality;
     }
 
-    public void setTrainer(String trainer) {
-        this.trainer = trainer;
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
     }
 
     public String getTrainer() {
         return trainer;
     }
 
-    public void setSecondTrainer(String secondTrainer) {
-        this.secondTrainer = secondTrainer;
+    public void setTrainer(String trainer) {
+        this.trainer = trainer;
     }
 
     public String getSecondTrainer() {
         return secondTrainer;
     }
 
-    public void setPresident(String president) {
-        this.president = president;
+    public void setSecondTrainer(String secondTrainer) {
+        this.secondTrainer = secondTrainer;
     }
 
     public String getPresident() {
         return president;
     }
 
-    public void setStadium(String stadium) {
-        this.stadium = stadium;
+    public void setPresident(String president) {
+        this.president = president;
     }
 
     public String getStadium() {
         return stadium;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
+    public void setStadium(String stadium) {
+        this.stadium = stadium;
     }
 
     public int getPoints() {
         return points;
     }
 
-    public void setTotalMatches(int totalMatches) {
-        this.totalMatches = totalMatches;
+    public void setPoints(int points) {
+        this.points = points;
     }
 
     public int getTotalMatches() {
         return totalMatches;
     }
 
-    public void setTotalShoots(int totalShoots) {
-        this.totalShoots = totalShoots;
+    public void setTotalMatches(int totalMatches) {
+        this.totalMatches = totalMatches;
     }
 
     public int getTotalShoots() {
         return totalShoots;
     }
 
-    public void setTotalGoals(int totalGoals) {
-        this.totalGoals = totalGoals;
+    public void setTotalShoots(int totalShoots) {
+        this.totalShoots = totalShoots;
     }
 
     public int getTotalGoals() {
         return totalGoals;
     }
 
-    public void setPenaltys(int penaltys) {
-        this.penaltys = penaltys;
+    public void setTotalGoals(int totalGoals) {
+        this.totalGoals = totalGoals;
     }
 
     public int getPenaltys() {
         return penaltys;
     }
 
-    public void setFaultsReceived(int fautlsReceived) {
-        this.fautlsReceived = fautlsReceived;
+    public void setPenaltys(int penaltys) {
+        this.penaltys = penaltys;
     }
 
     public int getFaultsReceived() {
-        return fautlsReceived;
+        return faultsReceived;
     }
 
-    public void setOffsides(int offsides) {
-        this.offsides = offsides;
+    public void setFaultsReceived(int fautlsReceived) {
+        this.faultsReceived = fautlsReceived;
     }
 
     public int getOffsides() {
         return offsides;
     }
 
-    public void setCommitedFaults(int commitedFaults) {
-        this.commitedFaults = commitedFaults;
+    public void setOffsides(int offsides) {
+        this.offsides = offsides;
     }
 
     public int getCommitedFaults() {
         return commitedFaults;
     }
 
-    public void setRecovers(int recovers) {
-        this.recovers = recovers;
+    public void setCommitedFaults(int commitedFaults) {
+        this.commitedFaults = commitedFaults;
     }
 
     public int getRecovers() {
         return recovers;
     }
 
-    public void setDuels(int duels) {
-        this.duels = duels;
+    public void setRecovers(int recovers) {
+        this.recovers = recovers;
     }
 
     public int getDuels() {
         return duels;
     }
 
-    public void setWonDuels(int wonDuels) {
-        this.wonDuels = wonDuels;
+    public void setDuels(int duels) {
+        this.duels = duels;
     }
 
     public int getWonDuels() {
         return wonDuels;
     }
 
-    public void setCards(int cards) {
-        this.cards = cards;
-    }
-
-    public int getCards() {
-        return cards;
-    }
-
-    public void setYellowCards(int yellowCards) {
-        this.yellowCards = yellowCards;
+    public void setWonDuels(int wonDuels) {
+        this.wonDuels = wonDuels;
     }
 
     public int getYellowCards() {
         return yellowCards;
     }
 
-    public void setRedCards(int redCards) {
-        this.redCards = redCards;
+    public void setYellowCards(int yellowCards) {
+        this.yellowCards = yellowCards;
     }
 
     public int getRedCards() {
         return redCards;
     }
 
-    public void setPossesion(int possesion) {
-        this.possesion = possesion;
+    public void setRedCards(int redCards) {
+        this.redCards = redCards;
     }
 
     public double getPossesion() {
         return possesion;
     }
 
-    public void setPasses(int passes) {
-        this.passes = passes;
+    public void setPossesion(double possesion) {
+        this.possesion = possesion;
     }
 
     public int getPasses() {
         return passes;
     }
 
-    public void setGoodPasses(int goodPasses) {
-        this.goodPasses = goodPasses;
+    public void setPasses(int passes) {
+        this.passes = passes;
     }
 
     public int getGoodPasses() {
         return goodPasses;
     }
 
-    public void setBadPasses(int badPasses) {
-        this.badPasses = badPasses;
-    }
-
-    public int getBadPasses() {
-        return badPasses;
-    }
-
-    public void setShortPasses(int shortPasses) {
-        this.shortPasses = shortPasses;
+    public void setGoodPasses(int goodPasses) {
+        this.goodPasses = goodPasses;
     }
 
     public int getShortPasses() {
         return shortPasses;
     }
 
-    public void setLongPasses(int longPasses) {
-        this.longPasses = longPasses;
+    public void setShortPasses(int shortPasses) {
+        this.shortPasses = shortPasses;
     }
 
     public int getLongPasses() {
         return longPasses;
     }
 
-    public void setAssists(int assists) {
-        this.assists = assists;
+    public void setLongPasses(int longPasses) {
+        this.longPasses = longPasses;
     }
 
     public int getAssists() {
         return assists;
     }
 
-    public void setDribles(int dribles) {
-        this.dribles = dribles;
+    public void setAssists(int assists) {
+        this.assists = assists;
     }
 
     public int getDribles() {
         return dribles;
     }
 
-    public void setCenters(int centers) {
-        this.centers = centers;
+    public void setDribles(int dribles) {
+        this.dribles = dribles;
     }
 
     public int getCenters() {
         return centers;
     }
 
-    public void setBallLosses(int ballLosses) {
-        this.ballLosses = ballLosses;
+    public void setCenters(int centers) {
+        this.centers = centers;
     }
 
     public int getBallLosses() {
         return ballLosses;
     }
 
-    public void setPlayedMatches(int playedMatches) {
-        this.playedMatches = playedMatches;
-    }
-
-    public int getPlayedMatches() {
-        return playedMatches;
-    }
-
-    public void setWonMatches(int wonMatches) {
-        this.wonMatches = wonMatches;
+    public void setBallLosses(int ballLosses) {
+        this.ballLosses = ballLosses;
     }
 
     public int getWonMatches() {
         return wonMatches;
     }
 
-    public void setLostMatches(int lostMatches) {
-        this.lostMatches = lostMatches;
+    public void setWonMatches(int wonMatches) {
+        this.wonMatches = wonMatches;
     }
 
     public int getLostMatches() {
         return lostMatches;
     }
 
-    public void setDrawMatches(int drawMatches) {
-        this.drawMatches = drawMatches;
+    public void setLostMatches(int lostMatches) {
+        this.lostMatches = lostMatches;
     }
 
     public int getDrawMatches() {
         return drawMatches;
+    }
+
+    public void setDrawMatches(int drawMatches) {
+        this.drawMatches = drawMatches;
     }
 }

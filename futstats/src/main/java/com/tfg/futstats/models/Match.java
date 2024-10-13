@@ -1,9 +1,6 @@
 package com.tfg.futstats.models;
 
 import java.sql.Date;
-import java.util.List;
-
-import javax.management.InvalidAttributeValueException;
 
 import com.tfg.futstats.controllers.dtos.MatchDTO;
 
@@ -49,6 +46,12 @@ public class Match {
     private double possesion1;
     private int passes1;
     private int goodPasses1;
+    private int shortPasses1;
+    private int longPasses1;
+    private int assists1;
+    private int dribles1;
+    private int centers1;
+    private int ballLosses1;
 
     // Team2 attributes
     private int shoots2;
@@ -65,6 +68,12 @@ public class Match {
     private double possesion2;
     private int passes2;
     private int goodPasses2;
+    private int shortPasses2;
+    private int longPasses2;
+    private int assists2;
+    private int dribles2;
+    private int centers2;
+    private int ballLosses2;
 
     // Constructors
     public Match() {
@@ -89,6 +98,12 @@ public class Match {
             double possesion1,
             int passes1,
             int goodPasses1,
+            int shortPasses1,
+            int longPasses1,
+            int assists1,
+            int dribles1,
+            int centers1,
+            int ballLosses1,
             int shoots2,
             int scores2,
             int penaltys2,
@@ -102,7 +117,13 @@ public class Match {
             int redCards2,
             double possesion2,
             int passes2,
-            int goodPasses2) {
+            int goodPasses2,
+            int shortPasses2,
+            int longPasses2,
+            int assists2,
+            int dribles2,
+            int centers2,
+            int ballLosses2) {
             this.league = league;
             this.team1 = team1;
             this.team2 = team2;
@@ -122,6 +143,12 @@ public class Match {
             this.possesion1 = possesion1;
             this.passes1 = passes1;
             this.goodPasses1 = goodPasses1;
+            this.shortPasses1 = shortPasses1;
+            this.longPasses1 = longPasses1;
+            this.assists1 = assists1;
+            this.dribles1 = dribles1;
+            this.centers1 = centers1;
+            this.ballLosses1 = ballLosses1;
             this.shoots2 = shoots2;
             this.scores2 = scores2;
             this.penaltys2 = penaltys2;
@@ -136,6 +163,12 @@ public class Match {
             this.possesion2 = possesion2;
             this.passes2 = passes2;
             this.goodPasses2 = goodPasses2;
+            this.shortPasses2 = shortPasses2;
+            this.longPasses2 = longPasses2;
+            this.assists2 = assists2;
+            this.dribles2 = dribles2;
+            this.centers2 = centers2;
+            this.ballLosses2 = ballLosses2;
     }
 
     public Match(MatchDTO match) {
@@ -158,6 +191,12 @@ public class Match {
         this.possesion1 = match.getPossesion1();
         this.passes1 = match.getPasses1();
         this.goodPasses1 = match.getGoodPasses1();
+        this.shortPasses1 = match.getShortPasses1();
+        this.longPasses1 = match.getLongPasses1();
+        this.assists1 = match.getAssists1();
+        this.dribles1 = match.getDribles1();
+        this.centers1 = match.getCenters1();
+        this.ballLosses1 = match.getBallLosses1();
         this.shoots2 = match.getShoots2();
         this.scores2 = match.getScores2();
         this.penaltys2 = match.getPenaltys2();
@@ -172,6 +211,12 @@ public class Match {
         this.possesion2 = match.getPossesion2();
         this.passes2 = match.getPasses2();
         this.goodPasses2 = match.getGoodPasses2();
+        this.shortPasses2 = match.getShortPasses2();
+        this.longPasses2 = match.getLongPasses2();
+        this.assists2 = match.getAssists2();
+        this.dribles2 = match.getDribles2();
+        this.centers2 = match.getCenters2();
+        this.ballLosses2 = match.getBallLosses2();
     }
 
     // Getters & Setters
@@ -356,6 +401,54 @@ public class Match {
         this.goodPasses1 = goodPasses1;
     }
 
+    public int getShortPasses1() {
+        return shortPasses1;
+    }
+
+    public void setShortPasses1(int shortPasses1) {
+        this.shortPasses1 = shortPasses1;
+    }
+
+    public int getLongPasses1() {
+        return longPasses1;
+    }
+
+    public void setLongPasses1(int longPasses1) {
+        this.longPasses1 = longPasses1;
+    }
+
+    public int getAssists1() {
+        return assists1;
+    }
+
+    public void setAssists1(int assists1) {
+        this.assists1 = assists1;
+    }
+
+    public int getDribles1() {
+        return dribles1;
+    }
+
+    public void setDribles1(int dribles1) {
+        this.dribles1 = dribles1;
+    }
+
+    public int getCenters1() {
+        return centers1;
+    }
+
+    public void setCenters1(int centers1) {
+        this.centers1 = centers1;
+    }
+
+    public int getBallLosses1() {
+        return ballLosses1;
+    }
+
+    public void setBallLosses1(int ballLosses1) {
+        this.ballLosses1 = ballLosses1;
+    }
+
     public int getShoots2() {
         return shoots2;
     }
@@ -474,5 +567,53 @@ public class Match {
 
     public void setGoodPasses2(int goodPasses) {
         this.goodPasses2 = goodPasses;
+    }
+
+    public int getShortPasses2() {
+        return shortPasses2;
+    }
+
+    public void setShortPasses2(int shortPasses2) {
+        this.shortPasses2 = shortPasses2;
+    }
+
+    public int getLongPasses2() {
+        return longPasses2;
+    }
+
+    public void setLongPasses2(int longPasses2) {
+        this.longPasses2 = longPasses2;
+    }
+
+    public int getAssists2() {
+        return assists2;
+    }
+
+    public void setAssists2(int assists2) {
+        this.assists2 = assists2;
+    }
+
+    public int getDribles2() {
+        return dribles2;
+    }
+
+    public void setDribles2(int dribles2) {
+        this.dribles2 = dribles2;
+    }
+
+    public int getCenters2() {
+        return centers2;
+    }
+
+    public void setCenters2(int centers2) {
+        this.centers2 = centers2;
+    }
+
+    public int getBallLosses2() {
+        return ballLosses2;
+    }
+
+    public void setBallLosses2(int ballLosses2) {
+        this.ballLosses2 = ballLosses2;
     }
 }

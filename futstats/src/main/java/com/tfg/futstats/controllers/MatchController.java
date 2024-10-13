@@ -101,6 +101,9 @@ public class MatchController {
 
         Match modMatch = new Match(newMatch);
 
+        restService.updateTeamInfo(modMatch.getTeam1());
+        restService.updateTeamInfo(modMatch.getTeam2());
+
         if (match.isPresent()) {
             modMatch.setId(id);
             restService.updateMatch(id, modMatch);

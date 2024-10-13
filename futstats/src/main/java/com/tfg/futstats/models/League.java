@@ -3,8 +3,6 @@ package com.tfg.futstats.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.management.InvalidAttributeValueException;
-
 import com.tfg.futstats.controllers.dtos.LeagueDTO;
 
 import jakarta.persistence.Entity;

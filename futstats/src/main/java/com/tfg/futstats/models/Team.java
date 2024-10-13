@@ -3,8 +3,6 @@ package com.tfg.futstats.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.management.InvalidAttributeValueException;
-
 import com.tfg.futstats.controllers.dtos.TeamDTO;
 
 import jakarta.persistence.Entity;
@@ -60,16 +58,15 @@ public class Team {
     private int duels;
     private int wonDuels;
     private float duelAvg;
-    private int cards;
     private int yellowCards;
     private int redCards;
+    private int cards;
 
     // creation
     private double possesion;
     private int passes;
     private double passesPerMatch;
     private int goodPasses;
-    private int badPasses;
     private double passesAvg;
     private int shortPasses;
     private int longPasses;
@@ -79,7 +76,6 @@ public class Team {
     private int ballLosses;
 
     // matches
-    private int playedMatches;
     private int wonMatches;
     private int lostMatches;
     private int drawMatches;
@@ -109,13 +105,12 @@ public class Team {
             int duels,
             int wonDuels,
             int lostDuels,
-            int cards,
             int yellowCards,
             int redCards,
+            int cards,
             double possesion,
             int passes,
             int goodPasses,
-            int badPasses,
             int shortPasses,
             int longPasses,
             int assists,
@@ -146,20 +141,18 @@ public class Team {
         this.recovers = recovers;
         this.duels = duels;
         this.wonDuels = wonDuels;
-        this.cards = cards;
         this.yellowCards = yellowCards;
         this.redCards = redCards;
+        this.cards = cards;
         this.possesion = possesion;
         this.passes = passes;
         this.goodPasses = goodPasses;
-        this.badPasses = badPasses;
         this.shortPasses = shortPasses;
         this.longPasses = longPasses;
         this.assists = assists;
         this.dribles = dribles;
         this.centers = centers;
         this.ballLosses = ballLosses;
-        this.playedMatches = playedMatches;
         this.wonMatches = wonMatches;
         this.lostMatches = lostMatches;
         this.drawMatches = drawMatches;
@@ -175,7 +168,7 @@ public class Team {
         this.stadium = team.getStadium();
         this.points = team.getPoints();
         this.totalMatches = team.getTotalMatches();
-        this.totalShoots = team.getTotalShoots();   
+        this.totalShoots = team.getTotalShoots();
         this.totalGoals = team.getTotalGoals();
         this.penaltys = team.getPenaltys();
         this.faultsReceived = team.getFaultsReceived();
@@ -184,20 +177,17 @@ public class Team {
         this.recovers = team.getRecovers();
         this.duels = team.getDuels();
         this.wonDuels = team.getWonDuels();
-        this.cards = team.getCards();
         this.yellowCards = team.getYellowCards();
         this.redCards = team.getRedCards();
         this.possesion = team.getPossesion();
         this.passes = team.getPasses();
         this.goodPasses = team.getGoodPasses();
-        this.badPasses = team.getBadPasses();
         this.shortPasses = team.getShortPasses();
         this.longPasses = team.getLongPasses();
         this.assists = team.getAssists();
         this.dribles = team.getDribles();
         this.centers = team.getCenters();
         this.ballLosses = team.getBallLosses();
-        this.playedMatches = team.getPlayedMatches();
         this.wonMatches = team.getWonMatches();
         this.lostMatches = team.getLostMatches();
         this.drawMatches = team.getDrawMatches();
@@ -206,12 +196,12 @@ public class Team {
     // Getters & Setters
     // ------------------------------------ LEAGUE
     // -------------------------------------
-    public void setLeague(League league) {
-        this.league = league;
-    }
-
     public League getLeague() {
         return this.league;
+    }
+
+    public void setLeague(League league) {
+        this.league = league;
     }
 
     public void updateLeague(League league) {
@@ -277,76 +267,84 @@ public class Team {
         this.name = name;
     }
 
-    public void setTrophies(int trophies) {
-        this.trophies = trophies;
-    }
-
     public int getTrophies() {
         return trophies;
     }
 
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
+    public void setTrophies(int trophies) {
+        this.trophies = trophies;
     }
 
     public String getNationality() {
         return nationality;
     }
 
-    public void setTrainer(String trainer) {
-        this.trainer = trainer;
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
     }
 
     public String getTrainer() {
         return trainer;
     }
 
-    public void setSecondTrainer(String secondTrainer) {
-        this.secondTrainer = secondTrainer;
+    public void setTrainer(String trainer) {
+        this.trainer = trainer;
     }
 
     public String getSecondTrainer() {
         return secondTrainer;
     }
 
-    public void setPresident(String president) {
-        this.president = president;
+    public void setSecondTrainer(String secondTrainer) {
+        this.secondTrainer = secondTrainer;
     }
 
     public String getPresident() {
         return president;
     }
 
-    public void setStadium(String stadium) {
-        this.stadium = stadium;
+    public void setPresident(String president) {
+        this.president = president;
     }
 
     public String getStadium() {
         return stadium;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
+    public void setStadium(String stadium) {
+        this.stadium = stadium;
     }
 
     public int getPoints() {
         return points;
     }
 
-    public void setTotalShoots(int totalShoots) {
-        this.totalShoots = totalShoots;
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public int getTotalMatches() {
+        return totalMatches;
+    }
+
+    public void setTotalMatches(int totalMatches) {
+        this.totalMatches = totalMatches;
     }
 
     public int getTotalShoots() {
         return totalShoots;
     }
 
-    public void setTotalGoals(int totalGoals) {
-        this.totalGoals = totalGoals;
+    public void setTotalShoots(int totalShoots) {
+        this.totalShoots = totalShoots;
     }
 
     public int getTotalGoals() {
         return totalGoals;
+    }
+
+    public void setTotalGoals(int totalGoals) {
+        this.totalGoals = totalGoals;
     }
 
     public double getShootsPerMatch() {
@@ -354,127 +352,132 @@ public class Team {
         return shootsPerMatch;
     }
 
-    // As it is an average it only needs a getter it doesn´t need to be setted because
+    // As it is an average it only needs a getter it doesn´t need to be setted
+    // because
     // it`s calculated from other stadistics.
 
-    public double getGoalsPerMatch()
-    {
-        goalsPerMatch = (totalGoals/totalMatches);
+    public double getGoalsPerMatch() {
+        goalsPerMatch = (totalGoals / totalMatches);
         return goalsPerMatch;
     }
 
-    // As it is an average it only needs a getter it doesn´t need to be setted because
+    // As it is an average it only needs a getter it doesn´t need to be setted
+    // because
     // it`s calculated from other stadistics.
 
-    public double getScoreAvg()
-    {
-        scoreAvg = (totalGoals/totalShoots);
+    public double getScoreAvg() {
+        scoreAvg = (totalGoals / totalShoots);
         return scoreAvg;
     }
 
-    // As it is an average it only needs a getter it doesn´t need to be setted because
+    // As it is an average it only needs a getter it doesn´t need to be setted
+    // because
     // it`s calculated from other stadistics.
-
-    public void setPenaltys(int penaltys) {
-        this.penaltys = penaltys;
-    }
 
     public int getPenaltys() {
         return penaltys;
     }
 
-    public void setFaultsReceived(int fautlsReceived) {
-        this.faultsReceived = fautlsReceived;
+    public void setPenaltys(int penaltys) {
+        this.penaltys = penaltys;
     }
 
     public int getFaultsReceived() {
         return faultsReceived;
     }
 
-    public void setOffsides(int offsides) {
-        this.offsides = offsides;
+    public void setFaultsReceived(int fautlsReceived) {
+        this.faultsReceived = fautlsReceived;
     }
 
     public int getOffsides() {
         return offsides;
     }
 
-    public void setCommitedFaults(int commitedFaults) {
-        this.commitedFaults = commitedFaults;
+    public void setOffsides(int offsides) {
+        this.offsides = offsides;
     }
 
     public int getCommitedFaults() {
         return commitedFaults;
     }
 
-    public void setRecovers(int recovers) {
-        this.recovers = recovers;
+    public void setCommitedFaults(int commitedFaults) {
+        this.commitedFaults = commitedFaults;
     }
 
     public int getRecovers() {
         return recovers;
     }
 
-    public void setDuels(int duels) {
-        this.duels = duels;
+    public void setRecovers(int recovers) {
+        this.recovers = recovers;
     }
 
     public int getDuels() {
         return duels;
     }
 
-    public void setWonDuels(int wonDuels) {
-        this.wonDuels = wonDuels;
+    public void setDuels(int duels) {
+        this.duels = duels;
     }
 
     public int getWonDuels() {
         return wonDuels;
     }
 
-    public double getDuelAvg()
-    {
-        duelAvg = (wonDuels/duels);
+    public void setWonDuels(int wonDuels) {
+        this.wonDuels = wonDuels;
+    }
+
+    public double getDuelAvg() {
+        duelAvg = (wonDuels / duels);
         return duelAvg;
     }
 
-    // As it is an average it only needs a getter it doesn´t need to be setted because
+    // As it is an average it only needs a getter it doesn´t need to be setted
+    // because
     // it`s calculated from other stadistics.
 
-    public void setCards(int cards) {
-        this.cards = cards;
-    }
-
-    public int getCards() {
-        return cards;
+    public int getYellowCards() {
+        return yellowCards;
     }
 
     public void setYellowCards(int yellowCards) {
         this.yellowCards = yellowCards;
     }
 
-    public int getYellowCards() {
-        return yellowCards;
+    public int getRedCards() {
+        return redCards;
     }
 
     public void setRedCards(int redCards) {
         this.redCards = redCards;
     }
 
-    public int getRedCards() {
-        return redCards;
+    public int getCards() {
+        cards = redCards + yellowCards;
+        return cards;
     }
 
-    public double getPossesion()
-    {
+    // As it is an average it only needs a getter it doesn´t need to be setted
+    // because
+    // it`s calculated from other stadistics.
+
+    public double getPossesion() {
         return possesion;
     }
 
-    public void setPasses(int passes) {
-        this.passes = passes;
+    public void setPossesion(double possesion) {
+        this.possesion = possesion;
     }
 
     public int getPasses() {
         return passes;
+    }
+
+    public void setPasses(int passes) {
+        this.passes = passes;
     }
 
     public double getPassesPerMatch() {
@@ -482,23 +485,16 @@ public class Team {
         return passesPerMatch;
     }
 
-    // As it is an average it only needs a getter it doesn´t need to be setted because
+    // As it is an average it only needs a getter it doesn´t need to be setted
+    // because
     // it`s calculated from other stadistics.
-
-    public void setGoodPasses(int goodPasses) {
-        this.goodPasses = goodPasses;
-    }
 
     public int getGoodPasses() {
         return goodPasses;
     }
 
-    public void setBadPasses(int badPasses) {
-        this.badPasses = badPasses;
-    }
-
-    public int getBadPasses() {
-        return badPasses;
+    public void setGoodPasses(int goodPasses) {
+        this.goodPasses = goodPasses;
     }
 
     public double getPassesAvg() {
@@ -506,87 +502,80 @@ public class Team {
         return passesAvg;
     }
 
-    // As it is an average it only needs a getter it doesn´t need to be setted because
+    // As it is an average it only needs a getter it doesn´t need to be setted
+    // because
     // it`s calculated from other stadistics.
-
-    public void setShortPasses(int shortPasses) {
-        this.shortPasses = shortPasses;
-    }
 
     public int getShortPasses() {
         return shortPasses;
     }
 
-    public void setLongPasses(int longPasses) {
-        this.longPasses = longPasses;
+    public void setShortPasses(int shortPasses) {
+        this.shortPasses = shortPasses;
     }
 
     public int getLongPasses() {
         return longPasses;
     }
 
-    public void setAssists(int assists) {
-        this.assists = assists;
+    public void setLongPasses(int longPasses) {
+        this.longPasses = longPasses;
     }
 
     public int getAssists() {
         return assists;
     }
 
-    public void setDribles(int dribles) {
-        this.dribles = dribles;
+    public void setAssists(int assists) {
+        this.assists = assists;
     }
 
     public int getDribles() {
         return dribles;
     }
 
-    public void setCenters(int centers) {
-        this.centers = centers;
+    public void setDribles(int dribles) {
+        this.dribles = dribles;
     }
 
     public int getCenters() {
         return centers;
     }
 
-    public void setBallLosses(int ballLosses) {
-        this.ballLosses = ballLosses;
+    public void setCenters(int centers) {
+        this.centers = centers;
     }
 
     public int getBallLosses() {
         return ballLosses;
     }
 
-    public void setPlayedMatches(int playedMatches) {
-        this.playedMatches = playedMatches;
-    }
-
-    public int getPlayedMatches() {
-        return playedMatches;
-    }
-
-    public void setWonMatches(int wonMatches) {
-        this.wonMatches = wonMatches;
+    public void setBallLosses(int ballLosses) {
+        this.ballLosses = ballLosses;
     }
 
     public int getWonMatches() {
         return wonMatches;
     }
 
-    public void setLostMatches(int lostMatches) {
-        this.lostMatches = lostMatches;
+    public void setWonMatches(int wonMatches) {
+        this.wonMatches = wonMatches;
     }
 
     public int getLostMatches() {
         return lostMatches;
     }
 
-    public void setDrawMatches(int drawMatches) {
-        this.drawMatches = drawMatches;
+    public void setLostMatches(int lostMatches) {
+        this.lostMatches = lostMatches;
     }
 
     public int getDrawMatches() {
         return drawMatches;
+    }
+
+    public void setDrawMatches(int drawMatches) {
+        this.drawMatches = drawMatches;
     }
 
     public double getWonMatchesAvg() {
@@ -594,7 +583,8 @@ public class Team {
         return wonMatchesAvg;
     }
 
-    // As it is an average it only needs a getter it doesn´t need to be setted because
+    // As it is an average it only needs a getter it doesn´t need to be setted
+    // because
     // it`s calculated from other stadistics.
 
 }

@@ -29,6 +29,12 @@ public class MatchDTO {
    private double possesion1;
    private int passes1;
    private int goodPasses1;
+   private int shortPasses1;
+   private int longPasses1;
+   private int assists1;
+   private int dribles1;
+   private int centers1;
+   private int ballLosses1;
 
    // Team2 attributes
    private int shoots2;
@@ -45,6 +51,12 @@ public class MatchDTO {
    private double possesion2;
    private int passes2;
    private int goodPasses2;
+   private int shortPasses2;
+   private int longPasses2;
+   private int assists2;
+   private int dribles2;
+   private int centers2;
+   private int ballLosses2;
 
     // We dont put the averages here because we only need the stadistics from were
     // it`s made
@@ -218,6 +230,57 @@ public class MatchDTO {
         this.goodPasses1 = goodPasses1;
     }
 
+    public int getShortPasses1() {
+        return shortPasses1;
+    }
+
+    public void setShortPasses1(int shortPasses1) {
+        this.shortPasses1 = shortPasses1;
+    }
+
+    public int getLongPasses1() {
+        return longPasses1;
+    }
+
+    public void setLongPasses1(int longPasses1) {
+        this.longPasses1 = longPasses1;
+    }
+
+    public int getAssists1() {
+        return assists1;
+    }
+
+    public void setAssists1(int assists1) {
+        this.assists1 = assists1;
+    }
+
+    public int getDribles1() {
+        return dribles1;
+    }
+
+    public void setDribles1(int dribles1) {
+        this.dribles1 = dribles1;
+    }
+
+    public int getCenters1() {
+        return centers1;
+    }
+
+    public void setCenters1(int centers1) {
+        this.centers1 = centers1;
+    }
+
+    public int getBallLosses1() {
+        return ballLosses1;
+    }
+
+    public void setBallLosses1(int ballLosses1) {
+        this.ballLosses1 = ballLosses1;
+    }
+
+    // --------------------------------------- TEAM 2
+    // --------------------------------
+
     public int getShoots2() {
         return shoots2;
     }
@@ -336,5 +399,53 @@ public class MatchDTO {
 
     public void setGoodPasses2(int goodPasses) {
         this.goodPasses2 = goodPasses;
+    }
+
+    public int getShortPasses2() {
+        return shortPasses2;
+    }
+
+    public void setShortPasses2(int shortPasses2) {
+        this.shortPasses2 = shortPasses2;
+    }
+
+    public int getLongPasses2() {
+        return longPasses2;
+    }
+
+    public void setLongPasses2(int longPasses2) {
+        this.longPasses2 = longPasses2;
+    }
+
+    public int getAssists2() {
+        return assists2;
+    }
+
+    public void setAssists2(int assists2) {
+        this.assists2 = assists2;
+    }
+
+    public int getDribles2() {
+        return dribles2;
+    }
+
+    public void setDribles2(int dribles2) {
+        this.dribles2 = dribles2;
+    }
+
+    public int getCenters2() {
+        return centers2;
+    }
+
+    public void setCenters2(int centers2) {
+        this.centers2 = centers2;
+    }
+
+    public int getBallLosses2() {
+        return ballLosses2;
+    }
+
+    public void setBallLosses2(int ballLosses2) {
+        this.ballLosses2 = ballLosses2;
     }
 }
