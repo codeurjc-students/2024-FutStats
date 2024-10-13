@@ -45,7 +45,6 @@ public class Player {
     private int recovers;
     private int duels;
     private int wonDuels;
-    private int lostDuels;
     private double duelAvg;
     private int cards;
     private int yellowCards;
@@ -55,7 +54,6 @@ public class Player {
     private int passes;
     private double passesPerMatch;
     private int goodPasses;
-    private int badPasses;
     private double passesAvg;
     private int shortPasses;
     private int longPasses;
@@ -84,13 +82,11 @@ public class Player {
             int recovers,
             int duels,
             int wonDuels,
-            int lostDuels,
             int cards,
             int yellowCards,
             int redCards,
             int passes,
             int goodPasses,
-            int badPasses,
             int shortPasses,
             int longPasses,
             int assists,
@@ -112,13 +108,11 @@ public class Player {
         this.recovers = recovers;
         this.duels = duels;
         this.wonDuels = wonDuels;
-        this.lostDuels = lostDuels;
         this.cards = cards;
         this.yellowCards = yellowCards;
         this.redCards = redCards;
         this.passes = passes;
         this.goodPasses = goodPasses;
-        this.badPasses = badPasses;
         this.shortPasses = shortPasses;
         this.longPasses = longPasses;
         this.assists = assists;
@@ -133,29 +127,6 @@ public class Player {
         this.name = player.getName();
         this.age = player.getAge();
         this.nationality = player.getNationality();
-        this.totalMatches = player.getTotalMatches();
-        this.totalShoots = player.getTotalShoots();
-        this.totalGoals = player.getTotalGoals();
-        this.penaltys = player.getPenaltys();
-        this.faultsReceived = player.getFaultsReceived();
-        this.offsides = player.getOffsides();
-        this.commitedFaults = player.getCommitedFaults();
-        this.recovers = player.getRecovers();
-        this.duels = player.getDuels();
-        this.wonDuels = player.getWonDuels();
-        this.lostDuels = player.getLostDuels();
-        this.cards = player.getCards();
-        this.yellowCards = player.getYellowCards();
-        this.redCards = player.getRedCards();
-        this.passes = player.getPasses();
-        this.goodPasses = player.getGoodPasses();
-        this.badPasses = player.getBadPasses();
-        this.shortPasses = player.getShortPasses();
-        this.longPasses = player.getLongPasses();
-        this.assists = player.getAssists();
-        this.dribles = player.getDribles();
-        this.centers = player.getCenters();
-        this.ballLosses = player.getBallLosses();
     }
 
     // Getters & Setters
@@ -331,14 +302,6 @@ public class Player {
         return wonDuels;
     }
 
-    public void setLostDuels(int lostDuels) {
-        this.lostDuels = lostDuels;
-    }
-
-    public int getLostDuels() {
-        return lostDuels;
-    }
-
     public double getDuelAvg() {
         duelAvg = (wonDuels / duels);
         return duelAvg;
@@ -393,14 +356,6 @@ public class Player {
 
     public int getGoodPasses() {
         return goodPasses;
-    }
-
-    public void setBadPasses(int badPasses) {
-        this.badPasses = badPasses;
-    }
-
-    public int getBadPasses() {
-        return badPasses;
     }
 
     public double getPassesAvg() {

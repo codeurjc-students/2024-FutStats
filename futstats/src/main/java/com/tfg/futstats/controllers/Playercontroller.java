@@ -6,9 +6,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tfg.futstats.controllers.dtos.PlayerDTO;
+import com.tfg.futstats.controllers.dtos.PlayerMatchDTO;
+
 import com.tfg.futstats.models.League;
 import com.tfg.futstats.models.Player;
 import com.tfg.futstats.models.Team;
+import com.tfg.futstats.models.PlayerMatch;
 import com.tfg.futstats.services.RestService;
 import com.tfg.futstats.errors.ElementNotFoundException;
 
@@ -114,6 +117,25 @@ public class Playercontroller {
             modPlayer.setId(id);
             restService.updatePlayer(id, modPlayer);
             return ResponseEntity.ok(player.get());
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/playersMatch/{id}")
+    public ResponseEntity<PlayerMatch> putPlayersMatch(@PathVariable long id, @RequestBody PlayerMatchDTO newPlayerMatch) {
+        Optional<PlayerMatch> playerMatch = restService.findPlayerMatchById(id);
+
+        PlayerMatch modPlayerMatch = new PlayerMatch(newPlayerMatch);
+
+        if (playerMatch.isPresent()) {
+            modPlayerMatch.setId(id);
+
+            restService.updateMatchInfo(modPlayerMatch.getMatch());
+            restService.updatePlayerInfo(modPlayerMatch.getPlayer());
+
+            restService.updatePlayerMatch(id, modPlayerMatch);
+            return ResponseEntity.ok(playerMatch.get());
         }
 
         return ResponseEntity.notFound().build();

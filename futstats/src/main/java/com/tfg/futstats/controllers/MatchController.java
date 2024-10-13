@@ -101,11 +101,12 @@ public class MatchController {
 
         Match modMatch = new Match(newMatch);
 
-        restService.updateTeamInfo(modMatch.getTeam1());
-        restService.updateTeamInfo(modMatch.getTeam2());
-
         if (match.isPresent()) {
             modMatch.setId(id);
+            //We update the team stats now that we are sure that the match exists
+            restService.updateTeamInfo(modMatch.getTeam1());
+            restService.updateTeamInfo(modMatch.getTeam2());
+
             restService.updateMatch(id, modMatch);
             return ResponseEntity.ok(match.get());
         }
