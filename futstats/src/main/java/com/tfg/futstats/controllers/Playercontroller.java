@@ -13,7 +13,11 @@ import com.tfg.futstats.models.Player;
 import com.tfg.futstats.models.Team;
 import com.tfg.futstats.models.PlayerMatch;
 import com.tfg.futstats.services.RestService;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import com.tfg.futstats.errors.ElementNotFoundException;
+import com.tfg.futstats.errors.ForbiddenAccessException;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,49 +54,58 @@ public class Playercontroller {
     public ResponseEntity<Page<Player>> getPlayersByLeague(@PathVariable long leagueId, Pageable pageable) {
         Optional<League> league = restService.findLeagueById(leagueId);
 
-        return ResponseEntity.ok(restService.findPlayersByLeague(league.orElseThrow(() -> new ElementNotFoundException("")),PageRequest.of(pageable.getPageNumber(), 5)));
+        return ResponseEntity.ok(restService.findPlayersByLeague(league.orElseThrow(() -> new ElementNotFoundException("No existe una liga con ese id")),PageRequest.of(pageable.getPageNumber(), 5)));
     }
 
     @GetMapping("/teams/{teamsId}/players")
     public ResponseEntity<Page<Player>> getPlayersByTeam(@PathVariable long teamId, Pageable pageable) {
         Optional<Team> team = restService.findTeamById(teamId);
 
-        return ResponseEntity.ok(restService.findPlayersByTeam(team.orElseThrow(() -> new ElementNotFoundException("")),PageRequest.of(pageable.getPageNumber(), 5)));
+        return ResponseEntity.ok(restService.findPlayersByTeam(team.orElseThrow(() -> new ElementNotFoundException("no existe un equipo con ese id")),PageRequest.of(pageable.getPageNumber(), 5)));
     }
 
     @GetMapping("/leagues/{leaguesId}/teams/{teamId}players")
     public ResponseEntity<Page<Player>> getPlayers(@PathVariable long leagueId, @PathVariable long teamId, Pageable pageable) {
         Optional<Team> team = restService.findTeamById(teamId);
 
-        return ResponseEntity.ok(restService.findPlayersByTeam(team.orElseThrow(() -> new ElementNotFoundException("")),PageRequest.of(pageable.getPageNumber(), 5)));
+        Optional<League> league = restService.findLeagueById(leagueId);
+
+        league.orElseThrow(() -> new ElementNotFoundException("no existe una liga con ese id"));
+
+        return ResponseEntity.ok(restService.findPlayersByTeam(team.orElseThrow(() -> new ElementNotFoundException("no existe un equipo con ese id")),PageRequest.of(pageable.getPageNumber(), 5)));
     }
 
     @GetMapping("/player/{id}")
     public ResponseEntity<Player> getPlayer(@PathVariable long id) {
         Optional<Player> player = restService.findPlayerById(id);
 
-        return ResponseEntity.ok(player.orElseThrow(() -> new ElementNotFoundException("")));
+        return ResponseEntity.ok(player.orElseThrow(() -> new ElementNotFoundException("No existe un jugador con ese id")));
     }
 
     @GetMapping("/player/{name}")
     public ResponseEntity<Player> getPlayerByName(@PathVariable String name) {
         Optional<Player> player = restService.findPlayerByName(name);
 
-        return ResponseEntity.ok(player.orElseThrow(() -> new ElementNotFoundException("")));
+        return ResponseEntity.ok(player.orElseThrow(() -> new ElementNotFoundException("No existe un jugador con ese nobre")));
     }
 
     @GetMapping("/playersMatch/{id}")
     public ResponseEntity<PlayerMatch> getPlayerMatch(@PathVariable long id) {
         Optional<PlayerMatch> playerMatch = restService.findPlayerMatchById(id);
 
-        return ResponseEntity.ok(playerMatch.orElseThrow(() -> new ElementNotFoundException("")));
+        return ResponseEntity.ok(playerMatch.orElseThrow(() -> new ElementNotFoundException("No existe el partido de ese jugador")));
     }
 
     // From this point the only one that can use this methods is the admin so we
     // have to create security for that
 
     @PostMapping("/players")
-    public ResponseEntity<Player> postPlayers(@RequestBody PlayerDTO player) {
+    public ResponseEntity<Player> postPlayers(HttpServletRequest request, @RequestBody PlayerDTO player) {
+
+        if (!request.isUserInRole("admin")) {
+            throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
+        }
+
         Player newPlayer = new Player(player);
 
         restService.createPlayer(newPlayer);
@@ -104,33 +117,47 @@ public class Playercontroller {
     }
 
     @DeleteMapping("/players/{id}")
-    public ResponseEntity<Player> deletePlayers(@PathVariable long id) {
-        Optional<Player> player = restService.findPlayerById(id);
-        if (player.isPresent()) {
-            restService.deletePlayer(player.get());
-            return ResponseEntity.ok(player.get());
+    public ResponseEntity<Player> deletePlayers(HttpServletRequest request, @PathVariable long id) {
+
+        if (!request.isUserInRole("admin")) {
+            throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
         }
 
-        return ResponseEntity.notFound().build();
+        Player player = restService.findPlayerById(id).orElseThrow(() -> new ElementNotFoundException("No existe un jugador con ese id"));
+
+        restService.deletePlayer(player);
+        return ResponseEntity.ok(player);
+        
+        //if the player ins`t found we will never reach this point but for security we will let this here
+        //return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/players/{id}")
-    public ResponseEntity<Player> putPlayers(@PathVariable long id, @RequestBody PlayerDTO newPlayer) {
-        Optional<Player> player = restService.findPlayerById(id);
+    public ResponseEntity<Player> putPlayers(HttpServletRequest request, @PathVariable long id, @RequestBody PlayerDTO newPlayer) {
+
+        if (!request.isUserInRole("admin")) {
+            throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
+        }
+
+        Player player = restService.findPlayerById(id).orElseThrow(() -> new ElementNotFoundException("No existe un jugador con ese id"));
 
         Player modPlayer = new Player(newPlayer);
 
-        if (player.isPresent()) {
-            modPlayer.setId(id);
-            restService.updatePlayer(id, modPlayer);
-            return ResponseEntity.ok(player.get());
-        }
-
-        return ResponseEntity.notFound().build();
+        modPlayer.setId(id);
+        restService.updatePlayer(id, modPlayer);
+        return ResponseEntity.ok(player);
+        
+        //if the player ins`t found we will never reach this point but for security we will let this here
+        //return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/playersMatch")
-    public ResponseEntity<PlayerMatch> postPlayersMatch(@RequestBody PlayerMatchDTO playerMatch) {
+    public ResponseEntity<PlayerMatch> postPlayersMatch(HttpServletRequest request, @RequestBody PlayerMatchDTO playerMatch) {
+
+        if (!request.isUserInRole("admin")) {
+            throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
+        }
+
         PlayerMatch newPlayerMatch = new PlayerMatch(playerMatch);
 
         restService.createPlayerMatch(newPlayerMatch);
@@ -142,32 +169,41 @@ public class Playercontroller {
     }
 
     @DeleteMapping("/playersMatch/{id}")
-    public ResponseEntity<PlayerMatch> deletePlayersMatch(@PathVariable long id) {
-        Optional<PlayerMatch> playerMatch = restService.findPlayerMatchById(id);
-        if (playerMatch.isPresent()) {
-            restService.deletePlayerMatch(playerMatch.get());
-            return ResponseEntity.ok(playerMatch.get());
+    public ResponseEntity<PlayerMatch> deletePlayersMatch(HttpServletRequest request, @PathVariable long id) {
+
+        if (!request.isUserInRole("admin")) {
+            throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
         }
 
-        return ResponseEntity.notFound().build();
+        PlayerMatch playerMatch = restService.findPlayerMatchById(id).orElseThrow(() -> new ElementNotFoundException("No existe el partido de ese jugador"));
+
+        restService.deletePlayerMatch(playerMatch);
+        return ResponseEntity.ok(playerMatch);
+
+        //if the player ins`t found we will never reach this point but for security we will let this here
+        //return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/playersMatch/{id}")
-    public ResponseEntity<PlayerMatch> putPlayersMatch(@PathVariable long id, @RequestBody PlayerMatchDTO newPlayerMatch) {
-        Optional<PlayerMatch> playerMatch = restService.findPlayerMatchById(id);
+    public ResponseEntity<PlayerMatch> putPlayersMatch(HttpServletRequest request, @PathVariable long id, @RequestBody PlayerMatchDTO newPlayerMatch) {
+
+        if (!request.isUserInRole("admin")) {
+            throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
+        }
+
+        PlayerMatch playerMatch = restService.findPlayerMatchById(id).orElseThrow(() -> new ElementNotFoundException("No existe el partido de ese jugador"));
 
         PlayerMatch modPlayerMatch = new PlayerMatch(newPlayerMatch);
 
-        if (playerMatch.isPresent()) {
-            modPlayerMatch.setId(id);
+        modPlayerMatch.setId(id);
 
-            restService.updateMatchInfo(modPlayerMatch.getMatch());
-            restService.updatePlayerInfo(modPlayerMatch.getPlayer());
+        restService.updateMatchInfo(modPlayerMatch.getMatch());
+        restService.updatePlayerInfo(modPlayerMatch.getPlayer());
 
-            restService.updatePlayerMatch(id, modPlayerMatch);
-            return ResponseEntity.ok(playerMatch.get());
-        }
+        restService.updatePlayerMatch(id, modPlayerMatch);
+        return ResponseEntity.ok(playerMatch);
 
-        return ResponseEntity.notFound().build();
+        //if the player ins`t found we will never reach this point but for security we will let this here
+        //return ResponseEntity.notFound().build();
     }
 }

@@ -8,7 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.tfg.futstats.controllers.dtos.LeagueDTO;
 import com.tfg.futstats.models.League;
 import com.tfg.futstats.services.RestService;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import com.tfg.futstats.errors.ElementNotFoundException;
+import com.tfg.futstats.errors.ForbiddenAccessException;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +29,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
 
 @RestController
 @RequestMapping("/api/v1")
@@ -45,21 +48,26 @@ public class LeagueController {
     public ResponseEntity<League> getLeagueById(@PathVariable long id) {
         Optional<League> league = restService.findLeagueById(id);
 
-        return ResponseEntity.ok(league.orElseThrow(() -> new ElementNotFoundException("")));
+        return ResponseEntity.ok(league.orElseThrow(() -> new ElementNotFoundException("No existe una liga con ese id")));
     }
 
     @GetMapping("/leagues/{name}")
     public ResponseEntity<League> getLeagueByName(@PathVariable String name) {
         Optional<League> league = restService.findLeagueByName(name);
 
-        return ResponseEntity.ok(league.orElseThrow(() -> new ElementNotFoundException("")));
+        return ResponseEntity.ok(league.orElseThrow(() -> new ElementNotFoundException("No existe una liga con ese nombre")));
     }
 
-    // From this point the only one that can use this methods is the admin so we
+    // From this point the only one that can use this methods is the admin, so we
     // have to create security for that
 
     @PostMapping("/leagues")
-    public ResponseEntity<League> postLeagues(@RequestBody LeagueDTO league) {
+    public ResponseEntity<League> postLeagues(HttpServletRequest request, @RequestBody LeagueDTO league) {
+
+        if (!request.isUserInRole("admin")) {
+            throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
+        }
+
         League newLeague = new League(league);
 
         restService.createLeague(newLeague);
@@ -71,29 +79,38 @@ public class LeagueController {
     }
 
     @DeleteMapping("/leagues/{id}")
-    public ResponseEntity<League> deleteLeagues(@PathVariable long id) {
-        Optional<League> league = restService.findLeagueById(id);
-        if (league.isPresent()) {
-            restService.deleteLeague(league.get());
-            return ResponseEntity.ok(league.get());
+    public ResponseEntity<League> deleteLeagues(HttpServletRequest request, @PathVariable long id) {
+
+        if (!request.isUserInRole("admin")) {
+            throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
         }
 
-        return ResponseEntity.notFound().build();
+        League league = restService.findLeagueById(id).orElseThrow(() -> new ElementNotFoundException("No existe una liga con ese id"));
+
+        restService.deleteLeague(league);
+        return ResponseEntity.ok(league);
+
+        //if the league ins`t found we will never reach this point but for security we will let this here
+        //return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/leagues/{id}")
-    public ResponseEntity<League> putLeagues(@PathVariable long id, @RequestBody LeagueDTO newLeague) {
-        Optional<League> league = restService.findLeagueById(id);
+    public ResponseEntity<League> putLeagues(HttpServletRequest request, @PathVariable long id, @RequestBody LeagueDTO newLeague) {
+
+        if (!request.isUserInRole("admin")) {
+            throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
+        }
+
+        League league = restService.findLeagueById(id).orElseThrow(() -> new ElementNotFoundException("No existe una liga con ese id"));
 
         League modLeague = new League(newLeague);
 
-        if (league.isPresent()) {
-            modLeague.setId(id);
-            restService.updateLeague(id, modLeague);
-            return ResponseEntity.ok(league.get());
-        }
+        modLeague.setId(id);
+        restService.updateLeague(id, modLeague);
+        return ResponseEntity.ok(league);
 
-        return ResponseEntity.notFound().build();
+        //if the league ins`t found we will never reach this point but for security we will let this here
+        //return ResponseEntity.notFound().build();
     }
-    
+
 }

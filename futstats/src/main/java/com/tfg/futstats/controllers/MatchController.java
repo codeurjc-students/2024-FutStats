@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tfg.futstats.controllers.dtos.MatchDTO;
 import com.tfg.futstats.errors.ElementNotFoundException;
+import com.tfg.futstats.errors.ForbiddenAccessException;
 import com.tfg.futstats.models.Match;
 import com.tfg.futstats.models.League;
 import com.tfg.futstats.models.Team;
 import com.tfg.futstats.services.RestService;
 
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,35 +47,44 @@ public class MatchController {
 
     @GetMapping("/matches/{id}")
     public ResponseEntity<Match> getMatch(@PathVariable long id,Pageable pageable) {
-        return ResponseEntity.ok(restService.findMatchById(id).orElseThrow(() -> new ElementNotFoundException("")));
+        return ResponseEntity.ok(restService.findMatchById(id).orElseThrow(() -> new ElementNotFoundException("No existe un partido con ese id")));
     }
 
     @GetMapping("/leagues/{leaguesId}/matches")
     public ResponseEntity<Page<Match>> getMatchesByLeague(@PathVariable long leagueId, Pageable pageable){
         Optional<League> league = restService.findLeagueById(leagueId);
 
-        return ResponseEntity.ok(restService.findMatchesByLeague(league.orElseThrow(() -> new ElementNotFoundException("")),PageRequest.of(pageable.getPageNumber(), 5)));
+        return ResponseEntity.ok(restService.findMatchesByLeague(league.orElseThrow(() -> new ElementNotFoundException("No existe una liga con ese id")),PageRequest.of(pageable.getPageNumber(), 5)));
     }
 
     @GetMapping("/teams/{teamsId}/matches")
     public ResponseEntity<Page<Match>> getMatchesByTeam(@PathVariable long teamId, Pageable pageable) {
         Optional<Team> team = restService.findTeamById(teamId);
 
-        return ResponseEntity.ok(restService.findMatchesByTeam(team.orElseThrow(() -> new ElementNotFoundException("")),PageRequest.of(pageable.getPageNumber(), 5)));
+        return ResponseEntity.ok(restService.findMatchesByTeam(team.orElseThrow(() -> new ElementNotFoundException("No existe un equipo con ese id")),PageRequest.of(pageable.getPageNumber(), 5)));
     }
 
     @GetMapping("/leagues/{leaguesId}/teams/{teamId}/matches")
     public ResponseEntity<Page<Match>> getMatches(@PathVariable long leagueId, @PathVariable long teamId, Pageable pageable) {
         Optional<Team> team = restService.findTeamById(teamId);
 
-        return ResponseEntity.ok(restService.findMatchesByTeam(team.orElseThrow(() -> new ElementNotFoundException("")),PageRequest.of(pageable.getPageNumber(), 5)));
+        Optional<League> league = restService.findLeagueById(leagueId);
+
+        league.orElseThrow(() -> new ElementNotFoundException("No existe una liga con ese id"));
+
+        return ResponseEntity.ok(restService.findMatchesByTeam(team.orElseThrow(() -> new ElementNotFoundException("No existe un equipo con ese id")),PageRequest.of(pageable.getPageNumber(), 5)));
     }
 
     // From this point the only one that can use this methods is the admin so we
     // have to create security for that
 
     @PostMapping("/matches")
-    public ResponseEntity<Match> postMatches(@RequestBody MatchDTO match) {
+    public ResponseEntity<Match> postMatches(HttpServletRequest request, @RequestBody MatchDTO match) {
+
+        if (!request.isUserInRole("admin")) {
+            throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
+        }
+
         Match newMatch = new Match(match);
 
         restService.createMatch(newMatch);
@@ -85,32 +96,43 @@ public class MatchController {
     }
 
     @DeleteMapping("/matches/{id}")
-    public ResponseEntity<Match> deleteMatches(@PathVariable long id) {
-        Optional<Match> match = restService.findMatchById(id);
-        if (match.isPresent()) {
-            restService.deleteMatch(match.get());
-            return ResponseEntity.ok(match.get());
+    public ResponseEntity<Match> deleteMatches(HttpServletRequest request, @PathVariable long id) {
+
+        if (!request.isUserInRole("admin")) {
+            throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
         }
 
-        return ResponseEntity.notFound().build();
+        Match match = restService.findMatchById(id).orElseThrow(() -> new ElementNotFoundException("No existe un equipo con ese id"));
+
+        restService.deleteMatch(match);
+        return ResponseEntity.ok(match);
+        
+        //if the match ins`t found we will never reach this point but for security we will let this here
+        //return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/matches/{id}")
-    public ResponseEntity<Match> putMatches(@PathVariable long id, @RequestBody MatchDTO newMatch) {
-        Optional<Match> match = restService.findMatchById(id);
+    public ResponseEntity<Match> putMatches(HttpServletRequest request, @PathVariable long id, @RequestBody MatchDTO newMatch) {
+
+        if (!request.isUserInRole("admin")) {
+            throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
+        }
+
+        Match match = restService.findMatchById(id).orElseThrow(() -> new ElementNotFoundException("No existe un equipo con ese id"));
 
         Match modMatch = new Match(newMatch);
 
-        if (match.isPresent()) {
-            modMatch.setId(id);
-            //We update the team stats now that we are sure that the match exists
-            restService.updateTeamInfo(modMatch.getTeam1());
-            restService.updateTeamInfo(modMatch.getTeam2());
+        modMatch.setId(id);
 
-            restService.updateMatch(id, modMatch);
-            return ResponseEntity.ok(match.get());
-        }
+        //We update the team stats now that we are sure that the match exists
+        restService.updateTeamInfo(modMatch.getTeam1());
+        restService.updateTeamInfo(modMatch.getTeam2());
 
-        return ResponseEntity.notFound().build();
+        restService.updateMatch(id, modMatch);
+
+        return ResponseEntity.ok(match);
+
+        //if the match ins`t found we will never reach this point but for security we will let this here
+        //return ResponseEntity.notFound().build();
     }
 }
