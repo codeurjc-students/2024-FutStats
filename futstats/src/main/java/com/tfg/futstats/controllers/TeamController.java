@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tfg.futstats.controllers.dtos.TeamDTO;
 import com.tfg.futstats.errors.ElementNotFoundException;
-import com.tfg.futstats.errors.ForbiddenAccessException;
 import com.tfg.futstats.models.League;
 import com.tfg.futstats.models.Team;
 import com.tfg.futstats.services.RestService;
@@ -69,9 +68,10 @@ public class TeamController {
     @PostMapping("/teams")
     public ResponseEntity<Team> postTeams(HttpServletRequest request, @RequestBody TeamDTO team) {
 
-        if (!request.isUserInRole("admin")) {
+        //We don`t need this because is redundant, is already controlled in SecurityConfig
+        /*if (!request.isUserInRole("admin")) {
             throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
-        }
+        }*/
 
         Team newTeam = new Team(team);
 
@@ -85,9 +85,10 @@ public class TeamController {
     @DeleteMapping("/teams/{id}")
     public ResponseEntity<Team> deleteTeams(HttpServletRequest request, @PathVariable long id) {
 
-        if (!request.isUserInRole("admin")) {
+        //We don`t need this because is redundant, is already controlled in SecurityConfig
+        /*if (!request.isUserInRole("admin")) {
             throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
-        }
+        }*/
 
         Team team = restService.findTeamById(id).orElseThrow(() -> new ElementNotFoundException("No existe un equipo con ese id"));
 
@@ -101,9 +102,10 @@ public class TeamController {
     @PutMapping("/teams/{id}")
     public ResponseEntity<Team> putTeams(HttpServletRequest request, @PathVariable long id, @RequestBody TeamDTO newTeam) {
 
-        if (!request.isUserInRole("admin")) {
+        //We don`t need this because is redundant, is already controlled in SecurityConfig
+        /*if (!request.isUserInRole("admin")) {
             throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
-        }
+        }*/
         
         Team team = restService.findTeamById(id).orElseThrow(() -> new ElementNotFoundException("No existe un equipo con ese id"));
 

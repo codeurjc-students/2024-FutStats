@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tfg.futstats.controllers.dtos.UserDTO;
 import com.tfg.futstats.errors.ElementNotFoundException;
-import com.tfg.futstats.errors.ForbiddenAccessException;
 import com.tfg.futstats.models.League;
 import com.tfg.futstats.models.Player;
 import com.tfg.futstats.models.Team;
@@ -42,9 +41,10 @@ public class UserController {
     @GetMapping("/users")
     public ResponseEntity<Page<User>> getUsers(HttpServletRequest request, Pageable pageable) {
 
-        if (!request.isUserInRole("admin")) {
+        //We don`t need this because is redundant, is already controlled in SecurityConfig
+        /*if (!request.isUserInRole("admin")) {
             throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
-        }
+        }*/
 
         return ResponseEntity.ok(userService.findAllUsers(PageRequest.of(pageable.getPageNumber(), 5)));
 
@@ -53,9 +53,10 @@ public class UserController {
     @PostMapping("/users")
     public ResponseEntity<User> postUser(HttpServletRequest request, @RequestBody UserDTO user) {
 
-        if (!request.isUserInRole("admin")) {
+        //We don`t need this because is redundant, is already controlled in SecurityConfig
+        /*if (!request.isUserInRole("admin")) {
             throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
-        }
+        }*/
 
         userService.createUser(user.getName(), user.getPassword());
 
@@ -65,9 +66,10 @@ public class UserController {
     @PutMapping("/users/{id}")
     public ResponseEntity<User> postUser(HttpServletRequest request, @PathVariable long id,@RequestBody UserDTO newUser) {
 
-        if (!request.isUserInRole("admin")) {
+        //We don`t need this because is redundant, is already controlled in SecurityConfig
+        /*if (!request.isUserInRole("admin")) {
             throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
-        }
+        }*/
 
         if (!request.getUserPrincipal().getName().equals(userService.findUserById(id).get().getName())) {
             return ResponseEntity.badRequest().build();
@@ -87,9 +89,10 @@ public class UserController {
     @DeleteMapping("/users/{id}")
     public ResponseEntity<User> postUser(HttpServletRequest request, @PathVariable long id) {
 
-        if (!request.isUserInRole("admin")) {
+        //We don`t need this because is redundant, is already controlled in SecurityConfig
+        /*if (!request.isUserInRole("admin")) {
             throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
-        }
+        }*/
 
         if (!request.getUserPrincipal().getName().equals(userService.findUserById(id).get().getName())) {
             return ResponseEntity.badRequest().build();

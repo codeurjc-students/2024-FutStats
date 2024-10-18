@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tfg.futstats.controllers.dtos.MatchDTO;
 import com.tfg.futstats.errors.ElementNotFoundException;
-import com.tfg.futstats.errors.ForbiddenAccessException;
 import com.tfg.futstats.models.Match;
 import com.tfg.futstats.models.League;
 import com.tfg.futstats.models.Team;
@@ -81,9 +80,10 @@ public class MatchController {
     @PostMapping("/matches")
     public ResponseEntity<Match> postMatches(HttpServletRequest request, @RequestBody MatchDTO match) {
 
-        if (!request.isUserInRole("admin")) {
+        //We don`t need this because is redundant, is already controlled in SecurityConfig
+        /*if (!request.isUserInRole("admin")) {
             throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
-        }
+        }*/
 
         Match newMatch = new Match(match);
 
@@ -98,9 +98,10 @@ public class MatchController {
     @DeleteMapping("/matches/{id}")
     public ResponseEntity<Match> deleteMatches(HttpServletRequest request, @PathVariable long id) {
 
-        if (!request.isUserInRole("admin")) {
+        //We don`t need this because is redundant, is already controlled in SecurityConfig
+        /*if (!request.isUserInRole("admin")) {
             throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
-        }
+        }*/
 
         Match match = restService.findMatchById(id).orElseThrow(() -> new ElementNotFoundException("No existe un equipo con ese id"));
 
@@ -114,9 +115,10 @@ public class MatchController {
     @PutMapping("/matches/{id}")
     public ResponseEntity<Match> putMatches(HttpServletRequest request, @PathVariable long id, @RequestBody MatchDTO newMatch) {
 
-        if (!request.isUserInRole("admin")) {
+        //We don`t need this because is redundant, is already controlled in SecurityConfig
+        /*if (!request.isUserInRole("admin")) {
             throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
-        }
+        }*/
 
         Match match = restService.findMatchById(id).orElseThrow(() -> new ElementNotFoundException("No existe un equipo con ese id"));
 

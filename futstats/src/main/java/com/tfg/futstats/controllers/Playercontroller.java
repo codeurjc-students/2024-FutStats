@@ -17,7 +17,6 @@ import com.tfg.futstats.services.RestService;
 import jakarta.servlet.http.HttpServletRequest;
 
 import com.tfg.futstats.errors.ElementNotFoundException;
-import com.tfg.futstats.errors.ForbiddenAccessException;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -102,9 +101,10 @@ public class Playercontroller {
     @PostMapping("/players")
     public ResponseEntity<Player> postPlayers(HttpServletRequest request, @RequestBody PlayerDTO player) {
 
-        if (!request.isUserInRole("admin")) {
+        //We don`t need this because is redundant, is already controlled in SecurityConfig
+        /*if (!request.isUserInRole("admin")) {
             throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
-        }
+        }*/
 
         Player newPlayer = new Player(player);
 
@@ -119,9 +119,10 @@ public class Playercontroller {
     @DeleteMapping("/players/{id}")
     public ResponseEntity<Player> deletePlayers(HttpServletRequest request, @PathVariable long id) {
 
-        if (!request.isUserInRole("admin")) {
+        //We don`t need this because is redundant, is already controlled in SecurityConfig
+        /*if (!request.isUserInRole("admin")) {
             throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
-        }
+        }*/
 
         Player player = restService.findPlayerById(id).orElseThrow(() -> new ElementNotFoundException("No existe un jugador con ese id"));
 
@@ -135,9 +136,10 @@ public class Playercontroller {
     @PutMapping("/players/{id}")
     public ResponseEntity<Player> putPlayers(HttpServletRequest request, @PathVariable long id, @RequestBody PlayerDTO newPlayer) {
 
-        if (!request.isUserInRole("admin")) {
+        //We don`t need this because is redundant, is already controlled in SecurityConfig
+        /*if (!request.isUserInRole("admin")) {
             throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
-        }
+        }*/
 
         Player player = restService.findPlayerById(id).orElseThrow(() -> new ElementNotFoundException("No existe un jugador con ese id"));
 
@@ -154,9 +156,10 @@ public class Playercontroller {
     @PostMapping("/playersMatch")
     public ResponseEntity<PlayerMatch> postPlayersMatch(HttpServletRequest request, @RequestBody PlayerMatchDTO playerMatch) {
 
-        if (!request.isUserInRole("admin")) {
+        //We don`t need this because is redundant, is already controlled in SecurityConfig
+        /*if (!request.isUserInRole("admin")) {
             throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
-        }
+        }*/
 
         PlayerMatch newPlayerMatch = new PlayerMatch(playerMatch);
 
@@ -171,9 +174,10 @@ public class Playercontroller {
     @DeleteMapping("/playersMatch/{id}")
     public ResponseEntity<PlayerMatch> deletePlayersMatch(HttpServletRequest request, @PathVariable long id) {
 
-        if (!request.isUserInRole("admin")) {
+        //We don`t need this because is redundant, is already controlled in SecurityConfig
+        /*if (!request.isUserInRole("admin")) {
             throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
-        }
+        }*/
 
         PlayerMatch playerMatch = restService.findPlayerMatchById(id).orElseThrow(() -> new ElementNotFoundException("No existe el partido de ese jugador"));
 
@@ -187,9 +191,10 @@ public class Playercontroller {
     @PutMapping("/playersMatch/{id}")
     public ResponseEntity<PlayerMatch> putPlayersMatch(HttpServletRequest request, @PathVariable long id, @RequestBody PlayerMatchDTO newPlayerMatch) {
 
-        if (!request.isUserInRole("admin")) {
+        //We don`t need this because is redundant, is already controlled in SecurityConfig
+        /*if (!request.isUserInRole("admin")) {
             throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
-        }
+        }*/
 
         PlayerMatch playerMatch = restService.findPlayerMatchById(id).orElseThrow(() -> new ElementNotFoundException("No existe el partido de ese jugador"));
 

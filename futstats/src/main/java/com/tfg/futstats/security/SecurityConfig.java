@@ -84,8 +84,13 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.DELETE, "/api/v1/playersMatch/*").hasAnyRole("admin")
 				.requestMatchers(HttpMethod.PUT, "/api/v1/playersMatch/*").hasAnyRole("admin")
 
-				.requestMatchers("users/*").hasAnyRole("user")
-				.anyRequest().authenticated()
+				.requestMatchers(HttpMethod.GET,"/api/v1/users").hasAnyRole("admin")
+				.requestMatchers(HttpMethod.PUT,"/api/v1/users").hasAnyRole("admin","user")
+				.requestMatchers(HttpMethod.POST,"/api/v1/users").hasAnyRole("admin","user")
+				.requestMatchers(HttpMethod.DELETE,"/api/v1/users").hasAnyRole("admin","user")
+				.requestMatchers("/api/v1/users/*").hasAnyRole("admin","user")
+
+				.anyRequest().permitAll()
             )
             .formLogin(formLogin -> formLogin
 						.loginPage("/login")

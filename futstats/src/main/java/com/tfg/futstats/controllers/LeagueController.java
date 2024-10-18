@@ -12,7 +12,6 @@ import com.tfg.futstats.services.RestService;
 import jakarta.servlet.http.HttpServletRequest;
 
 import com.tfg.futstats.errors.ElementNotFoundException;
-import com.tfg.futstats.errors.ForbiddenAccessException;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,9 +63,10 @@ public class LeagueController {
     @PostMapping("/leagues")
     public ResponseEntity<League> postLeagues(HttpServletRequest request, @RequestBody LeagueDTO league) {
 
-        if (!request.isUserInRole("admin")) {
+        //We don`t need this because is redundant, is already controlled in SecurityConfig
+        /*if (!request.isUserInRole("admin")) {
             throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
-        }
+        }*/
 
         League newLeague = new League(league);
 
@@ -81,9 +81,10 @@ public class LeagueController {
     @DeleteMapping("/leagues/{id}")
     public ResponseEntity<League> deleteLeagues(HttpServletRequest request, @PathVariable long id) {
 
-        if (!request.isUserInRole("admin")) {
+        //We don`t need this because is redundant, is already controlled in SecurityConfig
+        /*if (!request.isUserInRole("admin")) {
             throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
-        }
+        }*/
 
         League league = restService.findLeagueById(id).orElseThrow(() -> new ElementNotFoundException("No existe una liga con ese id"));
 
@@ -97,9 +98,10 @@ public class LeagueController {
     @PutMapping("/leagues/{id}")
     public ResponseEntity<League> putLeagues(HttpServletRequest request, @PathVariable long id, @RequestBody LeagueDTO newLeague) {
 
-        if (!request.isUserInRole("admin")) {
+        //We don`t need this because is redundant, is already controlled in SecurityConfig
+        /*if (!request.isUserInRole("admin")) {
             throw new ForbiddenAccessException("No tiene permiso para acceder a esta página");
-        }
+        }*/
 
         League league = restService.findLeagueById(id).orElseThrow(() -> new ElementNotFoundException("No existe una liga con ese id"));
 
