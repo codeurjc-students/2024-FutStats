@@ -251,11 +251,11 @@ public class RestService {
     }
 
     public Page<Match> findMatchesByLeague(League league, Pageable pageable) {
-        return matchRepository.findAllByLeague(league, pageable);
+        return matchRepository.findAllByLeague(league.getName(), pageable);
     }
 
     public Page<Match> findMatchesByTeam(Team team, Pageable pageable) {
-        return matchRepository.findAllByTeam(team, pageable);
+        return matchRepository.findAllByTeam(team.getName(), pageable);
     }
 
     public void createMatch(Match match) {

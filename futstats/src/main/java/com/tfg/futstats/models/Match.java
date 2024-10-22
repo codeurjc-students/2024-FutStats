@@ -15,7 +15,7 @@ import jakarta.persistence.ManyToOne;
 public class Match {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Auto generated ID
-    private long id;
+    private Long id;
 
     // Realtions with other models in DB
     @ManyToOne

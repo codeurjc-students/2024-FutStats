@@ -13,7 +13,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -23,7 +25,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Auto generated ID
-    private long id;
+    private Long id;
 
     @Column(unique = true)
     private String name;
@@ -32,14 +34,23 @@ public class User {
 
     private List<String> roles;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    protected List<League> belongedLeagues;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_leagues",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "league_id"))
+    private List<League> belongedLeagues;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    protected List<Team> belongedTeams;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_teams",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "team_id"))
+    private List<Team> belongedTeams;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    protected List<Player> belongedPlayers;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_players",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "player_id"))
+    private List<Player> belongedPlayers;
 
     // If we will add more attributes in the future we have to add mappedBy in the
     // other class that relate to, to inform JPA which attribute "connects" the

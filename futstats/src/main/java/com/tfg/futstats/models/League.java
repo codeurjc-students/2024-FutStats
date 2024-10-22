@@ -10,6 +10,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Column;
 import jakarta.persistence.OneToMany;
 
@@ -18,7 +19,7 @@ import jakarta.persistence.OneToMany;
 public class League {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Auto generated ID
-    private long id;
+    private Long id;
 
     // Realtions with other models in DB
     @OneToMany(cascade = CascadeType.ALL)
@@ -30,9 +31,14 @@ public class League {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Player> players;
 
+        // Relación de muchos a muchos con User
+    @ManyToMany(mappedBy = "belongedLeagues")
+    private List<User> user;
+
     // League attributes
     @Column(unique = true)
     private String name;
+
     private String president;
     private String nationality;
 

@@ -13,7 +13,7 @@ public class PlayerMatch {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Auto generated ID
-    private long id;
+    private Long id;
 
     @ManyToOne
     private Player player;

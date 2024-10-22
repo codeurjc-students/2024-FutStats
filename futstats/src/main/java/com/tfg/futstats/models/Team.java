@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
@@ -17,7 +18,7 @@ import jakarta.persistence.OneToMany;
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Auto generated ID
-    private long id;
+    private Long id;
 
     // Realtions with other models in DB
     @ManyToOne
@@ -28,6 +29,10 @@ public class Team {
 
     @OneToMany
     private List<Player> players;
+
+        // Relación de muchos a muchos con User
+    @ManyToMany(mappedBy = "belongedTeams")
+    private List<User> user;
 
     // Team attributes
     private String name;

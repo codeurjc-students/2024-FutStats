@@ -1,11 +1,14 @@
 package com.tfg.futstats.models;
 
+import java.util.List;
+
 import com.tfg.futstats.controllers.dtos.PlayerDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
 //As we want that this class be kept in the database we have to put this notation
@@ -13,7 +16,7 @@ import jakarta.persistence.ManyToOne;
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Auto generated ID
-    private long id;
+    private Long id;
 
     // Realtions with other models in DB
     @ManyToOne
@@ -21,6 +24,10 @@ public class Player {
 
     @ManyToOne
     private Team team;
+
+        // Relación de muchos a muchos con User
+    @ManyToMany(mappedBy = "belongedPlayers")
+    private List<User> user;
 
     // player info
     private String name;

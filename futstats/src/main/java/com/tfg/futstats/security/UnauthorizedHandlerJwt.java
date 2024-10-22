@@ -1,4 +1,4 @@
-package com.tfg.futstats.security.jwt;
+package com.tfg.futstats.security;
 
 import java.io.IOException;
 import java.util.HashMap;

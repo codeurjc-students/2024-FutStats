@@ -18,7 +18,7 @@ public interface PlayerMatchRepository extends JpaRepository<PlayerMatch, Long> 
     @Query("SELECT SUM(jp.goals) FROM PlayerMatch jp WHERE jp.player.id = :playerId")
     int goalsByPlayer(@Param("playerId") Long playerId);
 
-    @Query("SELECT SUM(jp.peanltys) FROM PlayerMatch jp WHERE jp.player.id = :playerId")
+    @Query("SELECT SUM(jp.penaltys) FROM PlayerMatch jp WHERE jp.player.id = :playerId")
     int penaltysByPlayer(@Param("playerId") Long playerId);
 
     @Query("SELECT SUM(jp.faultsReceived) FROM PlayerMatch jp WHERE jp.player.id = :playerId")
@@ -48,7 +48,7 @@ public interface PlayerMatchRepository extends JpaRepository<PlayerMatch, Long> 
     @Query("SELECT SUM(jp.passes) FROM PlayerMatch jp WHERE jp.player.id = :playerId")
     int passesByPlayer(@Param("playerId") Long playerId);
 
-    @Query("SELECT SUM(jp.gooodPasses) FROM PlayerMatch jp WHERE jp.player.id = :playerId")
+    @Query("SELECT SUM(jp.goodPasses) FROM PlayerMatch jp WHERE jp.player.id = :playerId")
     int goodPassesByPlayer(@Param("playerId") Long playerId);
 
     @Query("SELECT SUM(jp.shortPasses) FROM PlayerMatch jp WHERE jp.player.id = :playerId")
@@ -70,7 +70,7 @@ public interface PlayerMatchRepository extends JpaRepository<PlayerMatch, Long> 
     int ballLossesByPlayer(@Param("playerId") Long playerId);
 
     // Match stats
-    @Query("SELECT SUM(jp.shoots) FROM PlayerMatch jp WHERE jp.partido.id = :partidoId AND jp.player.team.id = :teamId")
+    @Query("SELECT SUM(jp.shoots) FROM PlayerMatch jp WHERE jp.match.id = :matchId AND jp.player.team.id = :teamId")
     int shootsByTeam(@Param("matchId") Long matchId, @Param("teamId") Long teamId);
 
     @Query("SELECT SUM(jp.goals) FROM PlayerMatch jp  WHERE jp.match.id = :matchId AND jp.player.team.id = :teamId")
