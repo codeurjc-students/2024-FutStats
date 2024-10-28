@@ -4,6 +4,7 @@ public class TeamDTO {
     // dto attributes
     private long id;
     private String name;
+    public String league;
     private int trophies;
     private String nationality;
     private String trainer;
@@ -64,6 +65,14 @@ public class TeamDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setLeague(String league){
+        this.league = league;
+    }
+
+    public String getLeague(){
+        return this.league;
     }
 
     public int getTrophies() {

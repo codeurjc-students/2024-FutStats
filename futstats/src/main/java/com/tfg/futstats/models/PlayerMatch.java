@@ -1,5 +1,6 @@
 package com.tfg.futstats.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tfg.futstats.controllers.dtos.PlayerMatchDTO;
 
 import jakarta.persistence.Entity;
@@ -16,9 +17,11 @@ public class PlayerMatch {
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
     private Player player;
 
     @ManyToOne
+    @JsonIgnore
     private Match match;
 
     private int shoots;

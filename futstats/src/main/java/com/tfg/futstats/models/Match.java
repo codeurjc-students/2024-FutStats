@@ -2,16 +2,19 @@ package com.tfg.futstats.models;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tfg.futstats.controllers.dtos.MatchDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 //As we want that this class be kept in the database we have to put this notation
 @Entity
+@Table(name = "`match`")
 public class Match {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Auto generated ID
@@ -19,12 +22,15 @@ public class Match {
 
     // Realtions with other models in DB
     @ManyToOne
+    @JsonIgnore
     private League league;
 
     @ManyToOne
+    @JsonIgnore
     private Team team1;
 
     @ManyToOne
+    @JsonIgnore
     private Team team2;
 
     // Match attributes
@@ -172,9 +178,6 @@ public class Match {
     }
 
     public Match(MatchDTO match) {
-        this.league = match.getLeague();
-        this.team1 = match.getTeam1();
-        this.team2 = match.getTeam2();
         this.date = match.getDate();
         this.place = match.getPlace();
         this.shoots1 = match.getShoots1();

@@ -21,6 +21,12 @@ public class League {
     @GeneratedValue(strategy = GenerationType.AUTO) // Auto generated ID
     private Long id;
 
+    // League attributes
+     @Column(unique = true)
+    private String name;
+    private String president;
+    private String nationality;
+
     // Realtions with other models in DB
     @OneToMany(cascade = CascadeType.ALL)
     private List<Team> teams;
@@ -35,17 +41,8 @@ public class League {
     @ManyToMany(mappedBy = "belongedLeagues")
     private List<User> user;
 
-    // League attributes
-    @Column(unique = true)
-    private String name;
-
-    private String president;
-    private String nationality;
-
     // Constructors
-    public League() {
-
-    }
+    public League() {}
 
     public League(String name, String president, String nationality) {
         this.teams = new ArrayList<Team>();

@@ -1,13 +1,10 @@
 package com.tfg.futstats.controllers.dtos;
 
-import com.tfg.futstats.models.League;
-import com.tfg.futstats.models.Team;
-
 public class PlayerDTO {
    // dto attributes
    private long id;
-   private League league;
-   private Team team;
+   private String league;
+   private String team;
    private String name;
    private int age;
    private String nationality;
@@ -21,19 +18,19 @@ public class PlayerDTO {
       this.id = id;
    }
 
-   public void setLeague(League league) {
+   public void setLeague(String league) {
       this.league = league;
    }
 
-   public League getLeague() {
+   public String getLeague() {
       return this.league;
    }
 
-   public void setTeam(Team team) {
+   public void setTeam(String team) {
       this.team = team;
    }
 
-   public Team getTeam() {
+   public String getTeam() {
       return this.team;
    }
 

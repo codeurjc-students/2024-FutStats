@@ -3,6 +3,7 @@ package com.tfg.futstats.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tfg.futstats.controllers.dtos.TeamDTO;
 
 import jakarta.persistence.Entity;
@@ -20,20 +21,6 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.AUTO) // Auto generated ID
     private Long id;
 
-    // Realtions with other models in DB
-    @ManyToOne
-    private League league;
-
-    @OneToMany
-    private List<Match> matches;
-
-    @OneToMany
-    private List<Player> players;
-
-        // Relación de muchos a muchos con User
-    @ManyToMany(mappedBy = "belongedTeams")
-    private List<User> user;
-
     // Team attributes
     private String name;
     private int trophies;
@@ -44,6 +31,21 @@ public class Team {
     private String stadium;
     private int points;
 
+    // Realtions with other models in DB
+    @ManyToOne
+    @JsonIgnore
+    private League league;
+
+    @ManyToMany
+    private List<Match> matches;
+
+    @OneToMany
+    private List<Player> players;
+
+        // Relación de muchos a muchos con User
+    @ManyToMany(mappedBy = "belongedTeams")
+    private List<User> user;
+    
     // team stats
     private int totalMatches;
 
@@ -246,7 +248,7 @@ public class Team {
         this.players = players;
     }
 
-    public void setPlayers(Player player) {
+    public void setPlayer(Player player) {
         this.players.add(player);
         player.setLeague(this.league);
     }
@@ -353,6 +355,9 @@ public class Team {
     }
 
     public double getShootsPerMatch() {
+        if (totalMatches == 0) {
+            return 0;
+        }
         shootsPerMatch = (totalShoots / totalMatches);
         return shootsPerMatch;
     }
@@ -362,6 +367,9 @@ public class Team {
     // it`s calculated from other stadistics.
 
     public double getGoalsPerMatch() {
+        if (totalMatches == 0) {
+            return 0;
+        }
         goalsPerMatch = (totalGoals / totalMatches);
         return goalsPerMatch;
     }
@@ -371,6 +379,9 @@ public class Team {
     // it`s calculated from other stadistics.
 
     public double getScoreAvg() {
+        if (totalMatches == 0) {
+            return 0;
+        }
         scoreAvg = (totalGoals / totalShoots);
         return scoreAvg;
     }
@@ -436,6 +447,9 @@ public class Team {
     }
 
     public double getDuelAvg() {
+        if (duels == 0) {
+            return 0;
+        }
         duelAvg = (wonDuels / duels);
         return duelAvg;
     }
@@ -486,6 +500,9 @@ public class Team {
     }
 
     public double getPassesPerMatch() {
+        if (totalMatches == 0) {
+            return 0;
+        }
         passesPerMatch = (passes / totalMatches);
         return passesPerMatch;
     }
@@ -503,6 +520,9 @@ public class Team {
     }
 
     public double getPassesAvg() {
+        if (passes == 0) {
+            return 0;
+        }
         passesAvg = (goodPasses / passes);
         return passesAvg;
     }
@@ -584,6 +604,9 @@ public class Team {
     }
 
     public double getWonMatchesAvg() {
+        if (totalMatches == 0) {
+            return 0;
+        }
         wonMatchesAvg = (wonMatches / totalMatches);
         return wonMatchesAvg;
     }

@@ -108,7 +108,18 @@ public class Playercontroller {
 
         Player newPlayer = new Player(player);
 
+        League league = restService.findLeagueByName(player.getLeague()).orElseThrow(() -> new ElementNotFoundException("No existe una liga con ese nombre"));
+
+        Team team = restService.findTeamByName(player.getTeam()).orElseThrow(() -> new ElementNotFoundException("No existe un equipo con ese nombre"));
+
+        league.setPlayer(newPlayer);
+        team.setPlayer(newPlayer);
+
+        newPlayer.setLeague(league);
+        newPlayer.setTeam(team);
+
         restService.createPlayer(newPlayer);
+
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newPlayer.getId())
                 .toUri();

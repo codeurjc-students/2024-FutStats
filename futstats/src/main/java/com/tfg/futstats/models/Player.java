@@ -2,6 +2,7 @@ package com.tfg.futstats.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tfg.futstats.controllers.dtos.PlayerDTO;
 
 import jakarta.persistence.Entity;
@@ -18,21 +19,23 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.AUTO) // Auto generated ID
     private Long id;
 
+       // player info
+    private String name;
+    private int age;
+    private String nationality;
+
     // Realtions with other models in DB
     @ManyToOne
+    @JsonIgnore
     private League league;
 
     @ManyToOne
+    @JsonIgnore
     private Team team;
 
         // Relación de muchos a muchos con User
     @ManyToMany(mappedBy = "belongedPlayers")
     private List<User> user;
-
-    // player info
-    private String name;
-    private int age;
-    private String nationality;
 
     // player stats
     private int totalMatches;
@@ -129,8 +132,6 @@ public class Player {
     }
 
     public Player(PlayerDTO player) {
-        this.league = player.getLeague();
-        this.team = player.getTeam();
         this.name = player.getName();
         this.age = player.getAge();
         this.nationality = player.getNationality();
@@ -231,6 +232,9 @@ public class Player {
     }
 
     public double getshootsPerMatch() {
+        if (totalMatches == 0) {
+            return 0;
+        }
         shootsPerMatch = (totalShoots / totalMatches);
         return shootsPerMatch;
     }
@@ -239,6 +243,9 @@ public class Player {
     // it`s calculated from other stadistics.
 
     public double getGoalsPerMatch() {
+        if (totalMatches == 0) {
+            return 0;
+        }
         goalsPerMatch = (totalGoals / totalMatches);
         return goalsPerMatch;
     }
@@ -247,6 +254,9 @@ public class Player {
     // it`s calculated from other stadistics.
 
     public double getScoreAvg() {
+        if (totalShoots == 0) {
+            return 0;
+        }
         scoreAvg = (totalGoals / totalShoots);
         return scoreAvg;
     }
@@ -310,6 +320,9 @@ public class Player {
     }
 
     public double getDuelAvg() {
+        if (duels == 0) {
+            return 0;
+        }
         duelAvg = (wonDuels / duels);
         return duelAvg;
     }
@@ -350,6 +363,9 @@ public class Player {
     }
 
     public double getPassesPerMatch() {
+        if (totalMatches == 0) {
+            return 0;
+        }
         passesPerMatch = (passes / totalMatches);
         return passesPerMatch;
     }
@@ -366,6 +382,9 @@ public class Player {
     }
 
     public double getPassesAvg() {
+        if (passes == 0) {
+            return 0;
+        }
         passesAvg = (goodPasses / passes);
         return passesAvg;
     }

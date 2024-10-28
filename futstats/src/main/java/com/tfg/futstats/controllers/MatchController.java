@@ -77,7 +77,7 @@ public class MatchController {
     // From this point the only one that can use this methods is the admin so we
     // have to create security for that
 
-    @PostMapping("/matches")
+    @PostMapping("/matchis")
     public ResponseEntity<Match> postMatches(HttpServletRequest request, @RequestBody MatchDTO match) {
 
         //We don`t need this because is redundant, is already controlled in SecurityConfig
@@ -86,6 +86,18 @@ public class MatchController {
         }*/
 
         Match newMatch = new Match(match);
+
+        League league = restService.findLeagueByName(match.getLeague()).orElseThrow(() -> new ElementNotFoundException("No existe una liga con ese nombre"));
+        Team team1 = restService.findTeamByName(match.getTeam1()).orElseThrow(() -> new ElementNotFoundException("No existe un equipo con ese nombre"));
+        Team team2 = restService.findTeamByName(match.getTeam2()).orElseThrow(() -> new ElementNotFoundException("No existe un equipo con ese nombre"));
+
+        newMatch.setLeague(league);
+        newMatch.setTeam1(team1);
+        newMatch.setTeam2(team2);
+
+        league.setMatch(newMatch);
+        team1.setMatch(newMatch);
+        team2.setMatch(newMatch);
 
         restService.createMatch(newMatch);
 
