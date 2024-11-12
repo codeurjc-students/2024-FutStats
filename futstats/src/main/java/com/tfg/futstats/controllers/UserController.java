@@ -3,6 +3,8 @@ package com.tfg.futstats.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tfg.futstats.controllers.dtos.UserDTO;
@@ -62,6 +64,18 @@ public class UserController {
 
         return ResponseEntity.ok(new User(user.getName(), user.getPassword()));
     }
+
+    @GetMapping("/me")
+	public ResponseEntity<User> me(HttpServletRequest request) {
+		
+		Principal principal = request.getUserPrincipal();
+		
+		if(principal != null) {
+			return ResponseEntity.ok(userService.findUserByName(principal.getName()).orElseThrow());
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 
     @PutMapping("/users/{id}")
     public ResponseEntity<User> postUser(HttpServletRequest request, @PathVariable long id,@RequestBody UserDTO newUser) {

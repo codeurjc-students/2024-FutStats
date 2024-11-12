@@ -5,12 +5,14 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tfg.futstats.controllers.dtos.PlayerDTO;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 //As we want that this class be kept in the database we have to put this notation
 @Entity
@@ -33,6 +35,9 @@ public class Player {
     @JsonIgnore
     private Team team;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<PlayerMatch> playerMatches;
+
         // Relación de muchos a muchos con User
     @ManyToMany(mappedBy = "belongedPlayers")
     private List<User> user;
@@ -43,9 +48,9 @@ public class Player {
     // offensive
     private int totalShoots;
     private int totalGoals;
-    private double shootsPerMatch;
-    private double goalsPerMatch;
-    private double scoreAvg;
+    private float shootsPerMatch;
+    private float goalsPerMatch;
+    private float scoreAvg;
     private int penaltys;
     private int faultsReceived;
     private int offsides;
@@ -55,16 +60,16 @@ public class Player {
     private int recovers;
     private int duels;
     private int wonDuels;
-    private double duelAvg;
+    private float duelAvg;
     private int cards;
     private int yellowCards;
     private int redCards;
 
     // creation
     private int passes;
-    private double passesPerMatch;
+    private float passesPerMatch;
     private int goodPasses;
-    private double passesAvg;
+    private float passesAvg;
     private int shortPasses;
     private int longPasses;
     private int assists;
@@ -174,6 +179,29 @@ public class Player {
         this.team = null;
     }
 
+    // ------------------------------------ PLAYER MATCH   
+    // ------------------------------------
+
+    public void setPlayerMatch(PlayerMatch playerMatch) {
+        this.playerMatches.add(playerMatch);
+    }
+
+    public List<PlayerMatch> getPlayerMatches() {
+        return this.playerMatches;
+    }
+
+    public void setPlayerMatches(List<PlayerMatch> playerMatches) {
+        this.playerMatches = playerMatches;
+    }
+
+    public void deletePlayerMatch(PlayerMatch playerMatch){
+        this.playerMatches.remove(playerMatch);
+    }
+
+    public void deletePlayerMatches() {
+        this.playerMatches = null;
+    }
+
     // ------------------------------------------------------------------------
     public long getId() {
         return id;
@@ -231,33 +259,33 @@ public class Player {
         return totalGoals;
     }
 
-    public double getshootsPerMatch() {
+    public float getshootsPerMatch() {
         if (totalMatches == 0) {
             return 0;
         }
-        shootsPerMatch = (totalShoots / totalMatches);
+        shootsPerMatch = (float) totalShoots / totalMatches;
         return shootsPerMatch;
     }
 
     // As it is an average it only needs a getter it doesn´t need to be setted because
     // it`s calculated from other stadistics.
 
-    public double getGoalsPerMatch() {
+    public float getGoalsPerMatch() {
         if (totalMatches == 0) {
             return 0;
         }
-        goalsPerMatch = (totalGoals / totalMatches);
+        goalsPerMatch = (float) totalGoals / totalMatches;
         return goalsPerMatch;
     }
 
     // As it is an average it only needs a getter it doesn´t need to be setted because
     // it`s calculated from other stadistics.
 
-    public double getScoreAvg() {
+    public float getScoreAvg() {
         if (totalShoots == 0) {
             return 0;
         }
-        scoreAvg = (totalGoals / totalShoots);
+        scoreAvg = (float) totalGoals / totalShoots;
         return scoreAvg;
     }
 
@@ -319,22 +347,19 @@ public class Player {
         return wonDuels;
     }
 
-    public double getDuelAvg() {
+    public float getDuelAvg() {
         if (duels == 0) {
             return 0;
         }
-        duelAvg = (wonDuels / duels);
+        duelAvg = (float) wonDuels / duels;
         return duelAvg;
     }
 
     // As it is an average it only needs a getter it doesn´t need to be setted because
     // it`s calculated from other stadistics.
 
-    public void setCards(int cards) {
-        this.cards = cards;
-    }
-
     public int getCards() {
+        cards = redCards + yellowCards;
         return cards;
     }
 
@@ -362,11 +387,11 @@ public class Player {
         return passes;
     }
 
-    public double getPassesPerMatch() {
+    public float getPassesPerMatch() {
         if (totalMatches == 0) {
             return 0;
         }
-        passesPerMatch = (passes / totalMatches);
+        passesPerMatch = (float) passes / totalMatches;
         return passesPerMatch;
     }
 
@@ -381,11 +406,11 @@ public class Player {
         return goodPasses;
     }
 
-    public double getPassesAvg() {
+    public float getPassesAvg() {
         if (passes == 0) {
             return 0;
         }
-        passesAvg = (goodPasses / passes);
+        passesAvg = (float) goodPasses / passes;
         return passesAvg;
     }
 

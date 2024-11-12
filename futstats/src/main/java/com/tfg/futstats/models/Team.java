@@ -6,6 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tfg.futstats.controllers.dtos.TeamDTO;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -36,10 +37,10 @@ public class Team {
     @JsonIgnore
     private League league;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Match> matches;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Player> players;
 
         // Relación de muchos a muchos con User
@@ -64,7 +65,7 @@ public class Team {
     private int recovers;
     private int duels;
     private int wonDuels;
-    private float duelAvg;
+    private double duelAvg;
     private int yellowCards;
     private int redCards;
     private int cards;
@@ -86,7 +87,7 @@ public class Team {
     private int wonMatches;
     private int lostMatches;
     private int drawMatches;
-    private float wonMatchesAvg;
+    private double wonMatchesAvg;
 
     // Constructors
     public Team() {
@@ -358,7 +359,7 @@ public class Team {
         if (totalMatches == 0) {
             return 0;
         }
-        shootsPerMatch = (totalShoots / totalMatches);
+        shootsPerMatch = (double) (totalShoots / totalMatches);
         return shootsPerMatch;
     }
 
@@ -370,7 +371,7 @@ public class Team {
         if (totalMatches == 0) {
             return 0;
         }
-        goalsPerMatch = (totalGoals / totalMatches);
+        goalsPerMatch = (double) (totalGoals / totalMatches);
         return goalsPerMatch;
     }
 
@@ -379,10 +380,10 @@ public class Team {
     // it`s calculated from other stadistics.
 
     public double getScoreAvg() {
-        if (totalMatches == 0) {
+        if (totalShoots == 0) {
             return 0;
         }
-        scoreAvg = (totalGoals / totalShoots);
+        scoreAvg = (double) (totalGoals / totalShoots);
         return scoreAvg;
     }
 
@@ -450,7 +451,7 @@ public class Team {
         if (duels == 0) {
             return 0;
         }
-        duelAvg = (wonDuels / duels);
+        duelAvg = (double) (wonDuels / duels);
         return duelAvg;
     }
 
@@ -503,7 +504,7 @@ public class Team {
         if (totalMatches == 0) {
             return 0;
         }
-        passesPerMatch = (passes / totalMatches);
+        passesPerMatch = (double) (passes / totalMatches);
         return passesPerMatch;
     }
 
@@ -523,7 +524,7 @@ public class Team {
         if (passes == 0) {
             return 0;
         }
-        passesAvg = (goodPasses / passes);
+        passesAvg = (double) (goodPasses / passes);
         return passesAvg;
     }
 
@@ -607,7 +608,7 @@ public class Team {
         if (totalMatches == 0) {
             return 0;
         }
-        wonMatchesAvg = (wonMatches / totalMatches);
+        wonMatchesAvg = (double) (wonMatches / totalMatches);
         return wonMatchesAvg;
     }
 

@@ -98,6 +98,7 @@ public class TeamController {
         Team team = restService.findTeamById(id).orElseThrow(() -> new ElementNotFoundException("No existe un equipo con ese id"));
 
         restService.deleteTeam(team);
+        
         return ResponseEntity.ok(team);
 
         //if the team ins`t found we will never reach this point but for security we will let this here
@@ -116,7 +117,6 @@ public class TeamController {
 
         Team modTeam = new Team(newTeam);
 
-        modTeam.setId(id);
         restService.updateTeam(id, modTeam);
          return ResponseEntity.ok(team);
 

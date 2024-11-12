@@ -2,7 +2,8 @@ package com.tfg.futstats.controllers.dtos;
 
 public class PlayerMatchDTO {
 
-    private long id;
+   private long id;
+   private String player;
 
    // offensive
    private int shoots;
@@ -16,15 +17,12 @@ public class PlayerMatchDTO {
    private int recovers;
    private int duels;
    private int wonDuels;
-   private int lostDuels;
-   private int cards;
    private int yellowCards;
    private int redCards;
 
    // creation
    private int passes;
    private int goodPasses;
-   private int badPasses;
    private int shortPasses;
    private int longPasses;
    private int assists;
@@ -42,6 +40,14 @@ public class PlayerMatchDTO {
 
    public void setId(Long id) {
       this.id = id;
+   }
+
+   public String getPlayer(){
+      return this.player;
+   }
+
+   public void setPlayer(String player){
+      this.player = player;
    }
 
    public int getShoots() {
@@ -116,22 +122,6 @@ public class PlayerMatchDTO {
       return wonDuels;
    }
 
-   public void setLostDuels(int lostDuels) {
-      this.lostDuels = lostDuels;
-   }
-
-   public int getLostDuels() {
-      return lostDuels;
-   }
-
-   public void setCards(int cards) {
-      this.cards = cards;
-   }
-
-   public int getCards() {
-      return cards;
-   }
-
    public void setYellowCards(int yellowCards) {
       this.yellowCards = yellowCards;
    }
@@ -162,14 +152,6 @@ public class PlayerMatchDTO {
 
    public int getGoodPasses() {
       return goodPasses;
-   }
-
-   public void setBadPasses(int badPasses) {
-      this.badPasses = badPasses;
-   }
-
-   public int getBadPasses() {
-      return badPasses;
    }
 
    public void setShortPasses(int shortPasses) {

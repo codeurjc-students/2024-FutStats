@@ -98,12 +98,16 @@ public class RestService {
     }
 
     public void deleteTeam(Team team) {
+        League league = team.getLeague();
+        league.deleteTeam(team);
+        leagueRepository.save(league);
         teamRepository.delete(team);
     }
 
     public void updateTeam(long id, Team modTeam) {
         Team oldTeam = findTeamById(id).get();
 
+        modTeam.setId(id);
         modTeam.setLeague(oldTeam.getLeague());
         modTeam.setMatches(oldTeam.getMatches());
         modTeam.setPlayers(oldTeam.getPlayers());
@@ -148,6 +152,8 @@ public class RestService {
         team.setWonMatches(matchRepository.findWonMatchesByTeam(team.getName()));
         team.setLostMatches(matchRepository.findLostMatchesByTeam(team.getName()));
         team.setDrawMatches(matchRepository.findDrawMatchesByTeam(team.getName()));
+
+        teamRepository.save(team);
     }
 
     // --------------------------------------- PLAYER CRUD OPERATIONS
@@ -186,11 +192,31 @@ public class RestService {
     }
 
     public void deletePlayer(Player player) {
+        League league = player.getLeague();
+        Team team = player.getTeam();
+
+        league.deletePlayer(player);
+        team.deletePlayer(player);
+
+        leagueRepository.save(league);
+        teamRepository.save(team);
+    
         playerRepository.delete(player);
     }
 
-    public void deletePlayerMatch(PlayerMatch playerMatch) {
-        playerMatchRepository.delete(playerMatch);
+    public void deletePlayerMatch(PlayerMatch playerMatch,long id) {
+        Match match = matchRepository.findById(id).get();
+        Player player = playerMatch.getPlayer();
+
+        match.deletePlayerMatch(playerMatch);
+        player.deletePlayerMatch(playerMatch);
+
+        matchRepository.save(match);
+        playerRepository.save(player);
+
+        //Call the update team and match methods
+
+        playerMatchRepository.deleteById(playerMatch.getId());
     }
 
     public void updatePlayer(long id, Player modPlayer) {
@@ -203,36 +229,36 @@ public class RestService {
     }
 
     public void updatePlayerMatch(long id, PlayerMatch modPlayer) {
-        PlayerMatch oldPlayer = findPlayerMatchById(id).get();
-
-        modPlayer.setMatch(oldPlayer.getMatch());
-        modPlayer.setPlayer(oldPlayer.getPlayer());
-
         playerMatchRepository.save(modPlayer);
+        updatePlayerInfo(modPlayer.getPlayer());
+        updateMatchInfo(modPlayer.getMatch());
     }
 
     // To automaticaly update the players stats
     public void updatePlayerInfo(Player player) {
 
+        player.setTotalMatches(playerMatchRepository.matchesByPlayer(player.getId()));
         player.setTotalShoots(playerMatchRepository.shootsByPlayer(player.getId()));
         player.setTotalGoals(playerMatchRepository.goalsByPlayer(player.getId()));
         player.setPenaltys(playerMatchRepository.penaltysByPlayer(player.getId()));
         player.setFaultsReceived(playerMatchRepository.faultsReceivedByPlayer(player.getId()));
         player.setOffsides(playerMatchRepository.offsidesByPlayer(player.getId()));
-        player.setCommitedFaults(playerMatchRepository.offsidesByPlayer(player.getId()));
-        player.setRecovers(playerMatchRepository.offsidesByPlayer(player.getId()));
-        player.setDuels(playerMatchRepository.offsidesByPlayer(player.getId()));
-        player.setWonDuels(playerMatchRepository.offsidesByPlayer(player.getId()));
-        player.setYellowCards(playerMatchRepository.offsidesByPlayer(player.getId()));
-        player.setRedCards(playerMatchRepository.offsidesByPlayer(player.getId()));
-        player.setPasses(playerMatchRepository.offsidesByPlayer(player.getId()));
-        player.setGoodPasses(playerMatchRepository.offsidesByPlayer(player.getId()));
-        player.setShortPasses(playerMatchRepository.offsidesByPlayer(player.getId()));
-        player.setLongPasses(playerMatchRepository.offsidesByPlayer(player.getId()));
-        player.setAssists(playerMatchRepository.offsidesByPlayer(player.getId()));
-        player.setDribles(playerMatchRepository.offsidesByPlayer(player.getId()));
-        player.setCenters(playerMatchRepository.offsidesByPlayer(player.getId()));
-        player.setBallLosses(playerMatchRepository.offsidesByPlayer(player.getId()));
+        player.setCommitedFaults(playerMatchRepository.commitedFaultsByPlayer(player.getId()));
+        player.setRecovers(playerMatchRepository.recoversByPlayer(player.getId()));
+        player.setDuels(playerMatchRepository.duelsByPlayer(player.getId()));
+        player.setWonDuels(playerMatchRepository.wonDuelsByPlayer(player.getId()));
+        player.setYellowCards(playerMatchRepository.yellowCardsByPlayer(player.getId()));
+        player.setRedCards(playerMatchRepository.redCardsByPlayer(player.getId()));
+        player.setPasses(playerMatchRepository.passesByPlayer(player.getId()));
+        player.setGoodPasses(playerMatchRepository.goodPassesByPlayer(player.getId()));
+        player.setShortPasses(playerMatchRepository.shortPassesByPlayer(player.getId()));
+        player.setLongPasses(playerMatchRepository.longPassesByPlayer(player.getId()));
+        player.setAssists(playerMatchRepository.assistsByPlayer(player.getId()));
+        player.setDribles(playerMatchRepository.driblesByPlayer(player.getId()));
+        player.setCenters(playerMatchRepository.centersByPlayer(player.getId()));
+        player.setBallLosses(playerMatchRepository.ballLossesByPlayer(player.getId()));
+
+        playerRepository.save(player);
     }
 
     public Page<Player> findPlayersByUser(User u, Pageable pageable) {
@@ -263,6 +289,18 @@ public class RestService {
     }
 
     public void deleteMatch(Match match) {
+        League league = match.getLeague();
+        Team team1 = match.getTeam1();
+        Team team2 = match.getTeam2();
+
+        league.deleteMatch(match);
+        team1.deleteMatch(match);
+        team2.deleteMatch(match);
+
+        leagueRepository.save(league);
+        teamRepository.save(team1);
+        teamRepository.save(team2);
+
         matchRepository.delete(match);
     }
 
@@ -285,20 +323,20 @@ public class RestService {
         match.setPenaltys1(playerMatchRepository.penaltysByTeam(match.getId(),match.getTeam1().getId()));
         match.setFaultsReceived1(playerMatchRepository.faultsReceivedByTeam(match.getId(),match.getTeam1().getId()));
         match.setOffsides1(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam1().getId()));
-        match.setCommitedFaults1(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam1().getId()));
-        match.setRecovers1(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam1().getId()));
-        match.setDuels1(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam1().getId()));
-        match.setWonDuels1(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam1().getId()));
-        match.setYellowCards1(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam1().getId()));
-        match.setRedCards1(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam1().getId()));
-        match.setPasses1(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam1().getId()));
-        match.setGoodPasses1(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam1().getId()));
-        match.setShortPasses1(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam1().getId()));
-        match.setLongPasses1(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam1().getId()));
-        match.setAssists1(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam1().getId()));
-        match.setDribles1(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam1().getId()));
-        match.setCenters1(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam1().getId()));
-        match.setBallLosses1(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam1().getId()));
+        match.setCommitedFaults1(playerMatchRepository.commitedFaultsByTeam(match.getId(),match.getTeam1().getId()));
+        match.setRecovers1(playerMatchRepository.recoversByTeam(match.getId(),match.getTeam1().getId()));
+        match.setDuels1(playerMatchRepository.driblesByTeam(match.getId(),match.getTeam1().getId()));
+        match.setWonDuels1(playerMatchRepository.wonDuelsByTeam(match.getId(),match.getTeam1().getId()));
+        match.setYellowCards1(playerMatchRepository.yellowCardsByTeam(match.getId(),match.getTeam1().getId()));
+        match.setRedCards1(playerMatchRepository.redCardsByTeam(match.getId(),match.getTeam1().getId()));
+        match.setPasses1(playerMatchRepository.passesByTeam(match.getId(),match.getTeam1().getId()));
+        match.setGoodPasses1(playerMatchRepository.goodPassesByTeam(match.getId(),match.getTeam1().getId()));
+        match.setShortPasses1(playerMatchRepository.shortPassesByTeam(match.getId(),match.getTeam1().getId()));
+        match.setLongPasses1(playerMatchRepository.longPassesByTeam(match.getId(),match.getTeam1().getId()));
+        match.setAssists1(playerMatchRepository.assistsByTeam(match.getId(),match.getTeam1().getId()));
+        match.setDribles1(playerMatchRepository.driblesByTeam(match.getId(),match.getTeam1().getId()));
+        match.setCenters1(playerMatchRepository.centersByTeam(match.getId(),match.getTeam1().getId()));
+        match.setBallLosses1(playerMatchRepository.ballLossesByTeam(match.getId(),match.getTeam1().getId()));
         
         //team 2 update stats
         match.setShoots2(playerMatchRepository.shootsByTeam(match.getId(),match.getTeam2().getId()));
@@ -306,20 +344,22 @@ public class RestService {
         match.setPenaltys2(playerMatchRepository.penaltysByTeam(match.getId(),match.getTeam2().getId()));
         match.setFaultsReceived2(playerMatchRepository.faultsReceivedByTeam(match.getId(),match.getTeam2().getId()));
         match.setOffsides2(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam2().getId()));
-        match.setCommitedFaults2(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam2().getId()));
-        match.setRecovers2(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam2().getId()));
-        match.setDuels2(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam2().getId()));
-        match.setWonDuels2(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam2().getId()));
-        match.setYellowCards2(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam2().getId()));
-        match.setRedCards2(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam2().getId()));
-        match.setPasses2(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam2().getId()));
-        match.setGoodPasses2(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam2().getId()));
-        match.setShortPasses2(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam2().getId()));
-        match.setLongPasses2(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam2().getId()));
-        match.setAssists2(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam2().getId()));
-        match.setDribles2(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam2().getId()));
-        match.setCenters2(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam2().getId()));
-        match.setBallLosses2(playerMatchRepository.offsidesByTeam(match.getId(),match.getTeam2().getId()));
+        match.setCommitedFaults2(playerMatchRepository.commitedFaultsByTeam(match.getId(),match.getTeam2().getId()));
+        match.setRecovers2(playerMatchRepository.recoversByTeam(match.getId(),match.getTeam2().getId()));
+        match.setDuels2(playerMatchRepository.driblesByTeam(match.getId(),match.getTeam2().getId()));
+        match.setWonDuels2(playerMatchRepository.wonDuelsByTeam(match.getId(),match.getTeam2().getId()));
+        match.setYellowCards2(playerMatchRepository.yellowCardsByTeam(match.getId(),match.getTeam2().getId()));
+        match.setRedCards2(playerMatchRepository.redCardsByTeam(match.getId(),match.getTeam2().getId()));
+        match.setPasses2(playerMatchRepository.passesByTeam(match.getId(),match.getTeam2().getId()));
+        match.setGoodPasses2(playerMatchRepository.goodPassesByTeam(match.getId(),match.getTeam2().getId()));
+        match.setShortPasses2(playerMatchRepository.shortPassesByTeam(match.getId(),match.getTeam2().getId()));
+        match.setLongPasses2(playerMatchRepository.longPassesByTeam(match.getId(),match.getTeam2().getId()));
+        match.setAssists2(playerMatchRepository.assistsByTeam(match.getId(),match.getTeam2().getId()));
+        match.setDribles2(playerMatchRepository.driblesByTeam(match.getId(),match.getTeam2().getId()));
+        match.setCenters2(playerMatchRepository.centersByTeam(match.getId(),match.getTeam2().getId()));
+        match.setBallLosses2(playerMatchRepository.ballLossesByTeam(match.getId(),match.getTeam2().getId()));
+
+        matchRepository.save(match);
 
         updateTeamInfo(match.getTeam1());
         updateTeamInfo(match.getTeam2());

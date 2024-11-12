@@ -58,9 +58,7 @@ public class User {
 
     // Constructors
 
-    public User() {
-
-    }
+    public User() {}
 
     public User(String name, String password, String... roles) {
         this.name = name;

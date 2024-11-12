@@ -77,7 +77,7 @@ public class MatchController {
     // From this point the only one that can use this methods is the admin so we
     // have to create security for that
 
-    @PostMapping("/matchis")
+    @PostMapping("/matches")
     public ResponseEntity<Match> postMatches(HttpServletRequest request, @RequestBody MatchDTO match) {
 
         //We don`t need this because is redundant, is already controlled in SecurityConfig

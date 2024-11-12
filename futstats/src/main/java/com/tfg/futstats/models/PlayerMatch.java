@@ -9,13 +9,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
+
 @Entity
 public class PlayerMatch {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Auto generated ID
     private Long id;
-
     @ManyToOne
     @JsonIgnore
     private Player player;

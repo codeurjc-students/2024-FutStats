@@ -1,16 +1,19 @@
 package com.tfg.futstats.models;
 
 import java.sql.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tfg.futstats.controllers.dtos.MatchDTO;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 //As we want that this class be kept in the database we have to put this notation
 @Entity
@@ -32,6 +35,9 @@ public class Match {
     @ManyToOne
     @JsonIgnore
     private Team team2;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<PlayerMatch> playerMatches;
 
     // Match attributes
     private Date date;
@@ -259,6 +265,31 @@ public class Match {
 
     // team2 doesn`t need delete or update because there can´t be only one team in a
     // match and there can´t be team change in a single match
+
+    // ------------------------------------ PLAYER MATCH   
+    // ------------------------------------
+
+    public void setPlayerMatch(PlayerMatch playerMatch) {
+        this.playerMatches.add(playerMatch);
+    }
+
+    public List<PlayerMatch> getPlayerMatches() {
+        return this.playerMatches;
+    }
+
+    public void setPlayerMatches(List<PlayerMatch> playerMatches) {
+        this.playerMatches = playerMatches;
+    }
+
+    public void deletePlayerMatch(PlayerMatch playerMatch){
+        this.playerMatches.remove(playerMatch);
+    }
+
+    public void deletePlayerMatches() {
+        this.playerMatches = null;
+    }
+
+
     // ------------------------------------------------------------------------
     public long getId() {
         return id;

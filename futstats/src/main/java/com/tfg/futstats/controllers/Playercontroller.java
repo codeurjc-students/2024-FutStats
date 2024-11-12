@@ -11,6 +11,7 @@ import com.tfg.futstats.controllers.dtos.PlayerMatchDTO;
 import com.tfg.futstats.models.League;
 import com.tfg.futstats.models.Player;
 import com.tfg.futstats.models.Team;
+import com.tfg.futstats.models.Match;
 import com.tfg.futstats.models.PlayerMatch;
 import com.tfg.futstats.services.RestService;
 
@@ -164,8 +165,8 @@ public class Playercontroller {
         //return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/playersMatch")
-    public ResponseEntity<PlayerMatch> postPlayersMatch(HttpServletRequest request, @RequestBody PlayerMatchDTO playerMatch) {
+    @PostMapping("/matches/{id}/playersMatch")
+    public ResponseEntity<PlayerMatch> postPlayersMatch(HttpServletRequest request, @RequestBody PlayerMatchDTO playerMatch, @PathVariable long id) {
 
         //We don`t need this because is redundant, is already controlled in SecurityConfig
         /*if (!request.isUserInRole("admin")) {
@@ -173,6 +174,15 @@ public class Playercontroller {
         }*/
 
         PlayerMatch newPlayerMatch = new PlayerMatch(playerMatch);
+
+        Match match = restService.findMatchById(id).orElseThrow(() -> new ElementNotFoundException("No existe un partido con ese id"));
+        Player player = restService.findPlayerByName(playerMatch.getPlayer()).orElseThrow(() -> new ElementNotFoundException("No existe un jugador con ese nombre"));
+
+        newPlayerMatch.setMatch(match);
+        newPlayerMatch.setPlayer(player);
+
+        player.setPlayerMatch(newPlayerMatch);
+        match.setPlayerMatch(newPlayerMatch);
 
         restService.createPlayerMatch(newPlayerMatch);
 
@@ -182,7 +192,7 @@ public class Playercontroller {
         return ResponseEntity.created(location).body(newPlayerMatch);
     }
 
-    @DeleteMapping("/playersMatch/{id}")
+    @DeleteMapping("/matches/{matchId}/playersMatch/{id}")
     public ResponseEntity<PlayerMatch> deletePlayersMatch(HttpServletRequest request, @PathVariable long id) {
 
         //We don`t need this because is redundant, is already controlled in SecurityConfig
@@ -192,14 +202,14 @@ public class Playercontroller {
 
         PlayerMatch playerMatch = restService.findPlayerMatchById(id).orElseThrow(() -> new ElementNotFoundException("No existe el partido de ese jugador"));
 
-        restService.deletePlayerMatch(playerMatch);
+        restService.deletePlayerMatch(playerMatch,id);
         return ResponseEntity.ok(playerMatch);
 
         //if the player ins`t found we will never reach this point but for security we will let this here
         //return ResponseEntity.notFound().build();
     }
 
-    @PutMapping("/playersMatch/{id}")
+    @PutMapping("/matches/{matchId}/playersMatch/{id}")
     public ResponseEntity<PlayerMatch> putPlayersMatch(HttpServletRequest request, @PathVariable long id, @RequestBody PlayerMatchDTO newPlayerMatch) {
 
         //We don`t need this because is redundant, is already controlled in SecurityConfig
@@ -212,9 +222,8 @@ public class Playercontroller {
         PlayerMatch modPlayerMatch = new PlayerMatch(newPlayerMatch);
 
         modPlayerMatch.setId(id);
-
-        restService.updateMatchInfo(modPlayerMatch.getMatch());
-        restService.updatePlayerInfo(modPlayerMatch.getPlayer());
+        modPlayerMatch.setMatch(playerMatch.getMatch());
+        modPlayerMatch.setPlayer(playerMatch.getPlayer());
 
         restService.updatePlayerMatch(id, modPlayerMatch);
         return ResponseEntity.ok(playerMatch);
