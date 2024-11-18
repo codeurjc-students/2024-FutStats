@@ -56,7 +56,7 @@ public class SecurityConfig {
 
 		http.authenticationProvider(authenticationProvider());
 		http
-				.securityMatcher("/api/**")
+				.securityMatcher("https://localhost:8443/api/v1/**")
 				.exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt));
 
 		http.authorizeHttpRequests(authorize -> authorize

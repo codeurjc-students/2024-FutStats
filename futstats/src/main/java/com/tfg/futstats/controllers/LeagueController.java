@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import com.tfg.futstats.errors.ElementNotFoundException;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,13 +24,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.http.ResponseEntity;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/v1")
 public class LeagueController {
 
@@ -39,8 +39,8 @@ public class LeagueController {
     // ------------------------------- League CRUD operations
     // --------------------------------------------
     @GetMapping("/leagues")
-    public ResponseEntity<Page<League>> getLeagues(Pageable pageable) {
-        return ResponseEntity.ok(restService.findAllLeagues(PageRequest.of(pageable.getPageNumber(), 5)));
+    public ResponseEntity<List<League>> getLeagues() {
+        return ResponseEntity.ok(restService.findAllLeagues());
     }
 
     @GetMapping("/leagues/{id}")
@@ -50,7 +50,7 @@ public class LeagueController {
         return ResponseEntity.ok(league.orElseThrow(() -> new ElementNotFoundException("No existe una liga con ese id")));
     }
 
-    @GetMapping("/leagues/{name}")
+    @GetMapping("/leagues/name/{name}")
     public ResponseEntity<League> getLeagueByName(@PathVariable String name) {
         Optional<League> league = restService.findLeagueByName(name);
 

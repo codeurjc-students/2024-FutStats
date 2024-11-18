@@ -18,6 +18,7 @@ import com.tfg.futstats.repositories.PlayerMatchRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.Optional;
+import java.util.List;
 
 @Service
 public class RestService {
@@ -40,8 +41,8 @@ public class RestService {
     // --------------------------------------- LEAGUE CRUD OPERATIONS
     // ---------------------------------------
 
-    public Page<League> findAllLeagues(Pageable pageable) {
-        return leagueRepository.findAll(pageable);
+    public List<League> findAllLeagues() {
+        return leagueRepository.findAll();
     }
 
     public Optional<League> findLeagueById(long id) {
@@ -77,8 +78,8 @@ public class RestService {
     // --------------------------------------- TEAM CRUD OPERATIONS
     // ---------------------------------------
 
-    public Page<Team> findAllTeams(Pageable pageable) {
-        return teamRepository.findAll(pageable);
+    public List<Team> findAllTeams() {
+        return teamRepository.findAll();
     }
 
     public Optional<Team> findTeamById(long id) {
@@ -268,8 +269,8 @@ public class RestService {
     // --------------------------------------- MATCH CRUD OPERATIONS
     // ---------------------------------------
 
-    public Page<Match> findAllMatches(Pageable pageable) {
-        return matchRepository.findAll(pageable);
+    public List<Match> findAllMatches() {
+        return matchRepository.findAll();
     }
 
     public Optional<Match> findMatchById(long id) {

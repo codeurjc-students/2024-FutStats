@@ -24,8 +24,8 @@ public class DatabaseInitializer {
 	@PostConstruct
 	void init() throws IOException {
 
-		// Admin a = new Admin("admin", passwordEncoder.encode("pass"));
-		// ur.save(a);
+		User a = new User("admin", passwordEncoder.encode("pass"),"user","admin");
+		ur.save(a);
 
 		for (int i = 0; i < 10; i++) {
 

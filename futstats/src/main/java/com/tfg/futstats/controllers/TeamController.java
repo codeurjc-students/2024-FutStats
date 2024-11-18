@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.data.domain.Page;
@@ -37,8 +38,8 @@ public class TeamController {
     // ------------------------------- Team CRUD operations
     // --------------------------------------------
     @GetMapping("/teams")
-    public ResponseEntity<Page<Team>> getAllTeams(Pageable pageable) {
-        return ResponseEntity.ok(restService.findAllTeams(PageRequest.of(pageable.getPageNumber(),10)));
+    public ResponseEntity<List<Team>> getAllTeams() {
+        return ResponseEntity.ok(restService.findAllTeams());
     }
 
     @GetMapping("leagues/{leagueId}/teams")

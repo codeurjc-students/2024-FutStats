@@ -40,6 +40,7 @@ public class Match {
     private List<PlayerMatch> playerMatches;
 
     // Match attributes
+    private String name;
     private Date date;
     private String place;
 
@@ -94,6 +95,7 @@ public class Match {
     public Match(League league,
             Team team1,
             Team team2,
+            String name,
             Date date,
             String place,
             int shoots1,
@@ -139,6 +141,7 @@ public class Match {
             this.league = league;
             this.team1 = team1;
             this.team2 = team2;
+            this.name = name;
             this.date = date;
             this.place = place;
             this.shoots1 = shoots1;
@@ -297,6 +300,14 @@ public class Match {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName(){
+        return this.name;
+    }
+
+    public void setName(String name){
+        this.name = name;
     }
 
     public Date getDate() {

@@ -14,6 +14,7 @@ import com.tfg.futstats.services.RestService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,12 +26,14 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.Optional;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/v1")
 public class MatchController {
 
@@ -40,8 +43,8 @@ public class MatchController {
     // ------------------------------- Match CRUD operations
     // --------------------------------------------
     @GetMapping("/matches")
-    public ResponseEntity<Page<Match>> getMatches(Pageable pageable) {
-        return ResponseEntity.ok(restService.findAllMatches(PageRequest.of(pageable.getPageNumber(), 10)));
+    public ResponseEntity<List<Match>> getMatches() {
+        return ResponseEntity.ok(restService.findAllMatches());
     }
 
     @GetMapping("/matches/{id}")
@@ -91,9 +94,11 @@ public class MatchController {
         Team team1 = restService.findTeamByName(match.getTeam1()).orElseThrow(() -> new ElementNotFoundException("No existe un equipo con ese nombre"));
         Team team2 = restService.findTeamByName(match.getTeam2()).orElseThrow(() -> new ElementNotFoundException("No existe un equipo con ese nombre"));
 
+
         newMatch.setLeague(league);
         newMatch.setTeam1(team1);
         newMatch.setTeam2(team2);
+        newMatch.setName(team1.getName() +'/' + team2.getName());
 
         league.setMatch(newMatch);
         team1.setMatch(newMatch);
