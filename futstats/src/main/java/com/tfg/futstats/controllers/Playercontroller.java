@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import com.tfg.futstats.errors.ElementNotFoundException;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.Optional;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,6 +39,7 @@ import org.springframework.data.domain.Pageable;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/v1")
 public class Playercontroller {
 
@@ -46,8 +49,8 @@ public class Playercontroller {
     // ------------------------------- Player CRUD operations
     // --------------------------------------------
     @GetMapping("/players")
-    public ResponseEntity<Page<Player>> getAllPlayers(Pageable pageable) {
-        return ResponseEntity.ok(restService.findAllPlayers(PageRequest.of(pageable.getPageNumber(), 10)));
+    public ResponseEntity<List<Player>> getAllPlayers() {
+        return ResponseEntity.ok(restService.findAllPlayers());
     }
 
     @GetMapping("/leagues/{leaguesId}/players")
@@ -75,14 +78,14 @@ public class Playercontroller {
         return ResponseEntity.ok(restService.findPlayersByTeam(team.orElseThrow(() -> new ElementNotFoundException("no existe un equipo con ese id")),PageRequest.of(pageable.getPageNumber(), 5)));
     }
 
-    @GetMapping("/player/{id}")
+    @GetMapping("/players/{id}")
     public ResponseEntity<Player> getPlayer(@PathVariable long id) {
         Optional<Player> player = restService.findPlayerById(id);
 
         return ResponseEntity.ok(player.orElseThrow(() -> new ElementNotFoundException("No existe un jugador con ese id")));
     }
 
-    @GetMapping("/player/{name}")
+    @GetMapping("/players/name/{name}")
     public ResponseEntity<Player> getPlayerByName(@PathVariable String name) {
         Optional<Player> player = restService.findPlayerByName(name);
 

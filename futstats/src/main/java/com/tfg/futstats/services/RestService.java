@@ -160,8 +160,8 @@ public class RestService {
     // --------------------------------------- PLAYER CRUD OPERATIONS
     // ---------------------------------------
 
-    public Page<Player> findAllPlayers(Pageable pageable) {
-        return playerRepository.findAll(pageable);
+    public List<Player> findAllPlayers() {
+        return playerRepository.findAll();
     }
 
     public Optional<Player> findPlayerById(long id) {
