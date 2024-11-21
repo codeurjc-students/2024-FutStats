@@ -85,14 +85,16 @@ public class User {
         this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    // ------------------------------------ LEAGUE
+    // -------------------------------------
     public List<League> getLeagues() {
         return this.belongedLeagues;
     }
@@ -109,6 +111,8 @@ public class User {
         this.belongedLeagues.remove(league);
     }
 
+    // ------------------------------------ TEAM
+    // ------------------------------------
     public List<Team> getTeams() {
         return this.belongedTeams;
     }
@@ -125,6 +129,8 @@ public class User {
         this.belongedTeams.remove(team);
     }
 
+    // --------------------------------------- PLAYER
+    // --------------------------------
     public List<Player> getPlayers() {
         return this.belongedPlayers;
     }
@@ -141,6 +147,7 @@ public class User {
         this.belongedPlayers.remove(player);
     }
 
+    // --------------------------------
     public String getPassword() {
         return password;
     }

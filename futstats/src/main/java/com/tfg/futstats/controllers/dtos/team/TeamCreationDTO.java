@@ -1,6 +1,6 @@
-package com.tfg.futstats.controllers.dtos;
+package com.tfg.futstats.controllers.dtos.team;
 
-public class TeamDTO {
+public class TeamCreationDTO {
     // dto attributes
     private long id;
     private String name;
@@ -32,7 +32,7 @@ public class TeamDTO {
     private int redCards;
 
     // creation
-    private double possesion;
+    private float possesion;
     private int passes;
     private int goodPasses;
     private int shortPasses;
@@ -41,6 +41,13 @@ public class TeamDTO {
     private int dribles;
     private int centers;
     private int ballLosses;
+
+    //Goalkeeper
+    private int shootsReceived;
+    private int goalsConceded;
+    private int saves;
+    private int outBoxSaves;
+    private int inBoxSaves;
 
     // matches
     private int wonMatches;
@@ -227,11 +234,11 @@ public class TeamDTO {
         this.redCards = redCards;
     }
 
-    public double getPossesion() {
+    public float getPossesion() {
         return possesion;
     }
 
-    public void setPossesion(double possesion) {
+    public void setPossesion(float possesion) {
         this.possesion = possesion;
     }
 
@@ -297,6 +304,46 @@ public class TeamDTO {
 
     public void setBallLosses(int ballLosses) {
         this.ballLosses = ballLosses;
+    }
+
+    public int getShootsReceived(){
+        return shootsReceived;
+    }
+
+    public void getShootsReceived(int shootsReceived){
+        this.shootsReceived = shootsReceived;
+    }
+
+    public int getGoalsConceded(){
+        return goalsConceded;
+    }
+
+    public void setGoalsConceded(int goalsConceded){
+        this.goalsConceded = goalsConceded;
+    }
+
+    public int getSaves(){
+        return saves;
+    }
+
+    public void setSaves(int saves){
+        this.saves = saves;
+    }
+
+    public int getOutBoxSaves(){
+        return outBoxSaves;
+    }
+
+    public void setOutBoxSaves(int outBoxSaves){
+        this.outBoxSaves = outBoxSaves;
+    }
+
+    public int getInBoxSaves(){
+        return inBoxSaves;
+    }
+
+    public void setInBoxSaves(int inBoxSaves){
+        this.inBoxSaves = inBoxSaves;
     }
 
     public int getWonMatches() {

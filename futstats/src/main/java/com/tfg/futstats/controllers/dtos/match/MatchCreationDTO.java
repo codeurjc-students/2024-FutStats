@@ -1,59 +1,67 @@
-package com.tfg.futstats.controllers.dtos;
+package com.tfg.futstats.controllers.dtos.match;
 
-import java.sql.Date;
-
-public class MatchDTO {
+public class MatchCreationDTO {
     // dto attributes
     private long id;
     private String league;
     private String team1;
     private String team2;
-    private Date date;
+    private String name;
     private String place;
 
-   // Team1 attributes
-   private int shoots1;
-   private int scores1;
-   private int penaltys1;
-   private int faultsReceived1;
-   private int offsides1;
-   private int commitedFaults1;
-   private int recovers1;
-   private int duels1;
-   private int wonDuels1;
-   private int yellowCards1;
-   private int redCards1;
-   private double possesion1;
-   private int passes1;
-   private int goodPasses1;
-   private int shortPasses1;
-   private int longPasses1;
-   private int assists1;
-   private int dribles1;
-   private int centers1;
-   private int ballLosses1;
+    // Team1 attributes
+    private int shoots1;
+    private int scores1;
+    private int penaltys1;
+    private int faultsReceived1;
+    private int offsides1;
+    private int commitedFaults1;
+    private int recovers1;
+    private int duels1;
+    private int wonDuels1;
+    private int yellowCards1;
+    private int redCards1;
+    private double possesion1;
+    private int passes1;
+    private int goodPasses1;
+    private int shortPasses1;
+    private int longPasses1;
+    private int assists1;
+    private int dribles1;
+    private int centers1;
+    private int ballLosses1;
+    private int shootsReceived1;
+    private int goalsConceded1;
+    private int saves1;
+    private int outBoxSaves1;
+    private int inBoxSaves1;
 
-   // Team2 attributes
-   private int shoots2;
-   private int scores2;
-   private int penaltys2;
-   private int faultsReceived2;
-   private int offsides2;
-   private int commitedFaults2;
-   private int recovers2;
-   private int duels2;
-   private int wonDuels2;
-   private int yellowCards2;
-   private int redCards2;
-   private double possesion2;
-   private int passes2;
-   private int goodPasses2;
-   private int shortPasses2;
-   private int longPasses2;
-   private int assists2;
-   private int dribles2;
-   private int centers2;
-   private int ballLosses2;
+    // Team2 attributes
+    private int shoots2;
+    private int scores2;
+    private int penaltys2;
+    private int faultsReceived2;
+    private int offsides2;
+    private int commitedFaults2;
+    private int recovers2;
+    private int duels2;
+    private int wonDuels2;
+    private int yellowCards2;
+    private int redCards2;
+    private double possesion2;
+    private int passes2;
+    private int goodPasses2;
+    private int shortPasses2;
+    private int longPasses2;
+    private int assists2;
+    private int dribles2;
+    private int centers2;
+    private int ballLosses2;
+    private int shootsReceived2;
+    private int goalsConceded2;
+    private int saves2;
+    private int outBoxSaves2;
+    private int inBoxSaves2;
 
     // We dont put the averages here because we only need the stadistics from were
     // it`s made
@@ -91,19 +99,18 @@ public class MatchDTO {
         this.team2 = team2;
     }
 
-    public Date getDate() {
-        return date;
+    public String getName() {
+        return name;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setName(String name) {
+        this.name = name;
     }
-
     public String getPlace() {
         return place;
     }
 
-    public void setPlace(String place) {
+    public void setpalce(String place) {
         this.place = place;
     }
 
@@ -123,23 +130,19 @@ public class MatchDTO {
         this.scores1 = scores1;
     }
 
-    public int getPenaltys1()
-    {
+    public int getPenaltys1() {
         return penaltys1;
     }
 
-    public void setPenaltys1(int penaltys)
-    {
+    public void setPenaltys1(int penaltys) {
         this.penaltys1 = penaltys;
     }
 
-    public int getFaultsReceived1()
-    {
+    public int getFaultsReceived1() {
         return faultsReceived1;
     }
 
-    public void setFaultsReceived1(int faultsReceived)
-    {
+    public void setFaultsReceived1(int faultsReceived) {
         this.faultsReceived1 = faultsReceived;
     }
 
@@ -151,23 +154,19 @@ public class MatchDTO {
         this.offsides1 = offsides1;
     }
 
-    public int getCommitedFaults1()
-    {
+    public int getCommitedFaults1() {
         return commitedFaults1;
     }
 
-    public void setCommitedFaults1(int commitedFaults)
-    {
+    public void setCommitedFaults1(int commitedFaults) {
         this.commitedFaults1 = commitedFaults;
     }
 
-    public int getRecovers1()
-    {
+    public int getRecovers1() {
         return recovers1;
     }
 
-    public void setRecovers1(int recovers)
-    {
+    public void setRecovers1(int recovers) {
         this.recovers1 = recovers;
     }
 
@@ -275,6 +274,46 @@ public class MatchDTO {
         this.ballLosses1 = ballLosses1;
     }
 
+    public int getShootsReceived1() {
+        return shootsReceived1;
+    }
+
+    public void getShootsReceived1(int shootsReceived) {
+        this.shootsReceived1 = shootsReceived;
+    }
+
+    public int getGoalsConceded1() {
+        return goalsConceded1;
+    }
+
+    public void setGoalsConceded1(int goalsConceded) {
+        this.goalsConceded1 = goalsConceded;
+    }
+
+    public int getSaves1() {
+        return saves1;
+    }
+
+    public void setSaves1(int saves) {
+        this.saves1 = saves;
+    }
+
+    public int getOutBoxSaves1() {
+        return outBoxSaves1;
+    }
+
+    public void setOutBoxSaves1(int outBoxSaves) {
+        this.outBoxSaves1 = outBoxSaves;
+    }
+
+    public int getInBoxSaves1() {
+        return inBoxSaves1;
+    }
+
+    public void setInBoxSaves1(int inBoxSaves) {
+        this.inBoxSaves1 = inBoxSaves;
+    }
+
     // --------------------------------------- TEAM 2
     // --------------------------------
 
@@ -294,23 +333,19 @@ public class MatchDTO {
         this.scores2 = scores1;
     }
 
-    public int getPenaltys2()
-    {
+    public int getPenaltys2() {
         return penaltys2;
     }
 
-    public void setPenaltys2(int penaltys)
-    {
+    public void setPenaltys2(int penaltys) {
         this.penaltys2 = penaltys;
     }
 
-    public int getFaultsReceived2()
-    {
+    public int getFaultsReceived2() {
         return faultsReceived2;
     }
 
-    public void setFaultsReceived2(int faultsReceived)
-    {
+    public void setFaultsReceived2(int faultsReceived) {
         this.faultsReceived2 = faultsReceived;
     }
 
@@ -322,23 +357,19 @@ public class MatchDTO {
         this.offsides2 = offsides1;
     }
 
-    public int getCommitedFaults2()
-    {
+    public int getCommitedFaults2() {
         return commitedFaults2;
     }
 
-    public void setCommitedFaults2(int commitedFaults)
-    {
+    public void setCommitedFaults2(int commitedFaults) {
         this.commitedFaults2 = commitedFaults;
     }
 
-    public int getRecovers2()
-    {
+    public int getRecovers2() {
         return recovers2;
     }
 
-    public void setRecovers2(int recovers)
-    {
+    public void setRecovers2(int recovers) {
         this.recovers2 = recovers;
     }
 
@@ -444,5 +475,45 @@ public class MatchDTO {
 
     public void setBallLosses2(int ballLosses2) {
         this.ballLosses2 = ballLosses2;
+    }
+
+    public int getShootsReceived2() {
+        return shootsReceived2;
+    }
+
+    public void getShootsReceived2(int shootsReceived) {
+        this.shootsReceived2 = shootsReceived;
+    }
+
+    public int getGoalsConceded2() {
+        return goalsConceded2;
+    }
+
+    public void setGoalsConceded2(int goalsConceded) {
+        this.goalsConceded2 = goalsConceded;
+    }
+
+    public int getSaves2() {
+        return saves2;
+    }
+
+    public void setSaves2(int saves) {
+        this.saves2 = saves;
+    }
+
+    public int getOutBoxSaves2() {
+        return outBoxSaves2;
+    }
+
+    public void setOutBoxSaves2(int outBoxSaves) {
+        this.outBoxSaves2 = outBoxSaves;
+    }
+
+    public int getInBoxSaves2() {
+        return inBoxSaves2;
+    }
+
+    public void setInBoxSaves2(int inBoxSaves) {
+        this.inBoxSaves2 = inBoxSaves;
     }
 }

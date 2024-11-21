@@ -1,7 +1,7 @@
 package com.tfg.futstats.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tfg.futstats.controllers.dtos.PlayerMatchDTO;
+import com.tfg.futstats.controllers.dtos.player.PlayerMatchDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -48,6 +48,13 @@ public class PlayerMatch {
     private int centers;
     private int ballLosses;
 
+    //Goalkeeper
+    private int shootsReceived;
+    private int goalsConceded;
+    private int saves;
+    private int outBoxSaves;
+    private int inBoxSaves;
+
     // Constructors
     public PlayerMatch() {
     }
@@ -74,7 +81,12 @@ public class PlayerMatch {
             int assists,
             int dribles,
             int centers,
-            int ballLosses) {
+            int ballLosses,
+            int shootsReceived,
+            int goalsConceded,
+            int saves,
+            int outBoxSaves,
+            int inBoxSaves) {
         this.shoots = shoots;
         this.goals = goals;
         this.penaltys = penaltys;
@@ -94,6 +106,11 @@ public class PlayerMatch {
         this.dribles = dribles;
         this.centers = centers;
         this.ballLosses = ballLosses;
+        this.shootsReceived = shootsReceived;
+        this.goalsConceded = goalsConceded;
+        this.saves = saves;
+        this.outBoxSaves = outBoxSaves;
+        this.inBoxSaves = inBoxSaves;
     }
 
     public PlayerMatch(PlayerMatchDTO player) {
@@ -116,6 +133,11 @@ public class PlayerMatch {
         this.dribles = player.getDribles();
         this.centers = player.getCenters();
         this.ballLosses = player.getBallLosses();
+        this.shootsReceived = player.getShootsReceived();
+        this.goalsConceded = player.getGoalsConceded();
+        this.saves = player.getSaves();
+        this.outBoxSaves = player.getOutBoxSaves();
+        this.inBoxSaves = player.getInBoxSaves();
     }
 
     public long getId() {
@@ -142,155 +164,195 @@ public class PlayerMatch {
         this.match = match;
     }
 
+    public int getShoots() {
+        return shoots;
+    }
+
     public void setShoots(int shoots) {
         this.shoots = shoots;
     }
 
-    public int getShoots() {
-        return shoots;
+    public int getGoals() {
+        return goals;
     }
 
     public void setGoals(int goals) {
         this.goals = goals;
     }
 
-    public int getlGoals() {
-        return goals;
+    public int getPenaltys() {
+        return penaltys;
     }
 
     public void setPenaltys(int penaltys) {
         this.penaltys = penaltys;
     }
 
-    public int getPenaltys() {
-        return penaltys;
+    public int getFaultsReceived() {
+        return faultsReceived;
     }
 
     public void setFaultsReceived(int faultsReceived) {
         this.faultsReceived = faultsReceived;
     }
 
-    public int getFaultsReceived() {
-        return faultsReceived;
+    public int getOffsides() {
+        return offsides;
     }
 
     public void setOffsides(int offsides) {
         this.offsides = offsides;
     }
 
-    public int getOffsides() {
-        return offsides;
+    public int getCommitedFaults() {
+        return commitedFaults;
     }
 
     public void setCommitedFaults(int commitedFaults) {
         this.commitedFaults = commitedFaults;
     }
 
-    public int getCommitedFaults() {
-        return commitedFaults;
+    public int getRecovers() {
+        return recovers;
     }
 
     public void setRecovers(int recovers) {
         this.recovers = recovers;
     }
 
-    public int getRecovers() {
-        return recovers;
+    public int getDuels() {
+        return duels;
     }
 
     public void setDuels(int duels) {
         this.duels = duels;
     }
 
-    public int getDuels() {
-        return duels;
+    public int getWonDuels() {
+        return wonDuels;
     }
 
     public void setWonDuels(int wonDuels) {
         this.wonDuels = wonDuels;
     }
 
-    public int getWonDuels() {
-        return wonDuels;
+    public int getYellowCards() {
+        return yellowCards;
     }
 
     public void setYellowCards(int yellowCards) {
         this.yellowCards = yellowCards;
     }
 
-    public int getYellowCards() {
-        return yellowCards;
+    public int getRedCards() {
+        return redCards;
     }
 
     public void setRedCards(int redCards) {
         this.redCards = redCards;
     }
 
-    public int getRedCards() {
-        return redCards;
+    public int getPasses() {
+        return passes;
     }
 
     public void setPasses(int passes) {
         this.passes = passes;
     }
 
-    public int getPasses() {
-        return passes;
+    public int getGoodPasses() {
+        return goodPasses;
     }
 
     public void setGoodPasses(int goodPasses) {
         this.goodPasses = goodPasses;
     }
 
-    public int getGoodPasses() {
-        return goodPasses;
+    public int getShortPasses() {
+        return shortPasses;
     }
 
     public void setShortPasses(int shortPasses) {
         this.shortPasses = shortPasses;
     }
 
-    public int getShortPasses() {
-        return shortPasses;
+    public int getLongPasses() {
+        return longPasses;
     }
 
     public void setLongPasses(int longPasses) {
         this.longPasses = longPasses;
     }
 
-    public int getLongPasses() {
-        return longPasses;
+    public int getAssists() {
+        return assists;
     }
 
     public void setAssists(int assists) {
         this.assists = assists;
     }
 
-    public int getAssists() {
-        return assists;
+    public int getDribles() {
+        return dribles;
     }
 
     public void setDribles(int dribles) {
         this.dribles = dribles;
     }
 
-    public int getDribles() {
-        return dribles;
+    public int getCenters() {
+        return centers;
     }
 
     public void setCenters(int centers) {
         this.centers = centers;
     }
 
-    public int getCenters() {
-        return centers;
+    public int getBallLosses() {
+        return ballLosses;
     }
 
     public void setBallLosses(int ballLosses) {
         this.ballLosses = ballLosses;
     }
 
-    public int getBallLosses() {
-        return ballLosses;
+    public int getShootsReceived(){
+        return shootsReceived;
+    }
+
+    public void setShootsReceived(int shootsReceived){
+        this.shootsReceived = shootsReceived;
+    }
+
+    public int getGoalsConceded(){
+        return goalsConceded;
+    }
+
+    public void setGoalsConceded(int goalsConceded){
+        this.goalsConceded = goalsConceded;
+    }
+
+    public int getSaves(){
+        return saves;
+    }
+
+    public void setSaves(int saves){
+        this.saves = saves;
+    }
+
+    public int getOutBoxSaves(){
+        return outBoxSaves;
+    }
+
+    public void setOutBoxSaves(int outBoxSaves){
+        this.outBoxSaves = outBoxSaves;
+    }
+
+    public int getInBoxSaves(){
+        return inBoxSaves;
+    }
+
+    public void setInBoxSaves(int inBoxSaves){
+        this.inBoxSaves = inBoxSaves;
     }
 }

@@ -1,9 +1,8 @@
 package com.tfg.futstats.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.tfg.futstats.models.Player;
@@ -15,9 +14,9 @@ public interface PlayerRepository extends JpaRepository<Player, Long> {
     // Find a player by his name.
     Optional<Player> findByNameIgnoreCase(String name);
 
-    Page<Player> findAllByUser(User u, Pageable pageable);
+    List<Player> findAllByUsers(User user);
 
-    Page<Player> findPlayersByLeague(League league, Pageable pageable);
+    List<Player> findPlayersByLeague(League league);
 
-    Page<Player> findPlayersByTeam(Team team, Pageable pageable);
+    List<Player> findPlayersByTeam(Team team);
 }

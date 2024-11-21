@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tfg.futstats.controllers.dtos.TeamDTO;
+import com.tfg.futstats.controllers.dtos.team.TeamCreationDTO;
+import com.tfg.futstats.controllers.dtos.team.TeamUpdateDTO;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -45,7 +46,7 @@ public class Team {
 
         // Relación de muchos a muchos con User
     @ManyToMany(mappedBy = "belongedTeams")
-    private List<User> user;
+    private List<User> users;
     
     // team stats
     private int totalMatches;
@@ -53,9 +54,9 @@ public class Team {
     // offensive
     private int totalShoots;
     private int totalGoals;
-    private double shootsPerMatch;
-    private double goalsPerMatch;
-    private double scoreAvg;
+    private float shootsPerMatch;
+    private float goalsPerMatch;
+    private float scoreAvg;
     private int penaltys;
     private int faultsReceived;
     private int offsides;
@@ -65,17 +66,17 @@ public class Team {
     private int recovers;
     private int duels;
     private int wonDuels;
-    private double duelAvg;
+    private float duelAvg;
     private int yellowCards;
     private int redCards;
     private int cards;
 
     // creation
-    private double possesion;
+    private float possesion;
     private int passes;
-    private double passesPerMatch;
+    private float passesPerMatch;
     private int goodPasses;
-    private double passesAvg;
+    private float passesAvg;
     private int shortPasses;
     private int longPasses;
     private int assists;
@@ -83,11 +84,20 @@ public class Team {
     private int centers;
     private int ballLosses;
 
+    //Goalkeeper
+    private int shootsReceived;
+    private int goalsConceded;
+    private float goalsReceivedPerMatch;
+    private int saves;
+    private float savesAvg;
+    private int outBoxSaves;
+    private int inBoxSaves;
+
     // matches
     private int wonMatches;
     private int lostMatches;
     private int drawMatches;
-    private double wonMatchesAvg;
+    private float wonMatchesAvg;
 
     // Constructors
     public Team() {
@@ -116,7 +126,7 @@ public class Team {
             int yellowCards,
             int redCards,
             int cards,
-            double possesion,
+            float possesion,
             int passes,
             int goodPasses,
             int shortPasses,
@@ -125,6 +135,11 @@ public class Team {
             int dribles,
             int centers,
             int ballLosses,
+            int shootsReceived,
+            int goalsConceded,
+            int saves,
+            int outBoxSaves,
+            int inBoxSaves,
             int playedMatches,
             int wonMatches,
             int lostMatches,
@@ -161,12 +176,17 @@ public class Team {
         this.dribles = dribles;
         this.centers = centers;
         this.ballLosses = ballLosses;
+        this.shootsReceived = shootsReceived;
+        this.goalsConceded = goalsConceded;
+        this.saves = saves;
+        this.outBoxSaves = outBoxSaves;
+        this.inBoxSaves = inBoxSaves;
         this.wonMatches = wonMatches;
         this.lostMatches = lostMatches;
         this.drawMatches = drawMatches;
     }
 
-    public Team(TeamDTO team) {
+    public Team(TeamCreationDTO team) {
         this.name = team.getName();
         this.trophies = team.getTrophies();
         this.nationality = team.getNationality();
@@ -196,14 +216,28 @@ public class Team {
         this.dribles = team.getDribles();
         this.centers = team.getCenters();
         this.ballLosses = team.getBallLosses();
+        this.shootsReceived = team.getShootsReceived();
+        this.goalsConceded = team.getGoalsConceded();
+        this.saves = team.getSaves();
+        this.outBoxSaves = team.getOutBoxSaves();
+        this.inBoxSaves = team.getInBoxSaves();
         this.wonMatches = team.getWonMatches();
         this.lostMatches = team.getLostMatches();
         this.drawMatches = team.getDrawMatches();
     }
 
+    public Team(TeamUpdateDTO team) {
+        this.name = team.getName();
+        this.trophies = team.getTrophies();
+        this.nationality = team.getNationality();
+        this.trainer = team.getTrainer();
+        this.secondTrainer = team.getSecondTrainer();
+        this.president = team.getPresident();
+        this.stadium = team.getStadium();
+    }
+
     // Getters & Setters
     // ------------------------------------ LEAGUE
-    // -------------------------------------
     public League getLeague() {
         return this.league;
     }
@@ -221,7 +255,6 @@ public class Team {
     }
 
     // --------------------------------------- MATCH
-    // ---------------------------------
     public List<Match> getMatches() {
         return this.matches;
     }
@@ -240,7 +273,6 @@ public class Team {
     }
 
     // --------------------------------------- PLAYER
-    // --------------------------------
     public List<Player> getPlayers() {
         return this.players;
     }
@@ -256,6 +288,24 @@ public class Team {
 
     public void deletePlayer(Player player) {
         this.players.remove(player);
+    }
+
+    // --------------------------------------- USER 
+    public List<User> getUsers() {
+        return this.users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public void setUser(User user) {
+        this.users.add(user);
+        user.setTeam(this);
+    }
+
+    public void deleteUser(User user) {
+        this.users.remove(user);
     }
 
     // ------------------------------------------------------------------------
@@ -359,7 +409,7 @@ public class Team {
         if (totalMatches == 0) {
             return 0;
         }
-        shootsPerMatch = (double) (totalShoots / totalMatches);
+        shootsPerMatch = (float) (totalShoots / totalMatches);
         return shootsPerMatch;
     }
 
@@ -371,7 +421,7 @@ public class Team {
         if (totalMatches == 0) {
             return 0;
         }
-        goalsPerMatch = (double) (totalGoals / totalMatches);
+        goalsPerMatch = (float) (totalGoals / totalMatches);
         return goalsPerMatch;
     }
 
@@ -383,7 +433,7 @@ public class Team {
         if (totalShoots == 0) {
             return 0;
         }
-        scoreAvg = (double) (totalGoals / totalShoots);
+        scoreAvg = (float) (totalGoals / totalShoots);
         return scoreAvg;
     }
 
@@ -451,7 +501,7 @@ public class Team {
         if (duels == 0) {
             return 0;
         }
-        duelAvg = (double) (wonDuels / duels);
+        duelAvg = (float) (wonDuels / duels);
         return duelAvg;
     }
 
@@ -484,11 +534,11 @@ public class Team {
     // because
     // it`s calculated from other stadistics.
 
-    public double getPossesion() {
+    public float getPossesion() {
         return possesion;
     }
 
-    public void setPossesion(double possesion) {
+    public void setPossesion(float possesion) {
         this.possesion = possesion;
     }
 
@@ -504,7 +554,7 @@ public class Team {
         if (totalMatches == 0) {
             return 0;
         }
-        passesPerMatch = (double) (passes / totalMatches);
+        passesPerMatch = (float) (passes / totalMatches);
         return passesPerMatch;
     }
 
@@ -524,7 +574,7 @@ public class Team {
         if (passes == 0) {
             return 0;
         }
-        passesAvg = (double) (goodPasses / passes);
+        passesAvg = (float) (goodPasses / passes);
         return passesAvg;
     }
 
@@ -580,6 +630,62 @@ public class Team {
         this.ballLosses = ballLosses;
     }
 
+    public int getShootsReceived(){
+        return shootsReceived;
+    }
+
+    public void getShootsReceived(int shootsReceived){
+        this.shootsReceived = shootsReceived;
+    }
+
+    public int getGoalsConceded(){
+        return goalsConceded;
+    }
+
+    public void setGoalsConceded(int goalsConceded){
+        this.goalsConceded = goalsConceded;
+    }
+
+    public double getGoalsReceivedPerMatch() {
+        if (totalMatches == 0) {
+            return 0;
+        }
+        goalsReceivedPerMatch = (float) (goalsConceded / totalMatches);
+        return goalsReceivedPerMatch;
+    }
+
+    public int getSaves(){
+        return saves;
+    }
+
+    public void setSaves(int saves){
+        this.saves = saves;
+    }
+
+    public float getSavesAvg(){
+        if(shootsReceived == 0) {
+            return 0;
+        }
+        savesAvg = (float) saves / shootsReceived;
+        return savesAvg;
+    }
+
+    public int getOutBoxSaves(){
+        return outBoxSaves;
+    }
+
+    public void setOutBoxSaves(int outBoxSaves){
+        this.outBoxSaves = outBoxSaves;
+    }
+
+    public int getInBoxSaves(){
+        return inBoxSaves;
+    }
+
+    public void setInBoxSaves(int inBoxSaves){
+        this.inBoxSaves = inBoxSaves;
+    }
+
     public int getWonMatches() {
         return wonMatches;
     }
@@ -604,11 +710,11 @@ public class Team {
         this.drawMatches = drawMatches;
     }
 
-    public double getWonMatchesAvg() {
+    public float getWonMatchesAvg() {
         if (totalMatches == 0) {
             return 0;
         }
-        wonMatchesAvg = (double) (wonMatches / totalMatches);
+        wonMatchesAvg = (float) (wonMatches / totalMatches);
         return wonMatchesAvg;
     }
 

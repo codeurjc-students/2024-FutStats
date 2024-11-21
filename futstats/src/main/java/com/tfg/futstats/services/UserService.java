@@ -5,8 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
 
 import com.tfg.futstats.models.User;
 import com.tfg.futstats.repositories.UserRepository;
@@ -21,12 +20,12 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public Optional<User> findUserById(long id) {
-        return userRepository.findById(id);
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
     }
 
-    public Page<User> findAllUsers(Pageable pageable) {
-        return userRepository.findAll(pageable);
+    public Optional<User> findUserById(long id) {
+        return userRepository.findById(id);
     }
 
     public Optional<User> findUserByName(String userName) {

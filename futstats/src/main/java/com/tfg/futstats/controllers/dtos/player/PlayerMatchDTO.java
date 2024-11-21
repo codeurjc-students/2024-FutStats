@@ -1,4 +1,4 @@
-package com.tfg.futstats.controllers.dtos;
+package com.tfg.futstats.controllers.dtos.player;
 
 public class PlayerMatchDTO {
 
@@ -29,6 +29,13 @@ public class PlayerMatchDTO {
    private int dribles;
    private int centers;
    private int ballLosses;
+
+   //Goalkeeper
+   private int shootsReceived;
+   private int goalsConceded;
+   private int saves;
+   private int outBoxSaves;
+   private int inBoxSaves;
 
    // We dont put the averages here because we only need the stadistics from were
     // it`s made
@@ -201,4 +208,44 @@ public class PlayerMatchDTO {
    public int getBallLosses() {
       return ballLosses;
    }
+
+   public int getShootsReceived(){
+      return shootsReceived;
+  }
+
+  public void getShootsReceived(int shootsReceived){
+      this.shootsReceived = shootsReceived;
+  }
+
+  public int getGoalsConceded(){
+      return goalsConceded;
+  }
+
+  public void setGoalsConceded(int goalsConceded){
+      this.goalsConceded = goalsConceded;
+  }
+
+  public int getSaves(){
+      return saves;
+  }
+
+  public void setSaves(int saves){
+      this.saves = saves;
+  }
+
+  public int getOutBoxSaves(){
+      return outBoxSaves;
+  }
+
+  public void setOutBoxSaves(int outBoxSaves){
+      this.outBoxSaves = outBoxSaves;
+  }
+
+  public int getInBoxSaves(){
+      return inBoxSaves;
+  }
+
+  public void setInBoxSaves(int inBoxSaves){
+      this.inBoxSaves = inBoxSaves;
+  }
 }

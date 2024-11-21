@@ -1,4 +1,4 @@
-package com.tfg.futstats.controllers.dtos;
+package com.tfg.futstats.controllers.dtos.player;
 
 public class PlayerDTO {
    // dto attributes
@@ -8,6 +8,7 @@ public class PlayerDTO {
    private String name;
    private int age;
    private String nationality;
+   private String position;
 
    // Getters & setters
    public long getId() {
@@ -57,4 +58,12 @@ public class PlayerDTO {
    public String getNationality() {
       return nationality;
    }
+
+   public String getPosition(){
+      return position;
+  }
+
+  public void setPosition(String position){
+      this.position = position;
+  }
 }

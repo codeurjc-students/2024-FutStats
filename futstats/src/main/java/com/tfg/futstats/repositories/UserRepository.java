@@ -1,11 +1,12 @@
 package com.tfg.futstats.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import com.tfg.futstats.models.User;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
+import java.util.List;
+
 
 public interface UserRepository extends JpaRepository<User, Long> {
    // Find user by his name
@@ -13,5 +14,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
    Optional<User> findByNameIgnoreCase(String name);
 
-   Page<User> findAll(Pageable pageable);
+   List<User> findAll();
 }

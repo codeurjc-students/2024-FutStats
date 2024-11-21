@@ -1,6 +1,5 @@
 package com.tfg.futstats.models;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.tfg.futstats.controllers.dtos.LeagueDTO;
@@ -37,33 +36,27 @@ public class League {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Player> players;
 
-        // Relación de muchos a muchos con User
+    // Relación de muchos a muchos con User
     @ManyToMany(mappedBy = "belongedLeagues")
-    private List<User> user;
+    private List<User> users;
 
     // Constructors
     public League() {}
 
     public League(String name, String president, String nationality) {
-        this.teams = new ArrayList<Team>();
-        this.matches = new ArrayList<Match>();
-        this.players = new ArrayList<Player>();
         this.name = name;
         this.president = president;
         this.nationality = nationality;
     }
 
     public League(LeagueDTO league) {
-        this.teams = new ArrayList<Team>();
-        this.matches = new ArrayList<Match>();
-        this.players = new ArrayList<Player>();
         this.name = league.getName();
         this.president = league.getPresident();
         this.nationality = league.getNationality();
     }
 
     // Getters & Setters
-    // --------------------------------------- TEAM ----------------------------
+    // --------------------------------------- TEAM 
     public List<Team> getTeams() {
         return this.teams;
     }
@@ -82,7 +75,6 @@ public class League {
     }
 
     // --------------------------------------- MATCH
-    // ---------------------------------
     public List<Match> getMatches() {
         return this.matches;
     }
@@ -101,7 +93,6 @@ public class League {
     }
 
     // --------------------------------------- PLAYER
-    // --------------------------------
     public List<Player> getPlayers() {
         return this.players;
     }
@@ -117,6 +108,24 @@ public class League {
 
     public void deletePlayer(Player player) {
         this.players.remove(player);
+    }
+
+    // --------------------------------------- USER 
+    public List<User> getUsers() {
+        return this.users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public void setUser(User user) {
+        this.users.add(user);
+        user.setLeague(this);
+    }
+
+    public void deleteUser(User user) {
+        this.users.remove(user);
     }
 
     // ------------------------------------------------------------------------

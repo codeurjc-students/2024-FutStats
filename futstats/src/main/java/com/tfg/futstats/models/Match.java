@@ -1,12 +1,12 @@
 package com.tfg.futstats.models;
 
-import java.sql.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tfg.futstats.controllers.dtos.MatchDTO;
+import com.tfg.futstats.controllers.dtos.match.MatchCreationDTO;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -40,8 +40,8 @@ public class Match {
     private List<PlayerMatch> playerMatches;
 
     // Match attributes
+    @Column(unique = true)
     private String name;
-    private Date date;
     private String place;
 
     // Team1 attributes
@@ -64,7 +64,12 @@ public class Match {
     private int assists1;
     private int dribles1;
     private int centers1;
-    private int ballLosses1;
+    private int ballLosses1;   
+    private int shootsReceived1; 
+    private int goalsConceded1;
+    private int saves1;
+    private int outBoxSaves1;
+    private int inBoxSaves1;
 
     // Team2 attributes
     private int shoots2;
@@ -87,6 +92,11 @@ public class Match {
     private int dribles2;
     private int centers2;
     private int ballLosses2;
+    private int shootsReceived2;
+    private int goalsConceded2;
+    private int saves2;
+    private int outBoxSaves2;
+    private int inBoxSaves2;
 
     // Constructors
     public Match() {
@@ -96,7 +106,6 @@ public class Match {
             Team team1,
             Team team2,
             String name,
-            Date date,
             String place,
             int shoots1,
             int scores1,
@@ -118,6 +127,11 @@ public class Match {
             int dribles1,
             int centers1,
             int ballLosses1,
+            int shootsReceived1,
+            int goalsConceded1,
+            int saves1,
+            int outBoxSaves1,
+            int inBoxSaves1,
             int shoots2,
             int scores2,
             int penaltys2,
@@ -137,12 +151,16 @@ public class Match {
             int assists2,
             int dribles2,
             int centers2,
-            int ballLosses2) {
+            int ballLosses2,
+            int shootsReceived2,
+            int goalsConceded2,
+            int saves2,
+            int outBoxSaves2,
+            int inBoxSaves2) {
             this.league = league;
             this.team1 = team1;
             this.team2 = team2;
             this.name = name;
-            this.date = date;
             this.place = place;
             this.shoots1 = shoots1;
             this.scores1 = scores1;
@@ -164,6 +182,11 @@ public class Match {
             this.dribles1 = dribles1;
             this.centers1 = centers1;
             this.ballLosses1 = ballLosses1;
+            this.shootsReceived1 = shootsReceived1;
+            this.goalsConceded1 = goalsConceded1;
+            this.saves1 = saves1;
+            this.outBoxSaves1 = outBoxSaves1;
+            this.inBoxSaves1 = inBoxSaves1;
             this.shoots2 = shoots2;
             this.scores2 = scores2;
             this.penaltys2 = penaltys2;
@@ -184,11 +207,14 @@ public class Match {
             this.dribles2 = dribles2;
             this.centers2 = centers2;
             this.ballLosses2 = ballLosses2;
+            this.shootsReceived2 = shootsReceived2;
+            this.goalsConceded2 = goalsConceded2;
+            this.saves2 = saves2;
+            this.outBoxSaves2 = outBoxSaves2;
+            this.inBoxSaves2 = inBoxSaves2;
     }
 
-    public Match(MatchDTO match) {
-        this.date = match.getDate();
-        this.place = match.getPlace();
+    public Match(MatchCreationDTO match) {
         this.shoots1 = match.getShoots1();
         this.scores1 = match.getScores1();
         this.penaltys1 = match.getPenaltys1();
@@ -209,6 +235,11 @@ public class Match {
         this.dribles1 = match.getDribles1();
         this.centers1 = match.getCenters1();
         this.ballLosses1 = match.getBallLosses1();
+        this.shootsReceived1 = match.getShootsReceived1();
+        this.goalsConceded1 = match.getGoalsConceded1();
+        this.saves1 = match.getSaves1();
+        this.outBoxSaves1 = match.getOutBoxSaves1();
+        this.inBoxSaves1 = match.getInBoxSaves1();
         this.shoots2 = match.getShoots2();
         this.scores2 = match.getScores2();
         this.penaltys2 = match.getPenaltys2();
@@ -229,55 +260,54 @@ public class Match {
         this.dribles2 = match.getDribles2();
         this.centers2 = match.getCenters2();
         this.ballLosses2 = match.getBallLosses2();
+        this.shootsReceived2 = match.getShootsReceived2();
+        this.goalsConceded2 = match.getGoalsConceded2();
+        this.saves2 = match.getSaves2();
+        this.outBoxSaves2 = match.getOutBoxSaves2();
+        this.inBoxSaves2 = match.getInBoxSaves2();
     }
 
     // Getters & Setters
     // ------------------------------------ LEAGUE
-    // -------------------------------------
-    public void setLeague(League league) {
-        this.league = league;
-    }
-
     public League getLeague() {
         return this.league;
     }
+
+    public void setLeague(League league) {
+        this.league = league;
+    }
+    
     // league doesn´t need delete or update because it cannot be change
 
     // ------------------------------------ TEAM1
-    // -------------------------------------
-    public void setTeam1(Team team1) {
-        this.team1 = team1;
-    }
-
     public Team getTeam1() {
         return team1;
     }
 
+    public void setTeam1(Team team1) {
+        this.team1 = team1;
+    }
     // team1 doesn`t need delete or update because there can´t be only one team in a
     // match and there can´t be team change in a single match
-    // ------------------------------------ TEAM2
-    // -------------------------------------
-    public void setTeam2(Team team2) {
-        this.team2 = team2;
-    }
 
+    // ------------------------------------ TEAM2
     public Team getTeam2() {
         return this.team2;
     }
 
-
+    public void setTeam2(Team team2) {
+        this.team2 = team2;
+    }
     // team2 doesn`t need delete or update because there can´t be only one team in a
     // match and there can´t be team change in a single match
 
     // ------------------------------------ PLAYER MATCH   
-    // ------------------------------------
+    public List<PlayerMatch> getPlayerMatches() {
+        return this.playerMatches;
+    }
 
     public void setPlayerMatch(PlayerMatch playerMatch) {
         this.playerMatches.add(playerMatch);
-    }
-
-    public List<PlayerMatch> getPlayerMatches() {
-        return this.playerMatches;
     }
 
     public void setPlayerMatches(List<PlayerMatch> playerMatches) {
@@ -291,7 +321,6 @@ public class Match {
     public void deletePlayerMatches() {
         this.playerMatches = null;
     }
-
 
     // ------------------------------------------------------------------------
     public long getId() {
@@ -308,14 +337,6 @@ public class Match {
 
     public void setName(String name){
         this.name = name;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     public String getPlace() {
@@ -494,6 +515,46 @@ public class Match {
         this.ballLosses1 = ballLosses1;
     }
 
+    public int getShootsReceived1(){
+        return shootsReceived1;
+    }
+
+    public void getShootsReceived1(int shootsReceived){
+        this.shootsReceived1 = shootsReceived;
+    }
+
+    public int getGoalsConceded1(){
+        return goalsConceded1;
+    }
+
+    public void setGoalsConceded1(int goalsConceded){
+        this.goalsConceded1 = goalsConceded;
+    }
+
+    public int getSaves1(){
+        return saves1;
+    }
+
+    public void setSaves1(int saves){
+        this.saves1 = saves;
+    }
+
+    public int getOutBoxSaves1(){
+        return outBoxSaves1;
+    }
+
+    public void setOutBoxSaves1(int outBoxSaves){
+        this.outBoxSaves1 = outBoxSaves;
+    }
+
+    public int getInBoxSaves1(){
+        return inBoxSaves1;
+    }
+
+    public void setInBoxSaves1(int inBoxSaves){
+        this.inBoxSaves1 = inBoxSaves;
+    }
+
     public int getShoots2() {
         return shoots2;
     }
@@ -660,5 +721,45 @@ public class Match {
 
     public void setBallLosses2(int ballLosses2) {
         this.ballLosses2 = ballLosses2;
+    }
+
+    public int getShootsReceived2(){
+        return shootsReceived2;
+    }
+
+    public void getShootsReceived2(int shootsReceived){
+        this.shootsReceived2 = shootsReceived;
+    }
+
+    public int getGoalsConceded2(){
+        return goalsConceded2;
+    }
+
+    public void setGoalsConceded2(int goalsConceded){
+        this.goalsConceded2 = goalsConceded;
+    }
+
+    public int getSaves2(){
+        return saves2;
+    }
+
+    public void setSaves2(int saves){
+        this.saves2 = saves;
+    }
+
+    public int getOutBoxSaves2(){
+        return outBoxSaves2;
+    }
+
+    public void setOutBoxSaves2(int outBoxSaves){
+        this.outBoxSaves2 = outBoxSaves;
+    }
+
+    public int getInBoxSaves2(){
+        return inBoxSaves2;
+    }
+
+    public void setInBoxSaves2(int inBoxSaves){
+        this.inBoxSaves2 = inBoxSaves;
     }
 }
