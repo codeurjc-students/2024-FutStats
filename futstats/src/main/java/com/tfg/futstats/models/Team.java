@@ -39,13 +39,16 @@ public class Team {
     private League league;
 
     @ManyToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Match> matches;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Player> players;
 
         // Relación de muchos a muchos con User
     @ManyToMany(mappedBy = "belongedTeams")
+    @JsonIgnore
     private List<User> users;
     
     // team stats

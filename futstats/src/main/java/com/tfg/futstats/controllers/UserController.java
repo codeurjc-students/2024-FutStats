@@ -2,7 +2,6 @@ package com.tfg.futstats.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +25,6 @@ import com.tfg.futstats.services.UserService;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/v1/users")
 public class UserController {
 
@@ -46,18 +44,17 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<User> me(HttpServletRequest request) {
-    String name = request.getUserPrincipal().getName();
-
-    // Lanza una excepción si el usuario no se encuentra
-    User user = userService.findUserByName(name)
-                  .orElseThrow(() -> new ElementNotFoundException("Usuario no encontrado"));
-
-    return ResponseEntity.ok(user);
+        User user = userService.findUserByName(request.getUserPrincipal().getName())
+                .orElseThrow(()-> new ElementNotFoundException("No esta registrado"));
+        return ResponseEntity.ok(user);
+		
     }
 
     @PostMapping("/")
     public ResponseEntity<User> postUser(HttpServletRequest request, @RequestBody UserDTO user) {
-        //We don`t need this because is redundant, is already controlled in SecurityConfig
+        if (request.getUserPrincipal().getName() != null) {
+            return ResponseEntity.badRequest().build();
+        }
 
         userService.createUser(user.getName(), user.getPassword());
 
@@ -66,7 +63,6 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<User> putUser(HttpServletRequest request, @PathVariable long id,@RequestBody UserDTO newUser) {
-        //We don`t need this because is redundant, is already controlled in SecurityConfig
 
         if (!request.getUserPrincipal().getName().equals(userService.findUserById(id).get().getName())) {
             return ResponseEntity.badRequest().build();

@@ -3,6 +3,7 @@ package com.tfg.futstats.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tfg.futstats.controllers.dtos.UserDTO;
 
 import jakarta.persistence.Column;
@@ -11,14 +12,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class User {
 
     // User attributes
@@ -34,27 +32,26 @@ public class User {
 
     private List<String> roles;
 
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_leagues",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "league_id"))
     private List<League> belongedLeagues;
 
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_teams",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "team_id"))
     private List<Team> belongedTeams;
 
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_players",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "player_id"))
     private List<Player> belongedPlayers;
-
-    // If we will add more attributes in the future we have to add mappedBy in the
-    // other class that relate to, to inform JPA which attribute "connects" the
-    // entities
 
     // Constructors
 

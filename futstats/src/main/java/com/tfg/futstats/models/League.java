@@ -2,6 +2,7 @@ package com.tfg.futstats.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tfg.futstats.controllers.dtos.LeagueDTO;
 
 import jakarta.persistence.Entity;
@@ -28,16 +29,20 @@ public class League {
 
     // Realtions with other models in DB
     @OneToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Team> teams;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Match> matches;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Player> players;
 
     // Relación de muchos a muchos con User
     @ManyToMany(mappedBy = "belongedLeagues")
+    @JsonIgnore
     private List<User> users;
 
     // Constructors

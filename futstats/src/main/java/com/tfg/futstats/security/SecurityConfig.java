@@ -53,71 +53,60 @@ public class SecurityConfig {
 
     @Bean
 	public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
-
+		
 		http.authenticationProvider(authenticationProvider());
+		
 		http
-				.securityMatcher("https://localhost:8443/api/v1/**")
-				.exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt));
+			.securityMatcher("/api/**")
+			.exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt));
+		
+		http
+			.authorizeHttpRequests(authorize -> authorize
+                    // PRIVATE ENDPOINTS
+                    .requestMatchers(HttpMethod.POST,"/api/v1/leagues/**").hasRole("admin")
+                    .requestMatchers(HttpMethod.PUT,"/api/v1/leagues/**").hasRole("admin")
+                    .requestMatchers(HttpMethod.DELETE,"/api/v1/leagues/**").hasRole("admin")
 
-		http.authorizeHttpRequests(authorize -> authorize
+					.requestMatchers(HttpMethod.POST,"/api/v1/teams/**").hasRole("admin")
+                    .requestMatchers(HttpMethod.PUT,"/api/v1/teams/**").hasRole("admin")
+                    .requestMatchers(HttpMethod.DELETE,"/api/v1/teams/**").hasRole("admin")
 
-				.requestMatchers(HttpMethod.POST, "/api/v1/login").permitAll()
-				.requestMatchers("/api/signin").permitAll()
+					.requestMatchers(HttpMethod.POST,"/api/v1/players/**").hasRole("admin")
+                    .requestMatchers(HttpMethod.PUT,"/api/v1/players/**").hasRole("admin")
+                    .requestMatchers(HttpMethod.DELETE,"/api/v1/players/**").hasRole("admin")
 
-				.requestMatchers(HttpMethod.POST, "/api/v1/leagues").hasAnyRole("admin")
-				.requestMatchers(HttpMethod.DELETE, "/api/v1/leagues/*").hasAnyRole("admin")
-                .requestMatchers(HttpMethod.PUT, "/api/v1/leagues/*").hasAnyRole("admin")
+					.requestMatchers(HttpMethod.POST,"/api/v1/matches/**").hasRole("admin")
+                    .requestMatchers(HttpMethod.PUT,"/api/v1/matches/**").hasRole("admin")
+                    .requestMatchers(HttpMethod.DELETE,"/api/v1/matches/**").hasRole("admin")
 
-				.requestMatchers(HttpMethod.POST, "/api/v1/teams").hasAnyRole("admin")
-				.requestMatchers(HttpMethod.DELETE, "/api/v1/teams/*").hasAnyRole("admin")
-                .requestMatchers(HttpMethod.PUT, "/api/v1/teams/*").hasAnyRole("admin")
+					.requestMatchers(HttpMethod.POST,"/api/v1/matches/**").hasRole("admin")
+                    .requestMatchers(HttpMethod.PUT,"/api/v1/matches/**").hasRole("admin")
+                    .requestMatchers(HttpMethod.DELETE,"/api/v1/matches/**").hasRole("admin")
 
-				.requestMatchers(HttpMethod.POST, "/api/v1/players").hasAnyRole("admin")
-				.requestMatchers(HttpMethod.DELETE, "/api/v1/players/*").hasAnyRole("admin")
-                .requestMatchers(HttpMethod.PUT, "/api/v1/players/*").hasAnyRole("admin")
+					.requestMatchers(HttpMethod.GET, "/api/v1/users/").hasRole("admin")
+					.requestMatchers(HttpMethod.GET, "/api/v1/users/**").hasAnyRole("admin", "user")
+					.requestMatchers(HttpMethod.POST, "/api/v1/users/").hasRole("admin")
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/users/**").hasAnyRole("user", "admin")
+                    .requestMatchers(HttpMethod.DELETE, "/api/v1/matches/**").hasAnyRole("admin", "user")
+					// PUBLIC ENDPOINTS
+					.anyRequest().permitAll()
+			);
+		
+        // Disable Form login Authentication
+        http.formLogin(formLogin -> formLogin.disable());
 
-                .requestMatchers(HttpMethod.POST, "/api/v1/matches").hasAnyRole("admin")
-				.requestMatchers(HttpMethod.DELETE, "/api/v1/matches/*").hasAnyRole("admin")
-                .requestMatchers(HttpMethod.PUT, "/api/v1/matches/*").hasAnyRole("admin")
+        // Disable CSRF protection (it is difficult to implement in REST APIs)
+        http.csrf(csrf -> csrf.disable());
 
-				.requestMatchers(HttpMethod.POST, "/api/v1/playersMatch").hasAnyRole("admin")
-				.requestMatchers(HttpMethod.DELETE, "/api/v1/playersMatch/*").hasAnyRole("admin")
-				.requestMatchers(HttpMethod.PUT, "/api/v1/playersMatch/*").hasAnyRole("admin")
+        // Disable Basic Authentication
+        http.httpBasic(httpBasic -> httpBasic.disable());
 
-				.requestMatchers(HttpMethod.GET,"/api/v1/users").hasAnyRole("admin")
-				.requestMatchers(HttpMethod.PUT,"/api/v1/users").hasAnyRole("admin","user")
-				.requestMatchers(HttpMethod.POST,"/api/v1/users").hasAnyRole("admin","user")
-				.requestMatchers(HttpMethod.DELETE,"/api/v1/users").hasAnyRole("admin","user")
-				.requestMatchers("/api/v1/users/*").hasAnyRole("admin","user")
-
-				.anyRequest().permitAll()
-            )
-            .formLogin(formLogin -> formLogin
-						.loginPage("/login")
-						.failureUrl("/login")
-						.defaultSuccessUrl("/logged")
-						.permitAll())
-			.logout(logout -> logout
-						.logoutUrl("/logout")
-						.logoutSuccessUrl("/login")
-						.permitAll());
-
-		// Disable Form login Authentication
-		http.formLogin(formLogin -> formLogin.disable());
-
-		// Disable CSRF protection (it is difficult to implement in REST APIs)
-		http.csrf(csrf -> csrf.disable());
-
-		// Disable Basic Authentication
-		http.httpBasic(httpBasic -> httpBasic.disable());
-
-		// Stateless session
-		http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        // Stateless session
+        http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
 		// Add JWT Token filter
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
-
 	}
 }

@@ -64,8 +64,6 @@ public class RestService {
     }
 
     public void updateLeague(League oldLeague, League newLeague, LeagueDTO leagueDto) {
-        newLeague.setId(oldLeague.getId());
-
         //If the admin has not intruduced any data, it will get
         //the data from the unmodified league
         if(leagueDto.getName() == null){

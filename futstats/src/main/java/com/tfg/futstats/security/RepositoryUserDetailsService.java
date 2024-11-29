@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,40 +20,22 @@ public class RepositoryUserDetailsService implements UserDetailsService {
 	@Autowired
 	private UserRepository userRepository;
 
-	@Value("${security.user}")
-	private String name;
-
-	@Value("${security.encodedPassword}")
-	private String encodedPassword;
-
 	@Override
 	public UserDetails loadUserByUsername(String username) {
 
 		User user;
-		try {
+		
 			user = userRepository.findByNameIgnoreCase(username)
 					.orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
 			List<GrantedAuthority> roles = new ArrayList<>();
 			
-			roles.add(new SimpleGrantedAuthority("ROLE_" + user.getRoles()));
+			for (String role : user.getRoles()) {
+				roles.add(new SimpleGrantedAuthority("ROLE_" + role));
+			}
 
 			return new org.springframework.security.core.userdetails.User(user.getName(),
 					user.getPassword(), roles);
-
-		} catch (UsernameNotFoundException e) {
-
-			if (!username.equals(name))
-				throw new UsernameNotFoundException("User not found");
-
-			List<GrantedAuthority> roles = new ArrayList<>();
-
-			roles.add(new SimpleGrantedAuthority("ROLE_" + "admin"));
-
-			return new org.springframework.security.core.userdetails.User(name,
-					encodedPassword, roles);
-
-		}
 
 	}
 }
