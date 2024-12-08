@@ -1,0 +1,26 @@
+<div *ngIf="league">
+    
+    <h2 *ngIf="!league.id">Nueva Liga</h2>
+    <h2 *ngIf="league.id">"{{league.name}}"</h2>
+
+    <div>
+        <label>Nombre: </label>
+        <input [(ngModel)]="league.name" placeholder="Nombre" />
+    </div>
+    <br>
+    <div>
+        <label>Nacionalidad: </label>
+        <input [(ngModel)]="league.nationality" placeholder="Nacionalidad" />
+    </div>
+    <br>
+    <div>
+        <label>Presidente: </label>
+        <input [(ngModel)]="league.president" placeholder="Presidente">
+    </div>
+    <br>
+
+    <p>
+        <button (click)="cancel()">Cancel</button>
+        <button (click)="save()">Save</button>
+    </p>
+</div>

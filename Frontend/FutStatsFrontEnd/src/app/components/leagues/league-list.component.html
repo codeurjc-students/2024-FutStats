@@ -1,0 +1,9 @@
+<h2>Ligas</h2>
+<ul class="items">
+    <li *ngFor="let league of leagues">
+        <a [routerLink]="['/leagues', league.id]">{{league.name}}</a>
+        <a>{{league.nationality}}</a>
+    </li>
+</ul>
+
+<button *ngIf="loginService.isLogged()" (click)="newLeague()">Crear una liga</button>

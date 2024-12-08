@@ -1,0 +1,13 @@
+<div *ngIf="league">
+
+  <h2>"{{league.name}}"</h2>
+  <div>
+      <p>{{league.president}}</p>
+      <p>{{league.nationality}}</p>
+  </div>
+
+  <p>
+  <button (click)="gotoLeagues()">Otras ligas</button>
+  </p>
+
+</div>
