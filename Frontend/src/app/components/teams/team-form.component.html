@@ -1,0 +1,60 @@
+<div *ngIf="team">
+    
+    <h2 *ngIf="!team.id">Nuevo Equipo</h2>
+    <h2 *ngIf="team.id">"{{team.name}}"</h2>
+
+    <div>
+        <label>Nombre: </label>
+        <input [(ngModel)]="team.name" placeholder="Nombre" />
+    </div>
+    <br>
+    <div>
+        <label>Trofeos: </label>
+        <input [(ngModel)]="team.trophies" placeholder="Trofeos" />
+    </div>
+    <br>
+    <div>
+        <label>Nacionalidad: </label>
+        <input [(ngModel)]="team.nationality" placeholder="Nacionalidad" />
+    </div>
+    <br>
+    <div>
+        <label>Entrenador: </label>
+        <input [(ngModel)]="team.trainer" placeholder="Entrenador" />
+    </div>
+    <br>
+    <div>
+        <label>Segundo Entrenador: </label>
+        <input [(ngModel)]="team.secondTrainer" placeholder="Segundo Entrenador" />
+    </div>
+    <br>
+    <div>
+        <label>Presidente: </label>
+        <input [(ngModel)]="team.president" placeholder="Entrenador">
+    </div>
+    <br>
+    <div>
+        <label>Estadio: </label>
+        <input [(ngModel)]="team.stadium" placeholder="Estadio" />
+    </div>
+    <br>
+    <div>
+        <label>Puntos: </label>
+        <input [(ngModel)]="team.points" placeholder="Puntos" />
+    </div>
+    <br>
+    <label>
+        Liga:
+        <select [(ngModel)]="team.league" name="leagueName" required>
+          <option *ngFor="let league of leagues" [value]="league.name">
+            {{ league.name }}
+          </option>
+        </select>
+      </label>
+      <br />
+
+    <p>
+        <button (click)="cancel()">Cancel</button>
+        <button (click)="save()">Save</button>
+    </p>
+</div>

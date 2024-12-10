@@ -1,0 +1,40 @@
+<div *ngIf="league">
+
+  <h2>"{{league.name}}"</h2>
+  <div>
+      <p>{{league.president}}</p>
+      <p>{{league.nationality}}</p>
+  </div>
+
+  <h3>Equipos</h3>
+  <ul class="items">
+    <li *ngFor="let team of teams">
+      <a [routerLink]="['/teams', team.id]">{{team.name}}</a>
+      <a>{{team.points}}</a>
+    </li>
+  </ul>
+
+  <br>
+  <button *ngIf="loginService.isLogged()" (click)="createTeam()">Crear Equipo</button>
+  <br>
+
+  <h3>Partidos</h3>
+  <ul class="items">
+    <li *ngFor="let match of matches">
+      <a [routerLink]="['/matches', match.id]">{{match.name}}</a>
+      <a>{{match.place}}</a>
+    </li>
+  </ul>
+
+  <br>
+  <button *ngIf="loginService.isLogged()" (click)="createMatch()">Crear Partido</button>
+  <br>
+
+  <br> 
+  <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="removeLeague()">Remove</button>
+  <button *ngIf="loginService.isLogged()" (click)="editLeague()">Edit</button>
+  <p>
+    <button (click)="gotoLeagues()">Otras ligas</button>
+  </p>
+
+</div>

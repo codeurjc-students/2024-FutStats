@@ -32,6 +32,24 @@ export class LeaguesService {
     );
   }
 
+  getTeams(id: number): Observable<Team[]>{
+    return this.httpClient.get<Team[]>(BASE_URL + id + '/teams').pipe(
+      catchError(error => this.handleError(error))
+    );
+  }
+
+  getTeamsByName(name: string): Observable<Team[]>{
+    return this.httpClient.get<Team[]>(BASE_URL + 'name/'+ name + '/teams').pipe(
+      catchError(error => this.handleError(error))
+    );
+  }
+
+  getMatches(id: number): Observable<Match[]>{
+    return this.httpClient.get<Match[]>(BASE_URL + id + '/matches').pipe(
+      catchError(error => this.handleError(error))
+    );
+  }
+
   addLeague(league: League): Observable<League> {
     if (!league.id) {
       return this.httpClient.post<League>(BASE_URL, league).pipe(

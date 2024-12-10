@@ -1,0 +1,79 @@
+<div *ngIf="team">
+
+    <h1>"{{team.name}}"</h1>
+    <br>
+    <h2>Datos del equipo</h2>
+    <div>
+        <p>Trofeos: {{team.trophies}}</p>
+        <p>Nacionalidad: {{team.nationality}}</p>
+        <p>Entrenador: {{team.trainer}}</p>
+        <p>Segundo Entrenador: {{team.secondTrainer}}</p>
+        <p>Presidente: {{team.president}}</p>
+        <p>Estadio: {{team.stadium}}</p>
+        <p>Puntos: {{team.points}}</p>
+    </div>
+    <br>
+    <h2>Partidos</h2>
+    <div>
+        <p>Partidos jugados: {{team.totalMatches}}</p>
+    </div>
+    <br>
+    <h2>Estadísticas ofensivas</h2>
+    <div>
+        <p>Tiros: {{team.totalShoots}}</p>
+        <p>Goles: {{team.totalGoals}}</p>
+        <p>Tiros/Partido: {{team.shootsPerMatch}}</p>
+        <p>Goles/Partido: {{team.goalsPerMatch}}</p>
+        <p>Porcentaje de gol: {{team.scoreAvg}}</p>
+        <p>Penaltis: {{team.penaltys}}</p>
+        <p>Faltas recibidas: {{team.faultsReceived}}</p>
+        <p>Fueras de juego: {{team.offsides}}</p>
+    </div>
+    <br>
+    <h2>Estadísticas defensivas</h2>
+    <div>
+        <p>Faltas cometidas: {{team.commitedFaults}}</p>
+        <p>Recuperaciones: {{team.recovers}}</p>
+        <p>Duelos: {{team.duels}}</p>
+        <p>Duelos ganados: {{team.wonDuels}}</p>
+        <p>Porcentaje de duelos ganados: {{team.duelAvg}}</p>
+        <p>Tarjetas amarillas: {{team.yellowCards}}</p>
+        <p>Tarjetas rojas: {{team.redCards}}</p>
+        <p>Tarjetas: {{team.cards}}</p>
+    </div>
+    <br>
+    <h2>Estadísticas de creación de juego</h2>
+    <div>
+        <p>Posesion: {{team.possesion}}</p>
+        <p>Pases: {{team.passes}}</p>
+        <p>Pases por partido: {{team.passesPerMatch}}</p>
+        <p>Pases acertados: {{team.goodPasses}}</p>
+        <p>Porcentaje de pases: {{team.passesAvg}}</p>
+        <p>Pases cortos: {{team.shortPasses}}</p>
+        <p>Pases largos: {{team.longPasses}}</p>
+        <p>Asistencias: {{team.assists}}</p>
+        <p>Regates: {{team.dribles}}</p>
+        <p>Centros: {{team.centers}}</p>
+        <p>Pédidas de balón: {{team.ballLosses}}</p>
+    </div>
+    <br>
+    <h2>Estadísticas de partidos</h2>
+    <div>
+        <p>Partidos ganados: {{team.wonMatches}}</p>
+        <p>Partidos perdidos: {{team.lostMatches}}</p>
+        <p>Partidos empatados: {{team.drawMatches}}</p>
+        <p>Porcentaje de partidos ganados: {{team.wonMatchesAvg}}</p>
+    </div>
+
+    <br>
+    <button *ngIf="loginService.isLogged()" (click)="createPlayer()">Crear Jugador</button>
+    <br>
+
+    <button *ngIf="loginService.isLogged()" (click)="editTeam()">Editar</button>
+
+    <p>
+        <button (click)="goBack()">Volver</button>
+    </p>
+</div>
+
+

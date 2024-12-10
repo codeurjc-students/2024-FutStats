@@ -3,9 +3,19 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "FutStatsFrontEnd": {
+    "ejem1": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "standalone": false
+        },
+        "@schematics/angular:directive": {
+          "standalone": false
+        },
+        "@schematics/angular:pipe": {
+          "standalone": false
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -13,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/fut-stats-front-end",
+            "outputPath": "dist/ejem1",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -63,10 +73,10 @@
           },
           "configurations": {
             "production": {
-              "buildTarget": "FutStatsFrontEnd:build:production"
+              "buildTarget": "ejem1:build:production"
             },
             "development": {
-              "buildTarget": "FutStatsFrontEnd:build:development"
+              "buildTarget": "ejem1:build:development"
             }
           },
           "defaultConfiguration": "development"
