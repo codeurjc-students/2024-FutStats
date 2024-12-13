@@ -15,10 +15,12 @@ import org.springframework.http.ResponseEntity;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import com.tfg.futstats.controllers.dtos.league.LeagueDTO;
 import com.tfg.futstats.controllers.dtos.player.PlayerDTO;
+import com.tfg.futstats.controllers.dtos.team.TeamResponseDTO;
 import com.tfg.futstats.models.League;
 import com.tfg.futstats.models.Player;
-import com.tfg.futstats.models.PlayerMatch;
+import com.tfg.futstats.controllers.dtos.player.PlayerMatchDTO;
 import com.tfg.futstats.models.Team;
 import com.tfg.futstats.services.RestService;
 import com.tfg.futstats.errors.ElementNotFoundException;
@@ -36,43 +38,52 @@ public class Playercontroller {
     // ------------------------------- Player CRUD operations
 
     @GetMapping("/")
-    public ResponseEntity<List<Player>> getAllPlayers() {
+    public ResponseEntity<List<PlayerDTO>> getAllPlayers() {
         return ResponseEntity.ok(restService.findAllPlayers());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Player> getPlayer(@PathVariable long id) {
+    public ResponseEntity<PlayerDTO> getPlayer(@PathVariable long id) {
         Player player = restService.findPlayerById(id)
                 .orElseThrow(() -> new ElementNotFoundException("No existe un jugador con ese id"));
-        return ResponseEntity.ok(player);
+
+        PlayerDTO playerDto = new PlayerDTO(player);
+
+        return ResponseEntity.ok(playerDto);
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<Player> getPlayerByName(@PathVariable String name) {
+    public ResponseEntity<PlayerDTO> getPlayerByName(@PathVariable String name) {
         Player player = restService.findPlayerByName(name)
                 .orElseThrow(() -> new ElementNotFoundException("No existe un jugador con ese nobre"));
 
-        return ResponseEntity.ok(player);
+        PlayerDTO playerDto = new PlayerDTO(player);
+
+        return ResponseEntity.ok(playerDto);
     }
 
     @GetMapping("/{playerId}/league")
-    ResponseEntity<League> getLeagueByPlayer(@PathVariable long playerId) {
+    ResponseEntity<LeagueDTO> getLeagueByPlayer(@PathVariable long playerId) {
         Player player = restService.findPlayerById(playerId)
                 .orElseThrow(() -> new ElementNotFoundException("No existe un jugador con ese id"));
 
-        return ResponseEntity.ok(player.getLeague());
+        LeagueDTO leagueDto = new LeagueDTO(player.getLeague()); 
+
+        return ResponseEntity.ok(leagueDto);
     }
 
     @GetMapping("/{playerId}/team")
-    ResponseEntity<Team> getTeamByPlayer(@PathVariable long playerId) {
+    ResponseEntity<TeamResponseDTO> getTeamByPlayer(@PathVariable long playerId) {
         Player player = restService.findPlayerById(playerId)
                 .orElseThrow(() -> new ElementNotFoundException("No existe un jugador con ese id"));
 
-        return ResponseEntity.ok(player.getTeam());
+        TeamResponseDTO teamDto = new TeamResponseDTO(player.getTeam());
+
+        return ResponseEntity.ok(teamDto);
     }
 
-    @GetMapping("{playerId}/playersMatches")
-    public ResponseEntity<List<PlayerMatch>> getPlayerMatches(@PathVariable long playerId) {
+    @GetMapping("{playerId}/playerMatches")
+    public ResponseEntity<List<PlayerMatchDTO>> getPlayerMatches(@PathVariable long playerId) {
         Player player = restService.findPlayerById(playerId)
                 .orElseThrow(() -> new ElementNotFoundException("No existe un jugador con ese id"));
     
@@ -117,7 +128,7 @@ public class Playercontroller {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Player> putPlayers(HttpServletRequest request, @PathVariable long id, @RequestBody PlayerDTO playerDto) {
+    public ResponseEntity<PlayerDTO> putPlayers(HttpServletRequest request, @PathVariable long id, @RequestBody PlayerDTO playerDto) {
         Player oldPlayer = restService.findPlayerById(id)
                 .orElseThrow(() -> new ElementNotFoundException("No existe un jugador con ese id"));
 
@@ -144,8 +155,10 @@ public class Playercontroller {
         }
 
         restService.updatePlayer(oldPlayer, newPlayer, playerDto, league, team);
+
+        PlayerDTO newPlayerDto = new PlayerDTO(newPlayer);
         
-        return ResponseEntity.ok(newPlayer);
+        return ResponseEntity.ok(newPlayerDto);
         
         // if the player ins`t found we will never reach this point so it is not necessary
         // to create a not found ResponseEntity

@@ -1,38 +1,37 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { MatchesService } from '../../services/match.service';
+import { PlayersService } from '../../services/player.service';
+import { LoginService } from 'src/app/services/login.service';
 
-import { Match } from '../../models/match.model';
+import { Player } from '../../models/player.model';
 import { Team } from '../../models/team.model';
 import { League } from 'src/app/models/league.model';
 import { PlayerMatch } from 'src/app/models/player-match.model';
-import { LoginService } from 'src/app/services/login.service';
 
 @Component({
-  templateUrl: './match-detail.component.html'
+  templateUrl: './player-detail.component.html'
 })
-export class MatchDetailComponent implements OnInit {
+export class PlayerDetailComponent implements OnInit {
 
-  match: Match;
+  player: Player;
   errorMessage: string;
-  team1: string;
-  team2: string;
+  team: Team;
   league: League;
-  playerMatches: PlayerMatch[] =  [];
+  playerMatches: PlayerMatch[] = [];
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private service: MatchesService,
-    public loginService: LoginService,
+    private service: PlayersService,
+    public loginService: LoginService
   ) { }
 
   ngOnInit(): void {
     const id = this.activatedRoute.snapshot.params['id'];
-    this.service.getMatch(id).subscribe(
-      (match: Match) => {
-        this.match = match;
+    this.service.getPlayer(id).subscribe(
+      (player: Player) => {
+        this.player = player;
 
         this.service.getLeague(id).subscribe(
           (league: League) => {
@@ -43,18 +42,9 @@ export class MatchDetailComponent implements OnInit {
           }
         );
 
-        this.service.getTeam1(id).subscribe(
+        this.service.getTeam(id).subscribe(
           (team: Team) => {
-            this.team1 = team.name;   
-          },
-          (error) => {
-            this.errorMessage = 'Error fetching teams';
-          }
-        );
-
-        this.service.getTeam2(id).subscribe(
-          (team: Team) => {
-            this.team2 = team.name;   
+            this.team = team;   
           },
           (error) => {
             this.errorMessage = 'Error fetching teams';
@@ -63,7 +53,7 @@ export class MatchDetailComponent implements OnInit {
 
         this.service.getPlayerMatches(id).subscribe(
           (playerMatches: PlayerMatch[]=[]) => {
-            this.playerMatches = playerMatches;   
+            this.playerMatches = playerMatches;
           },
           (error) => {
             this.errorMessage = 'Error fetching teams';
@@ -71,27 +61,27 @@ export class MatchDetailComponent implements OnInit {
         );
       },
       (error: any) => {
-        this.errorMessage = 'Error fetching match details';
+        this.errorMessage = 'Error fetching player details';
         console.error(error);
       }
     );
   }
 
-  removeMatch() {
-    const okResponse = window.confirm('Quieres borrar este partido?');
+  removePlayer() {
+    const okResponse = window.confirm('Quieres borrar este jugador?');
     if (okResponse) {
-        this.service.deleteMatch(this.match).subscribe(
-            _ => this.router.navigate(['/leagues']),
+        this.service.deletePlayer(this.player).subscribe(
+            _ => window.history.back(),
             error => console.error(error)
         );
     }
   }
 
-  createPlayerMatch() {
-    this.router.navigate(['/playerMatch/new']);
+  editPlayer(): void {
+    this.router.navigate(['/players/edit', this.player.id]);
   }
 
   goBack(): void {
-    this.router.navigate(['/leagues', this.league.id]);
+    this.router.navigate(['/teams', this.team.id]);
   }
 }

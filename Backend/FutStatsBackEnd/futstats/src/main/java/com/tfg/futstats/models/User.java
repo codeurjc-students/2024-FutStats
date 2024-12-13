@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tfg.futstats.controllers.dtos.UserDTO;
+import com.tfg.futstats.controllers.dtos.user.UserDTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.CascadeType;

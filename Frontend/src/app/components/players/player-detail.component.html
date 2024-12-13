@@ -1,0 +1,77 @@
+<div *ngIf="player">
+
+    <h1>"{{player.name}}"</h1>
+    <br>
+    <h2>Datos del jugador</h2>
+    <div>
+        <p>Edad: {{player.age}}</p>
+        <p>Nacionalidad: {{player.nationality}}</p>
+        <p>Posición: {{player.position}}</p>
+    </div>
+    <br>
+    <h2>Partidos</h2>
+    <div>
+        <p>Partidos jugados: {{player.totalMatches}}</p>
+    </div>
+    <br>
+    <h2>Estadísticas ofensivas</h2>
+    <div>
+        <p>Tiros: {{player.totalShoots}}</p>
+        <p>Goles: {{player.totalGoals}}</p>
+        <p>Tiros/Partido: {{player.shootsPerMatch}}</p>
+        <p>Goles/Partido: {{player.goalsPerMatch}}</p>
+        <p>Porcentaje de gol: {{player.scoreAvg}}</p>
+        <p>Penaltis: {{player.penaltys}}</p>
+        <p>Faltas recibidas: {{player.faultsReceived}}</p>
+        <p>Fueras de juego: {{player.offsides}}</p>
+    </div>
+    <br>
+    <h2>Estadísticas defensivas</h2>
+    <div>
+        <p>Faltas cometidas: {{player.commitedFaults}}</p>
+        <p>Recuperaciones: {{player.recovers}}</p>
+        <p>Duelos: {{player.duels}}</p>
+        <p>Duelos ganados: {{player.wonDuels}}</p>
+        <p>Porcentaje de duelos ganados: {{player.duelAvg}}</p>
+        <p>Tarjetas amarillas: {{player.yellowCards}}</p>
+        <p>Tarjetas rojas: {{player.redCards}}</p>
+        <p>Tarjetas: {{player.cards}}</p>
+    </div>
+    <br>
+    <h2>Estadísticas de creación de juego</h2>
+    <div>
+        <p>Pases: {{player.passes}}</p>
+        <p>Pases por partido: {{player.passesPerMatch}}</p>
+        <p>Pases acertados: {{player.goodPasses}}</p>
+        <p>Porcentaje de pases: {{player.passesAvg}}</p>
+        <p>Pases cortos: {{player.shortPasses}}</p>
+        <p>Pases largos: {{player.longPasses}}</p>
+        <p>Asistencias: {{player.assists}}</p>
+        <p>Regates: {{player.dribles}}</p>
+        <p>Centros: {{player.centers}}</p>
+        <p>Pédidas de balón: {{player.ballLosses}}</p>
+    </div>
+
+    <h2>Estadísticas de portero</h2>
+    <div>
+        <p>Tiros recibidos: {{player.shootsReceived}}</p>
+        <p>Goles concedidos: {{player.goalsConceded}}</p>
+        <p>Paradas: {{player.saves}}</p>
+        <p>Porcentaje de paradas: {{player.savesAvg}}</p>
+        <p>Paradas de Fuera del área: {{player.outBoxSaves}}</p>
+        <p>Paradas de Dentro del área: {{player.inBoxSaves}}</p>
+    </div>
+
+    <h3>Estadisticas de los partidos</h3>
+    <ul class="items">
+        <li *ngFor="let playerMatch of playerMatches">
+            <a [routerLink]="['/playerMatch', playerMatch.id]">{{playerMatch.matchName}}</a>
+        </li>
+    </ul>
+
+    <br> 
+<button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="removePlayer()">Remove</button>
+<button *ngIf="loginService.isLogged()" (click)="editPlayer()">Edit</button>
+<p>
+    <button (click)="goBack()">Volver</button>
+</p>

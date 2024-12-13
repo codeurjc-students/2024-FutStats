@@ -65,15 +65,29 @@
         <p>Porcentaje de partidos ganados: {{team.wonMatchesAvg}}</p>
     </div>
 
-    <br>
-    <button *ngIf="loginService.isLogged()" (click)="createPlayer()">Crear Jugador</button>
-    <br>
+    <h3>Jugadores</h3>
+    <ul class="items">
+        <li *ngFor="let player of players">
+            <a [routerLink]="['/players', player.id]">{{player.name}}</a>
+            <a> {{player.position}}</a>
+        </li>
+    </ul>
 
+    <h3 *ngIf="loginService.isLogged()">
+        Opciones de Usuario
+    </h3>
+
+    <p>
+        <button *ngIf="loginService.isLogged()" (click)="createPlayer()">Crear Jugador</button>
+    </p>
+
+    <p>
+    <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="removeTeam()">Remove</button>
     <button *ngIf="loginService.isLogged()" (click)="editTeam()">Editar</button>
+    </p>
 
     <p>
         <button (click)="goBack()">Volver</button>
     </p>
+
 </div>
-
-

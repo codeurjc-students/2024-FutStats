@@ -38,6 +38,12 @@ export class TeamsService {
 		);
 	}
 
+	getPlayersByTeam(id: number): Observable<Player[]>{
+		return this.httpClient.get<Player[]>(BASE_URL+id+'/players').pipe(
+			catchError(error => this.handleError(error))
+		);
+	}
+
 	addTeam(team: Team): Observable<Team> {
 		if (!team.id) {
 		  return this.httpClient.post<Team>(BASE_URL, team).pipe(

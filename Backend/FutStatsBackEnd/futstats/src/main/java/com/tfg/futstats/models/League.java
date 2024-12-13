@@ -3,7 +3,7 @@ package com.tfg.futstats.models;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tfg.futstats.controllers.dtos.LeagueDTO;
+import com.tfg.futstats.controllers.dtos.league.LeagueDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.CascadeType;

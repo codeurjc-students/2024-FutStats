@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
-import com.tfg.futstats.controllers.dtos.UserDTO;
+import com.tfg.futstats.controllers.dtos.user.UserDTO;
 import com.tfg.futstats.errors.ElementNotFoundException;
 import com.tfg.futstats.models.League;
 import com.tfg.futstats.models.Player;

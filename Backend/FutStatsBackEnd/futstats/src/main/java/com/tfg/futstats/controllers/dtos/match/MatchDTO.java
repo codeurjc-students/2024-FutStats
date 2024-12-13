@@ -1,6 +1,8 @@
 package com.tfg.futstats.controllers.dtos.match;
 
-public class MatchCreationDTO {
+import com.tfg.futstats.models.Match;
+
+public class MatchDTO {
     // dto attributes
     private long id;
     private String league;
@@ -65,6 +67,68 @@ public class MatchCreationDTO {
 
     // We dont put the averages here because we only need the stadistics from were
     // it`s made
+
+    public MatchDTO(){}
+
+    public MatchDTO(Match match){
+        this.id = match.getId();
+        this.league = match.getLeague().getName();
+        this.team1 = match.getTeam1().getName();
+        this.team2 = match.getTeam2().getName();
+        this.name = match.getName();
+        this.place = match.getPlace();
+        this.shoots1 = match.getShoots1();
+        this.scores1 = match.getScores1();
+        this.penaltys1 = match.getPenaltys1();
+        this.faultsReceived1 = match.getFaultsReceived1();
+        this.offsides1 = match.getOffsides1();
+        this.commitedFaults1 = match.getCommitedFaults1();
+        this.recovers1 = match.getRecovers1();
+        this.duels1 = match.getDuels1();
+        this.wonDuels1 = match.getWonDuels1();
+        this.yellowCards1 = match.getYellowCards1();
+        this.redCards1 = match.getRedCards1();
+        this.possesion1 = match.getPossesion1();
+        this.passes1 = match.getPasses1();
+        this.goodPasses1 = match.getGoodPasses1();
+        this.shortPasses1 = match.getShortPasses1();
+        this.longPasses1 = match.getLongPasses1();
+        this.assists1 = match.getAssists1();
+        this.dribles1 = match.getDribles1();
+        this.centers1 = match.getCenters1();
+        this.ballLosses1 = match.getBallLosses1();
+        this.shootsReceived1 = match.getShootsReceived1();
+        this.goalsConceded1 = match.getGoalsConceded1();
+        this.saves1 = match.getSaves1();
+        this.outBoxSaves1 = match.getOutBoxSaves1();
+        this.inBoxSaves1 = match.getInBoxSaves1();
+        this.shoots2 = match.getShoots2();
+        this.scores2 = match.getScores2();
+        this.penaltys2 = match.getPenaltys2();
+        this.faultsReceived2 = match.getFaultsReceived2();
+        this.offsides2 = match.getOffsides2();
+        this.commitedFaults2 = match.getCommitedFaults2();
+        this.recovers2 = match.getRecovers2();
+        this.duels2 = match.getDuels2();
+        this.wonDuels2 = match.getWonDuels2();
+        this.yellowCards2 = match.getYellowCards2();
+        this.redCards2 = match.getRedCards2();
+        this.possesion2 = match.getPossesion2();
+        this.passes2 = match.getPasses2();
+        this.goodPasses2 = match.getGoodPasses2();
+        this.shortPasses2 = match.getShortPasses2();
+        this.longPasses2 = match.getLongPasses2();
+        this.assists2 = match.getAssists2();
+        this.dribles2 = match.getDribles2();
+        this.centers2 = match.getCenters2();
+        this.ballLosses2 = match.getBallLosses2();
+        this.shootsReceived2 = match.getShootsReceived2();
+        this.goalsConceded2 = match.getGoalsConceded2();
+        this.saves2 = match.getSaves2();
+        this.outBoxSaves2 = match.getOutBoxSaves2();
+        this.inBoxSaves2 = match.getInBoxSaves2();
+
+    }
 
     // Getters & setters
     public long getId() {

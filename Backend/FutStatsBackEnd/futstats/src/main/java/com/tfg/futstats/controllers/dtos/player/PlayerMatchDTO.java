@@ -1,5 +1,7 @@
 package com.tfg.futstats.controllers.dtos.player;
 
+import com.tfg.futstats.models.PlayerMatch;
+
 public class PlayerMatchDTO {
 
    private long id;
@@ -31,7 +33,7 @@ public class PlayerMatchDTO {
    private int centers;
    private int ballLosses;
 
-   //Goalkeeper
+   // Goalkeeper
    private int shootsReceived;
    private int goalsConceded;
    private int saves;
@@ -39,7 +41,40 @@ public class PlayerMatchDTO {
    private int inBoxSaves;
 
    // We dont put the averages here because we only need the stadistics from were
-    // it`s made
+   // it`s made
+
+   public PlayerMatchDTO() {
+   }
+
+   public PlayerMatchDTO(PlayerMatch player) {
+      this.id = player.getId();
+      this.name = player.getName();
+      this.matchName = player.getMatchName();
+      this.shoots = player.getShoots();
+      this.goals = player.getGoals();
+      this.penaltys = player.getPenaltys();
+      this.faultsReceived = player.getFaultsReceived();
+      this.offsides = player.getOffsides();
+      this.commitedFaults = player.getCommitedFaults();
+      this.recovers = player.getRecovers();
+      this.duels = player.getDuels();
+      this.wonDuels = player.getWonDuels();
+      this.yellowCards = player.getYellowCards();
+      this.redCards = player.getRedCards();
+      this.passes = player.getPasses();
+      this.goodPasses = player.getGoodPasses();
+      this.shortPasses = player.getShortPasses();
+      this.longPasses = player.getLongPasses();
+      this.assists = player.getAssists();
+      this.dribles = player.getDribles();
+      this.centers = player.getCenters();
+      this.ballLosses = player.getBallLosses();
+      this.shootsReceived = player.getShootsReceived();
+      this.goalsConceded = player.getGoalsConceded();
+      this.saves = player.getSaves();
+      this.outBoxSaves = player.getOutBoxSaves();
+      this.inBoxSaves = player.getInBoxSaves();
+   }
 
    // Getters & setters
    public long getId() {
@@ -50,25 +85,25 @@ public class PlayerMatchDTO {
       this.id = id;
    }
 
-   public String getName(){
+   public String getName() {
       return this.name;
    }
 
-   public void setName(String name){
+   public void setName(String name) {
       this.name = name;
    }
 
-   public String getMatchName(){
+   public String getMatchName() {
       return this.matchName;
    }
 
-   public void setMatchName(String matchName){
+   public void setMatchName(String matchName) {
       this.matchName = matchName;
    }
 
    public int getShoots() {
-    return shoots;
-    }
+      return shoots;
+   }
 
    public void setShoots(int shoots) {
       this.shoots = shoots;
@@ -218,43 +253,43 @@ public class PlayerMatchDTO {
       return ballLosses;
    }
 
-   public int getShootsReceived(){
+   public int getShootsReceived() {
       return shootsReceived;
-  }
+   }
 
-  public void getShootsReceived(int shootsReceived){
+   public void getShootsReceived(int shootsReceived) {
       this.shootsReceived = shootsReceived;
-  }
+   }
 
-  public int getGoalsConceded(){
+   public int getGoalsConceded() {
       return goalsConceded;
-  }
+   }
 
-  public void setGoalsConceded(int goalsConceded){
+   public void setGoalsConceded(int goalsConceded) {
       this.goalsConceded = goalsConceded;
-  }
+   }
 
-  public int getSaves(){
+   public int getSaves() {
       return saves;
-  }
+   }
 
-  public void setSaves(int saves){
+   public void setSaves(int saves) {
       this.saves = saves;
-  }
+   }
 
-  public int getOutBoxSaves(){
+   public int getOutBoxSaves() {
       return outBoxSaves;
-  }
+   }
 
-  public void setOutBoxSaves(int outBoxSaves){
+   public void setOutBoxSaves(int outBoxSaves) {
       this.outBoxSaves = outBoxSaves;
-  }
+   }
 
-  public int getInBoxSaves(){
+   public int getInBoxSaves() {
       return inBoxSaves;
-  }
+   }
 
-  public void setInBoxSaves(int inBoxSaves){
+   public void setInBoxSaves(int inBoxSaves) {
       this.inBoxSaves = inBoxSaves;
-  }
+   }
 }

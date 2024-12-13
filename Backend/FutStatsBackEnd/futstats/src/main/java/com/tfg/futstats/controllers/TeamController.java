@@ -15,13 +15,15 @@ import org.springframework.http.ResponseEntity;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import com.tfg.futstats.controllers.dtos.league.LeagueDTO;
 import com.tfg.futstats.controllers.dtos.team.TeamCreationDTO;
 import com.tfg.futstats.controllers.dtos.team.TeamUpdateDTO;
+import com.tfg.futstats.controllers.dtos.team.TeamResponseDTO;
+import com.tfg.futstats.controllers.dtos.match.MatchDTO;
+import com.tfg.futstats.controllers.dtos.player.PlayerDTO;
 import com.tfg.futstats.errors.ElementNotFoundException;
 import com.tfg.futstats.models.League;
 import com.tfg.futstats.models.Team;
-import com.tfg.futstats.models.Player;
-import com.tfg.futstats.models.Match;
 import com.tfg.futstats.services.RestService;
 
 import java.net.URI;
@@ -37,45 +39,51 @@ public class TeamController {
     // ------------------------------- Team CRUD operations
 
     @GetMapping("/")
-    public ResponseEntity<List<Team>> getAllTeams() {
+    public ResponseEntity<List<TeamResponseDTO>> getAllTeams() {
         return ResponseEntity.ok(restService.findAllTeams());
     }
 
     @GetMapping("/{id}") 
-    public ResponseEntity<Team> getTeam(@PathVariable long id) {
+    public ResponseEntity<TeamResponseDTO> getTeam(@PathVariable long id) {
         Team team = restService.findTeamById(id)
                 .orElseThrow(() -> new ElementNotFoundException("No existe un equipo con ese id"));
 
-        return ResponseEntity.ok(team);
+        TeamResponseDTO teamDto = new TeamResponseDTO(team);
+
+        return ResponseEntity.ok(teamDto);
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<Team> getTeamByName(@PathVariable String name) {
+    public ResponseEntity<TeamResponseDTO> getTeamByName(@PathVariable String name) {
         Team team = restService.findTeamByName(name)
                 .orElseThrow(() -> new ElementNotFoundException("No existe un equipo con ese nombre"));
 
-        return ResponseEntity.ok(team);
+        TeamResponseDTO teamDto = new TeamResponseDTO(team);
+
+        return ResponseEntity.ok(teamDto);
     }
 
     @GetMapping("/{teamId}/league")
-    ResponseEntity<League> getLeagueByTeam(@PathVariable long teamId) {
+    ResponseEntity<LeagueDTO> getLeagueByTeam(@PathVariable long teamId) {
         Team team = restService.findTeamById(teamId)
                 .orElseThrow(() -> new ElementNotFoundException("No existe un equipo con ese id"));
 
-        return ResponseEntity.ok(team.getLeague());
+        LeagueDTO league = new LeagueDTO(team.getLeague());
+
+        return ResponseEntity.ok(league);
     }
     
 
     @GetMapping("/{teamId}/players")
-    public ResponseEntity<List<Player>> getPlayersByTeam(@PathVariable long teamId) {
+    public ResponseEntity<List<PlayerDTO>> getPlayersByTeam(@PathVariable long teamId) {
         Team team = restService.findTeamById(teamId)
                 .orElseThrow(() -> new ElementNotFoundException("no existe un equipo con ese id"));
-
+        
         return ResponseEntity.ok(restService.findPlayersByTeam(team));
     }
 
     @GetMapping("/{teamsId}/matches")
-    public ResponseEntity<List<Match>> getMatchesByTeam(@PathVariable long teamId) {
+    public ResponseEntity<List<MatchDTO>> getMatchesByTeam(@PathVariable long teamId) {
         Team team = restService.findTeamById(teamId)
                 .orElseThrow(() -> new ElementNotFoundException("No existe un equipo con ese id"));
 
@@ -112,7 +120,7 @@ public class TeamController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Team> putTeams(HttpServletRequest request, @PathVariable long id, @RequestBody TeamUpdateDTO teamDto) {
+    public ResponseEntity<TeamResponseDTO> putTeams(HttpServletRequest request, @PathVariable long id, @RequestBody TeamUpdateDTO teamDto) {
         Team oldTeam = restService.findTeamById(id)
                 .orElseThrow(() -> new ElementNotFoundException("No existe un equipo con ese id"));
 
@@ -129,8 +137,10 @@ public class TeamController {
         }
 
         restService.updateTeam(newTeam, oldTeam, teamDto, league);
+
+        TeamResponseDTO newTeamDto = new TeamResponseDTO(newTeam);
         
-        return ResponseEntity.ok(newTeam);
+        return ResponseEntity.ok(newTeamDto);
 
         // if the team ins`t found we will never reach this point so it is not necessary
         // to create a not found ResponseEntity

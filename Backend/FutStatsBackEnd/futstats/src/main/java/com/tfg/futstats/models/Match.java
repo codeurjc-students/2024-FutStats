@@ -3,7 +3,7 @@ package com.tfg.futstats.models;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tfg.futstats.controllers.dtos.match.MatchCreationDTO;
+import com.tfg.futstats.controllers.dtos.match.MatchDTO;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -28,11 +28,11 @@ public class Match {
     @JsonIgnore
     private League league;
 
-    @ManyToOne
+    @ManyToOne(optional = true)
     @JsonIgnore
     private Team team1;
 
-    @ManyToOne
+    @ManyToOne(optional = true)
     @JsonIgnore
     private Team team2;
 
@@ -215,7 +215,7 @@ public class Match {
             this.inBoxSaves2 = inBoxSaves2;
     }
 
-    public Match(MatchCreationDTO match) {
+    public Match(MatchDTO match) {
         this.shoots1 = match.getShoots1();
         this.scores1 = match.getScores1();
         this.penaltys1 = match.getPenaltys1();

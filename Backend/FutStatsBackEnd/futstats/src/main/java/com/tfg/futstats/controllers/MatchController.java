@@ -15,8 +15,10 @@ import org.springframework.http.ResponseEntity;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import com.tfg.futstats.controllers.dtos.match.MatchCreationDTO;
+import com.tfg.futstats.controllers.dtos.league.LeagueDTO;
+import com.tfg.futstats.controllers.dtos.match.MatchDTO;
 import com.tfg.futstats.controllers.dtos.player.PlayerMatchDTO;
+import com.tfg.futstats.controllers.dtos.team.TeamResponseDTO;
 import com.tfg.futstats.errors.ElementNotFoundException;
 import com.tfg.futstats.models.Match;
 import com.tfg.futstats.models.Player;
@@ -38,44 +40,52 @@ public class MatchController {
     // ------------------------------- Match CRUD operations
     // --------------------------------------------
     @GetMapping("/")
-    public ResponseEntity<List<Match>> getMatches() {
+    public ResponseEntity<List<MatchDTO>> getMatches() {
         return ResponseEntity.ok(restService.findAllMatches());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Match> getMatch(@PathVariable long id) {
+    public ResponseEntity<MatchDTO> getMatch(@PathVariable long id) {
         Match match = restService.findMatchById(id)
                 .orElseThrow(() -> new ElementNotFoundException("No existe un partido con ese id"));
 
-        return ResponseEntity.ok(match);
+        MatchDTO matchDto = new MatchDTO(match);
+
+        return ResponseEntity.ok(matchDto);
     }
 
     @GetMapping("/{matchId}/league")
-    ResponseEntity<League> getLeague(@PathVariable long matchId) {
-        Team match = restService.findTeamById(matchId)
+    ResponseEntity<LeagueDTO> getLeague(@PathVariable long matchId) {
+        Match match = restService.findMatchById(matchId)
                 .orElseThrow(() -> new ElementNotFoundException("No existe un partido con ese id"));
 
-        return ResponseEntity.ok(match.getLeague());
+        LeagueDTO league = new LeagueDTO(match.getLeague());
+
+        return ResponseEntity.ok(league);
     }
 
     @GetMapping("/{id}/team1")
-    public ResponseEntity<Team> getTeam1(@PathVariable long id) {
+    public ResponseEntity<TeamResponseDTO> getTeam1(@PathVariable long id) {
         Match match = restService.findMatchById(id)
                 .orElseThrow(() -> new ElementNotFoundException("No existe un partido con ese id"));
 
-        return ResponseEntity.ok(match.getTeam1());
+        TeamResponseDTO team = new TeamResponseDTO(match.getTeam1());
+
+        return ResponseEntity.ok(team);
     }
 
     @GetMapping("/{id}/team2")
-    public ResponseEntity<Team> getTeam2(@PathVariable long id) {
+    public ResponseEntity<TeamResponseDTO> getTeam2(@PathVariable long id) {
         Match match = restService.findMatchById(id)
                 .orElseThrow(() -> new ElementNotFoundException("No existe un partido con ese id"));
 
-        return ResponseEntity.ok(match.getTeam2());
+        TeamResponseDTO team = new TeamResponseDTO(match.getTeam2());
+        
+        return ResponseEntity.ok(team);
     }
 
     @GetMapping("/{id}/playersMatches")
-    public ResponseEntity<List<PlayerMatch>> getPlayerMatch(@PathVariable long id) {
+    public ResponseEntity<List<PlayerMatchDTO>> getPlayerMatch(@PathVariable long id) {
         Match match = restService.findMatchById(id)
                 .orElseThrow(() -> new ElementNotFoundException("No existe el partido de ese jugador"));
 
@@ -86,7 +96,7 @@ public class MatchController {
     // have to create security for that
 
     @PostMapping("/")
-    public ResponseEntity<Match> postMatches(HttpServletRequest request, @RequestBody MatchCreationDTO matchDto) {
+    public ResponseEntity<Match> postMatches(HttpServletRequest request, @RequestBody MatchDTO matchDto) {
         //We don`t need this because is redundant, is already controlled in SecurityConfig
 
         Match newMatch = new Match(matchDto);
@@ -124,7 +134,7 @@ public class MatchController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Match> putMatches(HttpServletRequest request, @PathVariable long id, @RequestBody MatchCreationDTO matchDto) {
+    public ResponseEntity<MatchDTO> putMatches(HttpServletRequest request, @PathVariable long id, @RequestBody MatchDTO matchDto) {
         //We don`t need this because is redundant, is already controlled in SecurityConfig
 
         Match oldMatch = restService.findMatchById(id)
@@ -164,7 +174,9 @@ public class MatchController {
 
         restService.updateMatch(oldMatch, newMatch, matchDto, league, team1, team2);
 
-        return ResponseEntity.ok(newMatch);
+        MatchDTO newMatchDto = new MatchDTO(newMatch);
+
+        return ResponseEntity.ok(newMatchDto);
 
         // if the match ins`t found we will never reach this point so it is not necessary
         // to create a not found ResponseEntity
@@ -196,7 +208,7 @@ public class MatchController {
 
         PlayerMatch playerMatch = restService.findPlayerMatchById(id).orElseThrow(() -> new ElementNotFoundException("No existe el partido de ese jugador"));
 
-        restService.deletePlayerMatch(playerMatch,id);
+        restService.deletePlayerMatch(playerMatch);
         return ResponseEntity.ok(playerMatch);
 
         //if the player ins`t found we will never reach this point but for security we will let this here
@@ -204,7 +216,7 @@ public class MatchController {
     }
 
     @PutMapping("/{matchId}/playersMatch/{id}")
-    public ResponseEntity<PlayerMatch> putPlayersMatch(HttpServletRequest request, @PathVariable long id, @RequestBody PlayerMatchDTO playerMatchDto) {
+    public ResponseEntity<PlayerMatchDTO> putPlayersMatch(HttpServletRequest request, @PathVariable long id, @RequestBody PlayerMatchDTO playerMatchDto) {
         PlayerMatch oldPlayerMatch = restService.findPlayerMatchById(id)
                         .orElseThrow(() -> new ElementNotFoundException("No existe el partido de ese jugador"));
 
@@ -226,7 +238,9 @@ public class MatchController {
 
         restService.updatePlayerMatch(oldPlayerMatch, newPlayerMatch, playerMatchDto, match, player);
 
-        return ResponseEntity.ok(newPlayerMatch);
+        PlayerMatchDTO newPlayerMatchDto = new PlayerMatchDTO(newPlayerMatch);
+        
+        return ResponseEntity.ok(newPlayerMatchDto);
 
         //if the player ins`t found we will never reach this point but for security we will let this here
         //return ResponseEntity.notFound().build();

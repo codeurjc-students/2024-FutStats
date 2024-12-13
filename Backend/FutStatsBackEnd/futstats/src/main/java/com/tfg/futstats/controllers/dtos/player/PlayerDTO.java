@@ -1,5 +1,7 @@
 package com.tfg.futstats.controllers.dtos.player;
 
+import com.tfg.futstats.models.Player;
+
 public class PlayerDTO {
    // dto attributes
    private long id;
@@ -9,6 +11,19 @@ public class PlayerDTO {
    private int age;
    private String nationality;
    private String position;
+
+   public PlayerDTO(){}
+
+   public PlayerDTO(Player player){
+      this.id = player.getId();
+      this.name = player.getName();
+      this.age = player.getAge();
+      this.nationality = player.getNationality();
+      this.position = player.getPosition();
+      this.league = player.getLeague().getName();
+      this.team = player.getTeam().getName();
+   }
+
 
    // Getters & setters
    public long getId() {

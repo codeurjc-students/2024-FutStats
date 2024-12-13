@@ -1,4 +1,4 @@
-package com.tfg.futstats.controllers.dtos;
+package com.tfg.futstats.controllers.dtos.user;
 
 import java.util.List;
 

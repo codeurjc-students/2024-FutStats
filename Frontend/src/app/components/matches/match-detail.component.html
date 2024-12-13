@@ -31,6 +31,13 @@
         <p>Pérdidas de balón: {{ match.ballLosses1 }}</p>
     </div>
 
+    <h3>Estadisticas de los jugadores</h3>
+    <ul class="items">
+        <li *ngFor="let playerMatch of playerMatches">
+            <a [routerLink]="['/playerMatch', playerMatch.id]">{{playerMatch.name}}</a>
+        </li>
+    </ul>
+
     <h2>"Estadísticas de {{team2}}"</h2>
 
     <div>
@@ -55,6 +62,11 @@
         <p>Centros: {{ match.centers2 }}</p>
         <p>Pérdidas de balón: {{ match.ballLosses2 }}</p>
     </div>
+
+    <br>
+    <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="removeMatch()">Remove</button>
+    <button *ngIf="loginService.isLogged()" (click)="createPlayerMatch()">Crear Estadisticas de un jugador</button>
+    <br>
 
     <p>
         <button (click)="goBack()">Volver</button>

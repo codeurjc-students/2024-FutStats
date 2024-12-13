@@ -1,4 +1,6 @@
-package com.tfg.futstats.controllers.dtos;
+package com.tfg.futstats.controllers.dtos.league;
+
+import com.tfg.futstats.models.League;
 
 public class LeagueDTO {
     // dto attributes
@@ -7,6 +9,14 @@ public class LeagueDTO {
     private String president;
     private String nationality;
 
+    public LeagueDTO(){}
+
+    public LeagueDTO(League league){
+        this.id = league.getId();
+        this.name = league.getName();
+        this.nationality = league.getNationality();
+        this.president = league.getPresident();
+    }
     // Getters & setters
     public long getId() {
         return id;

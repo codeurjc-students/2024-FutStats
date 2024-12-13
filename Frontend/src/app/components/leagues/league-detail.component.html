@@ -14,9 +14,9 @@
     </li>
   </ul>
 
-  <br>
+  <p>
   <button *ngIf="loginService.isLogged()" (click)="createTeam()">Crear Equipo</button>
-  <br>
+  </p>
 
   <h3>Partidos</h3>
   <ul class="items">
@@ -25,16 +25,22 @@
       <a>{{match.place}}</a>
     </li>
   </ul>
-
-  <br>
+  
+  <p>
   <button *ngIf="loginService.isLogged()" (click)="createMatch()">Crear Partido</button>
-  <br>
+  </p>
 
-  <br> 
-  <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="removeLeague()">Remove</button>
-  <button *ngIf="loginService.isLogged()" (click)="editLeague()">Edit</button>
   <p>
     <button (click)="gotoLeagues()">Otras ligas</button>
+  </p>
+
+  <h3 *ngIf="loginService.isLogged()" (click)="createMatch()">
+    Opciones de Usuario
+  </h3>
+
+  <p> 
+  <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="removeLeague()">Remove</button>
+  <button *ngIf="loginService.isLogged()" (click)="editLeague()">Edit</button>
   </p>
 
 </div>
