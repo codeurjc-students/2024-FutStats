@@ -21,57 +21,69 @@ export class PlayersService {
 		);
 	}
 
-	getPlayerByName(name:string): Observable<Player>{
+	getPlayerByName(name: string): Observable<Player> {
 		return this.httpClient.get<Player>(BASE_URL + 'name/' + name).pipe(
 			catchError(error => this.handleError(error))
 		);
 	}
 
-	getPlayer(id: number ): Observable<Player> {
-		return this.httpClient.get<Player>(BASE_URL+id).pipe(
+	getPlayer(id: number): Observable<Player> {
+		return this.httpClient.get<Player>(BASE_URL + id).pipe(
 			catchError(error => this.handleError(error))
 		);
 	}
 
-	getLeague(id: number): Observable<League>{
-		return this.httpClient.get<League>(BASE_URL+id+'/league').pipe(
+	getImage(id: number | undefined) {
+		return this.httpClient.get<FormData>(BASE_URL + id + '/image').pipe(
 			catchError(error => this.handleError(error))
 		);
 	}
 
-	getTeam(id: number): Observable<Team>{
-		return this.httpClient.get<Team>(BASE_URL+id+'/team').pipe(
+	getLeague(id: number): Observable<League> {
+		return this.httpClient.get<League>(BASE_URL + id + '/league').pipe(
 			catchError(error => this.handleError(error))
 		);
 	}
 
-	getPlayerMatches(playerId: number): Observable<PlayerMatch[]>{
-		return this.httpClient.get<PlayerMatch[]>(BASE_URL+ playerId +'/playerMatches').pipe(
+	getTeam(id: number): Observable<Team> {
+		return this.httpClient.get<Team>(BASE_URL + id + '/team').pipe(
+			catchError(error => this.handleError(error))
+		);
+	}
+
+	getPlayerMatches(playerId: number): Observable<PlayerMatch[]> {
+		return this.httpClient.get<PlayerMatch[]>(BASE_URL + playerId + '/playerMatches').pipe(
 			catchError(error => this.handleError(error))
 		);
 	}
 
 	addPlayer(player: Player): Observable<Player> {
-		if (!player.id) {
-		  return this.httpClient.post<Player>(BASE_URL, player).pipe(
+		return this.httpClient.post<Player>(BASE_URL, player).pipe(
 			catchError(error => this.handleError(error))
-		  );
-		} else {
-		  return this.httpClient.put<Player>(BASE_URL + player.id, player).pipe(
+		);
+	}
+
+	addImage(player: Player, formData: FormData) {
+		return this.httpClient.post(BASE_URL + player.id + '/image', formData).pipe(
 			catchError(error => this.handleError(error))
-		  );
-		}
-	  }
-	
+		);
+	}
+
 	deletePlayer(player: Player) {
 		return this.httpClient.delete<Player>(BASE_URL + player.id).pipe(
 			catchError(error => this.handleError(error))
 		);
 	}
-	
+
+	deleteImage(player: Player) {
+		return this.httpClient.delete(BASE_URL + player.id + '/image').pipe(
+			catchError(error => this.handleError(error))
+		);
+	}
+
 	updatePlayer(player: Player): Observable<Player> {
 		return this.httpClient.put<Player>(BASE_URL + player.id, player).pipe(
-		catchError(error => this.handleError(error))
+			catchError(error => this.handleError(error))
 		);
 	}
 

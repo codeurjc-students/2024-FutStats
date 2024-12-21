@@ -1,0 +1,20 @@
+version: "3.3"
+services:
+ web:
+  image: futStats/webapp
+  ports:
+   - 8443:8443
+  environment:
+   - SPRING_PROFILES_ACTIVE=local
+   - SPRING_DATASOURCE_URL=jdbc:mysql://127.0.0.1:3306/apirest?serverTimezone=Europe/Madrid
+   - SPRING_DATASOURCE_USERNAME=root  
+   - SPRING_DATASOURCE_PASSWORD=17042002
+   - SPRING_JACKSON_TIMEZONE=Europe/Madrid
+  depends_on:
+   - db  
+ db: 
+  image: mysql:8.0.22
+  restart: on-failure
+  environment:
+   - MYSQL_ROOT_PASSWORD=17042002
+   - MYSQL_DATABASE=apirest

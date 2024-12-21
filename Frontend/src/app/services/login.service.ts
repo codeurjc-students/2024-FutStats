@@ -13,7 +13,7 @@ export class LoginService {
     constructor(private http: HttpClient) {
         this.reqIsLogged();
     }
-
+    
     reqIsLogged() {
         this.http.get<User>(BASE_URL + 'users/me', { withCredentials: true }).subscribe(
             response => {
@@ -55,7 +55,7 @@ export class LoginService {
     }
 
     isAdmin() {
-        return this.user && Array.isArray(this.user.roles) && this.user.roles.includes('admin');
+        return this.user && Array.isArray(this.user.roles) && this.user.roles.includes('[admin]');
     }
 
     currentUser() {

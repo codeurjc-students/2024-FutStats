@@ -31,6 +31,18 @@ export class PlayerMatchesService {
 		);
 	}
 
+	deletePlayerMatch(playerMatch: PlayerMatch) {
+		return this.httpClient.delete<PlayerMatch>(BASE_URL + playerMatch.id).pipe(
+			catchError(error => this.handleError(error))
+		);
+	}
+
+	updatePlayerMatch(id: number | undefined, playerMatch: PlayerMatch): Observable<PlayerMatch> {
+		return this.httpClient.put<PlayerMatch>(BASE_URL + playerMatch.id, playerMatch).pipe(
+			catchError(error => this.handleError(error))
+		);
+	}
+
 	private handleError(error: any) {
 		console.log("ERROR:");
 		console.error(error);

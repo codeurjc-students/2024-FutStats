@@ -2,6 +2,13 @@
 
     <h1>"{{playerMatch.name}}"</h1>
     <br>
+    <img [src]="playerImage()">
+    <br>
+    <h2>{{player.name}}</h2>
+    <br>
+    <p>
+        Partido: {{playerMatch.match}}
+    </p>
     <h2>Estadísticas ofensivas</h2>
     <div>
         <p>Tiros: {{playerMatch.shoots}}</p>
@@ -43,9 +50,14 @@
         <p>Paradas de Dentro del área: {{playerMatch.inBoxSaves}}</p>
     </div>
 
+    <h3 *ngIf="loginService.isLogged() && loginService.isAdmin()"> Opciones de Administrador</h3>
+
     <p>
-        <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="removePlayerMatch()">Remove</button>
-        <button (click)="goBack()">Volver</button>
+        <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="removePlayerMatch()">Borrar Estadística de Jugador</button>
+        <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="editPlayerMatch()">Editar Estadística de Jugador</button>
     </p>
-    
 </div>
+
+<p>
+    <button (click)="goBack()">Volver</button>
+</p>

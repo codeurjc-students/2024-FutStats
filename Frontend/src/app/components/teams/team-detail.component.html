@@ -1,7 +1,13 @@
 <div *ngIf="team">
 
+    <img [src]="teamImage()">
     <h1>"{{team.name}}"</h1>
     <br>
+
+    <p>
+        <button *ngIf="loginService.isLogged()" (click)="addTeam()">Añadir equipo a favoritos</button>
+    </p>
+
     <h2>Datos del equipo</h2>
     <div>
         <p>Trofeos: {{team.trophies}}</p>
@@ -44,7 +50,6 @@
     <br>
     <h2>Estadísticas de creación de juego</h2>
     <div>
-        <p>Posesion: {{team.possesion}}</p>
         <p>Pases: {{team.passes}}</p>
         <p>Pases por partido: {{team.passesPerMatch}}</p>
         <p>Pases acertados: {{team.goodPasses}}</p>
@@ -73,8 +78,8 @@
         </li>
     </ul>
 
-    <h3 *ngIf="loginService.isLogged()">
-        Opciones de Usuario
+    <h3 *ngIf="loginService.isLogged() && loginService.isAdmin()">
+        Opciones de Administrador
     </h3>
 
     <p>
@@ -82,8 +87,8 @@
     </p>
 
     <p>
-    <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="removeTeam()">Remove</button>
-    <button *ngIf="loginService.isLogged()" (click)="editTeam()">Editar</button>
+    <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="removeTeam()">Borrar Equipo</button>
+    <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="editTeam()">Editarn Equipo</button>
     </p>
 
     <p>

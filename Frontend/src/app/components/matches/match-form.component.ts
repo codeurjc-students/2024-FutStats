@@ -6,10 +6,12 @@ import { Match } from 'src/app/models/match.model';
 import { Team } from 'src/app/models/team.model';
 import { League } from 'src/app/models/league.model';
 
+
 @Component({
   templateUrl: './match-form.component.html',
 })
 export class MatchFormComponent implements OnInit {
+  newMatch: boolean;
   match: Match;
   leagues: League[] = [];
   teams: Team[] = [];
@@ -19,18 +21,27 @@ export class MatchFormComponent implements OnInit {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private matchService: MatchesService,
+    private service: MatchesService,
     private leagueService: LeaguesService
   ) {
-    this.match = {
-      id: 0,
-      place: '',
-      name: '',
-      date: new Date,
-      team1: '', // ID del equipo 1
-      team2: '', // ID del equipo 2
-      league: '', // ID de la liga seleccionada
-    };
+    const id = activatedRoute.snapshot.params['id'];
+    if (id) {
+      service.getMatch(id).subscribe(
+        match => this.match = match,
+        error => console.error(error)
+      );
+      this.newMatch = false;
+    } else {
+      this.match = {
+        place: '',
+        name: '',
+        date: new Date,
+        team1: '', 
+        team2: '', 
+        league: '', 
+      };
+      this.newMatch = true;
+    }
   }
 
   ngOnInit(): void {
@@ -61,19 +72,25 @@ export class MatchFormComponent implements OnInit {
   }
 
   save() {
-    // Asignar la liga seleccionada al match antes de enviarlo
-    this.match.league = this.selectedLeagueId; 
-    this.matchService.addMatch(this.match).subscribe({
-      next: (match: Match) => this.afterSave(match),
-      error: (error) => alert('Error creating new match: ' + error),
-    });
+    if(this.newMatch){
+      this.match.league = this.selectedLeagueId;
+      this.service.addMatch(this.match).subscribe(
+        (match: Match) => this.afterSave(match),
+        error => alert('Error creating new league: ' + error)
+      );
+      }else{
+        this.service.updateMatch(this.match).subscribe(
+          (match: Match) => this.afterSave(match),
+          error => alert('Error creating new league: ' + error)
+        );
+      }
   }
 
   private afterSave(match: Match) {
     this.leagueService.getLeagueByName(this.match.league).subscribe({
       next: (league: League) => {
         this.league = league;
-        this.router.navigate(['/leagues', this.league.id]); // Navigate after league is fetched
+        this.router.navigate(['/leagues', this.league.id]);
       },
       error: (error) => {
         console.error('Error fetching league:', error);

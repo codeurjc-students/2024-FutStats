@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { LoginService } from '../../services/login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'login',
@@ -7,7 +8,7 @@ import { LoginService } from '../../services/login.service';
 })
 export class LoginComponent {
 
-  constructor(public loginService: LoginService) { }
+  constructor(private router: Router, public loginService: LoginService) { }
 
   logIn(event: any, user: string, pass: string) {
 
@@ -15,6 +16,14 @@ export class LoginComponent {
 
     this.loginService.logIn(user, pass);
   }
+
+  users(){
+    this.router.navigate(['/users']);
+  }
+
+  createUser(){
+    this.router.navigate(['/users/new']);
+}
 
   logOut() {
     this.loginService.logOut();

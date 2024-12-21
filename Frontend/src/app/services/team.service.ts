@@ -20,51 +20,63 @@ export class TeamsService {
 		);
 	}
 
-	getTeam(id: number ): Observable<Team> {
-		return this.httpClient.get<Team>(BASE_URL+id).pipe(
+	getTeam(id: number): Observable<Team> {
+		return this.httpClient.get<Team>(BASE_URL + id).pipe(
 			catchError(error => this.handleError(error))
 		);
 	}
 
-	getTeamByName(name: string ): Observable<Team> {
-		return this.httpClient.get<Team>(BASE_URL+ 'name/' + name).pipe(
-			catchError(error => this.handleError(error))
-		);
-	}
-	
-	getLeagueByTeam(id: number): Observable<League>{
-		return this.httpClient.get<League>(BASE_URL+id+'/league').pipe(
+	getTeamByName(name: string): Observable<Team> {
+		return this.httpClient.get<Team>(BASE_URL + 'name/' + name).pipe(
 			catchError(error => this.handleError(error))
 		);
 	}
 
-	getPlayersByTeam(id: number): Observable<Player[]>{
-		return this.httpClient.get<Player[]>(BASE_URL+id+'/players').pipe(
+	getImage(id: number | undefined) {
+		return this.httpClient.get<FormData>(BASE_URL + id + '/image').pipe(
+			catchError(error => this.handleError(error))
+		);
+	}
+
+	getLeagueByTeam(id: number): Observable<League> {
+		return this.httpClient.get<League>(BASE_URL + id + '/league').pipe(
+			catchError(error => this.handleError(error))
+		);
+	}
+
+	getPlayersByTeam(id: number): Observable<Player[]> {
+		return this.httpClient.get<Player[]>(BASE_URL + id + '/players').pipe(
 			catchError(error => this.handleError(error))
 		);
 	}
 
 	addTeam(team: Team): Observable<Team> {
-		if (!team.id) {
-		  return this.httpClient.post<Team>(BASE_URL, team).pipe(
+		return this.httpClient.post<Team>(BASE_URL, team).pipe(
 			catchError(error => this.handleError(error))
-		  );
-		} else {
-		  return this.httpClient.put<Team>(BASE_URL + team.id, team).pipe(
+		);
+	}
+
+	addImage(team: Team, formData: FormData) {
+		return this.httpClient.post(BASE_URL + team.id + '/image', formData).pipe(
 			catchError(error => this.handleError(error))
-		  );
-		}
-	  }
-	
+		);
+	}
+
 	deleteTeam(team: Team) {
 		return this.httpClient.delete<Team>(BASE_URL + team.id).pipe(
 			catchError(error => this.handleError(error))
 		);
 	}
-	
+
+	deleteImage(team: Team) {
+		return this.httpClient.delete(BASE_URL + team.id + '/image').pipe(
+			catchError(error => this.handleError(error))
+		);
+	}
+
 	updateTeam(team: Team): Observable<Team> {
 		return this.httpClient.put<Team>(BASE_URL + team.id, team).pipe(
-		catchError(error => this.handleError(error))
+			catchError(error => this.handleError(error))
 		);
 	}
 

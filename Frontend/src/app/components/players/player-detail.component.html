@@ -1,6 +1,9 @@
 <div *ngIf="player">
 
+
     <h1>"{{player.name}}"</h1>
+    <br>
+    <img [src]="playerImage()">
     <br>
     <h2>Datos del jugador</h2>
     <div>
@@ -8,7 +11,11 @@
         <p>Nacionalidad: {{player.nationality}}</p>
         <p>Posición: {{player.position}}</p>
     </div>
-    <br>
+
+    <p>
+        <button *ngIf="loginService.isLogged()" (click)="addPlayer()">Añadir Jugador a favoritos</button>
+    </p>
+
     <h2>Partidos</h2>
     <div>
         <p>Partidos jugados: {{player.totalMatches}}</p>
@@ -69,9 +76,16 @@
         </li>
     </ul>
 
+    <h3 *ngIf="loginService.isLogged() && loginService.isAdmin()"> Opciones de Administrador</h3>
+
+    <p>
+    <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="removePlayer()">Borrar Jugador</button>
+    <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="editPlayer()">Editar Jugador</button>
+    </p>
+
     <br> 
-<button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="removePlayer()">Remove</button>
-<button *ngIf="loginService.isLogged()" (click)="editPlayer()">Edit</button>
+</div>
+
 <p>
     <button (click)="goBack()">Volver</button>
 </p>

@@ -1,0 +1,31 @@
+<div *ngIf="user">
+    
+    <h2 *ngIf="!user.id">Nuevo Usuario</h2>
+    <h2 *ngIf="user.id">"{{user.name}}"</h2>
+
+    <div>
+        <label>Nombre: </label>
+        <input [(ngModel)]="user.name" placeholder="Nombre" />
+    </div>
+    <br>
+    <div>
+        <label>Contraseña: </label>
+        <input [(ngModel)]="user.password" placeholder="Contraseña" />
+    </div>
+
+    <p>Image: </p>
+    <img [src]="userImage()"><br>
+
+    <ng-template [ngIf]="user.id">
+        <br><input type='checkbox' name='removeImage' [(ngModel)]="removeImage"> <label>Quitar imagen</label><br>
+
+        <label>Subir imágen: </label><br>  
+    </ng-template>
+
+    <input #file type='file' name='imageFile' accept=".jpg, .jpeg" />
+
+    <p>
+        <button (click)="cancel()">Cancelar</button>
+        <button (click)="save()">Guardar</button>
+    </p>
+</div>

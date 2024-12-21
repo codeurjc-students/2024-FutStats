@@ -6,4 +6,6 @@
     </li>
 </ul>
 
-<button *ngIf="loginService.isLogged()" (click)="newLeague()">Crear una liga</button>
+<h3 *ngIf="loginService.isLogged() && loginService.isAdmin()"> Opciones de Administrador</h3>
+
+<button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="newLeague()">Crear una liga</button>

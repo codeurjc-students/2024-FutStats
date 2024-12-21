@@ -1,17 +1,19 @@
+import { UsersService } from 'src/app/services/user.service';
 import { League } from './../../models/league.model';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TeamsService } from '../../services/team.service';
 import { Team } from '../../models/team.model';
 import { LoginService } from 'src/app/services/login.service';
-import { LeaguesService } from 'src/app/services/league.service';
 import { Player } from 'src/app/models/player.model';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   templateUrl: './team-detail.component.html'
 })
 export class TeamDetailComponent implements OnInit {
 
+  user: User;
   team: Team;
   league: League;
   players: Player[] =  [];
@@ -21,6 +23,7 @@ export class TeamDetailComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private service: TeamsService,
+    private userService: UsersService,
     public loginService: LoginService,
   ) { }
 
@@ -49,12 +52,25 @@ export class TeamDetailComponent implements OnInit {
             this.errorMessage = 'Error fetching teams';
           }
         );
+
+        this.userService.getMe().subscribe(
+          (user: User) => {
+            this.user = user;  
+          },
+          (error) => {
+            this.errorMessage = 'Error finding user';
+          }
+        );
       },
       (error: any) => {
         this.errorMessage = 'Error fetching team details';
         console.error(error);
       }
     );
+  }
+
+  teamImage(){
+    return this.team.image? this.service.getImage(this.team.id) : 'assets/no_image.jpg';
   }
 
   createPlayer(): void {
@@ -73,6 +89,16 @@ export class TeamDetailComponent implements OnInit {
 
   editTeam() {
     this.router.navigate(['/teams/edit', this.team.id]);
+  }
+
+  addTeam(){
+    const okResponse = window.confirm('Quieres añadir este equipo?');
+    if (okResponse) {
+      this.userService.addTeam(this.user, this.team).subscribe(
+        _ => this.router.navigate(['/users', this.user.id]),
+        error => console.error(error)
+      );
+    }
   }
 
   goBack(): void {

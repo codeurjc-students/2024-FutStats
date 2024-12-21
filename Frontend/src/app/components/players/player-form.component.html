@@ -1,12 +1,21 @@
 <div *ngIf="player">
-    
+
   <h2 *ngIf="!player.id">Nuevo Jugador</h2>
   <h2 *ngIf="player.id">"{{player.name}}"</h2>
 
   <div>
-      <label>Nombre: </label>
-      <input [(ngModel)]="player.name" placeholder="Nombre" />
+    <label>Nombre: </label>
+    <input [(ngModel)]="player.name" placeholder="Nombre" />
   </div>
+  <br>
+  <p>Image: </p>
+  <img [src]="playerImage()"><br>
+
+  <ng-template [ngIf]="player.id">
+    <br><input type='checkbox' name='removeImage' [(ngModel)]="removeImage"> <label>Quitar imagen</label><br>
+
+    <label>Subir imágen: </label><br>
+  </ng-template>
   <br>
   <div>
     <label>Edad: </label>
@@ -21,32 +30,32 @@
   <div>
     <label>Nacionalidad: </label>
     <input [(ngModel)]="player.nationality" placeholder="Nacionalidad" />
-</div>
-<br>
-<br>
-<label>
+  </div>
+  <br>
+  <br>
+  <label>
     Liga:
     <select [(ngModel)]="selectedLeagueId" (change)="onLeagueChange()">
       <option *ngFor="let league of leagues" [value]="league.name">
         {{ league.name }}
       </option>
     </select>
-</label>
-<br />
+  </label>
+  <br />
 
   <br>
   <label>
-      Equipo Local:
-      <select [(ngModel)]="player.team" name="teamName" required>
-          <option *ngFor="let team of teams" [value]="team.name">
-            {{ team.name }}
-          </option>
-      </select>
+    Equipo Local:
+    <select [(ngModel)]="player.team" name="teamName" required>
+      <option *ngFor="let team of teams" [value]="team.name">
+        {{ team.name }}
+      </option>
+    </select>
   </label>
   <br />
 
   <p>
-      <button (click)="cancel()">Cancel</button>
-      <button (click)="save()">Save</button>
+    <button (click)="cancel()">Cancel</button>
+    <button (click)="save()">Save</button>
   </p>
 </div>

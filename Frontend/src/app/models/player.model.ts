@@ -6,6 +6,7 @@ export interface Player{
     nationality: string;
     team: string;
     league: string;
+    image: boolean;
 
     //Other classes
 

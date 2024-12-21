@@ -8,6 +8,15 @@
         <input [(ngModel)]="team.name" placeholder="Nombre" />
     </div>
     <br>
+    <p>Image: </p>
+    <img [src]="teamImage()"><br>
+
+    <ng-template [ngIf]="team.id">
+        <br><input type='checkbox' name='removeImage' [(ngModel)]="removeImage"> <label>Quitar imagen</label><br>
+
+        <label>Subir imágen: </label><br>  
+    </ng-template>
+    <br>    
     <div>
         <label>Trofeos: </label>
         <input [(ngModel)]="team.trophies" placeholder="Trofeos" />

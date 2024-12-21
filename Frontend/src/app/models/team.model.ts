@@ -3,6 +3,7 @@ import { League } from '../models/league.model';
 export interface Team{
     id?: number;
     name: string;
+    image: boolean;
     trophies: number;
     nationality: string;
     trainer: string;
@@ -37,7 +38,6 @@ export interface Team{
     cards?: number;
 
     // creation
-    possesion?: number;
     passes?: number;
     passesPerMatch?: number;
     goodPasses?: number;

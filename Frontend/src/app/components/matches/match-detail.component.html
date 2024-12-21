@@ -6,8 +6,8 @@
         <p>{{match.date}}</p>
     </div>
 
-    <h2>"Estadísticas de {{team1}}"</h2>
-
+    <h2>"Estadísticas de {{team1.name}}"</h2>
+    <img [src]="team1Image()">
     <div>
         <p>Disparos: {{ match.shoots1 }}</p>
         <p>Goles: {{ match.scores1 }}</p>
@@ -38,8 +38,8 @@
         </li>
     </ul>
 
-    <h2>"Estadísticas de {{team2}}"</h2>
-
+    <h2>"Estadísticas de {{team2.name}}"</h2>
+    <img [src]="team2Image()">
     <div>
         <p>Disparos: {{ match.shoots2 }}</p>
         <p>Goles: {{ match.scores2 }}</p>
@@ -63,13 +63,17 @@
         <p>Pérdidas de balón: {{ match.ballLosses2 }}</p>
     </div>
 
-    <br>
-    <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="removeMatch()">Remove</button>
-    <button *ngIf="loginService.isLogged()" (click)="createPlayerMatch()">Crear Estadisticas de un jugador</button>
-    <br>
+    <p>
+    <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="createPlayerMatch()">Crear Estadisticas de un jugador</button>
+    </p>
+
+    <h3 *ngIf="loginService.isLogged() && loginService.isAdmin()"> Opciones de Administrador</h3>
 
     <p>
-        <button (click)="goBack()">Volver</button>
+        <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="removeMatch()">Eliminar Partido</button>
+        <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="editMatch()">Editar Partido</button>
     </p>
-    
 </div>
+<p>
+    <button (click)="goBack()">Volver</button>
+</p>

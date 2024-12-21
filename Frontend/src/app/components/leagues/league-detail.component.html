@@ -1,10 +1,15 @@
 <div *ngIf="league">
 
+  <img [src]="leagueImage()">
   <h2>"{{league.name}}"</h2>
   <div>
       <p>{{league.president}}</p>
       <p>{{league.nationality}}</p>
   </div>
+
+  <p>
+    <button *ngIf="loginService.isLogged()" (click)="addLeague()">Añadir Liga a favoritos</button>
+  </p>
 
   <h3>Equipos</h3>
   <ul class="items">
@@ -15,7 +20,7 @@
   </ul>
 
   <p>
-  <button *ngIf="loginService.isLogged()" (click)="createTeam()">Crear Equipo</button>
+  <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="createTeam()">Crear Equipo</button>
   </p>
 
   <h3>Partidos</h3>
@@ -27,20 +32,18 @@
   </ul>
   
   <p>
-  <button *ngIf="loginService.isLogged()" (click)="createMatch()">Crear Partido</button>
+    <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="createMatch()">Crear Partido</button>
   </p>
 
-  <p>
-    <button (click)="gotoLeagues()">Otras ligas</button>
-  </p>
-
-  <h3 *ngIf="loginService.isLogged()" (click)="createMatch()">
-    Opciones de Usuario
-  </h3>
+  <h3 *ngIf="loginService.isLogged() && loginService.isAdmin()"> Opciones de Administrador </h3>
 
   <p> 
-  <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="removeLeague()">Remove</button>
-  <button *ngIf="loginService.isLogged()" (click)="editLeague()">Edit</button>
+  <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="removeLeague()">Borrar Liga</button>
+  <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="editLeague()">Editar Liga</button>
   </p>
 
 </div>
+
+<p>
+  <button (click)="goBack()">Volver</button>
+</p>

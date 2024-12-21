@@ -3,11 +3,6 @@
   <h2 *ngIf="!match.id">Nuevo Partido</h2>
   <h2 *ngIf="match.id">"{{match.name}}"</h2>
 
-  <div>
-      <label>Nombre: </label>
-      <input [(ngModel)]="match.name" placeholder="Nombre" />
-  </div>
-  <br>
   <br>
   <label>
       Liga:
@@ -42,7 +37,7 @@
   <br />
 
   <p>
-      <button (click)="cancel()">Cancel</button>
-      <button (click)="save()">Save</button>
+      <button (click)="cancel()">Cancelar</button>
+      <button (click)="save()">Crear Partido</button>
   </p>
 </div>

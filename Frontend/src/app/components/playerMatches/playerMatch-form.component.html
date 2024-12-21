@@ -1,164 +1,144 @@
 <div *ngIf="playerMatch">
-    
+
   <h2 *ngIf="!playerMatch.id">Nuevo Estadistica del Jugador</h2>
   <h2 *ngIf="playerMatch.id">"{{playerMatch.name}}"</h2>
 
   <!-- Selección de Partido -->
-  <div>
-    <label for="match">Selecciona un Partido:</label>
-    <select id="match" class="form-control" [(ngModel)]="selectedMatchId">
-      <option *ngFor="let match of matches" [value]="match.id">
+  <br>
+  <label>
+    Partido:
+    <select [(ngModel)]="playerMatch.matchName" name="match" required>
+      <option *ngFor="let match of matches" [value]="match.name">
         {{ match.name }}
       </option>
     </select>
-  </div>
+  </label>
+  <br>
 
   <!-- Selección de Jugador -->
-  <div>
-    <label for="player">Selecciona un Jugador:</label>
-    <select id="player" class="form-control" [(ngModel)]="selectedPlayerId">
+  <br>
+  <label>
+    Jugador:
+    <select [(ngModel)]="playerMatch.name" name="player" required>
       <option *ngFor="let player of players" [value]="player.name">
         {{ player.name }}
       </option>
     </select>
+  </label>
+  <br>
+
+  <h3>Estadísticas Ofensivas</h3>
+  <div>
+    <label for="shoots">Tiros:</label>
+    <input id="shoots" type="number" [(ngModel)]="playerMatch.shoots" />
+  </div>
+  <div>
+    <label for="goals">Goles:</label>
+    <input id="goals" type="number" [(ngModel)]="playerMatch.goals" />
+  </div>
+  <div>
+    <label for="penaltys">Penales:</label>
+    <input id="penaltys" type="number" [(ngModel)]="playerMatch.penaltys" />
+  </div>
+  <div>
+    <label for="faultsReceived">Faltas Recibidas:</label>
+    <input id="faultsReceived" type="number" [(ngModel)]="playerMatch.faultsReceived" />
+  </div>
+  <div>
+    <label for="offsides">Fuera de Juego:</label>
+    <input id="offsides" type="number" [(ngModel)]="playerMatch.offsides" />
   </div>
 
- <h3>Estadísticas Ofensivas</h3>
- <div>
-   <label for="shoots">Tiros:</label>
-   <input id="shoots" type="number" [(ngModel)]="playerMatch.shoots" />
- </div>
- <div>
-   <label for="goals">Goles:</label>
-   <input id="goals" type="number" [(ngModel)]="playerMatch.goals" />
- </div>
- <div>
-   <label for="penaltys">Penales:</label>
-   <input id="penaltys" type="number" [(ngModel)]="playerMatch.penaltys" />
- </div>
- <div>
-   <label for="faultsReceived">Faltas Recibidas:</label>
-   <input
-     id="faultsReceived"
-     type="number"
-     [(ngModel)]="playerMatch.faultsReceived"
-   />
- </div>
- <div>
-   <label for="offsides">Fuera de Juego:</label>
-   <input id="offsides" type="number" [(ngModel)]="playerMatch.offsides" />
- </div>
+  <h3>Estadísticas Defensivas</h3>
+  <div>
+    <label for="commitedFaults">Faltas Cometidas:</label>
+    <input id="commitedFaults" type="number" [(ngModel)]="playerMatch.commitedFaults" />
+  </div>
+  <div>
+    <label for="recovers">Recuperaciones:</label>
+    <input id="recovers" type="number" [(ngModel)]="playerMatch.recovers" />
+  </div>
+  <div>
+    <label for="duels">Duelos:</label>
+    <input id="duels" type="number" [(ngModel)]="playerMatch.duels" />
+  </div>
+  <div>
+    <label for="wonDuels">Duelos Ganados:</label>
+    <input id="wonDuels" type="number" [(ngModel)]="playerMatch.wonDuels" />
+  </div>
+  <div>
+    <label for="yellowCards">Tarjetas Amarillas:</label>
+    <input id="yellowCards" type="number" [(ngModel)]="playerMatch.yellowCards" />
+  </div>
+  <div>
+    <label for="redCards">Tarjetas Rojas:</label>
+    <input id="redCards" type="number" [(ngModel)]="playerMatch.redCards" />
+  </div>
 
- <h3>Estadísticas Defensivas</h3>
- <div>
-   <label for="commitedFaults">Faltas Cometidas:</label>
-   <input
-     id="commitedFaults"
-     type="number"
-     [(ngModel)]="playerMatch.commitedFaults"
-   />
- </div>
- <div>
-   <label for="recovers">Recuperaciones:</label>
-   <input id="recovers" type="number" [(ngModel)]="playerMatch.recovers" />
- </div>
- <div>
-   <label for="duels">Duelos:</label>
-   <input id="duels" type="number" [(ngModel)]="playerMatch.duels" />
- </div>
- <div>
-   <label for="wonDuels">Duelos Ganados:</label>
-   <input id="wonDuels" type="number" [(ngModel)]="playerMatch.wonDuels" />
- </div>
- <div>
-   <label for="yellowCards">Tarjetas Amarillas:</label>
-   <input id="yellowCards" type="number" [(ngModel)]="playerMatch.yellowCards" />
- </div>
- <div>
-   <label for="redCards">Tarjetas Rojas:</label>
-   <input id="redCards" type="number" [(ngModel)]="playerMatch.redCards" />
- </div>
+  <h3>Estadísticas de Creación</h3>
+  <div>
+    <label for="passes">Pases:</label>
+    <input id="passes" type="number" [(ngModel)]="playerMatch.passes" />
+  </div>
+  <div>
+    <label for="goodPasses">Pases Acertados:</label>
+    <input id="goodPasses" type="number" [(ngModel)]="playerMatch.goodPasses" />
+  </div>
+  <div>
+    <label for="shortPasses">Pases Cortos:</label>
+    <input id="shortPasses" type="number" [(ngModel)]="playerMatch.shortPasses" />
+  </div>
+  <div>
+    <label for="longPasses">Pases Largos:</label>
+    <input id="longPasses" type="number" [(ngModel)]="playerMatch.longPasses" />
+  </div>
+  <div>
+    <label for="assists">Asistencias:</label>
+    <input id="assists" type="number" [(ngModel)]="playerMatch.assists" />
+  </div>
+  <div>
+    <label for="dribles">Dribles:</label>
+    <input id="dribles" type="number" [(ngModel)]="playerMatch.dribles" />
+  </div>
+  <div>
+    <label for="centers">Centros:</label>
+    <input id="centers" type="number" [(ngModel)]="playerMatch.centers" />
+  </div>
+  <div>
+    <label for="ballLosses">Pérdidas de Balón:</label>
+    <input id="ballLosses" type="number" [(ngModel)]="playerMatch.ballLosses" />
+  </div>
 
- <h3>Estadísticas de Creación</h3>
- <div>
-   <label for="passes">Pases:</label>
-   <input id="passes" type="number" [(ngModel)]="playerMatch.passes" />
- </div>
- <div>
-   <label for="goodPasses">Pases Acertados:</label>
-   <input id="goodPasses" type="number" [(ngModel)]="playerMatch.goodPasses" />
- </div>
- <div>
-   <label for="shortPasses">Pases Cortos:</label>
-   <input id="shortPasses" type="number" [(ngModel)]="playerMatch.shortPasses" />
- </div>
- <div>
-   <label for="longPasses">Pases Largos:</label>
-   <input id="longPasses" type="number" [(ngModel)]="playerMatch.longPasses" />
- </div>
- <div>
-   <label for="assists">Asistencias:</label>
-   <input id="assists" type="number" [(ngModel)]="playerMatch.assists" />
- </div>
- <div>
-   <label for="dribles">Dribles:</label>
-   <input id="dribles" type="number" [(ngModel)]="playerMatch.dribles" />
- </div>
- <div>
-   <label for="centers">Centros:</label>
-   <input id="centers" type="number" [(ngModel)]="playerMatch.centers" />
- </div>
- <div>
-   <label for="ballLosses">Pérdidas de Balón:</label>
-   <input id="ballLosses" type="number" [(ngModel)]="playerMatch.ballLosses" />
- </div>
+  <!-- Goalkeeper Statistics -->
+  <h3>Estadísticas de Portero</h3>
+  <div>
+    <label for="shootsReceived">Tiros Recibidos:</label>
+    <input id="shootsReceived" type="number" [(ngModel)]="playerMatch.shootsReceived" />
+  </div>
+  <div>
+    <label for="goalsConceded">Goles Permitidos:</label>
+    <input id="goalsConceded" type="number" [(ngModel)]="playerMatch.goalsConceded" />
+  </div>
+  <div>
+    <label for="saves">Atajadas:</label>
+    <input id="saves" type="number" [(ngModel)]="playerMatch.saves" />
+  </div>
+  <div>
+    <label for="savesAvg">Promedio de Atajadas:</label>
+    <input id="savesAvg" type="number" [(ngModel)]="playerMatch.savesAvg" />
+  </div>
+  <div>
+    <label for="outBoxSaves">Atajadas Fuera del Área:</label>
+    <input id="outBoxSaves" type="number" [(ngModel)]="playerMatch.outBoxSaves" />
+  </div>
+  <div>
+    <label for="inBoxSaves">Atajadas Dentro del Área:</label>
+    <input id="inBoxSaves" type="number" [(ngModel)]="playerMatch.inBoxSaves" />
+  </div>
 
- <!-- Goalkeeper Statistics -->
- <h3>Estadísticas de Portero</h3>
- <div>
-   <label for="shootsReceived">Tiros Recibidos:</label>
-   <input
-     id="shootsReceived"
-     type="number"
-     [(ngModel)]="playerMatch.shootsReceived"
-   />
- </div>
- <div>
-   <label for="goalsConceded">Goles Permitidos:</label>
-   <input
-     id="goalsConceded"
-     type="number"
-     [(ngModel)]="playerMatch.goalsConceded"
-   />
- </div>
- <div>
-   <label for="saves">Atajadas:</label>
-   <input id="saves" type="number" [(ngModel)]="playerMatch.saves" />
- </div>
- <div>
-   <label for="savesAvg">Promedio de Atajadas:</label>
-   <input id="savesAvg" type="number" [(ngModel)]="playerMatch.savesAvg" />
- </div>
- <div>
-   <label for="outBoxSaves">Atajadas Fuera del Área:</label>
-   <input
-     id="outBoxSaves"
-     type="number"
-     [(ngModel)]="playerMatch.outBoxSaves"
-   />
- </div>
- <div>
-   <label for="inBoxSaves">Atajadas Dentro del Área:</label>
-   <input
-     id="inBoxSaves"
-     type="number"
-     [(ngModel)]="playerMatch.inBoxSaves"
-   />
- </div>
-
- <!-- Buttons -->
- <p>
-   <button (click)="cancel()">Cancelar</button>
-   <button (click)="save()">Guardar</button>
- </p>
+  <!-- Buttons -->
+  <p>
+    <button (click)="cancel()">Cancelar</button>
+    <button (click)="save()">Crear Estadística de Jugador</button>
+  </p>
 </div>

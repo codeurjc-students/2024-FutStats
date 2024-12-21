@@ -26,53 +26,65 @@ export class LeaguesService {
     );
   }
 
-  getLeagueByName(name:string): Observable<League>{
-    return this.httpClient.get<League>(BASE_URL+ 'name/' + name).pipe(
+  getLeagueByName(name: string): Observable<League> {
+    return this.httpClient.get<League>(BASE_URL + 'name/' + name).pipe(
       catchError(error => this.handleError(error))
     );
   }
 
-  getTeams(id: number): Observable<Team[]>{
+  getImage(id: number | undefined) {
+      return this.httpClient.get<FormData>(BASE_URL + id + '/image').pipe(
+        catchError(error => this.handleError(error))
+      );
+    }
+
+  getTeams(id: number): Observable<Team[]> {
     return this.httpClient.get<Team[]>(BASE_URL + id + '/teams').pipe(
       catchError(error => this.handleError(error))
     );
   }
 
-  getTeamsByName(name: string): Observable<Team[]>{
-    return this.httpClient.get<Team[]>(BASE_URL + 'name/'+ name + '/teams').pipe(
+  getTeamsByName(name: string): Observable<Team[]> {
+    return this.httpClient.get<Team[]>(BASE_URL + 'name/' + name + '/teams').pipe(
       catchError(error => this.handleError(error))
     );
   }
 
-  getMatches(id: number): Observable<Match[]>{
+  getMatches(id: number): Observable<Match[]> {
     return this.httpClient.get<Match[]>(BASE_URL + id + '/matches').pipe(
       catchError(error => this.handleError(error))
     );
   }
 
   addLeague(league: League): Observable<League> {
-    if (!league.id) {
-      return this.httpClient.post<League>(BASE_URL, league).pipe(
-        catchError(error => this.handleError(error))
-      );
-    } else {
-      return this.httpClient.put<League>(BASE_URL + league.id, league).pipe(
+    return this.httpClient.post<League>(BASE_URL, league).pipe(
+      catchError(error => this.handleError(error))
+    );
+  }
+
+  addImage(league: League, formData: FormData) {
+      return this.httpClient.post(BASE_URL + league.id + '/image', formData).pipe(
         catchError(error => this.handleError(error))
       );
     }
-  }
 
   deleteLeague(league: League) {
-		return this.httpClient.delete<League>(BASE_URL + league.id).pipe(
-			catchError(error => this.handleError(error))
-		);
-	}
+    return this.httpClient.delete<League>(BASE_URL + league.id).pipe(
+      catchError(error => this.handleError(error))
+    );
+  }
 
-	updateLeague(league: League): Observable<League> {
-		return this.httpClient.put<League>(BASE_URL + league.id, league).pipe(
+  deleteImage(league: League) {
+      return this.httpClient.delete(BASE_URL + league.id + '/image').pipe(
         catchError(error => this.handleError(error))
-		);
-	}
+      );
+    }
+
+  updateLeague(league: League): Observable<League> {
+    return this.httpClient.put<League>(BASE_URL + league.id, league).pipe(
+      catchError(error => this.handleError(error))
+    );
+  }
 
   private handleError(error: any) {
     console.log("ERROR:");

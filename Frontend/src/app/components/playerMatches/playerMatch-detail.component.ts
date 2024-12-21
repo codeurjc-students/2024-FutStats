@@ -6,8 +6,8 @@ import { PlayerMatchesService } from '../../services/playerMatch.service';
 import { Match } from '../../models/match.model';
 import {Player } from '../../models/player.model';
 import { PlayerMatch } from 'src/app/models/player-match.model';
-import { MatchesService } from 'src/app/services/match.service';
 import { LoginService } from 'src/app/services/login.service';
+import { TeamsService } from 'src/app/services/team.service';
 
 @Component({
     templateUrl: './playerMatch-detail.component.html'
@@ -23,7 +23,7 @@ export class PlayerMatchDetailComponent implements OnInit {
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private service: PlayerMatchesService,
-        private matchService: MatchesService,
+        private teamService: TeamsService,
         public loginService: LoginService
     ) { }
 
@@ -32,7 +32,6 @@ export class PlayerMatchDetailComponent implements OnInit {
         this.service.getPlayerMatch(id).subscribe(
             (playerMatch: PlayerMatch) => {
                 this.playerMatch = playerMatch;
-                console.log(playerMatch);
             },
             (error: any) => {
                 this.errorMessage = 'Error fetching match details';
@@ -44,14 +43,22 @@ export class PlayerMatchDetailComponent implements OnInit {
     removePlayerMatch() {
         const okResponse = window.confirm('Quieres borrar este jugador?');
         if (okResponse) {
-            this.matchService.deletePlayerMatch(this.playerMatch.id,this.playerMatch).subscribe(
+            this.service.deletePlayerMatch(this.playerMatch).subscribe(
                 _ => this.router.navigate(['/leagues']),
                 error => console.error(error)
             );
         }
+    }
+
+    playerImage() {
+        return this.player.image ? this.teamService.getImage(this.player.id) : 'assets/no_image.jpg';
       }
 
+    editPlayerMatch(){
+        this.router.navigate(['/playerMatch/edit', this.playerMatch.id]);
+    }
+
     goBack(): void {
-        window.history.back();
+        this.router.navigate(['/player', this.player.id]);
     }
 }

@@ -20,10 +20,13 @@ import { PlayerFormComponent } from './components/players/player-form.component'
 import { PlayerMatchDetailComponent } from './components/playerMatches/playerMatch-detail.component';
 import { PlayerMatchFormComponent } from './components/playerMatches/playerMatch-form.component';
 
+import { UserListComponent } from './components/users/user-list.component';
+import { UserDetailComponent } from './components/users/user-detail.component';
+import { UserFormComponent } from './components/users/user-form.component';
+
 import { LoginComponent } from './components/login/login.component';
 
 import { routing } from '../../src/app.routing';
-
 
 @NgModule({
   declarations: [AppComponent, 
@@ -32,6 +35,7 @@ import { routing } from '../../src/app.routing';
     TeamDetailComponent, TeamFormComponent,
     PlayerDetailComponent, PlayerFormComponent,
     PlayerMatchDetailComponent, PlayerMatchFormComponent,
+    UserListComponent, UserDetailComponent, UserFormComponent,
     LoginComponent],
   imports: [BrowserModule, FormsModule, HttpClientModule, routing],
   bootstrap: [AppComponent]

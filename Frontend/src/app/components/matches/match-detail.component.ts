@@ -8,6 +8,7 @@ import { Team } from '../../models/team.model';
 import { League } from 'src/app/models/league.model';
 import { PlayerMatch } from 'src/app/models/player-match.model';
 import { LoginService } from 'src/app/services/login.service';
+import { TeamsService } from 'src/app/services/team.service';
 
 @Component({
   templateUrl: './match-detail.component.html'
@@ -16,8 +17,8 @@ export class MatchDetailComponent implements OnInit {
 
   match: Match;
   errorMessage: string;
-  team1: string;
-  team2: string;
+  team1: Team;
+  team2: Team;
   league: League;
   playerMatches: PlayerMatch[] =  [];
 
@@ -26,6 +27,7 @@ export class MatchDetailComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private service: MatchesService,
     public loginService: LoginService,
+    public teamService: TeamsService
   ) { }
 
   ngOnInit(): void {
@@ -45,7 +47,7 @@ export class MatchDetailComponent implements OnInit {
 
         this.service.getTeam1(id).subscribe(
           (team: Team) => {
-            this.team1 = team.name;   
+            this.team1 = team;   
           },
           (error) => {
             this.errorMessage = 'Error fetching teams';
@@ -54,7 +56,7 @@ export class MatchDetailComponent implements OnInit {
 
         this.service.getTeam2(id).subscribe(
           (team: Team) => {
-            this.team2 = team.name;   
+            this.team2 = team;   
           },
           (error) => {
             this.errorMessage = 'Error fetching teams';
@@ -86,12 +88,24 @@ export class MatchDetailComponent implements OnInit {
         );
     }
   }
-
+  
   createPlayerMatch() {
     this.router.navigate(['/playerMatch/new']);
   }
 
+  team1Image(){
+    return this.team1.image? this.teamService.getImage(this.team1.id) : 'assets/no_image.jpg';
+  }
+
+  team2Image(){
+    return this.team2.image? this.teamService.getImage(this.team2.id) : 'assets/no_image.jpg';
+  }
+
   goBack(): void {
     this.router.navigate(['/leagues', this.league.id]);
+  }
+
+  editMatch(){
+    this.router.navigate(['/matches/edit', this.match.id]);
   }
 }

@@ -6,4 +6,5 @@ export interface League{
     president: string;
     nationality: string;
     teams: Team[];
+    image: boolean;
 }

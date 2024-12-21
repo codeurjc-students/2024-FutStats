@@ -15,6 +15,10 @@ import { PlayerFormComponent } from './app/components/players/player-form.compon
 
 import { PlayerMatchDetailComponent } from './app/components/playerMatches/playerMatch-detail.component';
 import { PlayerMatchFormComponent } from './app/components/playerMatches/playerMatch-form.component';
+import { UserFormComponent } from './app/components/users/user-form.component';
+
+import { UserListComponent } from './app/components/users/user-list.component';
+import { UserDetailComponent } from './app/components/users/user-detail.component';
 
 const appRoutes: Routes = [
     { path: 'leagues', component: LeagueListComponent },
@@ -23,6 +27,7 @@ const appRoutes: Routes = [
     { path: 'leagues/edit/:id', component: LeagueFormComponent},
     { path: 'matches/new', component: MatchFormComponent},
     { path: 'matches/:id', component: MatchDetailComponent},
+    { path: 'matches/edit/:id', component: MatchFormComponent},
     { path: 'teams/new', component: TeamFormComponent},
     { path: 'teams/edit/:id', component: TeamFormComponent},
     { path: 'teams/:id', component: TeamDetailComponent},
@@ -32,6 +37,10 @@ const appRoutes: Routes = [
     { path: 'playerMatch/new', component: PlayerMatchFormComponent},
     { path: 'playerMatch/:id', component: PlayerMatchDetailComponent},
     { path: 'playerMatch/edit/:id', component: PlayerMatchFormComponent},
+    { path: 'users', component: UserListComponent},
+    { path: 'users/new', component: UserFormComponent},
+    { path: 'users/:id' , component: UserDetailComponent},
+    { path: 'users/edit/:id', component: UserFormComponent},
     { path: '', redirectTo: 'leagues', pathMatch: 'full' }
 ]
 

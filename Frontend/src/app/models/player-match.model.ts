@@ -1,8 +1,7 @@
 export interface PlayerMatch{
     id?: number;
     name: string;
-    player: string;
-    match: number;
+    match: number|undefined;
     matchName: string;
 
     shoots?: number;
