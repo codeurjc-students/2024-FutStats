@@ -69,7 +69,7 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.GET, "/api/v1/users/**").hasAnyRole("[admin]", "[user]")
                 .requestMatchers(HttpMethod.PUT, "/api/v1/users/**").hasAnyRole("[admin]", "[user]")
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/users/**").hasAnyRole("[admin]", "[user]")
-
+                
                 // public endpoints
                 .anyRequest().permitAll()
             );
