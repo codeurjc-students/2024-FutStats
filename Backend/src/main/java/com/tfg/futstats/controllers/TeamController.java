@@ -173,8 +173,8 @@ public class TeamController {
             @ApiResponse(responseCode = "404", description = "team not found", content = @Content)
     })
     @GetMapping("/{teamsId}/matches")
-    public ResponseEntity<List<MatchDTO>> getMatchesByTeam(@PathVariable long teamId) {
-        Team team = restService.findTeamById(teamId)
+    public ResponseEntity<List<MatchDTO>> getMatchesByTeam(@PathVariable long teamsId) {
+        Team team = restService.findTeamById(teamsId)
                 .orElseThrow(() -> new ElementNotFoundException("No existe un equipo con ese id"));
 
         return ResponseEntity.ok(restService.findMatchesByTeam(team));

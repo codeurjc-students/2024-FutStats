@@ -1,0 +1,2990 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8443
+  description: Generated server url
+paths:
+  /api/v1/users/{id}:
+    get:
+      tags:
+      - user-controller
+      summary: Get user by id
+      operationId: getUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Found user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponseDTO"
+        "404":
+          description: user not found
+    put:
+      tags:
+      - user-controller
+      summary: Update an User
+      operationId: putUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserDTO"
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+        "422":
+          description: Unprocessable Entity
+        "401":
+          description: Unauthorized
+        "404":
+          description: User not found
+        "200":
+          description: User Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponseDTO"
+    delete:
+      tags:
+      - user-controller
+      summary: Delete an User
+      operationId: deleteUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: Team not found
+        "401":
+          description: Unauthorized
+        "200":
+          description: User Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+  /api/v1/users/{id}/teams/{teamId}:
+    put:
+      tags:
+      - user-controller
+      summary: Update an User matches
+      operationId: addUserTeams
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: teamId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "400":
+          description: Bad Request
+        "422":
+          description: Unprocessable Entity
+        "401":
+          description: Unauthorized
+        "404":
+          description: User not found
+        "200":
+          description: User teams Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamResponseDTO"
+    delete:
+      tags:
+      - user-controller
+      summary: Delete an User team
+      operationId: deleteUserTeams
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: teamId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "401":
+          description: Unauthorized
+        "404":
+          description: User not found
+        "200":
+          description: User team Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamResponseDTO"
+  /api/v1/users/{id}/players/{playerId}:
+    put:
+      tags:
+      - user-controller
+      summary: Update an User players
+      operationId: addUserPlayers
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: playerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "400":
+          description: Bad Request
+        "422":
+          description: Unprocessable Entity
+        "401":
+          description: Unauthorized
+        "404":
+          description: User not found
+        "200":
+          description: User playaers Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlayerDTO"
+    delete:
+      tags:
+      - user-controller
+      summary: Delete an User player
+      operationId: deleteUserPlayers
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: playerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: User player Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlayerDTO"
+        "401":
+          description: Unauthorized
+        "404":
+          description: User not found
+  /api/v1/users/{id}/leagues/{leagueId}:
+    put:
+      tags:
+      - user-controller
+      summary: Update an User leagues
+      operationId: addUserLeagues
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: leagueId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: User leagues Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeagueDTO"
+        "400":
+          description: Bad Request
+        "422":
+          description: Unprocessable Entity
+        "401":
+          description: Unauthorized
+        "404":
+          description: User not found
+    delete:
+      tags:
+      - user-controller
+      summary: Delete an User league
+      operationId: deleteUserLeagues
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: leagueId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "401":
+          description: Unauthorized
+        "404":
+          description: User not found
+        "200":
+          description: User league Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeagueDTO"
+  /api/v1/teams/{id}:
+    get:
+      tags:
+      - team-controller
+      summary: Get team by id
+      operationId: getTeam
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: team not found
+        "200":
+          description: Found team
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamResponseDTO"
+    put:
+      tags:
+      - team-controller
+      summary: Update a Team
+      operationId: putTeams
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TeamUpdateDTO"
+        required: true
+      responses:
+        "404":
+          description: Team not found
+        "200":
+          description: Team Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamResponseDTO"
+        "400":
+          description: Bad Request
+        "422":
+          description: Unprocessable Entity
+        "401":
+          description: Unauthorized
+    delete:
+      tags:
+      - team-controller
+      summary: Delete a Team
+      operationId: deleteTeams
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: Team not found
+        "200":
+          description: Team Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Team"
+        "401":
+          description: Unauthorized
+  /api/v1/players/{id}:
+    get:
+      tags:
+      - playercontroller
+      summary: Get player by id
+      operationId: getPlayer
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Found player
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlayerDTO"
+        "404":
+          description: player not found
+    put:
+      tags:
+      - playercontroller
+      summary: Update a Player
+      operationId: putPlayers
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PlayerDTO"
+        required: true
+      responses:
+        "404":
+          description: Player not found
+        "400":
+          description: Bad Request
+        "422":
+          description: Unprocessable Entity
+        "401":
+          description: Unauthorized
+        "200":
+          description: Player Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlayerDTO"
+    delete:
+      tags:
+      - playercontroller
+      summary: Delete a Player
+      operationId: deletePlayers
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: Player not found
+        "401":
+          description: Unauthorized
+        "200":
+          description: Player Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Player"
+  /api/v1/playerMatches/{id}:
+    get:
+      tags:
+      - player-match-controller
+      summary: Get playerMatch by id
+      operationId: getPlayerMatchById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: playerMatch not found
+        "200":
+          description: Found playerMatch
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlayerMatchDTO"
+    put:
+      tags:
+      - player-match-controller
+      summary: Update a PlayerMatch
+      operationId: putPlayersMatch
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PlayerMatchDTO"
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+        "422":
+          description: Unprocessable Entity
+        "401":
+          description: Unauthorized
+        "404":
+          description: PlayerMatch not found
+        "200":
+          description: PlayerMatch Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlayerMatchDTO"
+    delete:
+      tags:
+      - player-match-controller
+      summary: Delete a PlayerMatch
+      operationId: deletePlayersMatch
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "401":
+          description: Unauthorized
+        "404":
+          description: PlayerMatch not found
+        "200":
+          description: PlayerMatch Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlayerMatch"
+  /api/v1/matches/{id}:
+    get:
+      tags:
+      - match-controller
+      summary: Get match by id
+      operationId: getMatch_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: match not found
+        "200":
+          description: Found match
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchDTO"
+    put:
+      tags:
+      - match-controller
+      summary: Update a Match
+      operationId: putMatches
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MatchDTO"
+        required: true
+      responses:
+        "404":
+          description: League not found
+        "200":
+          description: Match Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchDTO"
+        "400":
+          description: Bad Request
+        "422":
+          description: Unprocessable Entity
+        "401":
+          description: Unauthorized
+    delete:
+      tags:
+      - match-controller
+      summary: Delete a match
+      operationId: deleteMatches
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: League not found
+        "401":
+          description: Unauthorized
+        "200":
+          description: Match Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Match"
+  /api/v1/leagues/{id}:
+    get:
+      tags:
+      - league-controller
+      summary: Get league by id
+      operationId: getLeagueById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: League not found
+        "200":
+          description: Found league
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeagueDTO"
+    put:
+      tags:
+      - league-controller
+      summary: Update a League
+      operationId: putLeagues
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LeagueDTO"
+        required: true
+      responses:
+        "404":
+          description: League not found
+        "400":
+          description: Bad Request
+        "422":
+          description: Unprocessable Entity
+        "200":
+          description: League Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeagueDTO"
+        "401":
+          description: Unauthorized
+    delete:
+      tags:
+      - league-controller
+      summary: Delete a League
+      operationId: deleteLeagues
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: League Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/League"
+        "404":
+          description: League not found
+        "401":
+          description: Unauthorized
+  /api/v1/users/{id}/image:
+    get:
+      tags:
+      - user-controller
+      summary: Get user image
+      operationId: getImage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: user not found
+        "200":
+          description: Found user image
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  binaryStream:
+                    type: object
+    post:
+      tags:
+      - user-controller
+      summary: Create an User image
+      operationId: uploadImage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - imageFile
+              type: object
+              properties:
+                imageFile:
+                  type: string
+                  format: binary
+      responses:
+        "201":
+          description: User Image Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponseDTO"
+        "400":
+          description: Bad Request
+        "422":
+          description: Unprocessable Entity
+        "401":
+          description: Unauthorized
+        "409":
+          description: Conflict
+        "403":
+          description: Forbidden
+    delete:
+      tags:
+      - user-controller
+      summary: Delete an User image
+      operationId: deleteImage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: User Image Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponseDTO"
+        "401":
+          description: Unauthorized
+        "404":
+          description: User not found
+        "403":
+          description: Forbidden
+  /api/v1/users/:
+    get:
+      tags:
+      - user-controller
+      summary: Get all the users
+      operationId: getUsers
+      responses:
+        "204":
+          description: No content
+        "200":
+          description: Found users
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponseDTO"
+    post:
+      tags:
+      - user-controller
+      summary: Create an user
+      operationId: postUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserDTO"
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+        "422":
+          description: Unprocessable Entity
+        "401":
+          description: Unauthorized
+        "201":
+          description: User Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponseDTO"
+        "409":
+          description: Conflict
+        "403":
+          description: Forbidden
+  /api/v1/teams/{id}/image:
+    get:
+      tags:
+      - team-controller
+      summary: Get team image
+      operationId: getImage_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: team not found
+        "200":
+          description: Found team image
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  binaryStream:
+                    type: object
+    post:
+      tags:
+      - team-controller
+      summary: Create a Team image
+      operationId: uploadImage_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - imageFile
+              type: object
+              properties:
+                imageFile:
+                  type: string
+                  format: binary
+      responses:
+        "201":
+          description: Team Image Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamResponseDTO"
+        "400":
+          description: Bad Request
+        "422":
+          description: Unprocessable Entity
+        "401":
+          description: Unauthorized
+        "409":
+          description: Conflict
+        "403":
+          description: Forbidden
+    delete:
+      tags:
+      - team-controller
+      summary: Delete a Team image
+      operationId: deleteImage_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Team Image Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamResponseDTO"
+        "404":
+          description: Team not found
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+  /api/v1/teams/:
+    get:
+      tags:
+      - team-controller
+      summary: Get all the teams
+      operationId: getAllTeams
+      responses:
+        "200":
+          description: Found teams
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamResponseDTO"
+        "204":
+          description: No content
+    post:
+      tags:
+      - team-controller
+      summary: Create a team
+      operationId: postTeams
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TeamCreationDTO"
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+        "201":
+          description: Team Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamResponseDTO"
+        "422":
+          description: Unprocessable Entity
+        "401":
+          description: Unauthorized
+        "409":
+          description: Conflict
+        "403":
+          description: Forbidden
+  /api/v1/refresh:
+    post:
+      tags:
+      - login-controller
+      operationId: refreshToken
+      parameters:
+      - name: refreshToken
+        in: cookie
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+  /api/v1/players/{id}/image:
+    get:
+      tags:
+      - playercontroller
+      summary: Get player image
+      operationId: getImage_2
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Found player image
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  binaryStream:
+                    type: object
+        "404":
+          description: player not found
+    post:
+      tags:
+      - playercontroller
+      summary: Create a League image
+      operationId: uploadImage_2
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - imageFile
+              type: object
+              properties:
+                imageFile:
+                  type: string
+                  format: binary
+      responses:
+        "400":
+          description: Bad Request
+        "201":
+          description: League Image Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlayerDTO"
+        "422":
+          description: Unprocessable Entity
+        "401":
+          description: Unauthorized
+        "409":
+          description: Conflict
+        "403":
+          description: Forbidden
+    delete:
+      tags:
+      - playercontroller
+      summary: Delete a Player image
+      operationId: deleteImage_2
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: League not found
+        "401":
+          description: Unauthorized
+        "200":
+          description: Player Image Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlayerDTO"
+        "403":
+          description: Forbidden
+  /api/v1/players/:
+    get:
+      tags:
+      - playercontroller
+      summary: Get all the players
+      operationId: getAllPlayers
+      responses:
+        "200":
+          description: Found players
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlayerDTO"
+        "204":
+          description: No content
+    post:
+      tags:
+      - playercontroller
+      summary: Create a player
+      operationId: postPlayers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PlayerDTO"
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+        "422":
+          description: Unprocessable Entity
+        "201":
+          description: Player Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlayerDTO"
+        "401":
+          description: Unauthorized
+        "409":
+          description: Conflict
+        "403":
+          description: Forbidden
+  /api/v1/matches/{id}/playerMatches:
+    get:
+      tags:
+      - match-controller
+      summary: Get playerMatches of a match
+      operationId: getPlayerMatch
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: No content
+        "200":
+          description: Found match playerMatches
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlayerMatchDTO"
+    post:
+      tags:
+      - match-controller
+      summary: Create a playerMatch
+      operationId: postPlayersMatch
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PlayerMatchDTO"
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+        "422":
+          description: Unprocessable Entity
+        "201":
+          description: playerMatch Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlayerMatchDTO"
+        "401":
+          description: Unauthorized
+        "409":
+          description: Conflict
+        "403":
+          description: Forbidden
+  /api/v1/matches/:
+    get:
+      tags:
+      - match-controller
+      summary: Get all the matches
+      operationId: getMatches
+      responses:
+        "200":
+          description: Found matches
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchDTO"
+        "204":
+          description: No content
+    post:
+      tags:
+      - match-controller
+      summary: Create a match
+      operationId: postMatches
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MatchDTO"
+        required: true
+      responses:
+        "201":
+          description: Match Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchDTO"
+        "400":
+          description: Bad Request
+        "422":
+          description: Unprocessable Entity
+        "401":
+          description: Unauthorized
+        "409":
+          description: Conflict
+        "403":
+          description: Forbidden
+  /api/v1/logout:
+    post:
+      tags:
+      - login-controller
+      operationId: logOut
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+  /api/v1/login:
+    post:
+      tags:
+      - login-controller
+      operationId: login
+      parameters:
+      - name: accessToken
+        in: cookie
+        required: false
+        schema:
+          type: string
+      - name: refreshToken
+        in: cookie
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+  /api/v1/leagues/{id}/image:
+    get:
+      tags:
+      - league-controller
+      summary: Get league image
+      operationId: getImage_3
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: Image not found
+        "200":
+          description: Found image
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  binaryStream:
+                    type: object
+    post:
+      tags:
+      - league-controller
+      summary: Create a League image
+      operationId: uploadImage_3
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - imageFile
+              type: object
+              properties:
+                imageFile:
+                  type: string
+                  format: binary
+      responses:
+        "400":
+          description: Bad Request
+        "422":
+          description: Unprocessable Entity
+        "201":
+          description: League Image Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeagueDTO"
+        "401":
+          description: Unauthorized
+        "409":
+          description: Conflict
+        "403":
+          description: Forbidden
+    delete:
+      tags:
+      - league-controller
+      summary: Delete a League image
+      operationId: deleteImage_3
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: League not found
+        "200":
+          description: League Image Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeagueDTO"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+  /api/v1/leagues/:
+    get:
+      tags:
+      - league-controller
+      summary: Get all the leagues
+      operationId: getLeagues
+      responses:
+        "200":
+          description: Found leagues
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeagueDTO"
+        "204":
+          description: No content
+    post:
+      tags:
+      - league-controller
+      summary: Create a League
+      operationId: postLeagues
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LeagueDTO"
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+        "422":
+          description: Unprocessable Entity
+        "401":
+          description: Unauthorized
+        "201":
+          description: League Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeagueDTO"
+        "409":
+          description: Conflict
+        "403":
+          description: Forbidden
+  /api/v1/users/{id}/teams:
+    get:
+      tags:
+      - user-controller
+      summary: Get teams of a user
+      operationId: getUserTeams
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: user not found
+        "200":
+          description: Found user teams
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamResponseDTO"
+  /api/v1/users/{id}/players:
+    get:
+      tags:
+      - user-controller
+      summary: Get players of a user
+      operationId: getUserPlayers
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: user not found
+        "200":
+          description: Found user players
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlayerDTO"
+  /api/v1/users/{id}/leagues:
+    get:
+      tags:
+      - user-controller
+      summary: Get leagues of a user
+      operationId: getUserLeagues
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Found user leagues
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeagueDTO"
+        "404":
+          description: user not found
+  /api/v1/users/me:
+    get:
+      tags:
+      - user-controller
+      summary: Get me
+      operationId: me
+      responses:
+        "404":
+          description: me not found
+        "200":
+          description: Found me
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponseDTO"
+  /api/v1/teams/{teamsId}/matches:
+    get:
+      tags:
+      - team-controller
+      summary: Get matches of a team
+      operationId: getMatchesByTeam
+      parameters:
+      - name: teamsId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: team not found
+        "200":
+          description: Found team matches
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchDTO"
+  /api/v1/teams/{teamId}/players:
+    get:
+      tags:
+      - team-controller
+      summary: Get players of a team
+      operationId: getPlayersByTeam
+      parameters:
+      - name: teamId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: team not found
+        "200":
+          description: Found team players
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlayerDTO"
+  /api/v1/teams/{teamId}/league:
+    get:
+      tags:
+      - team-controller
+      summary: Get league of a team
+      operationId: getLeagueByTeam
+      parameters:
+      - name: teamId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: team not found
+        "200":
+          description: Found team league
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeagueDTO"
+  /api/v1/teams/name/{name}:
+    get:
+      tags:
+      - team-controller
+      summary: Get team by name
+      operationId: getTeamByName
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: team not found
+        "200":
+          description: Found team
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamResponseDTO"
+  /api/v1/players/{playerId}/team:
+    get:
+      tags:
+      - playercontroller
+      summary: Get team of a player
+      operationId: getTeamByPlayer
+      parameters:
+      - name: playerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Found player team
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamResponseDTO"
+        "404":
+          description: player not found
+  /api/v1/players/{playerId}/playerMatches:
+    get:
+      tags:
+      - playercontroller
+      summary: Get playerMatch of a plyer
+      operationId: getPlayerMatches
+      parameters:
+      - name: playerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: match not found
+        "200":
+          description: Found player playerMatches
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlayerMatchDTO"
+  /api/v1/players/{playerId}/league:
+    get:
+      tags:
+      - playercontroller
+      summary: Get league of a player
+      operationId: getLeagueByPlayer
+      parameters:
+      - name: playerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Found player league
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeagueDTO"
+        "404":
+          description: player not found
+  /api/v1/players/name/{name}:
+    get:
+      tags:
+      - playercontroller
+      summary: Get player by name
+      operationId: getPlayerByName
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Found player
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlayerDTO"
+        "404":
+          description: player not found
+  /api/v1/playerMatches/{id}/player:
+    get:
+      tags:
+      - player-match-controller
+      summary: Get player of a playerMatch
+      operationId: getPlayer_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Found playerMatch player
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlayerDTO"
+        "404":
+          description: playerMatch not found
+  /api/v1/playerMatches/{id}/match:
+    get:
+      tags:
+      - player-match-controller
+      summary: Get match of a playerMatch
+      operationId: getMatch
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Found playerMatch match
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchDTO"
+        "404":
+          description: playerMatch not found
+  /api/v1/matches/{matchId}/league:
+    get:
+      tags:
+      - match-controller
+      summary: Get league of a match
+      operationId: getLeague
+      parameters:
+      - name: matchId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Found match league
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeagueDTO"
+        "404":
+          description: match not found
+  /api/v1/matches/{id}/team2:
+    get:
+      tags:
+      - match-controller
+      summary: Get team2 of a match
+      operationId: getTeam2
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: match not found
+        "200":
+          description: Found match team2
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamResponseDTO"
+  /api/v1/matches/{id}/team1:
+    get:
+      tags:
+      - match-controller
+      summary: Get team1 of a match
+      operationId: getTeam1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: match not found
+        "200":
+          description: Found match team1
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamResponseDTO"
+  /api/v1/matches/name/{name}:
+    get:
+      tags:
+      - match-controller
+      summary: Get match by name
+      operationId: getMatch_2
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: match not found
+        "200":
+          description: Found match
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchDTO"
+  /api/v1/leagues/{leagueId}/teams:
+    get:
+      tags:
+      - league-controller
+      summary: Get teams of a league
+      operationId: getTeams
+      parameters:
+      - name: leagueId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Found league teams
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamResponseDTO"
+        "204":
+          description: No content
+  /api/v1/leagues/{leagueId}/matches:
+    get:
+      tags:
+      - league-controller
+      summary: Get matches of a league
+      operationId: getMatchesByLeague
+      parameters:
+      - name: leagueId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Found league matches
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamResponseDTO"
+        "204":
+          description: No content
+  /api/v1/leagues/name/{leagueName}:
+    get:
+      tags:
+      - league-controller
+      summary: Get league by name
+      operationId: getLeagueByName
+      parameters:
+      - name: leagueName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: League not found
+        "200":
+          description: Found league
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeagueDTO"
+  /api/v1/leagues/name/{leagueName}/teams:
+    get:
+      tags:
+      - league-controller
+      summary: Get teams of a league by league name
+      operationId: getTeamsByName
+      parameters:
+      - name: leagueName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Name
+        "200":
+          description: Found league teams
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamResponseDTO"
+        "204":
+          description: No content
+components:
+  schemas:
+    UserDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        password:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+        image:
+          type: boolean
+    UserResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+        image:
+          type: boolean
+    TeamResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        league:
+          type: string
+        image:
+          type: boolean
+        trophies:
+          type: integer
+          format: int32
+        nationality:
+          type: string
+        trainer:
+          type: string
+        secondTrainer:
+          type: string
+        president:
+          type: string
+        stadium:
+          type: string
+        points:
+          type: integer
+          format: int32
+        totalMatches:
+          type: integer
+          format: int32
+        totalShoots:
+          type: integer
+          format: int32
+        totalGoals:
+          type: integer
+          format: int32
+        penaltys:
+          type: integer
+          format: int32
+        faultsReceived:
+          type: integer
+          format: int32
+        offsides:
+          type: integer
+          format: int32
+        commitedFaults:
+          type: integer
+          format: int32
+        recovers:
+          type: integer
+          format: int32
+        duels:
+          type: integer
+          format: int32
+        wonDuels:
+          type: integer
+          format: int32
+        yellowCards:
+          type: integer
+          format: int32
+        redCards:
+          type: integer
+          format: int32
+        passes:
+          type: integer
+          format: int32
+        goodPasses:
+          type: integer
+          format: int32
+        shortPasses:
+          type: integer
+          format: int32
+        longPasses:
+          type: integer
+          format: int32
+        assists:
+          type: integer
+          format: int32
+        dribles:
+          type: integer
+          format: int32
+        centers:
+          type: integer
+          format: int32
+        ballLosses:
+          type: integer
+          format: int32
+        shootsReceived:
+          type: integer
+          format: int32
+        goalsConceded:
+          type: integer
+          format: int32
+        saves:
+          type: integer
+          format: int32
+        outBoxSaves:
+          type: integer
+          format: int32
+        inBoxSaves:
+          type: integer
+          format: int32
+        wonMatches:
+          type: integer
+          format: int32
+        lostMatches:
+          type: integer
+          format: int32
+        drawMatches:
+          type: integer
+          format: int32
+    PlayerDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        league:
+          type: string
+        team:
+          type: string
+        name:
+          type: string
+        age:
+          type: integer
+          format: int32
+        nationality:
+          type: string
+        position:
+          type: string
+        image:
+          type: boolean
+    LeagueDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        president:
+          type: string
+        nationality:
+          type: string
+        image:
+          type: boolean
+    TeamUpdateDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        league:
+          type: string
+        trophies:
+          type: integer
+          format: int32
+        nationality:
+          type: string
+        trainer:
+          type: string
+        secondTrainer:
+          type: string
+        president:
+          type: string
+        stadium:
+          type: string
+        image:
+          type: boolean
+    PlayerMatchDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        matchName:
+          type: string
+        match:
+          type: integer
+          format: int64
+        shoots:
+          type: integer
+          format: int32
+        goals:
+          type: integer
+          format: int32
+        penaltys:
+          type: integer
+          format: int32
+        faultsReceived:
+          type: integer
+          format: int32
+        offsides:
+          type: integer
+          format: int32
+        commitedFaults:
+          type: integer
+          format: int32
+        recovers:
+          type: integer
+          format: int32
+        duels:
+          type: integer
+          format: int32
+        wonDuels:
+          type: integer
+          format: int32
+        yellowCards:
+          type: integer
+          format: int32
+        redCards:
+          type: integer
+          format: int32
+        passes:
+          type: integer
+          format: int32
+        goodPasses:
+          type: integer
+          format: int32
+        shortPasses:
+          type: integer
+          format: int32
+        longPasses:
+          type: integer
+          format: int32
+        assists:
+          type: integer
+          format: int32
+        dribles:
+          type: integer
+          format: int32
+        centers:
+          type: integer
+          format: int32
+        ballLosses:
+          type: integer
+          format: int32
+        shootsReceived:
+          type: integer
+          format: int32
+        goalsConceded:
+          type: integer
+          format: int32
+        saves:
+          type: integer
+          format: int32
+        outBoxSaves:
+          type: integer
+          format: int32
+        inBoxSaves:
+          type: integer
+          format: int32
+    MatchDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        league:
+          type: string
+        team1:
+          type: string
+        team2:
+          type: string
+        name:
+          type: string
+        place:
+          type: string
+        shoots1:
+          type: integer
+          format: int32
+        scores1:
+          type: integer
+          format: int32
+        penaltys1:
+          type: integer
+          format: int32
+        faultsReceived1:
+          type: integer
+          format: int32
+        offsides1:
+          type: integer
+          format: int32
+        commitedFaults1:
+          type: integer
+          format: int32
+        recovers1:
+          type: integer
+          format: int32
+        duels1:
+          type: integer
+          format: int32
+        wonDuels1:
+          type: integer
+          format: int32
+        yellowCards1:
+          type: integer
+          format: int32
+        redCards1:
+          type: integer
+          format: int32
+        possesion1:
+          type: number
+          format: double
+        passes1:
+          type: integer
+          format: int32
+        goodPasses1:
+          type: integer
+          format: int32
+        shortPasses1:
+          type: integer
+          format: int32
+        longPasses1:
+          type: integer
+          format: int32
+        assists1:
+          type: integer
+          format: int32
+        dribles1:
+          type: integer
+          format: int32
+        centers1:
+          type: integer
+          format: int32
+        ballLosses1:
+          type: integer
+          format: int32
+        shootsReceived1:
+          type: integer
+          format: int32
+        goalsConceded1:
+          type: integer
+          format: int32
+        saves1:
+          type: integer
+          format: int32
+        outBoxSaves1:
+          type: integer
+          format: int32
+        inBoxSaves1:
+          type: integer
+          format: int32
+        shoots2:
+          type: integer
+          format: int32
+        scores2:
+          type: integer
+          format: int32
+        penaltys2:
+          type: integer
+          format: int32
+        faultsReceived2:
+          type: integer
+          format: int32
+        offsides2:
+          type: integer
+          format: int32
+        commitedFaults2:
+          type: integer
+          format: int32
+        recovers2:
+          type: integer
+          format: int32
+        duels2:
+          type: integer
+          format: int32
+        wonDuels2:
+          type: integer
+          format: int32
+        yellowCards2:
+          type: integer
+          format: int32
+        redCards2:
+          type: integer
+          format: int32
+        possesion2:
+          type: number
+          format: double
+        passes2:
+          type: integer
+          format: int32
+        goodPasses2:
+          type: integer
+          format: int32
+        shortPasses2:
+          type: integer
+          format: int32
+        longPasses2:
+          type: integer
+          format: int32
+        assists2:
+          type: integer
+          format: int32
+        dribles2:
+          type: integer
+          format: int32
+        centers2:
+          type: integer
+          format: int32
+        ballLosses2:
+          type: integer
+          format: int32
+        shootsReceived2:
+          type: integer
+          format: int32
+        goalsConceded2:
+          type: integer
+          format: int32
+        saves2:
+          type: integer
+          format: int32
+        outBoxSaves2:
+          type: integer
+          format: int32
+        inBoxSaves2:
+          type: integer
+          format: int32
+        palce:
+          type: string
+          writeOnly: true
+    TeamCreationDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        league:
+          type: string
+        trophies:
+          type: integer
+          format: int32
+        nationality:
+          type: string
+        trainer:
+          type: string
+        secondTrainer:
+          type: string
+        president:
+          type: string
+        stadium:
+          type: string
+        points:
+          type: integer
+          format: int32
+        image:
+          type: boolean
+        totalMatches:
+          type: integer
+          format: int32
+        totalShoots:
+          type: integer
+          format: int32
+        totalGoals:
+          type: integer
+          format: int32
+        penaltys:
+          type: integer
+          format: int32
+        faultsReceived:
+          type: integer
+          format: int32
+        offsides:
+          type: integer
+          format: int32
+        commitedFaults:
+          type: integer
+          format: int32
+        recovers:
+          type: integer
+          format: int32
+        duels:
+          type: integer
+          format: int32
+        wonDuels:
+          type: integer
+          format: int32
+        yellowCards:
+          type: integer
+          format: int32
+        redCards:
+          type: integer
+          format: int32
+        passes:
+          type: integer
+          format: int32
+        goodPasses:
+          type: integer
+          format: int32
+        shortPasses:
+          type: integer
+          format: int32
+        longPasses:
+          type: integer
+          format: int32
+        assists:
+          type: integer
+          format: int32
+        dribles:
+          type: integer
+          format: int32
+        centers:
+          type: integer
+          format: int32
+        ballLosses:
+          type: integer
+          format: int32
+        shootsReceived:
+          type: integer
+          format: int32
+        goalsConceded:
+          type: integer
+          format: int32
+        saves:
+          type: integer
+          format: int32
+        outBoxSaves:
+          type: integer
+          format: int32
+        inBoxSaves:
+          type: integer
+          format: int32
+        wonMatches:
+          type: integer
+          format: int32
+        lostMatches:
+          type: integer
+          format: int32
+        drawMatches:
+          type: integer
+          format: int32
+    AuthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - SUCCESS
+          - FAILURE
+        message:
+          type: string
+        error:
+          type: string
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    League:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        president:
+          type: string
+        nationality:
+          type: string
+        image:
+          type: boolean
+        player:
+          $ref: "#/components/schemas/Player"
+        team:
+          $ref: "#/components/schemas/Team"
+        user:
+          $ref: "#/components/schemas/User"
+        match:
+          $ref: "#/components/schemas/Match"
+    Match:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        place:
+          type: string
+        shoots1:
+          type: integer
+          format: int32
+        scores1:
+          type: integer
+          format: int32
+        penaltys1:
+          type: integer
+          format: int32
+        faultsReceived1:
+          type: integer
+          format: int32
+        offsides1:
+          type: integer
+          format: int32
+        commitedFaults1:
+          type: integer
+          format: int32
+        recovers1:
+          type: integer
+          format: int32
+        duels1:
+          type: integer
+          format: int32
+        wonDuels1:
+          type: integer
+          format: int32
+        yellowCards1:
+          type: integer
+          format: int32
+        redCards1:
+          type: integer
+          format: int32
+        passes1:
+          type: integer
+          format: int32
+        goodPasses1:
+          type: integer
+          format: int32
+        shortPasses1:
+          type: integer
+          format: int32
+        longPasses1:
+          type: integer
+          format: int32
+        assists1:
+          type: integer
+          format: int32
+        dribles1:
+          type: integer
+          format: int32
+        centers1:
+          type: integer
+          format: int32
+        ballLosses1:
+          type: integer
+          format: int32
+        shootsReceived1:
+          type: integer
+          format: int32
+        goalsConceded1:
+          type: integer
+          format: int32
+        saves1:
+          type: integer
+          format: int32
+        outBoxSaves1:
+          type: integer
+          format: int32
+        inBoxSaves1:
+          type: integer
+          format: int32
+        shoots2:
+          type: integer
+          format: int32
+        scores2:
+          type: integer
+          format: int32
+        penaltys2:
+          type: integer
+          format: int32
+        faultsReceived2:
+          type: integer
+          format: int32
+        offsides2:
+          type: integer
+          format: int32
+        commitedFaults2:
+          type: integer
+          format: int32
+        recovers2:
+          type: integer
+          format: int32
+        duels2:
+          type: integer
+          format: int32
+        wonDuels2:
+          type: integer
+          format: int32
+        yellowCards2:
+          type: integer
+          format: int32
+        redCards2:
+          type: integer
+          format: int32
+        passes2:
+          type: integer
+          format: int32
+        goodPasses2:
+          type: integer
+          format: int32
+        shortPasses2:
+          type: integer
+          format: int32
+        longPasses2:
+          type: integer
+          format: int32
+        assists2:
+          type: integer
+          format: int32
+        dribles2:
+          type: integer
+          format: int32
+        centers2:
+          type: integer
+          format: int32
+        ballLosses2:
+          type: integer
+          format: int32
+        shootsReceived2:
+          type: integer
+          format: int32
+        goalsConceded2:
+          type: integer
+          format: int32
+        saves2:
+          type: integer
+          format: int32
+        outBoxSaves2:
+          type: integer
+          format: int32
+        inBoxSaves2:
+          type: integer
+          format: int32
+        playerMatch:
+          $ref: "#/components/schemas/PlayerMatch"
+    Player:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        age:
+          type: integer
+          format: int32
+        nationality:
+          type: string
+        position:
+          type: string
+        image:
+          type: boolean
+        playerMatches:
+          type: array
+          items:
+            $ref: "#/components/schemas/PlayerMatch"
+        users:
+          type: array
+          items:
+            $ref: "#/components/schemas/User"
+        totalMatches:
+          type: integer
+          format: int32
+        totalShoots:
+          type: integer
+          format: int32
+        totalGoals:
+          type: integer
+          format: int32
+        getshootsPerMatch:
+          type: number
+          format: float
+        goalsPerMatch:
+          type: number
+          format: float
+        scoreAvg:
+          type: number
+          format: float
+        penaltys:
+          type: integer
+          format: int32
+        faultsReceived:
+          type: integer
+          format: int32
+        offsides:
+          type: integer
+          format: int32
+        commitedFaults:
+          type: integer
+          format: int32
+        recovers:
+          type: integer
+          format: int32
+        duels:
+          type: integer
+          format: int32
+        wonDuels:
+          type: integer
+          format: int32
+        duelAvg:
+          type: number
+          format: float
+        cards:
+          type: integer
+          format: int32
+        yellowCards:
+          type: integer
+          format: int32
+        redCards:
+          type: integer
+          format: int32
+        passes:
+          type: integer
+          format: int32
+        passesPerMatch:
+          type: number
+          format: float
+        goodPasses:
+          type: integer
+          format: int32
+        passesAvg:
+          type: number
+          format: float
+        shortPasses:
+          type: integer
+          format: int32
+        longPasses:
+          type: integer
+          format: int32
+        assists:
+          type: integer
+          format: int32
+        dribles:
+          type: integer
+          format: int32
+        centers:
+          type: integer
+          format: int32
+        ballLosses:
+          type: integer
+          format: int32
+        shootsReceived:
+          type: integer
+          format: int32
+        goalsConceded:
+          type: integer
+          format: int32
+        goalsReceivedPerMatch:
+          type: number
+          format: double
+        saves:
+          type: integer
+          format: int32
+        savesAvg:
+          type: number
+          format: float
+        outBoxSaves:
+          type: integer
+          format: int32
+        inBoxSaves:
+          type: integer
+          format: int32
+        playerMatch:
+          $ref: "#/components/schemas/PlayerMatch"
+        user:
+          $ref: "#/components/schemas/User"
+    PlayerMatch:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        matchName:
+          type: string
+        shoots:
+          type: integer
+          format: int32
+        goals:
+          type: integer
+          format: int32
+        penaltys:
+          type: integer
+          format: int32
+        faultsReceived:
+          type: integer
+          format: int32
+        offsides:
+          type: integer
+          format: int32
+        commitedFaults:
+          type: integer
+          format: int32
+        recovers:
+          type: integer
+          format: int32
+        duels:
+          type: integer
+          format: int32
+        wonDuels:
+          type: integer
+          format: int32
+        yellowCards:
+          type: integer
+          format: int32
+        redCards:
+          type: integer
+          format: int32
+        passes:
+          type: integer
+          format: int32
+        goodPasses:
+          type: integer
+          format: int32
+        shortPasses:
+          type: integer
+          format: int32
+        longPasses:
+          type: integer
+          format: int32
+        assists:
+          type: integer
+          format: int32
+        dribles:
+          type: integer
+          format: int32
+        centers:
+          type: integer
+          format: int32
+        ballLosses:
+          type: integer
+          format: int32
+        shootsReceived:
+          type: integer
+          format: int32
+        goalsConceded:
+          type: integer
+          format: int32
+        saves:
+          type: integer
+          format: int32
+        outBoxSaves:
+          type: integer
+          format: int32
+        inBoxSaves:
+          type: integer
+          format: int32
+    Team:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        trophies:
+          type: integer
+          format: int32
+        nationality:
+          type: string
+        trainer:
+          type: string
+        secondTrainer:
+          type: string
+        president:
+          type: string
+        stadium:
+          type: string
+        points:
+          type: integer
+          format: int32
+        image:
+          type: boolean
+        totalMatches:
+          type: integer
+          format: int32
+        totalShoots:
+          type: integer
+          format: int32
+        totalGoals:
+          type: integer
+          format: int32
+        shootsPerMatch:
+          type: number
+          format: double
+        goalsPerMatch:
+          type: number
+          format: double
+        scoreAvg:
+          type: number
+          format: double
+        penaltys:
+          type: integer
+          format: int32
+        faultsReceived:
+          type: integer
+          format: int32
+        offsides:
+          type: integer
+          format: int32
+        commitedFaults:
+          type: integer
+          format: int32
+        recovers:
+          type: integer
+          format: int32
+        duels:
+          type: integer
+          format: int32
+        wonDuels:
+          type: integer
+          format: int32
+        duelAvg:
+          type: number
+          format: double
+        yellowCards:
+          type: integer
+          format: int32
+        redCards:
+          type: integer
+          format: int32
+        cards:
+          type: integer
+          format: int32
+        passes:
+          type: integer
+          format: int32
+        passesPerMatch:
+          type: number
+          format: double
+        goodPasses:
+          type: integer
+          format: int32
+        passesAvg:
+          type: number
+          format: double
+        shortPasses:
+          type: integer
+          format: int32
+        longPasses:
+          type: integer
+          format: int32
+        assists:
+          type: integer
+          format: int32
+        dribles:
+          type: integer
+          format: int32
+        centers:
+          type: integer
+          format: int32
+        ballLosses:
+          type: integer
+          format: int32
+        shootsReceived:
+          type: integer
+          format: int32
+        goalsConceded:
+          type: integer
+          format: int32
+        goalsReceivedPerMatch:
+          type: number
+          format: double
+        saves:
+          type: integer
+          format: int32
+        savesAvg:
+          type: number
+          format: float
+        outBoxSaves:
+          type: integer
+          format: int32
+        inBoxSaves:
+          type: integer
+          format: int32
+        wonMatches:
+          type: integer
+          format: int32
+        lostMatches:
+          type: integer
+          format: int32
+        drawMatches:
+          type: integer
+          format: int32
+        wonMatchesAvg:
+          type: number
+          format: float
+        player:
+          $ref: "#/components/schemas/Player"
+        user:
+          $ref: "#/components/schemas/User"
+        match:
+          $ref: "#/components/schemas/Match"
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        password:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+        image:
+          type: boolean
+        leagues:
+          type: array
+          items:
+            $ref: "#/components/schemas/League"
+        teams:
+          type: array
+          items:
+            $ref: "#/components/schemas/Team"
+        player:
+          $ref: "#/components/schemas/Player"
+        team:
+          $ref: "#/components/schemas/Team"
+        league:
+          $ref: "#/components/schemas/League"
+        players:
+          type: array
+          items:
+            $ref: "#/components/schemas/Player"
