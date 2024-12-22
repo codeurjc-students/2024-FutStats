@@ -148,8 +148,7 @@ public class Team {
         this.trainer = team.getTrainer();
         this.secondTrainer = team.getSecondTrainer();
         this.president = team.getPresident();
-        this.stadium = team.getStadium();
-        this.points = team.getPoints();
+        this.points = team.getWonMatches() * 3;
         this.totalMatches = team.getTotalMatches();
         this.totalShoots = team.getTotalShoots();
         this.totalGoals = team.getTotalGoals();
@@ -345,11 +344,11 @@ public class Team {
     }
 
     public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
+        if (this.wonMatches == 0) {
+            return 0;
+        }
+        points = wonMatches * 3;
+        return  points;
     }
 
     public int getTotalMatches() {

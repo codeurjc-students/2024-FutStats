@@ -39,6 +39,31 @@ export class PlayerMatchFormComponent implements OnInit {
         name: '',
         match: 0,
         matchName: '',
+        shoots: 0,
+        goals: 0,
+        penaltys: 0,
+        faultsReceived: 0,
+        offsides: 0,
+        commitedFaults: 0,
+        recovers: 0,
+        duels: 0,
+        wonDuels: 0,
+        yellowCards: 0,
+        redCards: 0,
+        passes: 0,
+        goodPasses: 0,
+        shortPasses: 0,
+        longPasses: 0,
+        assists: 0,
+        dribles: 0,
+        centers: 0,
+        ballLosses: 0,
+        shootsReceived: 0,
+        goalsConceded: 0,
+        saves: 0,
+        savesAvg: 0,
+        outBoxSaves: 0,
+        inBoxSaves: 0
       };
       this.newPlayerMatch = true;
     }
@@ -62,7 +87,7 @@ export class PlayerMatchFormComponent implements OnInit {
   }
 
   save() {
-    if (this.newPlayerMatch) { 
+    if (this.newPlayerMatch) {
       this.matchService.getMatchByName(this.playerMatch.matchName).subscribe(
         (match: Match) => {
           this.match = match;

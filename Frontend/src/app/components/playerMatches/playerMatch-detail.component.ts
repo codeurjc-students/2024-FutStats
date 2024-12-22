@@ -8,6 +8,7 @@ import {Player } from '../../models/player.model';
 import { PlayerMatch } from 'src/app/models/player-match.model';
 import { LoginService } from 'src/app/services/login.service';
 import { TeamsService } from 'src/app/services/team.service';
+import { PlayersService } from 'src/app/services/player.service';
 
 @Component({
     templateUrl: './playerMatch-detail.component.html'
@@ -24,6 +25,7 @@ export class PlayerMatchDetailComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         private service: PlayerMatchesService,
         private teamService: TeamsService,
+        private playerService: PlayersService,
         public loginService: LoginService
     ) { }
 
@@ -32,9 +34,20 @@ export class PlayerMatchDetailComponent implements OnInit {
         this.service.getPlayerMatch(id).subscribe(
             (playerMatch: PlayerMatch) => {
                 this.playerMatch = playerMatch;
+                console.log(this.playerMatch);
             },
             (error: any) => {
-                this.errorMessage = 'Error fetching match details';
+                this.errorMessage = 'Error finding playerMatch';
+                console.error(error);
+            }
+        );
+        
+        this.service.getPlayer(id).subscribe(
+            (player: Player) => {
+                this.player = player;
+            },
+            (error: any) => {
+                this.errorMessage = 'Error finding player';
                 console.error(error);
             }
         );
@@ -51,7 +64,7 @@ export class PlayerMatchDetailComponent implements OnInit {
     }
 
     playerImage() {
-        return this.player.image ? this.teamService.getImage(this.player.id) : 'assets/no_image.jpg';
+        return this.player.image ? this.playerService.getImage(this.player.id) : 'assets/no_image.jpg';
       }
 
     editPlayerMatch(){
@@ -59,6 +72,6 @@ export class PlayerMatchDetailComponent implements OnInit {
     }
 
     goBack(): void {
-        this.router.navigate(['/player', this.player.id]);
+        this.router.navigate(['/players', this.player.id]);
     }
 }

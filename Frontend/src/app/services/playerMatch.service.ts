@@ -26,7 +26,7 @@ export class PlayerMatchesService {
 	}
 
 	getPlayer(id: number): Observable<Player>{
-		return this.httpClient.get<Player>(BASE_URL+id+'/team1').pipe(
+		return this.httpClient.get<Player>(BASE_URL+id+'/player').pipe(
 			catchError(error => this.handleError(error))
 		);
 	}
