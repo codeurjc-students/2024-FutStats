@@ -7,6 +7,8 @@ FustStats es una aplicación que contiene toda la información sobre ligas, equi
 ## Documentación de la API 
 Toda la documentación se halla dentro de la carpeta apidoc dentro del backend. Si se quiere acceder a swagger uan vez iniciada la aplicación acceder a este enlace: <a href ="http://localhost:8443/swagger-ui/index.html" > swagger </a>
 
+Enlace a postman con todas la llamadas a los distintos controladores: <a href = "https://web.postman.co/workspace/54be68ed-c2b5-41b5-8b22-7854d6374923/request/33666923-e2358968-d7a1-4992-a31a-b73a2e5ef1ab"> Postman </a>
+
 ## Diagrama de la Base de Datos
 ![image](https://github.com/user-attachments/assets/18836056-04f0-482e-81ae-24fbe5379400)
 
