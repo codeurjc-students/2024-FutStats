@@ -1,3 +1,4 @@
 # 2024-FutStats
 
-![image](https://github.com/user-attachments/assets/234b5f57-a02d-4d83-877a-ab7b68a85edb)
+![image](https://github.com/user-attachments/assets/18836056-04f0-482e-81ae-24fbe5379400)
+
