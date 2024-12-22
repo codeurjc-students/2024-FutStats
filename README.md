@@ -33,13 +33,16 @@ Toda la documentación se halla dentro de la carpeta apidoc dentro del backend. 
 ## Logica de funcionamiento de los datos en FutStat
 
 1. Se crean las distintas entidades con sus respectivos datos. Gracias a los distintos DTO solo se van a crear aquellos datos no futbolísticos gracias al databaseInitializer.
+   
 ![image](https://github.com/user-attachments/assets/e3cfe23d-9709-4a78-9ee7-7978d92d6331)
 
 2. Se introducen los datos de una actuación de un jugador en un partido concreto y se llama a la actualización de los datos tanto del propio partido como del propio jugador.
+   
 ![image](https://github.com/user-attachments/assets/6609ed3f-5a84-42ff-b5ae-a411b171b1ed)
 ![image](https://github.com/user-attachments/assets/531cfe2b-9e46-428d-9d19-62cb02e4ec4f)
 
 3. Se acctulizan los datos del partido y del jugador. Una vez se actualizan los datos del partido se llama al método de actualización de los datos del equipo.
+   
 ![image](https://github.com/user-attachments/assets/b4208666-ed93-4b98-94a1-8bc0d387e226)
 
 De esta forma nos aseguramos que los datos futbolísticos son correctos y no se pueden modificar de ninguna otra forma evitando así la posibilidad de errores humanos.
@@ -47,19 +50,23 @@ De esta forma nos aseguramos que los datos futbolísticos son correctos y no se 
 ## Datos iniciados desde "DatabaseInitializer"
 
 Se crean varios usuarios para que se puedan realizar las pruebas 
+
 ![image](https://github.com/user-attachments/assets/84620595-ea5a-4854-98a0-cb6749e8ee0a)
 
 Se crean varias ligas de prueba
+
 ![image](https://github.com/user-attachments/assets/f4ac9736-5f54-4c89-b9e3-b076df20b8a4)
 ![image](https://github.com/user-attachments/assets/d9af2e8f-1400-462b-8780-f2a6ea67f155)
 ![image](https://github.com/user-attachments/assets/023a6bdb-8469-4ffd-bd97-7426b24c9815)
 
 Se crean varios equipos de prueba
+
 ![image](https://github.com/user-attachments/assets/bfc4038f-2172-40c9-a418-03b9281d6d9c)
 ![image](https://github.com/user-attachments/assets/768c80c6-72b0-4ce0-a554-d149d37e0b3c)
 ![image](https://github.com/user-attachments/assets/391670bb-f52d-4fe2-9720-6af14752adaa)
 
 Por útlimo se crean varios jugadores de prueba
+
 ![image](https://github.com/user-attachments/assets/21a5d359-9177-44d4-91bc-2863b386678a)
 ![image](https://github.com/user-attachments/assets/0aae529d-04fb-4131-97eb-3bb3b051143d)
 
