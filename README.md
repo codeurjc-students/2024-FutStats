@@ -36,7 +36,7 @@ Toda la documentación se halla dentro de la carpeta apidoc dentro del backend. 
 ![image](https://github.com/user-attachments/assets/e3cfe23d-9709-4a78-9ee7-7978d92d6331)
 
 2. Se introducen los datos de una actuación de un jugador en un partido concreto y se llama a la actualización de los datos tanto del propio partido como del propio jugador.
-[image](https://github.com/user-attachments/assets/6609ed3f-5a84-42ff-b5ae-a411b171b1ed)
+![image](https://github.com/user-attachments/assets/6609ed3f-5a84-42ff-b5ae-a411b171b1ed)
 ![image](https://github.com/user-attachments/assets/531cfe2b-9e46-428d-9d19-62cb02e4ec4f)
 
 3. Se acctulizan los datos del partido y del jugador. Una vez se actualizan los datos del partido se llama al método de actualización de los datos del equipo.
