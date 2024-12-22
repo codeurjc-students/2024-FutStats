@@ -70,6 +70,11 @@ Por útlimo se crean varios jugadores de prueba
 ![image](https://github.com/user-attachments/assets/21a5d359-9177-44d4-91bc-2863b386678a)
 ![image](https://github.com/user-attachments/assets/0aae529d-04fb-4131-97eb-3bb3b051143d)
 
+## Diagrama de navegación
+
+![image](https://github.com/user-attachments/assets/3952b961-3fd1-46ba-80ef-758e07513d7e)
+
+
 
 
 
