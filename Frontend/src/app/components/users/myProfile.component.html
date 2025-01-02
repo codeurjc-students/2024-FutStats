@@ -1,0 +1,48 @@
+<div *ngIf="user">
+
+    <img [src]="userImage()">
+    
+    <h2>"{{user.name}}"</h2>
+    <div>
+        <p>{{user.roles}}</p>
+    </div>
+
+    <h3>Ligas</h3>
+    <ul class="items">
+        <li *ngFor="let league of leagues">
+            <a [routerLink]="['/leagues', league.id]">{{league.name}}</a>
+            <a>{{league.nationality}}</a>
+            <button (click)="removeLeague(league)"> Borrar Liga de favoritos </button>
+        </li>
+    </ul>
+
+
+    <h3>Equipos</h3>
+    <ul class="items">
+        <li *ngFor="let team of teams">
+            <a [routerLink]="['/teams', team.id]">{{team.name}}</a>
+            <a>{{team.points}}</a>
+            <button (click)="removeTeam(team)"> Borrar Equipo de favoritos </button>
+        </li>
+    </ul>
+
+
+    <h3>Jugadores</h3>
+    <ul class="items">
+        <li *ngFor="let player of players">
+            <a [routerLink]="['/players', player.id]">{{player.name}}</a>
+            <a>{{player.team}}</a>
+            <button (click)="removePlayer(player)"> Borrar Jugador de favoritos </button>
+        </li>
+    </ul>
+
+    <p>
+        <button *ngIf="loginService.isLogged()" (click)="removeUser()">Borrar User</button>
+        <button *ngIf="loginService.isLogged()" (click)="editUser()">Editar Usuario</button>
+    </p>
+
+</div>
+
+<p>
+    <button *ngIf="loginService.isLogged()" (click)="goBack()">Volver</button>
+</p>

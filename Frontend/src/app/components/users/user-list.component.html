@@ -1,3 +1,4 @@
+<div *ngIf="users">
 <h2>Usuarios</h2>
 <ul class="items">
     <li *ngFor="let user of users">
@@ -13,3 +14,4 @@
 <p>
     <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="goBack()">Volver</button>
 </p>
+</div>

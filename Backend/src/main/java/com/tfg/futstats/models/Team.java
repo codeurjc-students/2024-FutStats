@@ -351,6 +351,10 @@ public class Team {
         return  points;
     }
 
+    public void setPoints(int wonMatches) {
+        this.points = wonMatches * 3;
+    }
+
     public int getTotalMatches() {
         return totalMatches;
     }

@@ -29,11 +29,11 @@ public class Match {
     @JsonIgnore
     private League league;
 
-    @ManyToOne(optional = true)
+    @ManyToOne
     @JsonIgnore
     private Team team1;
 
-    @ManyToOne(optional = true)
+    @ManyToOne
     @JsonIgnore
     private Team team2;
 

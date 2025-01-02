@@ -31,13 +31,6 @@
         <p>Pérdidas de balón: {{ match.ballLosses1 }}</p>
     </div>
 
-    <h3>Estadisticas de los jugadores</h3>
-    <ul class="items">
-        <li *ngFor="let playerMatch of playerMatches">
-            <a [routerLink]="['/playerMatch', playerMatch.id]">{{playerMatch.name}}</a>
-        </li>
-    </ul>
-
     <h2>"Estadísticas de {{team2.name}}"</h2>
     <img [src]="team2Image()">
     <div>
@@ -62,6 +55,15 @@
         <p>Centros: {{ match.centers2 }}</p>
         <p>Pérdidas de balón: {{ match.ballLosses2 }}</p>
     </div>
+
+    <h3>Estadisticas de los jugadores</h3>
+    <ul class="items">
+        <li *ngFor="let playerMatch of playerMatches | paginate: {itemsPerPage: 10, currentPage: playerMatchPage}">
+            <a [routerLink]="['/playerMatch', playerMatch.id]">{{playerMatch.name}}</a>
+        </li>
+    </ul>
+
+    <pagination-controls (pageChange)="playerMatchPage = $event" previousLabel="Atrás" nextLabel="Siguiente"></pagination-controls>
 
     <p>
     <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="createPlayerMatch()">Crear Estadisticas de un jugador</button>

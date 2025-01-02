@@ -1,8 +1,11 @@
 package com.tfg.futstats.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.tfg.futstats.models.League;
 import com.tfg.futstats.models.Team;
 import com.tfg.futstats.models.User;
 
@@ -15,5 +18,11 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
 
     List<Team> findAllByUsers(User user);
 
-    List<Team> findTeamsByLeague(League league);
+    @Query("SELECT p FROM Team p WHERE p.league.id = :league ORDER BY p.points DESC, p.name ")
+    List<Team> findTeamsByLeague(@Param("league") Long league);
+
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM Team m WHERE m.league.id = :leagueId")
+    void deleteByLeagueId(Long leagueId);
 }

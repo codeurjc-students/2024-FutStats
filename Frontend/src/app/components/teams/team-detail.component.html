@@ -72,11 +72,13 @@
 
     <h3>Jugadores</h3>
     <ul class="items">
-        <li *ngFor="let player of players">
+        <li *ngFor="let player of players | paginate: {itemsPerPage: 10, currentPage: playerPage}">
             <a [routerLink]="['/players', player.id]">{{player.name}}</a>
             <a> {{player.position}}</a>
         </li>
     </ul>
+
+    <pagination-controls (pageChange)="playerPage = $event" previousLabel="Atrás" nextLabel="Siguiente"></pagination-controls>
 
     <h3 *ngIf="loginService.isLogged() && loginService.isAdmin()">
         Opciones de Administrador

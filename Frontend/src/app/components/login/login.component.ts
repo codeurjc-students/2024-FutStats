@@ -21,6 +21,10 @@ export class LoginComponent {
     this.router.navigate(['/users']);
   }
 
+  myProfile(){
+    this.router.navigate(['/myProfile']);
+  }
+
   createUser(){
     this.router.navigate(['/users/new']);
 }

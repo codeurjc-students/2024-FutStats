@@ -18,6 +18,7 @@ export class TeamDetailComponent implements OnInit {
   league: League;
   players: Player[] =  [];
   errorMessage: string;
+  public playerPage!: number;
 
   constructor(
     private router: Router,

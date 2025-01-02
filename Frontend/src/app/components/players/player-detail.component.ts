@@ -22,6 +22,7 @@ export class PlayerDetailComponent implements OnInit {
   team: Team;
   league: League;
   playerMatches: PlayerMatch[] = [];
+  public playerMatchPage!: number;
 
   constructor(
     private router: Router,

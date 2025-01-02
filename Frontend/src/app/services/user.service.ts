@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { User } from '../models/user.model';
 import { League } from '../models/league.model';
@@ -16,9 +17,7 @@ export class UsersService {
     constructor(private httpClient: HttpClient) { }
 
     getUsers(): Observable<User[]> {
-        return this.httpClient.get<User[]>(BASE_URL).pipe(
-            catchError(error => this.handleError(error))
-        );
+        return this.httpClient.get<User[]>(BASE_URL).pipe();
     }
 
     getUser(id: number | undefined): Observable<User> {
@@ -29,19 +28,19 @@ export class UsersService {
         return this.httpClient.get<User>(BASE_URL + 'me')
     }
 
-    getLeagues(id: number): Observable<League[]> {
+    getLeagues(id: number | undefined): Observable<League[]> {
         return this.httpClient.get<League[]>(BASE_URL + id + '/leagues').pipe(
             catchError(error => this.handleError(error))
         );
     }
 
-    getTeams(id: number): Observable<Team[]> {
+    getTeams(id: number | undefined): Observable<Team[]> {
         return this.httpClient.get<Team[]>(BASE_URL + id + '/teams').pipe(
             catchError(error => this.handleError(error))
         );
     }
 
-    getPlayers(id: number): Observable<Player[]> {
+    getPlayers(id: number | undefined): Observable<Player[]> {
         return this.httpClient.get<Player[]>(BASE_URL + id + '/players').pipe(
             catchError(error => this.handleError(error))
         );

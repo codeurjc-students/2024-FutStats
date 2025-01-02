@@ -21,6 +21,8 @@ export class LeagueDetailComponent implements OnInit {
   matches: Match[] = []; // To store the matches
   players: Player[] = []; // To store the players
   errorMessage: string;
+  public teamPage!: number;
+  public matchPage!: number;
 
   constructor(
     private router: Router,

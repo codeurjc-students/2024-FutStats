@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { LeagueDetailComponent } from './app/components/leagues/league-detail.component';
@@ -17,8 +18,16 @@ import { PlayerMatchDetailComponent } from './app/components/playerMatches/playe
 import { PlayerMatchFormComponent } from './app/components/playerMatches/playerMatch-form.component';
 import { UserFormComponent } from './app/components/users/user-form.component';
 
+import { NotFoundDetailComponent } from './app/errorPages/not-found.component';
+import { ServerErrrorDetailComponent } from './app/errorPages/server-error.component';
+import { UnauthorizedDetailComponent } from './app/errorPages/unauthorized.component';
+import { ForbiddenDetailComponent } from './app/errorPages/forbidden.component';
+
 import { UserListComponent } from './app/components/users/user-list.component';
 import { UserDetailComponent } from './app/components/users/user-detail.component';
+import { myProfileComponent } from './app/components/users/myProfile.component';
+
+
 
 const appRoutes: Routes = [
     { path: 'leagues', component: LeagueListComponent },
@@ -41,7 +50,13 @@ const appRoutes: Routes = [
     { path: 'users/new', component: UserFormComponent},
     { path: 'users/:id' , component: UserDetailComponent},
     { path: 'users/edit/:id', component: UserFormComponent},
-    { path: '', redirectTo: 'leagues', pathMatch: 'full' }
+    { path: 'not-found', component: NotFoundDetailComponent},
+    { path: 'server-error', component: ServerErrrorDetailComponent},
+    { path: 'unatorized', component: UnauthorizedDetailComponent},
+    { path: 'forbidden', component: ForbiddenDetailComponent},
+    { path: 'myProfile', component: myProfileComponent},
+    { path: '', redirectTo: 'leagues', pathMatch: 'full' },
+    { path: '**', redirectTo: 'leagues', pathMatch: 'full'}
 ]
 
 export const routing = RouterModule.forRoot(appRoutes);
