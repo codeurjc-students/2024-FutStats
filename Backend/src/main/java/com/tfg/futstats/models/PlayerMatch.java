@@ -21,7 +21,6 @@ public class PlayerMatch {
     // playerMatch info
     private String name;
 
-    @Column(unique = true)
     private String matchName;
 
     // Realtions with other models in DB

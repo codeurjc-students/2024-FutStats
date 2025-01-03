@@ -34,7 +34,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             this.router.navigate(['/unatorized'])
           }
           else if (error.status === 403){
-            this.router.navigate(['/unatorized'])
+            this.router.navigate(['/forbidden'])
           }
         }
 

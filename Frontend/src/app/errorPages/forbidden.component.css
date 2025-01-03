@@ -3,14 +3,16 @@
   padding: 50px;
   font-family: Arial, sans-serif;
   background: url('src/assets/403-background.jpg') no-repeat center center;
-  background-size: cover;
+  background-size: contain; /* Ajusta la imagen al tamaño del contenedor sin deformarla */
+  background-position: center; /* Asegura que la imagen esté centrada */
   color: white;
-  min-height: 100vh; /* Asegura que la página ocupe toda la altura de la pantalla */
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
+
 
 .title {
   font-size: 48px;

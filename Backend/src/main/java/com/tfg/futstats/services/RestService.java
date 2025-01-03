@@ -385,6 +385,9 @@ public class RestService {
         playerRepository.save(player);
 
         playerMatchRepository.delete(playerMatch);
+        
+        updatePlayerInfo(player);
+        updateMatchInfo(match);
     }
 
     public void deleteData(PlayerMatch playerMatch, Match match, Player player) {
