@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.HashMap;
+import java.util.stream.Collectors;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
@@ -26,6 +31,11 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Map;
+//import java.util.HashMap;
+//import java.util.List;
+//import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/playerMatches")
@@ -57,6 +67,26 @@ public class PlayerMatchController {
         // if the player ins`t found we will never reach this point so it is not
         // necessary
         // to create a not found ResponseEntity
+    }
+
+    @Operation(summary = "Get goals of a player")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found all the goals of a player", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = PlayerDTO.class))
+
+            }),
+            @ApiResponse(responseCode = "404", description = "playerMatch not found", content = @Content)
+    })
+    @GetMapping("/goals/{playerId}")
+    public List<Map<String, Object>> getGoalsPerMatch(@PathVariable Long playerId) {
+        List<PlayerMatchDTO> playerMatches = restService.findAllPlayerMatchesByPlayer(playerId);
+
+        return playerMatches.stream().map(playerMatch -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("matchName", playerMatch.getMatchName());
+            map.put("goals", playerMatch.getGoals());
+            return map;
+        }).collect(Collectors.toList());
     }
 
     @Operation(summary = "Get player of a playerMatch")

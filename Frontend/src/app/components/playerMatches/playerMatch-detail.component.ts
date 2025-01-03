@@ -11,7 +11,8 @@ import { TeamsService } from 'src/app/services/team.service';
 import { PlayersService } from 'src/app/services/player.service';
 
 @Component({
-    templateUrl: './playerMatch-detail.component.html'
+    templateUrl: './playerMatch-detail.component.html',
+    standalone: false
 })
 export class PlayerMatchDetailComponent implements OnInit {
 

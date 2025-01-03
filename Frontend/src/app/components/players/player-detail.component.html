@@ -69,6 +69,10 @@
         <p>Paradas de Dentro del área: {{player.inBoxSaves}}</p>
     </div>
 
+    <div class="chart-container">
+        <canvas id="golesChart"></canvas>
+    </div>
+
     <h3>Estadisticas de los partidos</h3>
     <ul class="items">
         <li *ngFor="let playerMatch of playerMatches | paginate: {itemsPerPage: 10, currentPage: playerMatchPage}">

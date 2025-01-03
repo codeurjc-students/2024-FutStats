@@ -3,8 +3,9 @@ import { LoginService } from '../../services/login.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'login',
-  templateUrl: './login.component.html'
+    selector: 'login',
+    templateUrl: './login.component.html',
+    standalone: false
 })
 export class LoginComponent {
 

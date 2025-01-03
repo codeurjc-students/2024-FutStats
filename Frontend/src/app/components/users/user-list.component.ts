@@ -6,7 +6,8 @@ import { LoginService } from 'src/app/services/login.service';
 import { catchError, EMPTY, throwError } from 'rxjs';
 
 @Component({
-    templateUrl: './user-list.component.html'
+    templateUrl: './user-list.component.html',
+    standalone: false
 })
 export class UserListComponent implements OnInit {
 

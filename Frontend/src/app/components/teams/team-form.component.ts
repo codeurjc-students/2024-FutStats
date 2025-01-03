@@ -6,7 +6,8 @@ import { League } from 'src/app/models/league.model';
 import { LeaguesService } from 'src/app/services/league.service';
 
 @Component({
-  templateUrl: './team-form.component.html',
+    templateUrl: './team-form.component.html',
+    standalone: false
 })
 export class TeamFormComponent implements OnInit {
   newTeam: boolean;

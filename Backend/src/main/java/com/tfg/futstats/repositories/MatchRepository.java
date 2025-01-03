@@ -3,9 +3,9 @@ package com.tfg.futstats.repositories;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.transaction.annotation.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -90,15 +90,4 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 
     @Query("SELECT COUNT(p) FROM Match p WHERE (p.team1.id = :id AND p.scores1 = p.scores2) OR (p.team2.id = :id AND p.scores2 = p.scores1)")
     int findDrawMatchesByTeam(@Param("id") Long id);
-
-    @Transactional
-    @Modifying
-    @Query("DELETE FROM Match m WHERE m.team1.id = :teamId OR m.team2.id = :teamId")
-    void deleteByTeamId(Long teamId);
-
-    @Transactional
-    @Modifying
-    @Query("DELETE FROM Match m WHERE m.league.id = :leagueId")
-    void deleteByLeagueId(Long leagueId);
-
 }

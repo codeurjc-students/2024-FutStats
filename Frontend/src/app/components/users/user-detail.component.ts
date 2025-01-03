@@ -9,7 +9,8 @@ import { Player } from 'src/app/models/player.model';
 
 
 @Component({
-    templateUrl: './user-detail.component.html'
+    templateUrl: './user-detail.component.html',
+    standalone: false
 })
 export class UserDetailComponent implements OnInit {
 

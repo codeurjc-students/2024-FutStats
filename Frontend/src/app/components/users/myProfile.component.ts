@@ -9,7 +9,8 @@ import { Player } from 'src/app/models/player.model';
 
 
 @Component({
-    templateUrl: './myProfile.component.html'
+    templateUrl: './myProfile.component.html',
+    standalone: false
 })
 export class myProfileComponent implements OnInit {
 

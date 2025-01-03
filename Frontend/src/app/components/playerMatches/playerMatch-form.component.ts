@@ -9,7 +9,8 @@ import { PlayerMatch } from 'src/app/models/player-match.model';
 import { MatchesService } from 'src/app/services/match.service';
 
 @Component({
-  templateUrl: './playerMatch-form.component.html',
+    templateUrl: './playerMatch-form.component.html',
+    standalone: false
 })
 export class PlayerMatchFormComponent implements OnInit {
   newPlayerMatch: boolean;

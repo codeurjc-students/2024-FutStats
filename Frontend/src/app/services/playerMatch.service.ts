@@ -31,6 +31,12 @@ export class PlayerMatchesService {
 		);
 	}
 
+	getGoalsPerMatch(playerId: number): Observable<any> {
+		return this.httpClient.get<any>(BASE_URL + `/goals/${playerId}`).pipe(
+			catchError(error => this.handleError(error))
+		);
+	  }
+
 	deletePlayerMatch(playerMatch: PlayerMatch) {
 		return this.httpClient.delete<PlayerMatch>(BASE_URL + playerMatch.id).pipe(
 			catchError(error => this.handleError(error))

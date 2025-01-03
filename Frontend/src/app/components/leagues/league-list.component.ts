@@ -6,7 +6,8 @@ import { LeaguesService } from 'src/app/services/league.service';
 import { LoginService } from 'src/app/services/login.service';
 
 @Component({
-  templateUrl: './league-list.component.html'
+    templateUrl: './league-list.component.html',
+    standalone: false
 })
 export class LeagueListComponent implements OnInit {
 
