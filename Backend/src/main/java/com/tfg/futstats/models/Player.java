@@ -46,7 +46,7 @@ public class Player {
     @JsonIgnore
     private Team team;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
     @JsonIgnore
     private List<PlayerMatch> playerMatches;
 

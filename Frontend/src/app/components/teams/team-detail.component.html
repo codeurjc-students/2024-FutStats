@@ -70,6 +70,10 @@
         <p>Porcentaje de partidos ganados: {{team.wonMatchesAvg}}</p>
     </div>
 
+    <div class="chart-container">
+        <canvas id="pointsChart"></canvas>
+    </div>
+
     <h3>Jugadores</h3>
     <ul class="items">
         <li *ngFor="let player of players | paginate: {itemsPerPage: 10, currentPage: playerPage}">

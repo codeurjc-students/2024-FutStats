@@ -1,28 +1,8 @@
-# Frontend
-FROM node:22.9.0 AS frontend
+FROM mysql:8.0.22
 
-WORKDIR /frontend
+ ENV MYSQL_ROOT_PASSWORD=17042002
+ ENV MYSQL_DATABASE=apirest
+ ENV MYSQL_USER=root
+ ENV MYSQL_PASSWORD=17042002
 
-# Copy build and config files
-COPY ./Frontend/package.json /frontend/
-
-RUN npm install && npm install -g @angular/cli
-
-# Copy src files
-COPY ./Frontend/src /frontend/src
-
-RUN npm start
-
-COPY /frontend/dist/frontend/browser /frontend/dist/frontend/browser
-
-# Maven (frontend to backend)
-FROM maven:3.9.9-eclipse-temurin-21 AS build
-
-WORKDIR /app
-
-ENV RUNNING_IN_DOCKER=true
-
-COPY ./Backend/pom.xml /app/
-COPY ./Backend/src /app/src
-
-RUN mvn clean install -DskipTests -X -P Docker
+ EXPOSE 3306

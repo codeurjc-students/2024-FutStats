@@ -364,5 +364,4 @@ public class MatchController {
                 // is not necessary
                 // to create a not found ResponseEntity
         }
-
 }

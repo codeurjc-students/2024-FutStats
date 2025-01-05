@@ -9,6 +9,7 @@ import { Player } from 'src/app/models/player.model';
 
 
 @Component({
+    selector: 'user-detail',
     templateUrl: './user-detail.component.html',
     standalone: false
 })

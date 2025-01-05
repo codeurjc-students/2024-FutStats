@@ -56,6 +56,10 @@ public class Team {
     @JsonIgnore
     private List<Player> players;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<TeamMatch> teamMatches;
+
     @ManyToMany(mappedBy = "belongedTeams")
     @JsonIgnore
     private List<User> users;
@@ -128,6 +132,7 @@ public class Team {
             ) {
         this.matches = new ArrayList<Match>();
         this.players = new ArrayList<Player>();
+        this.teamMatches = new ArrayList<TeamMatch>();
         this.league = league;
         this.name = name;
         this.trophies = trophies;
@@ -244,6 +249,27 @@ public class Team {
         this.players.remove(player);
     }
 
+    // ------------------------------------ TEAM MATCH
+    public List<TeamMatch> getTeamMatches() {
+        return this.teamMatches;
+    }
+
+    public void setTeamMatch(TeamMatch teamMatch) {
+        this.teamMatches.add(teamMatch);
+    }
+
+    public void setTeamMatches(List<TeamMatch> teamMatches) {
+        this.teamMatches = teamMatches;
+    }
+
+    public void deleteTeamMatch(TeamMatch teamMatch) {
+        this.teamMatches.remove(teamMatch);
+    }
+
+    public void deleteTeamMatches() {
+        this.teamMatches = null;
+    }
+
     // --------------------------------------- USER 
     public List<User> getUsers() {
         return this.users;
@@ -345,9 +371,11 @@ public class Team {
 
     public int getPoints() {
         if (this.wonMatches == 0) {
-            return 0;
+            if(this.drawMatches == 0){
+                return 0;
+            }
         }
-        points = wonMatches * 3;
+        points = wonMatches * 3 + drawMatches * 1;
         return  points;
     }
 
