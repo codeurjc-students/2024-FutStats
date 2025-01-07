@@ -10,10 +10,18 @@ services:
     ports:
       - "3307:3306"
 
-  web:
+  backend:
     build:
       context: ../Backend/
       dockerfile: Dockerfile
     depends_on:
       - db
 
+  frontend:
+    build:
+      context: ../Frontend/  # Directorio donde se encuentra el Dockerfile
+      dockerfile: Dockerfile
+    depends_on:
+      - backend
+    ports:
+      - "4200:4200"
