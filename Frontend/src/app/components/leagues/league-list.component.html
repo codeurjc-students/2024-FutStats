@@ -1,8 +1,8 @@
 <h2>Ligas</h2>
 <ul class="items">
     <li *ngFor="let league of leagues | paginate: {itemsPerPage: 10, currentPage: leaguePage}">
-        <a [routerLink]="['/leagues', league.id]">{{league.name}}</a>
-        <a>{{league.nationality}}</a>
+        <a [routerLink]="['/leagues', league.id]">{{league?.name}}</a>
+        <a>{{league?.nationality}}</a>
     </li>
 </ul>
 

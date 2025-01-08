@@ -6,7 +6,7 @@
         <p>{{match.date}}</p>
     </div>
 
-    <h2>"Estadísticas de {{team1.name}}"</h2>
+    <h2>"Estadísticas de {{team1?.name}}"</h2>
     <img [src]="team1Image()">
     <div>
         <p>Disparos: {{ match.shoots1 }}</p>
@@ -31,7 +31,7 @@
         <p>Pérdidas de balón: {{ match.ballLosses1 }}</p>
     </div>
 
-    <h2>"Estadísticas de {{team2.name}}"</h2>
+    <h2>"Estadísticas de {{team2?.name}}"</h2>
     <img [src]="team2Image()">
     <div>
         <p>Disparos: {{ match.shoots2 }}</p>
@@ -59,7 +59,7 @@
     <h3>Estadisticas de los jugadores</h3>
     <ul class="items">
         <li *ngFor="let playerMatch of playerMatches | paginate: {itemsPerPage: 10, currentPage: playerMatchPage}">
-            <a [routerLink]="['/playerMatch', playerMatch.id]">{{playerMatch.name}}</a>
+            <a [routerLink]="['/playerMatch', playerMatch.id]">{{playerMatch?.name}}</a>
         </li>
     </ul>
 

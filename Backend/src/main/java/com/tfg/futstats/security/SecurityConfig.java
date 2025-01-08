@@ -64,7 +64,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/api/v1/leagues/**", "/api/v1/teams/**", "/api/v1/players/**", "/api/v1/matches/**").hasRole("[admin]")
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/leagues/**", "/api/v1/teams/**", "/api/v1/players/**", "/api/v1/matches/**").hasRole("[admin]")
                 .requestMatchers(HttpMethod.GET, "/api/v1/matches/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/v1/users/me").hasAnyRole("[admin]", "[user]")
+                .requestMatchers(HttpMethod.GET, "/api/v1/users/me").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/users/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/users/").hasRole("[admin]")
 				.requestMatchers(HttpMethod.GET, "/api/v1/users/**").hasAnyRole("[admin]", "[user]" )
