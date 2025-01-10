@@ -14,6 +14,9 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
+    - name: Navigate to frontend directory
+      run: cd 2024-FutStats/Frontend
+
     # 2. Configurar Node.js 6.0.0 y ejecutar las pruebas de Angular (frontend)
     - name: Set up Node.js 6.0.0
       uses: actions/setup-node@v2
