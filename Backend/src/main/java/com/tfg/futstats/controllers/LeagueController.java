@@ -247,15 +247,17 @@ public class LeagueController {
                         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
         })
         @DeleteMapping("/{id}")
-        public ResponseEntity<League> deleteLeagues(HttpServletRequest request, @PathVariable long id) {
+        public ResponseEntity<LeagueDTO> deleteLeagues(HttpServletRequest request, @PathVariable long id) {
                 // We don`t need security here because it`s already controlled in SecurityConfig
 
                 League league = restService.findLeagueById(id)
                                 .orElseThrow(() -> new ElementNotFoundException("No existe una liga con ese id"));
 
+                LeagueDTO leagueDto = new LeagueDTO(league);
+
                 restService.deleteLeague(league);
 
-                return ResponseEntity.ok(league);
+                return ResponseEntity.ok(leagueDto);
 
                 // if the league ins`t found we will never reach this point so it is not
                 // necessary

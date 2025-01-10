@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     templateUrl: './user-form.component.html',
+    standalone: false
 })
 export class UserFormComponent {
     newUser: boolean;

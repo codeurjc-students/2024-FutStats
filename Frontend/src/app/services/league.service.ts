@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { League } from '../models/league.model';
 import { Team } from '../models/team.model';
@@ -15,9 +16,7 @@ export class LeaguesService {
   constructor(private httpClient: HttpClient) { }
 
   getLeagues(): Observable<League[]> {
-    return this.httpClient.get<League[]>(BASE_URL).pipe(
-      catchError(error => this.handleError(error))
-    );
+    return this.httpClient.get<League[]>(BASE_URL).pipe();
   }
 
   getLeagueById(id: number): Observable<League> {

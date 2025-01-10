@@ -3,20 +3,22 @@ import { Router } from '@angular/router';
 import { User } from 'src/app/models/user.model';
 import { UsersService } from 'src/app/services/user.service';
 import { LoginService } from 'src/app/services/login.service';
+import { catchError, EMPTY, throwError } from 'rxjs';
 
 @Component({
-    templateUrl: './user-list.component.html'
+    templateUrl: './user-list.component.html',
+    standalone: false
 })
 export class UserListComponent implements OnInit {
 
     users: User[];
+    errorMsg!: string;
 
     constructor(private router: Router, private service: UsersService, public loginService: LoginService) { }
 
     ngOnInit() {
         this.service.getUsers().subscribe(
             users => this.users = users,
-            error => console.log(error)
         );
     }
 

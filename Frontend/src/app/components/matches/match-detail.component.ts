@@ -11,7 +11,8 @@ import { LoginService } from 'src/app/services/login.service';
 import { TeamsService } from 'src/app/services/team.service';
 
 @Component({
-  templateUrl: './match-detail.component.html'
+    templateUrl: './match-detail.component.html',
+    standalone: false
 })
 export class MatchDetailComponent implements OnInit {
 
@@ -21,6 +22,7 @@ export class MatchDetailComponent implements OnInit {
   team2: Team;
   league: League;
   playerMatches: PlayerMatch[] =  [];
+  public playerMatchPage!: number;
 
   constructor(
     private router: Router,

@@ -11,7 +11,8 @@ import { User } from 'src/app/models/user.model';
 import { UserFormComponent } from '../users/user-form.component';
 
 @Component({
-  templateUrl: './league-detail.component.html'
+    templateUrl: './league-detail.component.html',
+    standalone: false
 })
 export class LeagueDetailComponent implements OnInit {
 
@@ -21,6 +22,8 @@ export class LeagueDetailComponent implements OnInit {
   matches: Match[] = []; // To store the matches
   players: Player[] = []; // To store the players
   errorMessage: string;
+  public teamPage!: number;
+  public matchPage!: number;
 
   constructor(
     private router: Router,

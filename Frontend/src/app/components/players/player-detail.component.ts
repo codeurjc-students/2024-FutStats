@@ -10,9 +10,13 @@ import { League } from 'src/app/models/league.model';
 import { PlayerMatch } from 'src/app/models/player-match.model';
 import { UsersService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user.model';
+import { PlayerMatchesService } from 'src/app/services/playerMatch.service';
+import { Chart } from 'chart.js/auto';
 
 @Component({
-  templateUrl: './player-detail.component.html'
+    templateUrl: './player-detail.component.html',
+    styleUrls: ['./player-detail.component.css'],
+    standalone: false
 })
 export class PlayerDetailComponent implements OnInit {
 
@@ -22,17 +26,20 @@ export class PlayerDetailComponent implements OnInit {
   team: Team;
   league: League;
   playerMatches: PlayerMatch[] = [];
+  public playerMatchPage!: number;
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private service: PlayersService,
     private userService: UsersService,
-    public loginService: LoginService
+    public loginService: LoginService,
+    private playerMatchService: PlayerMatchesService
   ) { }
 
   ngOnInit(): void {
     const id = this.activatedRoute.snapshot.params['id'];
+    this.cargarDatos(id);
     this.service.getPlayer(id).subscribe(
       (player: Player) => {
         this.player = player;
@@ -78,6 +85,51 @@ export class PlayerDetailComponent implements OnInit {
         console.error(error);
       }
     );
+  }
+
+  cargarDatos(playerId: number) {
+    this.playerMatchService.getGoalsPerMatch(playerId).subscribe((data) => {
+      const matchNames = data.map((d: any) => d.matchName);
+      const goals = data.map((d: any) => d.goals);
+
+      this.crearGrafica(matchNames, goals);
+    });
+  }
+
+  crearGrafica(matchNames: string[], goals: number[]) {
+    new Chart('golesChart', {
+      type: 'line', // Cambiamos el tipo a "line"
+      data: {
+        labels: matchNames, // Nombres de los partidos
+        datasets: [
+          {
+            label: 'Goles por Partido',
+            data: goals,
+            fill: false,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            tension: 0.2, // Suaviza las líneas
+            pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: 'rgba(75, 192, 192, 1)',
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+          },
+        },
+      },
+    });
   }
 
   playerImage() {

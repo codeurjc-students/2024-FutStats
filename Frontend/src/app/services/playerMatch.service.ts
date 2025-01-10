@@ -13,20 +13,26 @@ export class PlayerMatchesService {
 
 	constructor(private httpClient: HttpClient) { }
 
-	getPlayerMatch(id: number ): Observable<PlayerMatch> {
-		return this.httpClient.get<PlayerMatch>(BASE_URL+id).pipe(
+	getPlayerMatch(id: number): Observable<PlayerMatch> {
+		return this.httpClient.get<PlayerMatch>(BASE_URL + id).pipe(
 			catchError(error => this.handleError(error))
 		);
 	}
 
-	getMatch(id: number): Observable<PlayerMatch>{
-		return this.httpClient.get<PlayerMatch>(BASE_URL+id+'/match').pipe(
+	getMatch(id: number): Observable<PlayerMatch> {
+		return this.httpClient.get<PlayerMatch>(BASE_URL + id + '/match').pipe(
 			catchError(error => this.handleError(error))
 		);
 	}
 
-	getPlayer(id: number): Observable<Player>{
-		return this.httpClient.get<Player>(BASE_URL+id+'/team1').pipe(
+	getPlayer(id: number): Observable<Player> {
+		return this.httpClient.get<Player>(BASE_URL + id + '/player').pipe(
+			catchError(error => this.handleError(error))
+		);
+	}
+
+	getGoalsPerMatch(playerId: number): Observable<any> {
+		return this.httpClient.get<any>(BASE_URL + `/goals/${playerId}`).pipe(
 			catchError(error => this.handleError(error))
 		);
 	}

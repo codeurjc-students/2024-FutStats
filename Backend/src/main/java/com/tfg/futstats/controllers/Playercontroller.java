@@ -20,6 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import com.tfg.futstats.controllers.dtos.league.LeagueDTO;
 import com.tfg.futstats.controllers.dtos.player.PlayerDTO;
+import com.tfg.futstats.controllers.dtos.player.PlayerResponseDTO;
 import com.tfg.futstats.controllers.dtos.team.TeamResponseDTO;
 import com.tfg.futstats.models.League;
 import com.tfg.futstats.models.Player;
@@ -57,7 +58,7 @@ public class Playercontroller {
                         @ApiResponse(responseCode = "204", description = "No content", content = @Content)
         })
         @GetMapping("/")
-        public ResponseEntity<List<PlayerDTO>> getAllPlayers() {
+        public ResponseEntity<List<PlayerResponseDTO>> getAllPlayers() {
                 return ResponseEntity.ok(restService.findAllPlayers());
         }
 
@@ -70,11 +71,11 @@ public class Playercontroller {
                         @ApiResponse(responseCode = "404", description = "player not found", content = @Content)
         })
         @GetMapping("/{id}")
-        public ResponseEntity<PlayerDTO> getPlayer(@PathVariable long id) {
+        public ResponseEntity<PlayerResponseDTO> getPlayer(@PathVariable long id) {
                 Player player = restService.findPlayerById(id)
                                 .orElseThrow(() -> new ElementNotFoundException("No existe un jugador con ese id"));
 
-                PlayerDTO playerDto = new PlayerDTO(player);
+                PlayerResponseDTO playerDto = new PlayerResponseDTO(player);
 
                 return ResponseEntity.ok(playerDto);
 
@@ -92,11 +93,11 @@ public class Playercontroller {
                         @ApiResponse(responseCode = "404", description = "player not found", content = @Content)
         })
         @GetMapping("/name/{name}")
-        public ResponseEntity<PlayerDTO> getPlayerByName(@PathVariable String name) {
+        public ResponseEntity<PlayerResponseDTO> getPlayerByName(@PathVariable String name) {
                 Player player = restService.findPlayerByName(name)
                                 .orElseThrow(() -> new ElementNotFoundException("No existe un jugador con ese nobre"));
 
-                PlayerDTO playerDto = new PlayerDTO(player);
+                PlayerResponseDTO playerDto = new PlayerResponseDTO(player);
 
                 return ResponseEntity.ok(playerDto);
 
@@ -202,7 +203,7 @@ public class Playercontroller {
 
         })
         @PostMapping("/")
-        public ResponseEntity<PlayerDTO> postPlayers(@RequestBody PlayerDTO playerDto) {
+        public ResponseEntity<PlayerResponseDTO> postPlayers(@RequestBody PlayerDTO playerDto) {
                 // We don`t need this because it is already controlled in SecurityConfig
 
                 Player newPlayer = new Player(playerDto);
@@ -219,7 +220,7 @@ public class Playercontroller {
                                 .buildAndExpand(newPlayer.getId())
                                 .toUri();
 
-                PlayerDTO newPlayerDto = new PlayerDTO(newPlayer);
+                PlayerResponseDTO newPlayerDto = new PlayerResponseDTO(newPlayer);
 
                 return ResponseEntity.created(location).body(newPlayerDto);
 
@@ -242,7 +243,8 @@ public class Playercontroller {
 
         })
         @PostMapping("/{id}/image")
-        public ResponseEntity<PlayerDTO> uploadImage(@PathVariable long id, @RequestParam MultipartFile imageFile)
+        public ResponseEntity<PlayerResponseDTO> uploadImage(@PathVariable long id,
+                        @RequestParam MultipartFile imageFile)
                         throws IOException {
 
                 Player player = restService.findPlayerById(id).orElseThrow();
@@ -251,7 +253,7 @@ public class Playercontroller {
                 player.setImageFile(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
                 restService.savePlayer(player);
 
-                PlayerDTO playerDto = new PlayerDTO(player);
+                PlayerResponseDTO playerDto = new PlayerResponseDTO(player);
 
                 return ResponseEntity.ok(playerDto);
         }
@@ -266,16 +268,18 @@ public class Playercontroller {
                         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
         })
         @DeleteMapping("/{id}")
-        public ResponseEntity<Player> deletePlayers(HttpServletRequest request, @PathVariable long id) {
+        public ResponseEntity<PlayerDTO> deletePlayers(HttpServletRequest request, @PathVariable long id) {
                 // We don`t need this because is redundant, is already controlled in
                 // SecurityConfig
 
                 Player player = restService.findPlayerById(id)
                                 .orElseThrow(() -> new ElementNotFoundException("No existe un jugador con ese id"));
 
+                PlayerDTO playerDto = new PlayerDTO(player);
+
                 restService.deletePlayer(player);
 
-                return ResponseEntity.ok(player);
+                return ResponseEntity.ok(playerDto);
 
                 // if the player ins`t found we will never reach this point so it is not
                 // necessary
@@ -293,7 +297,7 @@ public class Playercontroller {
                         @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
         })
         @DeleteMapping("/{id}/image")
-        public ResponseEntity<PlayerDTO> deleteImage(@PathVariable long id) {
+        public ResponseEntity<PlayerResponseDTO> deleteImage(@PathVariable long id) {
 
                 Player player = restService.findPlayerById(id).orElseThrow();
 
@@ -302,7 +306,7 @@ public class Playercontroller {
 
                 restService.savePlayer(player);
 
-                PlayerDTO playerDto = new PlayerDTO(player);
+                PlayerResponseDTO playerDto = new PlayerResponseDTO(player);
 
                 return ResponseEntity.ok(playerDto);
         }
@@ -319,7 +323,7 @@ public class Playercontroller {
                         @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content)
         })
         @PutMapping("/{id}")
-        public ResponseEntity<PlayerDTO> putPlayers(HttpServletRequest request, @PathVariable long id,
+        public ResponseEntity<PlayerResponseDTO> putPlayers(HttpServletRequest request, @PathVariable long id,
                         @RequestBody PlayerDTO playerDto) {
                 // We don`t need this because it is already controlled in SecurityConfig
 
@@ -352,7 +356,7 @@ public class Playercontroller {
 
                 restService.updatePlayer(oldPlayer, playerDto, league, team);
 
-                PlayerDTO newPlayerDto = new PlayerDTO(oldPlayer);
+                PlayerResponseDTO newPlayerDto = new PlayerResponseDTO(oldPlayer);
 
                 return ResponseEntity.ok(newPlayerDto);
 

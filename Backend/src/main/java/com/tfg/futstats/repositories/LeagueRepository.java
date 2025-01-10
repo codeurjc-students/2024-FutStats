@@ -12,4 +12,7 @@ public interface LeagueRepository extends JpaRepository<League, Long> {
     Optional<League> findByNameIgnoreCase(String name);
 
     List<League> findAllByUsers(User user);
+
+    
+
 }

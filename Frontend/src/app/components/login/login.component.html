@@ -25,6 +25,8 @@
 		</li>
 	</ul>
 
+	<button *ngIf="loginService.isLogged()" (click)="myProfile()"> Mi perfil</button>
+
 	<button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="users()"> Ver Usuarios</button>
 
 </div>

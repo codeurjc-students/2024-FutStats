@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.tfg.futstats.models.Match;
-
 
 public interface MatchRepository extends JpaRepository<Match, Long> {
 
@@ -88,5 +88,27 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 
     @Query("SELECT COUNT(p) FROM Match p WHERE (p.team1.id = :id AND p.scores1 = p.scores2) OR (p.team2.id = :id AND p.scores2 = p.scores1)")
     int findDrawMatchesByTeam(@Param("id") Long id);
+
+    @Query("""
+                SELECT CASE
+                    WHEN p.team1.id = :teamId AND p.scores1 > p.scores2 THEN p.team1.id
+                    WHEN p.team2.id = :teamId AND p.scores2 > p.scores1 THEN p.team2.id
+                    ELSE 0
+                END
+                FROM Match p
+                WHERE p.id = :matchId
+            """)
+    int findWinnerByTeam(@Param("matchId") Long matchId, @Param("teamId") Long teamId);
+
+    @Query("""
+                SELECT CASE
+                    WHEN p.team1.id = :teamId AND p.scores1 = p.scores2 THEN p.team1.id
+                    WHEN p.team2.id = :teamId AND p.scores1 = p.scores2 THEN p.team2.id
+                    ELSE 0
+                END
+                FROM Match p
+                WHERE p.id = :matchId
+            """)
+    int findDrawByTeam(@Param("matchId") Long matchId, @Param("teamId") Long teamId);
 
 }

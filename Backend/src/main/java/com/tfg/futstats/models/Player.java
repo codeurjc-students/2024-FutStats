@@ -47,6 +47,7 @@ public class Player {
     private Team team;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<PlayerMatch> playerMatches;
 
     @ManyToMany(mappedBy = "belongedPlayers")

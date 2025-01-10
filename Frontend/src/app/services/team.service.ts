@@ -1,7 +1,7 @@
 import { League } from './../models/league.model';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, tap } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { Team } from '../models/team.model';
@@ -16,6 +16,7 @@ export class TeamsService {
 
 	getTeams(): Observable<Team[]> {
 		return this.httpClient.get<Team[]>(BASE_URL).pipe(
+			tap(teams => console.log(teams)),
 			catchError(error => this.handleError(error))
 		);
 	}

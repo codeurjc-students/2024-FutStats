@@ -1,20 +1,31 @@
-version: "3.3"
 services:
- web:
-  image: futStats/webapp
-  ports:
-   - 8443:8443
-  environment:
-   - SPRING_PROFILES_ACTIVE=local
-   - SPRING_DATASOURCE_URL=jdbc:mysql://127.0.0.1:3306/apirest?serverTimezone=Europe/Madrid
-   - SPRING_DATASOURCE_USERNAME=root  
-   - SPRING_DATASOURCE_PASSWORD=17042002
-   - SPRING_JACKSON_TIMEZONE=Europe/Madrid
-  depends_on:
-   - db  
- db: 
-  image: mysql:8.0.22
-  restart: on-failure
-  environment:
-   - MYSQL_ROOT_PASSWORD=17042002
-   - MYSQL_DATABASE=apirest
+  db:
+    image: mysql:8.0.22
+    environment:
+      MYSQL_ROOT_PASSWORD: 17042002
+      MYSQL_ROOT_USER: root
+      MYSQL_DATABASE: api_rest
+      MYSQL_PASSWORD: 17042002
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+ 
+  app:
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/api_rest?serverTimezone=Europe/Madrid
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=17042002
+      - SPRING_JACKSON_TIMEZONE=Europe/Madrid
+    ports:
+      - "8443:8443"
+    depends_on:
+      db:
+        condition: service_healthy

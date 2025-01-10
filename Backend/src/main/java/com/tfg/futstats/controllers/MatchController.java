@@ -240,16 +240,18 @@ public class MatchController {
                         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
         })
         @DeleteMapping("/{id}")
-        public ResponseEntity<Match> deleteMatches(HttpServletRequest request, @PathVariable long id) {
+        public ResponseEntity<MatchDTO> deleteMatches(HttpServletRequest request, @PathVariable long id) {
                 // We don`t need this because is redundant, is already controlled in
                 // SecurityConfig
 
                 Match match = restService.findMatchById(id)
                                 .orElseThrow(() -> new ElementNotFoundException("No existe un equipo con ese id"));
 
+                MatchDTO matchDto = new MatchDTO(match);
+
                 restService.deleteMatch(match);
 
-                return ResponseEntity.ok(match);
+                return ResponseEntity.ok(matchDto);
 
                 // if the match ins`t found we will never reach this point so it is not
                 // necessary
@@ -362,5 +364,4 @@ public class MatchController {
                 // is not necessary
                 // to create a not found ResponseEntity
         }
-
 }

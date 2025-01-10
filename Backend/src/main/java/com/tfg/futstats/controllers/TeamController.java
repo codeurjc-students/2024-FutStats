@@ -47,6 +47,7 @@ public class TeamController {
     @Autowired
     RestService restService;
 
+
     // ------------------------------- Team CRUD operations
 
     @Operation(summary = "Get all the teams")
@@ -261,15 +262,17 @@ public class TeamController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Team> deleteTeams(HttpServletRequest request, @PathVariable long id) {
+    public ResponseEntity<TeamResponseDTO> deleteTeams(HttpServletRequest request, @PathVariable long id) {
         // We don`t need this because it is already controlled in SecurityConfig
 
         Team team = restService.findTeamById(id)
                 .orElseThrow(() -> new ElementNotFoundException("No existe un equipo con ese id"));
 
+        TeamResponseDTO teamDto = new TeamResponseDTO(team);
+
         restService.deleteTeam(team);
 
-        return ResponseEntity.ok(team);
+        return ResponseEntity.ok(teamDto);
 
         // if the team ins`t found we will never reach this point so it is not necessary
         // to create a not found ResponseEntity

@@ -8,7 +8,8 @@ import { Player } from 'src/app/models/player.model';
 import { TeamsService } from 'src/app/services/team.service';
 
 @Component({
-  templateUrl: './player-form.component.html',
+    templateUrl: './player-form.component.html',
+    standalone: false
 })
 export class PlayerFormComponent implements OnInit {
   newPlayer: boolean;

@@ -1,10 +1,10 @@
 <div *ngIf="league">
 
   <img [src]="leagueImage()">
-  <h2>"{{league.name}}"</h2>
+  <h2>"{{league?.name}}"</h2>
   <div>
-      <p>{{league.president}}</p>
-      <p>{{league.nationality}}</p>
+      <p>{{league?.president}}</p>
+      <p>{{league?.nationality}}</p>
   </div>
 
   <p>
@@ -13,11 +13,13 @@
 
   <h3>Equipos</h3>
   <ul class="items">
-    <li *ngFor="let team of teams">
-      <a [routerLink]="['/teams', team.id]">{{team.name}}</a>
-      <a>{{team.points}}</a>
+    <li *ngFor="let team of teams | paginate: {itemsPerPage: 10, currentPage: teamPage}">
+      <a [routerLink]="['/teams', team.id]">{{team?.name}}</a>
+      <a>{{team?.points}}</a>
     </li>
   </ul>
+
+  <pagination-controls (pageChange)="teamPage = $event" previousLabel="Atrás" nextLabel="Siguiente"></pagination-controls>
 
   <p>
   <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="createTeam()">Crear Equipo</button>
@@ -25,12 +27,14 @@
 
   <h3>Partidos</h3>
   <ul class="items">
-    <li *ngFor="let match of matches">
-      <a [routerLink]="['/matches', match.id]">{{match.name}}</a>
-      <a>{{match.place}}</a>
+    <li *ngFor="let match of matches| paginate: {itemsPerPage: 10, currentPage: matchPage}">
+      <a [routerLink]="['/matches', match.id]">{{match?.name}}</a>
+      <a>{{match?.place}}</a>
     </li>
   </ul>
   
+  <pagination-controls (pageChange)="matchPage = $event" previousLabel="Atrás" nextLabel="Siguiente"></pagination-controls>
+
   <p>
     <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="createMatch()">Crear Partido</button>
   </p>

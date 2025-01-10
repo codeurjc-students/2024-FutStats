@@ -56,6 +56,10 @@ public class Team {
     @JsonIgnore
     private List<Player> players;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<TeamMatch> teamMatches;
+
     @ManyToMany(mappedBy = "belongedTeams")
     @JsonIgnore
     private List<User> users;
@@ -128,6 +132,7 @@ public class Team {
             ) {
         this.matches = new ArrayList<Match>();
         this.players = new ArrayList<Player>();
+        this.teamMatches = new ArrayList<TeamMatch>();
         this.league = league;
         this.name = name;
         this.trophies = trophies;
@@ -148,8 +153,7 @@ public class Team {
         this.trainer = team.getTrainer();
         this.secondTrainer = team.getSecondTrainer();
         this.president = team.getPresident();
-        this.stadium = team.getStadium();
-        this.points = team.getPoints();
+        this.points = team.getWonMatches() * 3;
         this.totalMatches = team.getTotalMatches();
         this.totalShoots = team.getTotalShoots();
         this.totalGoals = team.getTotalGoals();
@@ -243,6 +247,27 @@ public class Team {
 
     public void deletePlayer(Player player) {
         this.players.remove(player);
+    }
+
+    // ------------------------------------ TEAM MATCH
+    public List<TeamMatch> getTeamMatches() {
+        return this.teamMatches;
+    }
+
+    public void setTeamMatch(TeamMatch teamMatch) {
+        this.teamMatches.add(teamMatch);
+    }
+
+    public void setTeamMatches(List<TeamMatch> teamMatches) {
+        this.teamMatches = teamMatches;
+    }
+
+    public void deleteTeamMatch(TeamMatch teamMatch) {
+        this.teamMatches.remove(teamMatch);
+    }
+
+    public void deleteTeamMatches() {
+        this.teamMatches = null;
     }
 
     // --------------------------------------- USER 
@@ -345,11 +370,17 @@ public class Team {
     }
 
     public int getPoints() {
-        return points;
+        if (this.wonMatches == 0) {
+            if(this.drawMatches == 0){
+                return 0;
+            }
+        }
+        points = wonMatches * 3 + drawMatches * 1;
+        return  points;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
+    public void setPoints(int wonMatches) {
+        this.points = wonMatches * 3;
     }
 
     public int getTotalMatches() {

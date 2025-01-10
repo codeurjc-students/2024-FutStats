@@ -11,7 +11,6 @@ public class TeamCreationDTO {
     private String secondTrainer;
     private String president;
     private String stadium;
-    private int points;
     public boolean image;
 
     // team stats
@@ -137,14 +136,6 @@ public class TeamCreationDTO {
 	public void setImage(boolean image) {
 		this.image = image;
 	}
-
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
-    }
 
     public int getTotalMatches() {
         return totalMatches;

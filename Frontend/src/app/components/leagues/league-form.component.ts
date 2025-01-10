@@ -5,7 +5,8 @@ import { LeaguesService } from '../../services/league.service';
 import { League } from './../../models/league.model';
 
 @Component({
-  templateUrl: './league-form.component.html'
+    templateUrl: './league-form.component.html',
+    standalone: false
 })
 export class LeagueFormComponent {
 

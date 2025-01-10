@@ -85,7 +85,12 @@ public class DatabaseInitializer {
 		s.saveMatch(match);
 		league.setMatch(match);
 		barcelona.setMatch(match);
-		realMadrid.setMatch(match);;
+		realMadrid.setMatch(match);
+		s.updateTeamInfo(barcelona);
+        s.updateTeamInfo(realMadrid);
+		s.createTeamMatch(match, barcelona);
+		s.createTeamMatch(match, realMadrid);
+
 
 		League league1 = new League("Premier League", "Richard Masters", "Inglesa", null, false);
 		s.saveLeague(league1);

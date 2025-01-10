@@ -134,4 +134,8 @@ public interface PlayerMatchRepository extends JpaRepository<PlayerMatch, Long> 
 
     @Query("SELECT COALESCE(SUM(jp.ballLosses),0) FROM PlayerMatch jp  WHERE jp.match.id = :matchId AND jp.player.team.id = :teamId")
     int ballLossesByTeam(@Param("matchId") Long matchId, @Param("teamId") Long teamId);
+
+    List<PlayerMatch> findByPlayerId(Long playerId);
+    
+    List<PlayerMatch> findByMatchId(Long matchId);
 }

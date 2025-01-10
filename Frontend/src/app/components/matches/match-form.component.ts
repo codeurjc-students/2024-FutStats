@@ -8,7 +8,8 @@ import { League } from 'src/app/models/league.model';
 
 
 @Component({
-  templateUrl: './match-form.component.html',
+    templateUrl: './match-form.component.html',
+    standalone: false
 })
 export class MatchFormComponent implements OnInit {
   newMatch: boolean;

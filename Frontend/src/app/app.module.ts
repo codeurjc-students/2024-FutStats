@@ -24,9 +24,22 @@ import { UserListComponent } from './components/users/user-list.component';
 import { UserDetailComponent } from './components/users/user-detail.component';
 import { UserFormComponent } from './components/users/user-form.component';
 
+import { NotFoundDetailComponent } from './errorPages/not-found.component';
+import { ServerErrrorDetailComponent } from './errorPages/server-error.component';
+import { UnauthorizedDetailComponent } from './errorPages/unauthorized.component';
+
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ErrorInterceptor } from './core/errors/interceptors/server-error.interceptor';
+
+
+import { myProfileComponent } from './components/users/myProfile.component';
+
 import { LoginComponent } from './components/login/login.component';
 
+import { NgxPaginationModule } from 'ngx-pagination';
+
 import { routing } from '../../src/app.routing';
+import { ForbiddenDetailComponent } from './errorPages/forbidden.component';
 
 @NgModule({
   declarations: [AppComponent, 
@@ -35,9 +48,14 @@ import { routing } from '../../src/app.routing';
     TeamDetailComponent, TeamFormComponent,
     PlayerDetailComponent, PlayerFormComponent,
     PlayerMatchDetailComponent, PlayerMatchFormComponent,
-    UserListComponent, UserDetailComponent, UserFormComponent,
+    UserListComponent, UserDetailComponent, UserFormComponent, myProfileComponent,
+    NotFoundDetailComponent, ServerErrrorDetailComponent, UnauthorizedDetailComponent,
+    ForbiddenDetailComponent,
     LoginComponent],
-  imports: [BrowserModule, FormsModule, HttpClientModule, routing],
+    providers: [
+      { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    ],
+  imports: [BrowserModule, FormsModule, HttpClientModule, routing, NgxPaginationModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

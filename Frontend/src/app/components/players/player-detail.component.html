@@ -69,12 +69,18 @@
         <p>Paradas de Dentro del área: {{player.inBoxSaves}}</p>
     </div>
 
+    <div class="chart-container">
+        <canvas id="golesChart"></canvas>
+    </div>
+
     <h3>Estadisticas de los partidos</h3>
     <ul class="items">
-        <li *ngFor="let playerMatch of playerMatches">
+        <li *ngFor="let playerMatch of playerMatches | paginate: {itemsPerPage: 10, currentPage: playerMatchPage}">
             <a [routerLink]="['/playerMatch', playerMatch.id]">{{playerMatch.matchName}}</a>
         </li>
     </ul>
+
+    <pagination-controls (pageChange)="playerMatchPage = $event" previousLabel="Atrás" nextLabel="Siguiente"></pagination-controls>
 
     <h3 *ngIf="loginService.isLogged() && loginService.isAdmin()"> Opciones de Administrador</h3>
 

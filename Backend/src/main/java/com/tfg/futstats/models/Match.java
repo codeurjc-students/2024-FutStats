@@ -29,17 +29,21 @@ public class Match {
     @JsonIgnore
     private League league;
 
-    @ManyToOne(optional = true)
+    @ManyToOne
     @JsonIgnore
     private Team team1;
 
-    @ManyToOne(optional = true)
+    @ManyToOne
     @JsonIgnore
     private Team team2;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JsonIgnore
     private List<PlayerMatch> playerMatches;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<TeamMatch> teamMatches = new ArrayList<TeamMatch>();;
 
     // Match attributes
     @Column(unique = true)
@@ -219,6 +223,27 @@ public class Match {
 
     public void deletePlayerMatches() {
         this.playerMatches = null;
+    }
+
+    // ------------------------------------ TEAM MATCH
+    public List<TeamMatch> getTeamMatches() {
+        return this.teamMatches;
+    }
+
+    public void setTeamMatch(TeamMatch teamMatch) {
+        this.teamMatches.add(teamMatch);
+    }
+
+    public void setTeamMatches(List<TeamMatch> teamMatches) {
+        this.teamMatches = teamMatches;
+    }
+
+    public void deleteTeamMatch(TeamMatch teamMatch) {
+        this.teamMatches.remove(teamMatch);
+    }
+
+    public void deleteTeamMatches() {
+        this.teamMatches = null;
     }
 
     // ------------------------------------------------------------------------
