@@ -21,8 +21,10 @@ jobs:
         node-version: '6.0.0'
     - name: Install Angular dependencies
       run: npm install
-    - name: Run Angular tests
+    - name: Run Angular unit tests
       run: npm test -- --watch=false --browsers=ChromeHeadless
+    - name: Run Angular E2E tests
+      run: npm run e2e  # Asegúrate de tener un script "e2e" configurado en tu package.json
 
     # 3. Configurar Java 21 y ejecutar las pruebas de Spring Boot (backend)
     - name: Set up Java 21
