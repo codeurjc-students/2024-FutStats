@@ -54,7 +54,7 @@ public class Team {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Player> players;
+    private List<Player> players; 
 
     @OneToMany(cascade = CascadeType.ALL)
     @JsonIgnore

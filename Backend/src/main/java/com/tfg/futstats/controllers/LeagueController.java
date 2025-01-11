@@ -305,16 +305,12 @@ public class LeagueController {
                         @RequestBody LeagueDTO leagueDto) {
                 // We don`t need security here because it`s already controlled in SecurityConfig
 
-                League oldLeague = restService.findLeagueById(id)
+                League league = restService.findLeagueById(id)
                                 .orElseThrow(() -> new ElementNotFoundException("No existe una liga con ese id"));
 
-                League newLeague = new League(leagueDto);
+                restService.updateLeague(league, leagueDto);
 
-                newLeague.setId(oldLeague.getId());
-
-                restService.updateLeague(newLeague, oldLeague, leagueDto);
-
-                LeagueDTO newLeagueDto = new LeagueDTO(newLeague);
+                LeagueDTO newLeagueDto = new LeagueDTO(league);
 
                 return ResponseEntity.ok(newLeagueDto);
 

@@ -1,6 +1,7 @@
 package com.tfg.futstats.models;
 
 import java.sql.Blob;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -119,6 +120,7 @@ public class Player {
         this.image = image;
         this.nationality = nationality;
         this.position = position;
+        this.playerMatches = new ArrayList<PlayerMatch>();
     }
 
     public Player(PlayerDTO player) {

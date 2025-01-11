@@ -1,3 +1,4 @@
+version: "3.3"
 services:
   db:
     image: mysql:8.0.22
@@ -8,24 +9,20 @@ services:
       MYSQL_PASSWORD: 17042002
     ports:
       - "3307:3306"
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 5s
-      timeout: 10s
-      retries: 5
- 
-  app:
+
+  backend:
     build:
-      context: ../
+      context: ../Backend/
       dockerfile: Dockerfile
-    environment:
-      - SPRING_PROFILES_ACTIVE=local
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/api_rest?serverTimezone=Europe/Madrid
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=17042002
-      - SPRING_JACKSON_TIMEZONE=Europe/Madrid
-    ports:
-      - "8443:8443"
     depends_on:
-      db:
-        condition: service_healthy
+      - db
+
+  frontend:
+    build:
+      context: ../Frontend/  # Directorio donde se encuentra el Dockerfile
+      dockerfile: Dockerfile
+    depends_on:
+      - backend
+    ports:
+      - "4200:4200"
+

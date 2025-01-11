@@ -45,7 +45,7 @@ public class League {
     @JsonIgnore
     private List<Match> matches;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JsonIgnore
     private List<Player> players;
 

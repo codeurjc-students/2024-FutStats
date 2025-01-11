@@ -1,5 +1,7 @@
 package com.tfg.futstats.repositories;
 
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.tfg.futstats.models.PlayerMatch;
 
+@Repository
 public interface PlayerMatchRepository extends JpaRepository<PlayerMatch, Long>  {
     
     @Query("SELECT p FROM PlayerMatch p WHERE p.match.id = :match")

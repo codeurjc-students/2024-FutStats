@@ -45,19 +45,6 @@ public class MatchController {
 
         // ------------------------------- Match CRUD operations
 
-        @Operation(summary = "Get all the matches")
-        @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "Found matches", content = {
-                                        @Content(mediaType = "application/json", schema = @Schema(implementation = MatchDTO.class))
-
-                        }),
-                        @ApiResponse(responseCode = "204", description = "No content", content = @Content)
-        })
-        @GetMapping("/")
-        public ResponseEntity<List<MatchDTO>> getMatches() {
-                return ResponseEntity.ok(restService.findAllMatches());
-        }
-
         @Operation(summary = "Get match by id")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "Found match", content = {

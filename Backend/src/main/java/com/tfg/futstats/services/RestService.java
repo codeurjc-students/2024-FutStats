@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tfg.futstats.controllers.dtos.league.LeagueDTO;
 import com.tfg.futstats.controllers.dtos.player.PlayerDTO;
-import com.tfg.futstats.controllers.dtos.player.PlayerResponseDTO;
 import com.tfg.futstats.controllers.dtos.player.PlayerMatchDTO;
 import com.tfg.futstats.controllers.dtos.team.TeamResponseDTO;
 import com.tfg.futstats.controllers.dtos.team.TeamUpdateDTO;
@@ -26,7 +25,6 @@ import com.tfg.futstats.repositories.TeamRepository;
 import com.tfg.futstats.repositories.UserRepository;
 import com.tfg.futstats.repositories.MatchRepository;
 import com.tfg.futstats.repositories.PlayerMatchRepository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.ArrayList;
@@ -91,36 +89,43 @@ public class RestService {
             league.getUsers().clear();
         }
 
+        List<Player> players = playerRepository.findByLeagueId(league.getId());
+        for (Player player : players) {
+            league.deletePlayer(player);
+            playerRepository.delete(player);
+        }
+
+        List<Match> matches = matchRepository.findByLeagueId(league.getId());
+        for (Match match : matches) {
+            league.deleteMatch(match);
+            matchRepository.delete(match);
+        }
+
         List<Team> teams = teamRepository.findByLeagueId(league.getId());
         for (Team team : teams) {
+            league.deleteTeam(team);
             deleteTeam(team);
         }
 
         leagueRepository.delete(league);
     }
 
-    public void updateLeague(League oldLeague, League newLeague, LeagueDTO leagueDto) {
+    public void updateLeague(League league, LeagueDTO leagueDto) {
         // If the admin has not intruduced any data, it will get
         // the data from the unmodified league
         if (leagueDto.getName() != null) {
-            newLeague.setName(oldLeague.getName());
+            league.setName(leagueDto.getName());
         }
         if (leagueDto.getPresident() != null) {
-            newLeague.setPresident(oldLeague.getPresident());
+            league.setPresident(leagueDto.getPresident());
         }
         if (leagueDto.getNationality() != null) {
-            newLeague.setNationality(oldLeague.getNationality());
+            league.setNationality(leagueDto.getNationality());
         }
 
-        newLeague.setTeams(oldLeague.getTeams());
-        newLeague.setMatches(oldLeague.getMatches());
-        newLeague.setPlayers(oldLeague.getPlayers());
-        newLeague.setUsers(oldLeague.getUsers());
-
-        leagueRepository.save(newLeague);
+        leagueRepository.save(league);
     }
 
-    @Transactional
     public List<LeagueDTO> findLeaguesByUser(User u) {
         List<League> leagues = leagueRepository.findAllByUsers(u);
 
@@ -130,13 +135,6 @@ public class RestService {
     }
 
     // --------------------------------------- TEAM CRUD OPERATIONS
-    public List<TeamResponseDTO> findAllTeams() {
-        List<Team> teams = teamRepository.findAll();
-
-        return teams.stream()
-                .map(team -> new TeamResponseDTO(team))
-                .toList();
-    }
 
     public Optional<Team> findTeamById(long id) {
         return teamRepository.findById(id);
@@ -172,16 +170,17 @@ public class RestService {
         teamRepository.save(team);
     }
 
-    @Transactional
     public void deleteTeam(Team team) {
         // Eliminar PlayerMatch relacionado
         List<Player> players = playerRepository.findByTeamId(team.getId());
         for (Player player : players) {
+            team.deletePlayer(player);
             deletePlayer(player);
         }
 
         List<Match> matches = matchRepository.findAllByTeam(team.getId());
         for (Match match : matches) {
+            team.deleteMatch(match);
             deleteMatch(match);
         }
 
@@ -275,6 +274,10 @@ public class RestService {
 
     }
 
+    public Optional<TeamMatch> findTeamMatchById(long id){
+        return teamMatchRepository.findById(id);
+    }
+
     public void createTeamMatch(Match match, Team team) {
         TeamMatch teamMatch = new TeamMatch();
         teamMatch.setMatch(match);
@@ -287,8 +290,6 @@ public class RestService {
 
         team.setTeamMatch(teamMatch);
         match.setTeamMatch(teamMatch);
-
-        
     }
 
     public List<TeamMatchDTO> findAllTeamMatchesByTeam(long id) {
@@ -328,14 +329,6 @@ public class RestService {
     }
 
     // --------------------------------------- PLAYER CRUD OPERATIONS
-    public List<PlayerResponseDTO> findAllPlayers() {
-        List<Player> players = playerRepository.findAll();
-
-        return players.stream()
-                .map(player -> new PlayerResponseDTO(player))
-                .toList();
-    }
-
     public Optional<Player> findPlayerById(long id) {
         return playerRepository.findById(id);
     }
@@ -408,14 +401,35 @@ public class RestService {
         match.setPlayerMatch(newPlayerMatch);
 
         playerMatchRepository.save(newPlayerMatch);
+        
         updatePlayerInfo(player);
         updateMatchInfo(match);
     }
 
-    @Transactional
+    public void savePlayerMatch(PlayerMatch playerMatch, Match match, Player player) {
+        playerMatch.setMatch(match);
+        playerMatch.setPlayer(player);
+        playerMatch.setName(player.getName());
+        playerMatch.setMatchName(match.getName());
+
+        playerMatchRepository.save(playerMatch);
+    }
+
     public void deletePlayer(Player player) {
         List<PlayerMatch> playerMatches = playerMatchRepository.findByPlayerId(player.getId());
         playerMatchRepository.deleteAll(playerMatches);
+
+        if (player.getTeam() != null) {
+            Team team = player.getTeam();
+            player.setTeam(null);
+            team.deletePlayer(player);
+        }
+
+        if (player.getLeague() != null) {
+            League league = player.getLeague();
+            player.setLeague(null);
+            league.deletePlayer(player);
+        }
 
         if (player.getUsers() != null) {
             List<User> usersToRemove = new ArrayList<>(player.getUsers());
@@ -723,7 +737,6 @@ public class RestService {
         createTeamMatch(newMatch, team2);
     }
 
-    @Transactional
     public void deleteMatch(Match match) {
 
         List<PlayerMatch> playerMatches = playerMatchRepository.findByMatchId(match.getId());
@@ -750,7 +763,7 @@ public class RestService {
 
         updateMatchInfo(oldMatch);
     }
-
+    
     // To automatically update the match stats
     public void updateMatchInfo(Match match) {
 

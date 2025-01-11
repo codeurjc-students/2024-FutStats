@@ -81,7 +81,7 @@ public class DatabaseInitializer {
 		league.setPlayer(player4);
 		barcelona.setPlayer(player4);
 
-		Match match = new Match(league, realMadrid, barcelona, realMadrid.getName() + '-' + barcelona.getName(), realMadrid.getStadium());
+		Match match = new Match(league, barcelona, realMadrid, barcelona.getName() + '-' + realMadrid.getName(), barcelona.getStadium());
 		s.saveMatch(match);
 		league.setMatch(match);
 		barcelona.setMatch(match);
@@ -90,8 +90,7 @@ public class DatabaseInitializer {
         s.updateTeamInfo(realMadrid);
 		s.createTeamMatch(match, barcelona);
 		s.createTeamMatch(match, realMadrid);
-
-
+		
 		League league1 = new League("Premier League", "Richard Masters", "Inglesa", null, false);
 		s.saveLeague(league1);
 
@@ -129,7 +128,7 @@ public class DatabaseInitializer {
 		s.saveLeague(league2);
 
 		Team bayernMunich = new Team(league2, "Bayern Munich", 83, "Germany", "Thomas Tuchel", "Arno Michels",
-				"Herbert Hainer", "Allianz Arena", null, false);
+			"Herbert Hainer", "Allianz Arena", null, false);
 		s.saveTeam(bayernMunich);
 		league2.setTeam(bayernMunich);
 
@@ -137,7 +136,5 @@ public class DatabaseInitializer {
 				"Sebastian Geppert", "Hans-Joachim Watzke", "Signal Iduna Park", null, false);
 		s.saveTeam(borussiaDortmund);
 		league2.setTeam(borussiaDortmund);
-
 	}
-
 }

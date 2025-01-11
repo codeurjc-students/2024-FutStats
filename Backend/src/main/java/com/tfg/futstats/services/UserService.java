@@ -53,10 +53,10 @@ public class UserService {
     }
 
     public void updateUser(User oldUser, UserDTO updatedUser) {
-        if(updatedUser.getName() != null){
+        if (updatedUser.getName() != null) {
             oldUser.setName(updatedUser.getName());
         }
-        if(updatedUser.getPassword() != null){
+        if (updatedUser.getPassword() != null) {
             oldUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         }
         userRepository.save(oldUser);
@@ -84,44 +84,46 @@ public class UserService {
             List<Player> playersToRemove = new ArrayList<>(user.getPlayers());
             for (Player player : playersToRemove) {
                 player.deleteUser(user);
-                deleteUserPlayer(user,player);
+                deleteUserPlayer(user, player);
             }
         }
 
         userRepository.delete(user);
     }
 
-    public void save(User user){
+    public void save(User user) {
         userRepository.save(user);
-    }  
-
-    public void addUserLeague(User user, League league){
-       user.setLeague(league);
-       userRepository.save(user);
     }
 
-    public void deleteUserLeague(User user, League league){
+    public void addUserLeague(User user, League league) {
+        user.setLeague(league);
+        userRepository.save(user);
+    }
+
+    public void deleteUserLeague(User user, League league) {
         user.removeLeague(league);
         userRepository.save(user);
     }
 
-    public void addUserTeam(User user, Team team){
+    public void addUserTeam(User user, Team team) {
         user.setTeam(team);
         userRepository.save(user);
     }
- 
-     public void deleteUserTeam(User user, Team team){
-         user.removeTeam(team);
-         userRepository.save(user);
+
+    public void deleteUserTeam(User user, Team team) {
+        user.removeTeam(team);
+        userRepository.save(user);
     }
 
-    public void addUserPlayer(User user, Player player){
+    public void addUserPlayer(User user, Player player) {
         user.setPlayer(player);
         userRepository.save(user);
     }
- 
-     public void deleteUserPlayer(User user, Player player){
-         user.removePlayer(player);
-         userRepository.save(user);
+
+    public void deleteUserPlayer(User user, Player player) {
+        user.removePlayer(player);
+        userRepository.save(user);
     }
+
+    
 }

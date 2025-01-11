@@ -172,7 +172,7 @@ public class MatchDTO {
         return place;
     }
 
-    public void setpalce(String place) {
+    public void setPlace(String place) {
         this.place = place;
     }
 

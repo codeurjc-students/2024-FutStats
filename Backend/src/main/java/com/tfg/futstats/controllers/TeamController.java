@@ -49,20 +49,6 @@ public class TeamController {
 
 
     // ------------------------------- Team CRUD operations
-
-    @Operation(summary = "Get all the teams")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found teams", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = TeamResponseDTO.class))
-
-            }),
-            @ApiResponse(responseCode = "204", description = "No content", content = @Content)
-    })
-    @GetMapping("/")
-    public ResponseEntity<List<TeamResponseDTO>> getAllTeams() {
-        return ResponseEntity.ok(restService.findAllTeams());
-    }
-
     @Operation(summary = "Get team by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found team", content = {
