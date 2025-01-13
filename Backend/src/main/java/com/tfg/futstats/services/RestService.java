@@ -757,6 +757,16 @@ public class RestService {
             oldMatch.setPlace(matchDto.getPlace());
         }
 
+        if(oldMatch.getTeam1() != team1){
+            deleteTeamMatch(teamMatchRepository.findByMatchAndTeamId(oldMatch.getId(), oldMatch.getTeam1().getId()), oldMatch, team1);
+            createTeamMatch(oldMatch,team1);
+        }
+
+        if(oldMatch.getTeam1() != team2){
+            deleteTeamMatch(teamMatchRepository.findByMatchAndTeamId(oldMatch.getId(), oldMatch.getTeam1().getId()), oldMatch, team2);
+            createTeamMatch(oldMatch,team2);
+        }
+
         oldMatch.setLeague(league);
         oldMatch.setTeam1(team1);
         oldMatch.setTeam2(team2);
