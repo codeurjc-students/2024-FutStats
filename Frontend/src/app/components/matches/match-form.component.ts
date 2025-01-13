@@ -80,6 +80,7 @@ export class MatchFormComponent implements OnInit {
         error => alert('Error creating new league: ' + error)
       );
       }else{
+        this.match.league = this.selectedLeagueId;
         this.service.updateMatch(this.match).subscribe(
           (match: Match) => this.afterSave(match),
           error => alert('Error creating new league: ' + error)

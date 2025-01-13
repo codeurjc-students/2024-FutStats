@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.tfg.futstats.controllers.dtos.league.LeagueDTO;
 import com.tfg.futstats.controllers.dtos.player.PlayerDTO;
 import com.tfg.futstats.controllers.dtos.player.PlayerMatchDTO;
+import com.tfg.futstats.controllers.dtos.player.PlayerResponseDTO;
 import com.tfg.futstats.controllers.dtos.team.TeamResponseDTO;
 import com.tfg.futstats.controllers.dtos.team.TeamUpdateDTO;
 import com.tfg.futstats.controllers.dtos.team.TeamMatchDTO;
@@ -135,6 +136,12 @@ public class RestService {
     }
 
     // --------------------------------------- TEAM CRUD OPERATIONS
+    public List<TeamResponseDTO> findAllTeams() {
+        List<Team> teams = teamRepository.findAll();
+        return teams.stream()
+                .map(team -> new TeamResponseDTO(team))
+                .toList();
+    }
 
     public Optional<Team> findTeamById(long id) {
         return teamRepository.findById(id);
@@ -302,16 +309,11 @@ public class RestService {
 
     public void deleteTeamMatch(TeamMatch teamMatch, Match match, Team team) {
 
-        teamMatch.setMatch(null);
-        teamMatch.setTeam(null);
+        teamMatchRepository.delete(teamMatch);
 
         match.deleteTeamMatch(teamMatch);
         team.deleteTeamMatch(teamMatch);
 
-        matchRepository.save(match);
-        teamRepository.save(team);
-
-        teamMatchRepository.delete(teamMatch);
     }
 
     public void updateTeamMatch(Match match, Team team) {
@@ -329,6 +331,13 @@ public class RestService {
     }
 
     // --------------------------------------- PLAYER CRUD OPERATIONS
+    public List<PlayerResponseDTO> findAllPlayers() {
+        List<Player> players = playerRepository.findAll();
+        return players.stream()
+                .map(player -> new PlayerResponseDTO(player))
+                .toList();
+    }
+
     public Optional<Player> findPlayerById(long id) {
         return playerRepository.findById(id);
     }
@@ -753,25 +762,38 @@ public class RestService {
 
         oldMatch.setName(team1.getName() + '-' + team2.getName());
 
-        if (matchDto.getPlace() != null) {
-            oldMatch.setPlace(matchDto.getPlace());
-        }
+        oldMatch.setPlace(team1.getStadium());
+        
+
+        TeamMatch teamMatch1 = teamMatchRepository.findByMatchAndTeamId(oldMatch.getId(), oldMatch.getTeam1().getId());
+        TeamMatch teamMatch2 = teamMatchRepository.findByMatchAndTeamId(oldMatch.getId(), oldMatch.getTeam2().getId());
 
         if(oldMatch.getTeam1() != team1){
-            deleteTeamMatch(teamMatchRepository.findByMatchAndTeamId(oldMatch.getId(), oldMatch.getTeam1().getId()), oldMatch, team1);
-            createTeamMatch(oldMatch,team1);
+            teamMatchRepository.delete(teamMatch1);
+            createTeamMatch(oldMatch, team1);
+        }
+        if(oldMatch.getTeam2() != team2){
+            teamMatchRepository.delete(teamMatch2);
+            createTeamMatch(oldMatch, team2);
         }
 
-        if(oldMatch.getTeam1() != team2){
-            deleteTeamMatch(teamMatchRepository.findByMatchAndTeamId(oldMatch.getId(), oldMatch.getTeam1().getId()), oldMatch, team2);
-            createTeamMatch(oldMatch,team2);
-        }
+        teamMatchRepository.flush();
+
+        // if(oldMatch.getLeague() != league)
+        // {
+        //     League oldLeague = oldMatch.getLeague();
+        //     oldLeague.deleteMatch(oldMatch);
+        //     oldMatch.setLeague(league);
+        //     league.setMatch(oldMatch);
+        // }
 
         oldMatch.setLeague(league);
         oldMatch.setTeam1(team1);
         oldMatch.setTeam2(team2);
 
-        updateMatchInfo(oldMatch);
+        if(teamMatchRepository.findByMatchAndTeamId(oldMatch.getId(), team1.getId()) != null && teamMatchRepository.findByMatchAndTeamId(oldMatch.getId(), team2.getId()) != null){
+            updateMatchInfo(oldMatch);
+        }
     }
     
     // To automatically update the match stats
@@ -824,7 +846,7 @@ public class RestService {
         updateTeamInfo(match.getTeam1());
         updateTeamInfo(match.getTeam2());
 
-        updateTeamMatch(match, match.getTeam1());
-        updateTeamMatch(match, match.getTeam2());
+        //updateTeamMatch(match, match.getTeam1());
+        //updateTeamMatch(match, match.getTeam2());
     }
 }

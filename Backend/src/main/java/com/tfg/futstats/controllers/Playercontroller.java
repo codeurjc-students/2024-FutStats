@@ -48,6 +48,17 @@ public class Playercontroller {
         RestService restService;
 
         // ------------------------------- Player CRUD operations
+        @Operation(summary = "Get all the players")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Found players", content = {
+                                        @Content(mediaType = "application/json", schema = @Schema(implementation = PlayerDTO.class))
+                        }),
+                        @ApiResponse(responseCode = "204", description = "No content", content = @Content)
+        })
+        @GetMapping("/")
+        public ResponseEntity<List<PlayerResponseDTO>> getAllPlayers() {
+                return ResponseEntity.ok(restService.findAllPlayers());
+        }
 
         @Operation(summary = "Get player by id")
         @ApiResponses(value = {
