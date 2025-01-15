@@ -322,6 +322,8 @@ public class RestService {
         }
     
         teamMatchRepository.delete(teamMatch);
+
+        updateTeamInfo(team) ;
     }
 
     public void updateTeamMatch(Match match, Team team) {
