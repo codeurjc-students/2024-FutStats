@@ -15,6 +15,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotNull;
 
 //As we want that this class be kept in the database we have to put this notation
 @Entity
@@ -37,16 +38,17 @@ public class Match {
     @JsonIgnore
     private Team team2;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<PlayerMatch> playerMatches;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<TeamMatch> teamMatches = new ArrayList<TeamMatch>();;
+    private List<TeamMatch> teamMatches = new ArrayList<TeamMatch>();
 
     // Match attributes
     @Column(unique = true)
+    @NotNull
     private String name;
     private String place;
 
@@ -104,6 +106,7 @@ public class Match {
 
     // Constructors
     public Match() {
+        this.playerMatches = new ArrayList<PlayerMatch>();
     }
 
     public Match(League league,
@@ -251,7 +254,7 @@ public class Match {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

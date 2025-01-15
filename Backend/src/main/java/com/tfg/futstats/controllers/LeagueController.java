@@ -193,7 +193,7 @@ public class LeagueController {
 
         })
         @PostMapping("/")
-        public ResponseEntity<LeagueDTO> postLeagues(HttpServletRequest request, @RequestBody LeagueDTO leagueDto) {
+        public ResponseEntity<LeagueDTO> postLeagues(@RequestBody LeagueDTO leagueDto) {
                 // We don`t need security here because it`s already controlled in SecurityConfig
 
                 League newLeague = new League(leagueDto);
@@ -247,7 +247,7 @@ public class LeagueController {
                         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
         })
         @DeleteMapping("/{id}")
-        public ResponseEntity<LeagueDTO> deleteLeagues(HttpServletRequest request, @PathVariable long id) {
+        public ResponseEntity<LeagueDTO> deleteLeagues(@PathVariable long id) {
                 // We don`t need security here because it`s already controlled in SecurityConfig
 
                 League league = restService.findLeagueById(id)

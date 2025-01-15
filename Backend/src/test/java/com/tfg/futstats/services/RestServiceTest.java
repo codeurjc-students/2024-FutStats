@@ -49,6 +49,7 @@ public class RestServiceTest {
     // #region LEAGUE CRUD TESTS
     @Test
     @Order(1)
+    @Transactional
     public void testSaveLeague() {
         League league = new League("Serie A", "Benito", "Italiana", null, false);
 
@@ -63,6 +64,7 @@ public class RestServiceTest {
 
     @Test
     @Order(2)
+    @Transactional
     public void testCreateLeague() {
         League league = new League("League1", "Al-Kelaiffy", "Francesa", null, false);
 
@@ -79,31 +81,31 @@ public class RestServiceTest {
     public void testFindAllLeagues() {
         List<LeagueDTO> leagues = restService.findAllLeagues();
 
-        assertEquals(5, leagues.size());
-        assertEquals("Serie A", leagues.get(3).getName());
-        assertEquals("League1", leagues.get(4).getName());
+        assertEquals(1, leagues.size());
+        assertEquals("LaLiga", leagues.get(0).getName());
     }
 
     @Test
     public void testFindLeagueById() {
-        Optional<League> league = restService.findLeagueById(4);
+        Optional<League> league = restService.findLeagueById(1);
 
         assertTrue(league.isPresent(), "League should be present");
-        assertEquals("Serie A", league.get().getName());
+
+        assertEquals("LaLiga", league.get().getName());
     }
 
     @Test
     public void testFindLeagueByName() {
-        Optional<League> league = restService.findLeagueByName("Serie A");
+        Optional<League> league = restService.findLeagueByName("LaLiga");
 
         assertTrue(league.isPresent(), "League should be present");
-        assertEquals(4, league.get().getId());
+        assertEquals(1, league.get().getId());
     }
 
     @Test
     @Transactional
     public void testUpdateLeague() {
-        Optional<League> league = restService.findLeagueByName("League1");
+        Optional<League> league = restService.findLeagueByName("LaLiga");
 
         assertTrue(league.isPresent(), "League should be present");
 
@@ -117,7 +119,7 @@ public class RestServiceTest {
 
         restService.updateLeague(league.get(), leagueDto);
 
-        Optional<League> returnLeague = restService.findLeagueByName("League1");
+        Optional<League> returnLeague = restService.findLeagueByName("LaLiga");
 
         assertTrue(league.isPresent(), "League should be present");
 
@@ -127,13 +129,13 @@ public class RestServiceTest {
     @Test
     @Transactional
     public void testDeleteLeague() {
-        Optional<League> league = restService.findLeagueByName("League1");
+        Optional<League> league = restService.findLeagueByName("LaLiga");
 
         assertTrue(league.isPresent(), "League should be present");
 
         restService.deleteLeague(league.get());
 
-        Optional<League> returnLeague = restService.findLeagueByName("League1");
+        Optional<League> returnLeague = restService.findLeagueByName("LaLiga");
 
         assertTrue(!returnLeague.isPresent(), "League should not be present");
     }
@@ -141,7 +143,7 @@ public class RestServiceTest {
     @Test
     @Transactional
     public void testFindLeaguesByUser() {
-        Optional<League> league = restService.findLeagueByName("Serie A");
+        Optional<League> league = restService.findLeagueByName("LaLiga");
 
         assertTrue(league.isPresent(), "League should be present");
 
@@ -150,7 +152,7 @@ public class RestServiceTest {
         List<LeagueDTO> leagues = restService.findLeaguesByUser(userService.findUserByName("Admin").get());
 
         assertEquals(1, leagues.size());
-        assertEquals("Serie A", leagues.get(0).getName());
+        assertEquals("LaLiga", leagues.get(0).getName());
     }
 
     // #endregion
@@ -158,19 +160,19 @@ public class RestServiceTest {
     // #region TEAM CRUD TESTS
     @Test
     public void testFindTeamById() {
-        Optional<Team> team = restService.findTeamById(7);
+        Optional<Team> team = restService.findTeamById(1);
 
         assertTrue(team.isPresent(), "Team should be present");
 
-        assertEquals("Osasuna", team.get().getName());
+        assertEquals("Real Madrid", team.get().getName());
     }
 
     @Test
     public void testFindTeamByName() {
-        Optional<Team> team = restService.findTeamByName("Osasuna");
+        Optional<Team> team = restService.findTeamByName("Real Madrid");
 
         assertTrue(team.isPresent(), "Team should be present");
-        assertEquals(7, team.get().getId());
+        assertEquals(1, team.get().getId());
     }
 
     @Test
@@ -185,7 +187,7 @@ public class RestServiceTest {
     @Test
     @Transactional
     public void testFindTeamsByUser() {
-        Optional<Team> team = restService.findTeamByName("Osasuna");
+        Optional<Team> team = restService.findTeamByName("Real Madrid");
 
         assertTrue(team.isPresent(), "Team should be present");
 
@@ -194,13 +196,14 @@ public class RestServiceTest {
         List<TeamResponseDTO> teams = restService.findTeamsByUser(userService.findUserByName("Admin").get());
 
         assertEquals(1, teams.size());
-        assertEquals("Osasuna", teams.get(0).getName());
+        assertEquals("Real Madrid", teams.get(0).getName());
     }
 
     @Test
     @Order(3)
+    @Transactional
     public void testSaveTeam() {
-        Team team = new Team(restService.findLeagueByName("Serie A").get(), "Osasuna", 12, "Spain", "Riojano",
+        Team team = new Team(restService.findLeagueByName("LaLiga").get(), "Osasuna", 12, "Spain", "Riojano",
                 "Mauricio", "Koldo", "Las Rozas", null, false);
 
         restService.saveTeam(team);
@@ -216,10 +219,10 @@ public class RestServiceTest {
     @Order(4)
     @Transactional
     public void testCreateTeam() {
-        Team team = new Team(restService.findLeagueByName("League1").get(), "Atletico", 25, "Spain", "Cholo", "Mono",
+        Team team = new Team(restService.findLeagueByName("LaLiga").get(), "Atletico", 25, "Spain", "Cholo", "Mono",
                 "Manzano", "Wanda", null, false);
 
-        League league = restService.findLeagueByName("League1").get();
+        League league = restService.findLeagueByName("LaLiga").get();
 
         restService.createTeam(team, league);
 
@@ -233,13 +236,13 @@ public class RestServiceTest {
     @Test
     @Transactional
     public void testDeleteTeam() {
-        Optional<Team> team = restService.findTeamByName("Osasuna");
+        Optional<Team> team = restService.findTeamByName("Real Madrid");
 
         assertTrue(team.isPresent(), "Team should be present");
 
         restService.deleteTeam(team.get());
 
-        Optional<Team> returnTeam = restService.findTeamByName("Osasuna");
+        Optional<Team> returnTeam = restService.findTeamByName("Real Madrid");
 
         assertTrue(!returnTeam.isPresent(), "Team should not be present");
     }
@@ -247,7 +250,7 @@ public class RestServiceTest {
     @Test
     @Transactional
     public void testUpdateTeam() {
-        Optional<Team> team = restService.findTeamByName("Osasuna");
+        Optional<Team> team = restService.findTeamByName("Real Madrid");
 
         assertTrue(team.isPresent(), "Team should be present");
 
@@ -255,9 +258,9 @@ public class RestServiceTest {
 
         teamDto.setPresident("Pellegrini");
 
-        restService.updateTeam(team.get(), teamDto, restService.findLeagueByName("League1").get());
+        restService.updateTeam(team.get(), teamDto, restService.findLeagueByName("LaLiga").get());
 
-        Optional<Team> returnTeam = restService.findTeamByName("Osasuna");
+        Optional<Team> returnTeam = restService.findTeamByName("Real Madrid");
 
         assertTrue(returnTeam.isPresent(), "Team should be present");
 
@@ -267,17 +270,17 @@ public class RestServiceTest {
     @Test
     @Transactional
     public void testUpdateTeamInfo() {
-        Optional<Team> team = restService.findTeamByName("Osasuna");
+        Optional<Team> team = restService.findTeamByName("Real Madrid");
 
         assertTrue(team.isPresent(), "Team should be present");
 
         restService.updateTeamInfo(team.get());
 
-        Optional<Team> returnTeam = restService.findTeamByName("Osasuna");
+        Optional<Team> returnTeam = restService.findTeamByName("Real Madrid");
 
         assertTrue(returnTeam.isPresent(), "Team should be present");
 
-        assertEquals("Koldo", returnTeam.get().getPresident());
+        assertEquals("Florentino Pérez", returnTeam.get().getPresident());
     }
 
     // #endregion
@@ -286,20 +289,20 @@ public class RestServiceTest {
 
     @Test
     public void testFindPlayerById() {
-        Optional<Player> player = restService.findPlayerById(9);
+        Optional<Player> player = restService.findPlayerById(1);
 
         assertTrue(player.isPresent(), "Player should be present");
 
-        assertEquals("Griezman", player.get().getName());
+        assertEquals("Vinicius Jr.", player.get().getName());
     }
 
     @Test
     public void testFindPlayerByName() {
-        Optional<Player> player = restService.findPlayerByName("Griezman");
+        Optional<Player> player = restService.findPlayerByName("Vinicius Jr.");
 
         assertTrue(player.isPresent(), "Player should be present");
 
-        assertEquals(9, player.get().getId());
+        assertEquals(1, player.get().getId());
     }
 
     @Test
@@ -323,7 +326,7 @@ public class RestServiceTest {
     @Test
     @Transactional
     public void testFindPlayersByUser() {
-        Optional<Player> player = restService.findPlayerByName("Griezman");
+        Optional<Player> player = restService.findPlayerByName("Vinicius Jr.");
         assertTrue(player.isPresent(), "Player should be present");
 
         player.get().setUser(userService.findUserByName("Admin").get());
@@ -331,14 +334,15 @@ public class RestServiceTest {
         List<PlayerDTO> players = restService.findPlayersByUser(userService.findUserByName("Admin").get());
 
         assertEquals(1, players.size());
-        assertEquals("Griezman", players.get(0).getName());
+        assertEquals("Vinicius Jr.", players.get(0).getName());
     }
 
     @Test
     @Order(5)
+    @Transactional
     public void testSavePlayer() {
-        Player player = new Player(restService.findLeagueByName("League1").get(),
-                restService.findTeamByName("Osasuna").get(), "Griezman", 27, "Francesa", "Delantero", null, false);
+        Player player = new Player(restService.findLeagueByName("LaLiga").get(),
+                restService.findTeamByName("Real Madrid").get(), "Griezman", 27, "Francesa", "Delantero", null, false);
 
         restService.savePlayer(player);
 
@@ -353,11 +357,11 @@ public class RestServiceTest {
     @Order(6)
     @Transactional
     public void testCreatePlayer() {
-        Player player = new Player(restService.findLeagueByName("League1").get(),
-                restService.findTeamByName("Osasuna").get(), "NuevoJugador", 20, "Española", "Defensa", null, false);
+        Player player = new Player(restService.findLeagueByName("LaLiga").get(),
+                restService.findTeamByName("Real Madrid").get(), "NuevoJugador", 20, "Española", "Defensa", null, false);
 
-        League league = restService.findLeagueByName("League1").get();
-        Team team = restService.findTeamByName("Osasuna").get();
+        League league = restService.findLeagueByName("LaLiga").get();
+        Team team = restService.findTeamByName("Real Madrid").get();
 
         restService.createPlayer(player, league, team);
 
@@ -370,7 +374,7 @@ public class RestServiceTest {
     @Test
     @Transactional
     public void testUpdatePlayer() {
-        Optional<Player> player = restService.findPlayerByName("Griezman");
+        Optional<Player> player = restService.findPlayerByName("Vinicius Jr.");
 
         assertTrue(player.isPresent(), "Player should be present");
 
@@ -378,24 +382,26 @@ public class RestServiceTest {
 
         playerDto.setPosition("Centrocampista");
 
-        restService.updatePlayer(player.get(), playerDto, restService.findLeagueByName("League1").get(),
-                restService.findTeamByName("Osasuna").get());
+        restService.updatePlayer(player.get(), playerDto, restService.findLeagueByName("LaLiga").get(),
+                restService.findTeamByName("Real Madrid").get());
 
-        Optional<Player> returnPlayer = restService.findPlayerByName("Griezman");
+        Optional<Player> returnPlayer = restService.findPlayerByName("Vinicius Jr.");
+
         assertTrue(returnPlayer.isPresent(), "Player should be present");
+
         assertEquals("Centrocampista", returnPlayer.get().getPosition());
     }
 
     @Test
     @Transactional
     public void testDeletePlayer() {
-        Optional<Player> player = restService.findPlayerByName("Griezman");
+        Optional<Player> player = restService.findPlayerByName("Vinicius Jr.");
 
         assertTrue(player.isPresent(), "Player should be present");
 
         restService.deletePlayer(player.get());
 
-        Optional<Player> returnPlayer = restService.findPlayerByName("Griezman");
+        Optional<Player> returnPlayer = restService.findPlayerByName("Vinicius Jr.");
 
         assertTrue(!returnPlayer.isPresent(), "Player should not be present");
     }
@@ -403,13 +409,13 @@ public class RestServiceTest {
     @Test
     @Transactional
     public void testUpdatePlayerInfo() {
-        Optional<Player> player = restService.findPlayerByName("Griezman");
+        Optional<Player> player = restService.findPlayerByName("Vinicius Jr.");
 
         assertTrue(player.isPresent(), "Player should be present");
 
         restService.updatePlayerInfo(player.get());
 
-        Optional<Player> returnPlayer = restService.findPlayerByName("Griezman");
+        Optional<Player> returnPlayer = restService.findPlayerByName("Vinicius Jr.");
 
         assertTrue(returnPlayer.isPresent(), "Player should be present");
 
@@ -421,6 +427,7 @@ public class RestServiceTest {
 
     @Test
     @Order(7)
+    @Transactional
     public void testSaveMatch() {
         Match match = new Match(restService.findLeagueByName("LaLiga").get(),
                 restService.findTeamByName("Real Madrid").get(), restService.findTeamByName("FC Barcelona").get(),
@@ -428,7 +435,7 @@ public class RestServiceTest {
 
         restService.saveMatch(match);
 
-        Optional<Match> returnMatch = restService.findMatchById(2);
+        Optional<Match> returnMatch = restService.findMatchByName("Real Madrid-FC Barcelona");
 
         assertTrue(returnMatch.isPresent(), "Match should be present");
 
@@ -439,57 +446,59 @@ public class RestServiceTest {
     @Order(8)
     @Transactional
     public void testCreateMatch() {
-        Match match = new Match(restService.findLeagueByName("Premier League").get(),
-                restService.findTeamByName("Manchester City").get(),
-                restService.findTeamByName("Manchester United").get(), "Manchester City" + '-' + "Manchester United",
+        Match match = new Match(restService.findLeagueByName("LaLiga").get(),
+                restService.findTeamByName("Real Madrid").get(),
+                restService.findTeamByName("FC Barcelona").get(), "Manchester City" + '-' + "Manchester United",
                 "Etihiad Stadium");
 
-        League league = restService.findLeagueByName("Premier League").get();
-        Team team = restService.findTeamByName("Manchester City").get();
-        Team team2 = restService.findTeamByName("Manchester United").get();
+        League league = restService.findLeagueByName("LaLiga").get();
+        Team team = restService.findTeamByName("Real Madrid").get();
+        Team team2 = restService.findTeamByName("FC Barcelona").get();
 
         restService.createMatch(match, league, team, team2);
 
-        Optional<Match> returnMatch = restService.findMatchById(3);
+        Optional<Match> returnMatch = restService.findMatchByName("Real Madrid-FC Barcelona");
 
         assertTrue(returnMatch.isPresent(), "Match should be present");
 
-        assertEquals("Manchester City-Manchester United", returnMatch.get().getName());
+        assertEquals("Real Madrid-FC Barcelona", returnMatch.get().getName());
     }
 
     @Test
     @Order(9)
     @Transactional
     public void testCreateTeamMatch() {
-        Optional<Match> match = restService.findMatchById(2);
+        Optional<Team> team = restService.findTeamByName("Real Madrid");
+        Optional<Match> match = restService.findMatchByName("FC Barcelona-Real Madrid");
+        TeamMatch teamMatch = new TeamMatch();
 
-        Optional<Team> team = restService.findTeamById(1);
+        teamMatch.setName("Real Madrid");
 
-        restService.createTeamMatch(match.get(), team.get());
+        restService.createTeamMatch(teamMatch, match.get(), team.get());
 
-        Optional<TeamMatch> returnMatch = restService.findTeamMatchById(1);
+        Optional<TeamMatch> teamReturn = restService.findTeamMatchById(2);
 
-        assertTrue(returnMatch.isPresent(), "TeamMatch should be present");
+        assertTrue(teamReturn.isPresent(), "TeamMatch should be present");
 
-        assertEquals("FC Barcelona", returnMatch.get().getName());
+        assertEquals("Real Madrid", teamReturn.get().getName());
     }
 
     @Test
     public void testFindMatchById() {
-        Optional<Match> match = restService.findMatchById(2);
+        Optional<Match> match = restService.findMatchById(1);
 
         assertTrue(match.isPresent(), "Match should be present");
 
-        assertEquals("Real Madrid-FC Barcelona", match.get().getName());
+        assertEquals("FC Barcelona-Real Madrid", match.get().getName());
     }
 
     @Test
     public void testFindMatchByName() {
-        Optional<Match> match = restService.findMatchByName("Real Madrid-FC Barcelona");
+        Optional<Match> match = restService.findMatchByName("FC Barcelona-Real Madrid");
 
         assertTrue(match.isPresent(), "Match should be present");
 
-        assertEquals(2, match.get().getId());
+        assertEquals(1, match.get().getId());
     }
 
     @Test
@@ -512,27 +521,23 @@ public class RestServiceTest {
     @Test
     @Transactional
     public void testUpdateMatch() {
-        Optional<Match> match = restService.findMatchById(2);
+        Optional<Match> match = restService.findMatchById(1);
 
         assertTrue(match.isPresent(), "Match should be present");
 
         MatchDTO matchDto = new MatchDTO();
 
-        matchDto.setPlace("Prueba");
+        matchDto.setName("prueba");
 
-        restService.createTeamMatch(match.get(), match.get().getTeam1());
+        match.get().getTeam1().setStadium("Prueba");
 
-        restService.createTeamMatch(match.get(), match.get().getTeam2());
-
-        restService.updateMatch(match.get(), matchDto, restService.findLeagueByName("LaLiga").get(),
-                restService.findTeamByName("Real Madrid").get(),
-                restService.findTeamByName("FC Barcelona").get());
+        restService.updateMatch(match.get(), matchDto, restService.findLeagueByName("LaLiga").get(), restService.findTeamByName("Real Madrid").get(), restService.findTeamByName("FC Barcelona").get());
 
         Optional<Match> returnMatch = restService.findMatchById(2);
 
         assertTrue(returnMatch.isPresent(), "Match should be present");
 
-        assertEquals("Prueba", returnMatch.get().getPlace());
+        assertEquals("Santiago Bernabeu", returnMatch.get().getPlace());
     }
 
     @Test
@@ -554,15 +559,15 @@ public class RestServiceTest {
     @Test
     @Transactional
     public void testDeleteMatch() {
-        Optional<Match> match = restService.findMatchByName("Real Madrid-FC Barcelona");
+        Optional<Match> match = restService.findMatchByName("FC Barcelona-Real Madrid");
 
         assertTrue(match.isPresent(), "Match should be present");
 
         restService.deleteMatch(match.get());
 
-        Optional<Match> returnMatch = restService.findMatchByName("Real Madrid-FC Barcelona");
+        Optional<Match> returnMatch = restService.findMatchByName("FC Barcelona-Real Madrid");
 
-        assertTrue(returnMatch.isEmpty(), "Player should not be present");
+        assertTrue(returnMatch.isEmpty(), "Match should not be present");
     }
 
     @Test
@@ -584,21 +589,17 @@ public class RestServiceTest {
     @Test
     @Transactional
     public void testUpdateMatchInfo() {
-        Optional<Match> match = restService.findMatchByName("Real Madrid-FC Barcelona");
+        Optional<Match> match = restService.findMatchByName("FC Barcelona-Real Madrid");
 
         assertTrue(match.isPresent(), "Match should be present");
 
-        restService.createTeamMatch(match.get(), match.get().getTeam1());
-
-        restService.createTeamMatch(match.get(), match.get().getTeam2());
-
         restService.updateMatchInfo(match.get());
 
-        Optional<Match> returnMatch = restService.findMatchByName("Real Madrid-FC Barcelona");
+        Optional<Match> returnMatch = restService.findMatchByName("FC Barcelona-Real Madrid");
 
-        assertTrue(returnMatch.isPresent(), "Player should be present");
+        assertTrue(returnMatch.isPresent(), "Match should be present");
 
-        assertEquals("Real Madrid-FC Barcelona", returnMatch.get().getName());
+        assertEquals("FC Barcelona-Real Madrid", returnMatch.get().getName());
     }
 
     // #endregion
@@ -686,17 +687,15 @@ public class RestServiceTest {
     @Test
     @Transactional
     public void testUpdatePlayerMatch() {
-        Optional<PlayerMatch> player = restService.findPlayerMatchById(1);
+        Optional<PlayerMatch> playerReturn = restService.findPlayerMatchById(1);
 
-        assertTrue(player.isPresent(), "PlayerMatch should be present");
+        assertTrue(playerReturn.isPresent(), "PlayerMatch should be present");
 
         PlayerMatchDTO playerDto = new PlayerMatchDTO();
 
-        player.get().setGoals(1);
+        playerReturn.get().setGoals(1);
 
-        PlayerMatch playerMatch = new PlayerMatch();
-
-        restService.updatePlayerMatch(player.get(), playerMatch, playerDto,
+        restService.updatePlayerMatch(playerReturn.get(), playerDto,
                 restService.findMatchByName("FC Barcelona-Real Madrid").get(),
                 restService.findPlayerByName("Vinicius Jr.").get());
 

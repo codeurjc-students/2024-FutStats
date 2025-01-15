@@ -18,6 +18,7 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotNull;
 
 //As we want that this class be kept in the database we have to put this notation
 @Entity
@@ -28,6 +29,7 @@ public class Team {
 
     // Team attributes
      @Column(unique = true)
+     @NotNull
     private String name;
     private int trophies;
     private String nationality;
@@ -48,15 +50,15 @@ public class Team {
     @JsonIgnore
     private League league;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Match> matches;
+    // @OneToMany(cascade = CascadeType.ALL)
+    // @JsonIgnore
+    // private List<Match> matches;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Player> players; 
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<TeamMatch> teamMatches;
 
@@ -116,7 +118,9 @@ public class Team {
 
     // Constructors
     public Team() {
-
+        //this.matches = new ArrayList<Match>();
+        this.players = new ArrayList<Player>();
+        this.teamMatches = new ArrayList<TeamMatch>();
     }
 
     public Team(League league,
@@ -130,7 +134,7 @@ public class Team {
             Blob imageFile,
             boolean image
             ) {
-        this.matches = new ArrayList<Match>();
+        //this.matches = new ArrayList<Match>();
         this.players = new ArrayList<Player>();
         this.teamMatches = new ArrayList<TeamMatch>();
         this.league = league;
@@ -214,22 +218,22 @@ public class Team {
     }
 
     // --------------------------------------- MATCH
-    public List<Match> getMatches() {
-        return this.matches;
-    }
+    // public List<Match> getMatches() {
+    //     return this.matches;
+    // }
 
-    public void setMatches(List<Match> matches) {
-        this.matches = matches;
-    }
+    // public void setMatches(List<Match> matches) {
+    //     this.matches = matches;
+    // }
 
-    public void setMatch(Match match) {
-        this.matches.add(match);
-        match.setLeague(this.league);
-    }
+    // public void setMatch(Match match) {
+    //     this.matches.add(match);
+    //     match.setLeague(this.league);
+    // }
 
-    public void deleteMatch(Match match) {
-        this.matches.remove(match);
-    }
+    // public void deleteMatch(Match match) {
+    //     this.matches.remove(match);
+    // }
 
     // --------------------------------------- PLAYER
     public List<Player> getPlayers() {
@@ -293,7 +297,7 @@ public class Team {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

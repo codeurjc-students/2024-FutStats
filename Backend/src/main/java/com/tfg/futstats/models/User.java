@@ -17,6 +17,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class User {
@@ -27,6 +28,7 @@ public class User {
 
     // User attributes
     @Column(unique = true)
+    @NotNull
     private String name;
 
     private String password;
@@ -63,7 +65,11 @@ public class User {
 
     // Constructors
 
-    public User() {}
+    public User() {
+        this.belongedLeagues = new ArrayList<>();
+        this.belongedTeams = new ArrayList<>();
+        this.belongedPlayers = new ArrayList<>();
+    }
 
     public User(String name, String password, Blob imageFile, boolean image, String... roles) {
         this.name = name;

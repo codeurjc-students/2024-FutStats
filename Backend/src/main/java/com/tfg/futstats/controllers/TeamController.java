@@ -200,26 +200,23 @@ public class TeamController {
 
     })
     @PostMapping("/")
-    public ResponseEntity<TeamResponseDTO> postTeams(HttpServletRequest request, @RequestBody TeamCreationDTO teamDto) {
-        // We don`t need this because it is already controlled in SecurityConfig
+    public ResponseEntity<TeamResponseDTO> postTeams(@RequestBody TeamCreationDTO teamDto) {
+            // We don`t need security here because it`s already controlled in SecurityConfig
 
-        Team newTeam = new Team(teamDto);
+            Team newTeam = new Team(teamDto);
 
-        League league = restService.findLeagueByName(teamDto.getLeague())
+            League league = restService.findLeagueByName(teamDto.getLeague())
                 .orElseThrow(() -> new ElementNotFoundException("No existe una liga con ese nombre"));
 
-        restService.createTeam(newTeam, league);
+            restService.createTeam(newTeam, league);
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newTeam.getId())
-                .toUri();
+            URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                            .buildAndExpand(newTeam.getId())
+                            .toUri();
 
-        TeamResponseDTO newTeamDto = new TeamResponseDTO(newTeam);
+            TeamResponseDTO newTeamDto = new TeamResponseDTO(newTeam);
 
-        return ResponseEntity.created(location).body(newTeamDto);
-
-        // if the league ins`t found we will never reach this point so it is not
-        // necessary
-        // to create a not found ResponseEntity
+            return ResponseEntity.created(location).body(newTeamDto);
     }
 
     @Operation(summary = "Create a Team image")
@@ -260,7 +257,7 @@ public class TeamController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<TeamResponseDTO> deleteTeams(HttpServletRequest request, @PathVariable long id) {
+    public ResponseEntity<TeamResponseDTO> deleteTeams(@PathVariable long id) {
         // We don`t need this because it is already controlled in SecurityConfig
 
         Team team = restService.findTeamById(id)
@@ -313,7 +310,7 @@ public class TeamController {
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<TeamResponseDTO> putTeams(HttpServletRequest request, @PathVariable long id,
+    public ResponseEntity<TeamResponseDTO> putTeams(@PathVariable long id,
             @RequestBody TeamUpdateDTO teamDto) {
         // We don`t need this because it is already controlled in SecurityConfig
 

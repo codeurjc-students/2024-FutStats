@@ -76,7 +76,7 @@ public class PlayerMatchController {
             @ApiResponse(responseCode = "404", description = "playerMatch not found", content = @Content)
     })
     @GetMapping("/goals/{playerId}")
-    public List<Map<String, Object>> getGoalsPerMatch(@PathVariable Long playerId) {
+    public List<Map<String, Object>> getGoalsPerMatch(@PathVariable long playerId) {
         List<PlayerMatchDTO> playerMatches = restService.findAllPlayerMatchesByPlayer(playerId);
 
         return playerMatches.stream().map(playerMatch -> {
@@ -141,7 +141,7 @@ public class PlayerMatchController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<PlayerMatch> deletePlayersMatch(HttpServletRequest request, @PathVariable long id) {
+    public ResponseEntity<PlayerMatch> deletePlayersMatch(@PathVariable long id) {
         // We don`t need this because is redundant, is already controlled in
         // SecurityConfig
 
@@ -183,8 +183,6 @@ public class PlayerMatchController {
         PlayerMatch oldPlayerMatch = restService.findPlayerMatchById(id)
                 .orElseThrow(() -> new ElementNotFoundException("No existe el partido de ese jugador"));
 
-        PlayerMatch newPlayerMatch = new PlayerMatch(playerMatchDto);
-
         // We have to do this comprobation here because we have to know if the team
         // exists
         Match match = restService.findMatchById(playerMatchDto.getMatch())
@@ -202,9 +200,9 @@ public class PlayerMatchController {
                             "No existe un jugadoer con ese nombre"));
         }
 
-        restService.updatePlayerMatch(oldPlayerMatch, newPlayerMatch, playerMatchDto, match, player);
+        restService.updatePlayerMatch(oldPlayerMatch, playerMatchDto, match, player);
 
-        PlayerMatchDTO newPlayerMatchDto = new PlayerMatchDTO(newPlayerMatch);
+        PlayerMatchDTO newPlayerMatchDto = new PlayerMatchDTO(oldPlayerMatch);
 
         return ResponseEntity.ok(newPlayerMatchDto);
 

@@ -59,6 +59,7 @@ public class PlayerResponseDTO {
         this.position = player.getPosition();
         this.league = player.getLeague().getName();
         this.team = player.getTeam().getName();
+        this.image = player.getImage();
         this.totalMatches = player.getTotalMatches();
         this.totalShoots= player.getTotalShoots();
         this.totalGoals= player.getTotalGoals();

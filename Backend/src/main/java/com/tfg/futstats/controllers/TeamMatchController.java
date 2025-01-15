@@ -38,7 +38,7 @@ public class TeamMatchController {
             @ApiResponse(responseCode = "404", description = "teamMatch not found", content = @Content)
     })
     @GetMapping("/goals/{teamId}")
-    public List<Map<String, Object>> getPointsPerMatch(@PathVariable Long teamId) {
+    public List<Map<String, Object>> getPointsPerMatch(@PathVariable long teamId) {
         List<TeamMatchDTO> teamMatches = restService.findAllTeamMatchesByTeam(teamId);
 
         return teamMatches.stream().map(teamMatch -> {

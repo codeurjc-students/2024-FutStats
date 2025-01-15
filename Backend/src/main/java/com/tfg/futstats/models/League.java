@@ -16,6 +16,7 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Column;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotNull;
 
 //As we want that this class be kept in the database we have to put this notation
 @Entity
@@ -26,6 +27,7 @@ public class League {
 
     // League attributes
     @Column(unique = true)
+    @NotNull
     private String name;
     private String president;
     private String nationality;
@@ -54,7 +56,11 @@ public class League {
     private List<User> users;
 
     // Constructors
-    public League() {}
+    public League() {
+        this.teams = new ArrayList<Team>();
+        this.matches = new ArrayList<Match>();
+        this.players = new ArrayList<Player>();
+    }
 
     public League(String name, String president, String nationality, Blob imageFile, boolean image) {
         this.name = name;
@@ -68,6 +74,7 @@ public class League {
     }
 
     public League(LeagueDTO league) {
+        this.id = league.getId();
         this.name = league.getName();
         this.president = league.getPresident();
         this.nationality = league.getNationality();
@@ -152,7 +159,7 @@ public class League {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

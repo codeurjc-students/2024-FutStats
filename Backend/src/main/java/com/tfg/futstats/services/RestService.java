@@ -105,7 +105,7 @@ public class RestService {
         List<Team> teams = teamRepository.findByLeagueId(league.getId());
         for (Team team : teams) {
             league.deleteTeam(team);
-            deleteTeam(team);
+            teamRepository.delete(team);
         }
 
         leagueRepository.delete(league);
@@ -182,13 +182,12 @@ public class RestService {
         List<Player> players = playerRepository.findByTeamId(team.getId());
         for (Player player : players) {
             team.deletePlayer(player);
-            deletePlayer(player);
+            playerRepository.delete(player);
         }
 
         List<Match> matches = matchRepository.findAllByTeam(team.getId());
         for (Match match : matches) {
-            team.deleteMatch(match);
-            deleteMatch(match);
+            matchRepository.delete(match);
         }
 
         if (team.getUsers() != null) {
@@ -281,12 +280,16 @@ public class RestService {
 
     }
 
-    public Optional<TeamMatch> findTeamMatchById(long id){
+    public void saveTeamMatch(TeamMatch teamMatch){
+        teamMatchRepository.save(teamMatch);
+    }
+
+    public Optional<TeamMatch> findTeamMatchById(long id) {
         return teamMatchRepository.findById(id);
     }
 
-    public void createTeamMatch(Match match, Team team) {
-        TeamMatch teamMatch = new TeamMatch();
+    public void createTeamMatch(TeamMatch teamMatch, Match match, Team team) {
+
         teamMatch.setMatch(match);
         teamMatch.setTeam(team);
         teamMatch.setName(team.getName());
@@ -308,26 +311,34 @@ public class RestService {
     }
 
     public void deleteTeamMatch(TeamMatch teamMatch, Match match, Team team) {
-
+        if (team != null) {
+            team.deleteTeamMatch(teamMatch);
+            teamMatch.setTeam(null);
+        }
+    
+        if (match != null) {
+            match.deleteTeamMatch(teamMatch);
+            teamMatch.setMatch(null);
+        }
+    
         teamMatchRepository.delete(teamMatch);
-
-        match.deleteTeamMatch(teamMatch);
-        team.deleteTeamMatch(teamMatch);
-
     }
 
     public void updateTeamMatch(Match match, Team team) {
-        
-        TeamMatch TeamMatch = teamMatchRepository.findByMatchAndTeamId(match.getId(), team.getId());
 
-        if(matchRepository.findWinnerByTeam(match.getId(), team.getId()) == team.getId())
-            TeamMatch.setPoints(3);
-        else if(matchRepository.findDrawByTeam(match.getId(), team.getId()) == team.getId())
-            TeamMatch.setPoints(1);
-        else
-            TeamMatch.setPoints(0);
+        TeamMatch teamMatch = teamMatchRepository.findByMatchAndTeamId(match.getId(), team.getId());
 
-        teamMatchRepository.save(TeamMatch);
+        if (teamMatch != null) {
+            if (matchRepository.findWinnerByTeam(match.getId(), team.getId()) == team.getId())
+                teamMatch.setPoints(3);
+            else if (matchRepository.findDrawByTeam(match.getId(), team.getId()) == team.getId())
+                teamMatch.setPoints(1);
+            else
+                teamMatch.setPoints(0);
+
+            teamMatchRepository.save(teamMatch);
+        }
+
     }
 
     // --------------------------------------- PLAYER CRUD OPERATIONS
@@ -410,7 +421,7 @@ public class RestService {
         match.setPlayerMatch(newPlayerMatch);
 
         playerMatchRepository.save(newPlayerMatch);
-        
+
         updatePlayerInfo(player);
         updateMatchInfo(match);
     }
@@ -425,9 +436,6 @@ public class RestService {
     }
 
     public void deletePlayer(Player player) {
-        List<PlayerMatch> playerMatches = playerMatchRepository.findByPlayerId(player.getId());
-        playerMatchRepository.deleteAll(playerMatches);
-
         if (player.getTeam() != null) {
             Team team = player.getTeam();
             player.setTeam(null);
@@ -555,104 +563,98 @@ public class RestService {
 
     }
 
-    public void updatePlayerMatch(PlayerMatch oldPlayerMatch, PlayerMatch newPlayerMatch, PlayerMatchDTO playerMatchDto,
-            Match match, Player player) {
-        newPlayerMatch.setId(oldPlayerMatch.getId());
-        newPlayerMatch.setName(oldPlayerMatch.getName());
-        newPlayerMatch.setMatchName(oldPlayerMatch.getMatchName());
+    public void updatePlayerMatch(PlayerMatch oldPlayerMatch, PlayerMatchDTO playerMatchDto, Match match,
+            Player player) {
 
-        if (playerMatchDto.getShoots() == 0) {
-            newPlayerMatch.setShoots(oldPlayerMatch.getShoots());
+        if (playerMatchDto.getShoots() != 0) {
+            oldPlayerMatch.setShoots(playerMatchDto.getShoots());
         }
-        if (playerMatchDto.getGoals() == 0) {
-            newPlayerMatch.setGoals(oldPlayerMatch.getGoals());
+        if (playerMatchDto.getGoals() != 0) {
+            oldPlayerMatch.setGoals(playerMatchDto.getGoals());
         }
-        if (playerMatchDto.getPenaltys() == 0) {
-            newPlayerMatch.setPenaltys(oldPlayerMatch.getPenaltys());
+        if (playerMatchDto.getPenaltys() != 0) {
+            oldPlayerMatch.setPenaltys(playerMatchDto.getPenaltys());
         }
-        if (playerMatchDto.getFaultsReceived() == 0) {
-            newPlayerMatch.setFaultsReceived(oldPlayerMatch.getFaultsReceived());
+        if (playerMatchDto.getFaultsReceived() != 0) {
+            oldPlayerMatch.setFaultsReceived(playerMatchDto.getFaultsReceived());
         }
-        if (playerMatchDto.getOffsides() == 0) {
-            newPlayerMatch.setOffsides(oldPlayerMatch.getOffsides());
+        if (playerMatchDto.getOffsides() != 0) {
+            oldPlayerMatch.setOffsides(playerMatchDto.getOffsides());
         }
-        if (playerMatchDto.getFaultsReceived() == 0) {
-            newPlayerMatch.setFaultsReceived(oldPlayerMatch.getFaultsReceived());
+        if (playerMatchDto.getFaultsReceived() != 0) {
+            oldPlayerMatch.setFaultsReceived(playerMatchDto.getFaultsReceived());
         }
-        if (playerMatchDto.getCommitedFaults() == 0) {
-            newPlayerMatch.setCommitedFaults(oldPlayerMatch.getCommitedFaults());
+        if (playerMatchDto.getCommitedFaults() != 0) {
+            oldPlayerMatch.setCommitedFaults(playerMatchDto.getCommitedFaults());
         }
-        if (playerMatchDto.getRecovers() == 0) {
-            newPlayerMatch.setRecovers(oldPlayerMatch.getRecovers());
+        if (playerMatchDto.getRecovers() != 0) {
+            oldPlayerMatch.setRecovers(playerMatchDto.getRecovers());
         }
-        if (playerMatchDto.getFaultsReceived() == 0) {
-            newPlayerMatch.setFaultsReceived(oldPlayerMatch.getFaultsReceived());
+        if (playerMatchDto.getFaultsReceived() != 0) {
+            oldPlayerMatch.setFaultsReceived(playerMatchDto.getFaultsReceived());
         }
-        if (playerMatchDto.getFaultsReceived() == 0) {
-            newPlayerMatch.setFaultsReceived(oldPlayerMatch.getFaultsReceived());
+        if (playerMatchDto.getFaultsReceived() != 0) {
+            oldPlayerMatch.setFaultsReceived(playerMatchDto.getFaultsReceived());
         }
-        if (playerMatchDto.getDuels() == 0) {
-            newPlayerMatch.setDuels(oldPlayerMatch.getDuels());
+        if (playerMatchDto.getDuels() != 0) {
+            oldPlayerMatch.setDuels(playerMatchDto.getDuels());
         }
-        if (playerMatchDto.getWonDuels() == 0) {
-            newPlayerMatch.setWonDuels(oldPlayerMatch.getWonDuels());
+        if (playerMatchDto.getWonDuels() != 0) {
+            oldPlayerMatch.setWonDuels(playerMatchDto.getWonDuels());
         }
-        if (playerMatchDto.getYellowCards() == 0) {
-            newPlayerMatch.setYellowCards(oldPlayerMatch.getYellowCards());
+        if (playerMatchDto.getYellowCards() != 0) {
+            oldPlayerMatch.setYellowCards(playerMatchDto.getYellowCards());
         }
-        if (playerMatchDto.getRedCards() == 0) {
-            newPlayerMatch.setRedCards(oldPlayerMatch.getRedCards());
+        if (playerMatchDto.getRedCards() != 0) {
+            oldPlayerMatch.setRedCards(playerMatchDto.getRedCards());
         }
-        if (playerMatchDto.getPasses() == 0) {
-            newPlayerMatch.setPasses(oldPlayerMatch.getPasses());
+        if (playerMatchDto.getPasses() != 0) {
+            oldPlayerMatch.setPasses(playerMatchDto.getPasses());
         }
-        if (playerMatchDto.getGoodPasses() == 0) {
-            newPlayerMatch.setGoodPasses(oldPlayerMatch.getGoodPasses());
+        if (playerMatchDto.getGoodPasses() != 0) {
+            oldPlayerMatch.setGoodPasses(playerMatchDto.getGoodPasses());
         }
-        if (playerMatchDto.getShortPasses() == 0) {
-            newPlayerMatch.setShortPasses(oldPlayerMatch.getShortPasses());
+        if (playerMatchDto.getShortPasses() != 0) {
+            oldPlayerMatch.setShortPasses(playerMatchDto.getShortPasses());
         }
-        if (playerMatchDto.getLongPasses() == 0) {
-            newPlayerMatch.setLongPasses(oldPlayerMatch.getLongPasses());
+        if (playerMatchDto.getLongPasses() != 0) {
+            oldPlayerMatch.setLongPasses(playerMatchDto.getLongPasses());
         }
-        if (playerMatchDto.getAssists() == 0) {
-            newPlayerMatch.setAssists(oldPlayerMatch.getAssists());
+        if (playerMatchDto.getAssists() != 0) {
+            oldPlayerMatch.setAssists(playerMatchDto.getAssists());
         }
-        if (playerMatchDto.getDribles() == 0) {
-            newPlayerMatch.setDribles(oldPlayerMatch.getDribles());
+        if (playerMatchDto.getDribles() != 0) {
+            oldPlayerMatch.setDribles(playerMatchDto.getDribles());
         }
-        if (playerMatchDto.getCenters() == 0) {
-            newPlayerMatch.setCenters(oldPlayerMatch.getCenters());
+        if (playerMatchDto.getCenters() != 0) {
+            oldPlayerMatch.setCenters(playerMatchDto.getCenters());
         }
-        if (playerMatchDto.getBallLosses() == 0) {
-            newPlayerMatch.setBallLosses(oldPlayerMatch.getBallLosses());
+        if (playerMatchDto.getBallLosses() != 0) {
+            oldPlayerMatch.setBallLosses(playerMatchDto.getBallLosses());
         }
-        if (playerMatchDto.getShootsReceived() == 0) {
-            newPlayerMatch.setShootsReceived(oldPlayerMatch.getShootsReceived());
+        if (playerMatchDto.getShootsReceived() != 0) {
+            oldPlayerMatch.setShootsReceived(playerMatchDto.getShootsReceived());
         }
-        if (playerMatchDto.getGoalsConceded() == 0) {
-            newPlayerMatch.setGoalsConceded(oldPlayerMatch.getGoalsConceded());
+        if (playerMatchDto.getGoalsConceded() != 0) {
+            oldPlayerMatch.setGoalsConceded(playerMatchDto.getGoalsConceded());
         }
-        if (playerMatchDto.getGoalsConceded() == 0) {
-            newPlayerMatch.setGoalsConceded(oldPlayerMatch.getGoalsConceded());
+        if (playerMatchDto.getGoalsConceded() != 0) {
+            oldPlayerMatch.setGoalsConceded(playerMatchDto.getGoalsConceded());
         }
-        if (playerMatchDto.getSaves() == 0) {
-            newPlayerMatch.setSaves(oldPlayerMatch.getSaves());
+        if (playerMatchDto.getSaves() != 0) {
+            oldPlayerMatch.setSaves(playerMatchDto.getSaves());
         }
-        if (playerMatchDto.getGoalsConceded() == 0) {
-            newPlayerMatch.setGoalsConceded(oldPlayerMatch.getGoalsConceded());
+        if (playerMatchDto.getGoalsConceded() != 0) {
+            oldPlayerMatch.setGoalsConceded(playerMatchDto.getGoalsConceded());
         }
-        if (playerMatchDto.getOutBoxSaves() == 0) {
-            newPlayerMatch.setOutBoxSaves(oldPlayerMatch.getOutBoxSaves());
+        if (playerMatchDto.getOutBoxSaves() != 0) {
+            oldPlayerMatch.setOutBoxSaves(playerMatchDto.getOutBoxSaves());
         }
-        if (playerMatchDto.getInBoxSaves() == 0) {
-            newPlayerMatch.setInBoxSaves(oldPlayerMatch.getInBoxSaves());
+        if (playerMatchDto.getInBoxSaves() != 0) {
+            oldPlayerMatch.setInBoxSaves(playerMatchDto.getInBoxSaves());
         }
 
-        newPlayerMatch.setMatch(oldPlayerMatch.getMatch());
-        newPlayerMatch.setPlayer(oldPlayerMatch.getPlayer());
-
-        playerMatchRepository.save(newPlayerMatch);
+        playerMatchRepository.save(oldPlayerMatch);
 
         updatePlayerInfo(player);
         updateMatchInfo(match);
@@ -723,6 +725,7 @@ public class RestService {
     }
 
     public void createMatch(Match newMatch, League league, Team team1, Team team2) {
+
         newMatch.setLeague(league);
         newMatch.setTeam1(team1);
         newMatch.setTeam2(team2);
@@ -730,10 +733,10 @@ public class RestService {
         newMatch.setPlace(team1.getStadium());
 
         league.setMatch(newMatch);
-        team1.setMatch(newMatch);
-        team2.setMatch(newMatch);
 
         matchRepository.save(newMatch);
+
+        matchRepository.flush();
 
         leagueRepository.save(league);
         teamRepository.save(team1);
@@ -742,60 +745,72 @@ public class RestService {
         updateTeamInfo(team1);
         updateTeamInfo(team2);
 
-        createTeamMatch(newMatch, team1);
-        createTeamMatch(newMatch, team2);
+        TeamMatch teamMatch1 = new TeamMatch();
+        TeamMatch teamMatch2 = new TeamMatch();
+
+        createTeamMatch(teamMatch1, newMatch, team1);
+        createTeamMatch(teamMatch2, newMatch, team2);
     }
 
     public void deleteMatch(Match match) {
-
-        List<PlayerMatch> playerMatches = playerMatchRepository.findByMatchId(match.getId());
-        playerMatchRepository.deleteAll(playerMatches);
-
-        List<TeamMatch> teamMatches = teamMatchRepository.findByMatchId(match.getId());
-        teamMatchRepository.deleteAll(teamMatches);
-
-        // Eliminar Match
         matchRepository.deleteById(match.getId());
     }
 
     public void updateMatch(Match oldMatch, MatchDTO matchDto, League league, Team team1, Team team2) {
 
+        if (oldMatch == null || matchDto == null || league == null || team1 == null || team2 == null) {
+            throw new IllegalArgumentException("One or more arguments are null");
+        }
+    
         oldMatch.setName(team1.getName() + '-' + team2.getName());
-
-        oldMatch.setPlace(team1.getStadium());
-        
-
+    
+        if (matchDto.getPlace() != null) {
+            oldMatch.setPlace(matchDto.getPlace());
+        }
+    
         TeamMatch teamMatch1 = teamMatchRepository.findByMatchAndTeamId(oldMatch.getId(), oldMatch.getTeam1().getId());
         TeamMatch teamMatch2 = teamMatchRepository.findByMatchAndTeamId(oldMatch.getId(), oldMatch.getTeam2().getId());
-
-        if(oldMatch.getTeam1() != team1){
-            teamMatchRepository.delete(teamMatch1);
-            createTeamMatch(oldMatch, team1);
+    
+        if (teamMatch1 != null) {
+            deleteTeamMatch(teamMatch1, oldMatch, oldMatch.getTeam1());
         }
-        if(oldMatch.getTeam2() != team2){
-            teamMatchRepository.delete(teamMatch2);
-            createTeamMatch(oldMatch, team2);
+    
+        if (teamMatch2 != null) {
+            deleteTeamMatch(teamMatch2, oldMatch, oldMatch.getTeam2());
         }
-
+    
+        teamMatchRepository.flush();
+    
+        if (teamMatchRepository.findByMatchAndTeamId(oldMatch.getId(), team1.getId()) == null) {
+            TeamMatch teamMatch3 = new TeamMatch();
+            createTeamMatch(teamMatch3, oldMatch, team1);
+        }
+    
+        if (teamMatchRepository.findByMatchAndTeamId(oldMatch.getId(), team2.getId()) == null) {
+            TeamMatch teamMatch4 = new TeamMatch();
+            createTeamMatch(teamMatch4, oldMatch, team2);
+        }
+    
         teamMatchRepository.flush();
 
-        // if(oldMatch.getLeague() != league)
-        // {
-        //     League oldLeague = oldMatch.getLeague();
-        //     oldLeague.deleteMatch(oldMatch);
-        //     oldMatch.setLeague(league);
-        //     league.setMatch(oldMatch);
-        // }
-
+        oldMatch.getLeague().deleteMatch(oldMatch);
+        Team team1Old = oldMatch.getTeam1();
+        Team team2Old = oldMatch.getTeam2();
+    
         oldMatch.setLeague(league);
         oldMatch.setTeam1(team1);
         oldMatch.setTeam2(team2);
 
-        if(teamMatchRepository.findByMatchAndTeamId(oldMatch.getId(), team1.getId()) != null && teamMatchRepository.findByMatchAndTeamId(oldMatch.getId(), team2.getId()) != null){
-            updateMatchInfo(oldMatch);
-        }
-    }
+        league.setMatch(oldMatch);
+
+        matchRepository.save(oldMatch);
+
+        updateTeamInfo(team1Old);
+        updateTeamInfo(team2Old);
     
+        updateMatchInfo(oldMatch);
+    }
+
     // To automatically update the match stats
     public void updateMatchInfo(Match match) {
 
@@ -846,7 +861,7 @@ public class RestService {
         updateTeamInfo(match.getTeam1());
         updateTeamInfo(match.getTeam2());
 
-        //updateTeamMatch(match, match.getTeam1());
-        //updateTeamMatch(match, match.getTeam2());
+        updateTeamMatch(match, match.getTeam1());
+        updateTeamMatch(match, match.getTeam2());
     }
 }

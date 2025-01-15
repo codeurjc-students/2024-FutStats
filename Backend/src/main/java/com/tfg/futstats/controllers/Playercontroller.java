@@ -266,7 +266,7 @@ public class Playercontroller {
                         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
         })
         @DeleteMapping("/{id}")
-        public ResponseEntity<PlayerDTO> deletePlayers(HttpServletRequest request, @PathVariable long id) {
+        public ResponseEntity<PlayerDTO> deletePlayers(@PathVariable long id) {
                 // We don`t need this because is redundant, is already controlled in
                 // SecurityConfig
 
@@ -321,7 +321,7 @@ public class Playercontroller {
                         @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content)
         })
         @PutMapping("/{id}")
-        public ResponseEntity<PlayerResponseDTO> putPlayers(HttpServletRequest request, @PathVariable long id,
+        public ResponseEntity<PlayerResponseDTO> putPlayers(@PathVariable long id,
                         @RequestBody PlayerDTO playerDto) {
                 // We don`t need this because it is already controlled in SecurityConfig
 

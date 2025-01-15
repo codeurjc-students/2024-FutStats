@@ -1,5 +1,8 @@
 package com.tfg.futstats.models;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tfg.futstats.controllers.dtos.player.PlayerMatchDTO;
 
@@ -8,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
 
 
 @Entity
@@ -18,6 +22,7 @@ public class PlayerMatch {
     private Long id;
 
     // playerMatch info
+    @NotNull
     private String name;
 
     private String matchName;
@@ -25,10 +30,12 @@ public class PlayerMatch {
     // Realtions with other models in DB
     @ManyToOne
     @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Player player;
 
     @ManyToOne
     @JsonIgnore
+     @OnDelete(action = OnDeleteAction.CASCADE)
     private Match match;
 
     // player stats

@@ -147,7 +147,7 @@ public class UserController {
 
         })
         @PostMapping("/")
-        public ResponseEntity<UserResponseDTO> postUser(HttpServletRequest request, @RequestBody UserDTO user) {
+        public ResponseEntity<UserResponseDTO> postUser(@RequestBody UserDTO user) {
 
                 UserResponseDTO userDto = new UserResponseDTO(
                                 userService.createUser(user.getName(), user.getPassword(), null, user.getImage(),

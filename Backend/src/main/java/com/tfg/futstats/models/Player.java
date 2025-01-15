@@ -4,6 +4,9 @@ import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tfg.futstats.controllers.dtos.player.PlayerDTO;
 
@@ -17,6 +20,7 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotNull;
 
 //As we want that this class be kept in the database we have to put this notation
 @Entity
@@ -27,6 +31,7 @@ public class Player {
 
     // player info
      @Column(unique = true)
+     @NotNull
     private String name;
     private int age;
     private String nationality;
@@ -41,13 +46,15 @@ public class Player {
     // Realtions with other models in DB
     @ManyToOne
     @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private League league;
 
     @ManyToOne
     @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Team team;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<PlayerMatch> playerMatches;
 
@@ -100,7 +107,7 @@ public class Player {
 
     // Constructors
     public Player() {
-
+        this.playerMatches = new ArrayList<PlayerMatch>();
     }
 
     public Player(League league,
@@ -213,7 +220,7 @@ public class Player {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
