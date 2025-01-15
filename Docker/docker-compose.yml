@@ -9,13 +9,21 @@ services:
       MYSQL_PASSWORD: 17042002
     ports:
       - "3307:3306"
+    command: >
+      --init-connect='GRANT ALL PRIVILEGES ON *.* TO "root"@"%" WITH GRANT OPTION; FLUSH PRIVILEGES;'
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   backend:
     build:
       context: ../Backend/
       dockerfile: Dockerfile
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   frontend:
     build:
