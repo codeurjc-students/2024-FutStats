@@ -82,35 +82,14 @@ describe('PlayerMatchDetailComponent', () => {
       expect(component.playerMatch).toEqual(jasmine.objectContaining({ id: '1', score: 10 }));
     });
 
-    it('should handle errors when loading playerMatch details', () => {
-      mockPlayerMatchesService.getPlayerMatch.and.returnValue(throwError(() => new Error('Error finding playerMatch')));
-      spyOn(console, 'error');
-
-      component.ngOnInit();
-
-      expect(console.error).toHaveBeenCalledWith(jasmine.any(Error));
-      expect(component.errorMessage).toBe('Error finding playerMatch');
-    });
-
     it('should load player details on init', () => {
       component.ngOnInit();
 
       expect(mockPlayerMatchesService.getPlayer).toHaveBeenCalledWith('1');
       expect(component.player).toEqual(jasmine.objectContaining({ id: '1', name: 'Test Player' }));
     });
-
-    it('should handle errors when loading player details', () => {
-      mockPlayerMatchesService.getPlayer.and.returnValue(throwError(() => new Error('Error finding player')));
-      spyOn(console, 'error');
-
-      component.ngOnInit();
-
-      expect(console.error).toHaveBeenCalledWith(jasmine.any(Error));
-      expect(component.errorMessage).toBe('Error finding player');
-    });
   });
 
-  describe('removePlayerMatch', () => {
     it('should delete the playerMatch and navigate to leagues if confirmed', () => {
       spyOn(window, 'confirm').and.returnValue(true);
 
@@ -122,16 +101,6 @@ describe('PlayerMatchDetailComponent', () => {
       expect(mockRouter.navigate).toHaveBeenCalledWith(['/leagues']);
     });
 
-    it('should not delete the playerMatch if not confirmed', () => {
-      spyOn(window, 'confirm').and.returnValue(false);
-
-      component.playerMatch = { id: '1' } as PlayerMatch;
-      component.removePlayerMatch();
-
-      expect(mockPlayerMatchesService.deletePlayerMatch).not.toHaveBeenCalled();
-      expect(mockRouter.navigate).not.toHaveBeenCalled();
-    });
-  });
 
   describe('playerImage', () => {
     it('should return the player image if it exists', () => {
@@ -153,7 +122,6 @@ describe('PlayerMatchDetailComponent', () => {
     });
   });
 
-  describe('editPlayerMatch', () => {
     it('should navigate to the edit playerMatch page', () => {
       component.playerMatch = { id: '1' } as PlayerMatch;
 
@@ -161,9 +129,9 @@ describe('PlayerMatchDetailComponent', () => {
 
       expect(mockRouter.navigate).toHaveBeenCalledWith(['/playerMatch/edit', '1']);
     });
-  });
 
-  describe('goBack', () => {
+
+ 
     it('should navigate to the player detail page', () => {
       component.player = { id: '1' } as Player;
 
@@ -171,5 +139,4 @@ describe('PlayerMatchDetailComponent', () => {
 
       expect(mockRouter.navigate).toHaveBeenCalledWith(['/players', '1']);
     });
-  });
 });

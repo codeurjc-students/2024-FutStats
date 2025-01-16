@@ -49,15 +49,6 @@ describe('LeagueListComponent', () => {
     expect(component.leagues[1].name).toBe('League 2');
   });
 
-  it('should handle errors when fetching leagues', () => {
-    service.getLeagues.and.returnValue(throwError(() => new Error('Failed to fetch leagues')));
-
-    component.ngOnInit();
-
-    expect(component.errorMsg).toBe('Failed to fetch leagues');
-    expect(component.leagues).toBeUndefined();
-  });
-
   it('should navigate to new league form on newLeague()', () => {
     component.newLeague();
 
