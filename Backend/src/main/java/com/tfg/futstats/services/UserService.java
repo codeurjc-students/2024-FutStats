@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Optional;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Blob;
 
 import com.tfg.futstats.models.User;
 import com.tfg.futstats.repositories.UserRepository;
@@ -47,8 +46,10 @@ public class UserService {
         return userRepository.findByName(userName);
     }
 
-    public User createUser(String userName, String password, Blob imageFile, boolean image, List<String> roles) {
-        User user = new User(userName, passwordEncoder.encode(password), imageFile, image, roles.toString());
+    public User createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setImageFile(null);
+        user.setRoles(user.getRoles().toString());
         return userRepository.save(user);
     }
 

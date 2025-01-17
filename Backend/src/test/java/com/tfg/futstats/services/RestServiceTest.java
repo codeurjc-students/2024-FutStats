@@ -533,11 +533,11 @@ public class RestServiceTest {
 
         restService.updateMatch(match.get(), matchDto, restService.findLeagueByName("LaLiga").get(), restService.findTeamByName("Real Madrid").get(), restService.findTeamByName("FC Barcelona").get());
 
-        Optional<Match> returnMatch = restService.findMatchById(2);
+        Optional<Match> returnMatch = restService.findMatchById(1);
 
         assertTrue(returnMatch.isPresent(), "Match should be present");
 
-        assertEquals("Santiago Bernabeu", returnMatch.get().getPlace());
+        assertEquals("Santiago Bernabéu", returnMatch.get().getPlace());
     }
 
     @Test
@@ -549,7 +549,7 @@ public class RestServiceTest {
 
         restService.updateTeamMatch(match.get(), team.get());
 
-        Optional<TeamMatch> returnMatch = restService.findTeamMatchById(1);
+        Optional<TeamMatch> returnMatch = restService.findTeamMatchById(2);
 
         assertTrue(returnMatch.isPresent(), "TeamMatch should be present");
 

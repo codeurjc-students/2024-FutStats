@@ -184,6 +184,9 @@ public class MatchControllerUnitaryTest {
     @Test
     void testPostMatches() {
         MatchDTO matchDto = new MatchDTO();
+        matchDto.setLeague("LaLiga");
+        matchDto.setTeam1("Real Madrid");
+        matchDto.setTeam2("FC Barcelona");
         League league = new League();
         league.setId(1);
         Team team1 = new Team();
@@ -201,10 +204,10 @@ public class MatchControllerUnitaryTest {
         doNothing().when(restService).createMatch(mockMatch, league, team1, team2);
 
         when(restService.findLeagueByName("LaLiga")).thenReturn(Optional.of(league));
-        when(restService.findTeamByName("")).thenReturn(Optional.of(team1));
-        when(restService.findTeamByName("")).thenReturn(Optional.of(team2));
+        when(restService.findTeamByName("Real Madrid")).thenReturn(Optional.of(team1));
+        when(restService.findTeamByName("FC Barcelona")).thenReturn(Optional.of(team2));
 
-        ResponseEntity<MatchDTO> response = matchController.postMatches(matchDto);
+        ResponseEntity<MatchDTO> response = matchController.postMatches(null, matchDto);
 
         assertEquals(201, response.getStatusCode().value());
         assertEquals(1, response.getBody().getId());
@@ -228,7 +231,7 @@ public class MatchControllerUnitaryTest {
 
         when(restService.findMatchById(1)).thenReturn(Optional.of(mockMatch));
 
-        ResponseEntity<MatchDTO> response = matchController.deleteMatches(1);
+        ResponseEntity<MatchDTO> response = matchController.deleteMatches(null, 1);
 
         assertEquals(200, response.getStatusCode().value());
     }
@@ -252,7 +255,7 @@ public class MatchControllerUnitaryTest {
 
         when(restService.findMatchById(1)).thenReturn(Optional.of(mockMatch));
 
-        ResponseEntity<MatchDTO> response = matchController.putMatches(1, matchDto);
+        ResponseEntity<MatchDTO> response = matchController.putMatches(null,1, matchDto);
 
         assertEquals(200, response.getStatusCode().value());
         verify(restService, times(1)).updateMatch(eq(mockMatch), eq(matchDto), any(), any(), any());

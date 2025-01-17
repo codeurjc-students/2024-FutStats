@@ -146,7 +146,6 @@ public class TeamControllerUnitaryTest {
 
     @Test
     void testPostTeam() {
-        TeamCreationDTO teamDto = new TeamCreationDTO();
         League league = new League();
         league.setId(1);
         league.setName("LaLiga");
@@ -154,9 +153,13 @@ public class TeamControllerUnitaryTest {
         mockTeam.setId(1);
         mockTeam.setLeague(league);
 
-        doNothing().when(restService).createTeam(any(Team.class), any(League.class));
+        TeamCreationDTO teamDto = new TeamCreationDTO();
+        teamDto.setLeague("LaLiga");
 
-        ResponseEntity<TeamResponseDTO> response = teamController.postTeams(teamDto);
+        doNothing().when(restService).createTeam(any(Team.class), any(League.class));
+        when(restService.findLeagueByName("LaLiga")).thenReturn(Optional.of(league));
+
+        ResponseEntity<TeamResponseDTO> response = teamController.postTeams(null, teamDto);
 
         assertEquals(201, response.getStatusCode().value());
         assertEquals(1, response.getBody().getId());

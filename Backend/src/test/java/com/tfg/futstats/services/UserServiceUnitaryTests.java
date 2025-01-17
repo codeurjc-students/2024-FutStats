@@ -103,12 +103,12 @@ public class UserServiceUnitaryTests {
         String rawPassword = "password1";
         String encodedPassword = "encodedPassword1";
         Blob image = null;
-        User user = new User("user1", encodedPassword, image, false, "ROLE_USER");
+        User user = new User("user1", encodedPassword, image, false, "[user]");
 
         when(passwordEncoder.encode(rawPassword)).thenReturn(encodedPassword);
         when(userRepository.save(any(User.class))).thenReturn(user);
 
-        User result = userService.createUser("user1", rawPassword, image, false, List.of("ROLE_USER"));
+        User result = userService.createUser(user);
 
         assertEquals("user1", result.getName());
         assertEquals(encodedPassword, result.getPassword());

@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +39,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -77,14 +79,13 @@ public class UserController {
 
                 if (request.getUserPrincipal() != null) {
                         User user = userService.findUserByName(request.getUserPrincipal().getName())
-                                 .orElseThrow(() -> new ElementNotFoundException("No esta registrado"));
+                                        .orElseThrow(() -> new ElementNotFoundException("No esta registrado"));
                         if (!request.getUserPrincipal().getName().equals(user.getName())) {
                                 return ResponseEntity.badRequest().build();
-                        }
-                        else{
+                        } else {
                                 UserResponseDTO userDto = new UserResponseDTO(user);
 
-                return ResponseEntity.ok(userDto);
+                                return ResponseEntity.ok(userDto);
                         }
                 } else {
                         return ResponseEntity.badRequest().build();
@@ -147,13 +148,19 @@ public class UserController {
 
         })
         @PostMapping("/")
-        public ResponseEntity<UserResponseDTO> postUser(@RequestBody UserDTO user) {
+        public ResponseEntity<UserResponseDTO> postUser(@RequestBody UserDTO userDto) {
 
-                UserResponseDTO userDto = new UserResponseDTO(
-                                userService.createUser(user.getName(), user.getPassword(), null, user.getImage(),
-                                                user.getRoles()));
+                User user = new User(userDto);
+   
+                userService.createUser(user);
 
-                return ResponseEntity.ok(userDto);
+                UserResponseDTO newUserDto = new UserResponseDTO(user);
+
+                URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                                .buildAndExpand(newUserDto.getId())
+                                .toUri();
+
+                return ResponseEntity.created(location).body(newUserDto);
         }
 
         @Operation(summary = "Create an User image")

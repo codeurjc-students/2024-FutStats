@@ -203,7 +203,7 @@ public class MatchController {
 
         })
         @PostMapping("/")
-        public ResponseEntity<MatchDTO> postMatches(@RequestBody MatchDTO matchDto) {
+        public ResponseEntity<MatchDTO> postMatches(HttpServletRequest request, @RequestBody MatchDTO matchDto) {
                 // We don`t need this because it is already controlled in SecurityConfig
 
                 Match newMatch = new Match(matchDto);
@@ -238,7 +238,7 @@ public class MatchController {
                         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
         })
         @DeleteMapping("/{id}")
-        public ResponseEntity<MatchDTO> deleteMatches(@PathVariable long id) {
+        public ResponseEntity<MatchDTO> deleteMatches(HttpServletRequest request, @PathVariable long id) {
                 // We don`t need this because is redundant, is already controlled in
                 // SecurityConfig
 
@@ -268,7 +268,7 @@ public class MatchController {
                         @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content)
         })
         @PutMapping("/{id}")
-        public ResponseEntity<MatchDTO> putMatches(@PathVariable long id,
+        public ResponseEntity<MatchDTO> putMatches(HttpServletRequest request, @PathVariable long id,
                         @RequestBody MatchDTO matchDto) {
                 // We don`t need this because is redundant, is already controlled in
                 // SecurityConfig

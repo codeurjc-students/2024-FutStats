@@ -1,5 +1,7 @@
 package com.tfg.futstats.controllers.dtos.player;
 
+
+
 import com.tfg.futstats.models.Player;
 
 public class PlayerDTO {
@@ -31,7 +33,7 @@ public class PlayerDTO {
       return id;
    }
 
-   public void setId(Long id) {
+   public void setId(long id) {
       this.id = id;
    }
 

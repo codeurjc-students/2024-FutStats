@@ -766,9 +766,8 @@ public class RestService {
     
         oldMatch.setName(team1.getName() + '-' + team2.getName());
     
-        if (matchDto.getPlace() != null) {
-            oldMatch.setPlace(matchDto.getPlace());
-        }
+         oldMatch.setPlace(team1.getStadium());
+   
     
         TeamMatch teamMatch1 = teamMatchRepository.findByMatchAndTeamId(oldMatch.getId(), oldMatch.getTeam1().getId());
         TeamMatch teamMatch2 = teamMatchRepository.findByMatchAndTeamId(oldMatch.getId(), oldMatch.getTeam2().getId());
