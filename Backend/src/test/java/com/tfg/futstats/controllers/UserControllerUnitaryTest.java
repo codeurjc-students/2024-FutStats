@@ -60,7 +60,7 @@ public class UserControllerUnitaryTest {
         when(request.getUserPrincipal()).thenReturn(() -> "testuser");
         when(userService.findUserByName("testuser")).thenReturn(Optional.of(mockUser));
 
-        ResponseEntity<UserResponseDTO> response = userController.me(request);
+        ResponseEntity<UserResponseDTO> response = userController.me(null);
 
         assertEquals(200, response.getStatusCode().value());
         assertEquals("testuser", response.getBody().getName());

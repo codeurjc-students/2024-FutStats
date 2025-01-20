@@ -84,8 +84,8 @@ public class PlayerMatchControllerTest {
         mockMvc.perform(get("/api/v1/players/{id}/playerMatches", 1)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(0)));
-                //.andExpect(jsonPath("$[0].name", is("Vinicus Jr.")));
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].name", is("Vinicius Jr.")));
     }
 
     @Test
