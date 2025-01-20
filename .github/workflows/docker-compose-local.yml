@@ -28,12 +28,11 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-    # Esperar a que la base de datos esté completamente lista antes de continuar
     - name: Wait for MySQL to be ready
       run: |
         echo "Waiting for MySQL to be ready..."
         retries=12  # Intentos antes de fallar
-        until mysql -h"localhost" -u"root" -p"17042002" -e "SELECT 1"; do
+        until mysql -h"mysql" -u"root" -p"17042002" -e "SELECT 1"; do
           if [ $retries -le 0 ]; then
             echo "MySQL not ready after multiple attempts, failing..."
             exit 1
