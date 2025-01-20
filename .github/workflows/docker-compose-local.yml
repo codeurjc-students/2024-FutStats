@@ -32,18 +32,18 @@ jobs:
 
     - name: Wait for MySQL to be ready
       run: |
-          echo "Waiting for MySQL to be ready..."
-          retries=12
-          until mysql -h "mysql" -u "root" -p "17042002" -e "SELECT 1"; do
-            if [ $retries -le 0 ]; then
-              echo "MySQL not ready after multiple attempts, failing..."
-              exit 1
-            fi
-            echo "MySQL not ready, waiting..."
-            retries=$((retries-1))
-            sleep 5
-          done
-          echo "MySQL is ready!"
+        echo "Waiting for MySQL to be ready..."
+        retries=12
+        until mysql -h "localhost" -P 3306 -u "root" -p "17042002" -e "SELECT 1"; do
+          if [ $retries -le 0 ]; then
+            echo "MySQL not ready after multiple attempts, failing..."
+            exit 1
+          fi
+          echo "MySQL not ready, waiting..."
+          retries=$((retries-1))
+          sleep 5
+        done
+        echo "MySQL is ready!"
 
     - name: Run Spring Boot tests
       run: mvn test
