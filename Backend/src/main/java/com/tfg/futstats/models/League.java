@@ -60,6 +60,7 @@ public class League {
         this.teams = new ArrayList<Team>();
         this.matches = new ArrayList<Match>();
         this.players = new ArrayList<Player>();
+        this.users = new ArrayList<User>();
     }
 
     public League(String name, String president, String nationality, Blob imageFile, boolean image) {
@@ -71,6 +72,7 @@ public class League {
         this.teams = new ArrayList<Team>();
         this.matches = new ArrayList<Match>();
         this.players = new ArrayList<Player>();
+        this.users = new ArrayList<User>();
     }
 
     public League(LeagueDTO league) {

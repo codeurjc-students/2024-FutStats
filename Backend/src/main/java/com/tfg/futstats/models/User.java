@@ -80,6 +80,9 @@ public class User {
         this.roles = List.of(roles);
         this.image = image;
         this.imageFile = imageFile;
+        this.belongedLeagues = new ArrayList<>();
+        this.belongedTeams = new ArrayList<>();
+        this.belongedPlayers = new ArrayList<>();
     }
 
     public User(UserDTO user) {

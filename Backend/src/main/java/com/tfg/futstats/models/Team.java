@@ -121,6 +121,7 @@ public class Team {
         //this.matches = new ArrayList<Match>();
         this.players = new ArrayList<Player>();
         this.teamMatches = new ArrayList<TeamMatch>();
+        this.users = new ArrayList<User>();
     }
 
     public Team(League league,
@@ -137,6 +138,7 @@ public class Team {
         //this.matches = new ArrayList<Match>();
         this.players = new ArrayList<Player>();
         this.teamMatches = new ArrayList<TeamMatch>();
+        this.users = new ArrayList<User>();
         this.league = league;
         this.name = name;
         this.trophies = trophies;

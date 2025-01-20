@@ -73,6 +73,6 @@ export class PlayerMatchDetailComponent implements OnInit {
     }
 
     goBack(): void {
-        this.router.navigate(['/players', this.player.id]);
+        window.history.back();
     }
 }

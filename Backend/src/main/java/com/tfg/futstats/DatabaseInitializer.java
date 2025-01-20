@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import com.tfg.futstats.models.User;
 import com.tfg.futstats.models.League;
 import com.tfg.futstats.models.Player;
+import com.tfg.futstats.models.PlayerMatch;
 import com.tfg.futstats.models.Team;
 import com.tfg.futstats.models.TeamMatch;
 import com.tfg.futstats.models.Match;
@@ -97,52 +98,76 @@ public class DatabaseInitializer {
 		realMadrid.setTeamMatch(teamMatch2);
 		s.saveTeamMatch(teamMatch1);
 		s.saveTeamMatch(teamMatch2);
+		PlayerMatch playerMatch1 = new PlayerMatch();
+		s.savePlayerMatch(playerMatch1, match, player1);
+		PlayerMatch playerMatch2 = new PlayerMatch();
+		s.savePlayerMatch(playerMatch2, match, player2);
 		
 		
-		// League league1 = new League("Premier League", "Richard Masters", "Inglesa", null, false);
-		// s.saveLeague(league1);
+		League league1 = new League("Premier League", "Richard Masters", "Inglesa", null, false);
+		s.saveLeague(league1);
 
-		// Team manchesterUnited = new Team(league1, "Manchester United", 66, "England", "Erik ten Hag",
-		// 		"Mitchell van der Gaag", "Joel Glazer", "Old Trafford", null, false);
-		// s.saveTeam(manchesterUnited);
-		// league1.setTeam(manchesterUnited);
+		Team manchesterUnited = new Team(league1, "Manchester United", 66, "England", "Erik ten Hag",
+				"Mitchell van der Gaag", "Joel Glazer", "Old Trafford", null, false);
+		s.saveTeam(manchesterUnited);
+		league1.setTeam(manchesterUnited);
 
-		// Player player5 = new Player(league1, manchesterUnited, "Garnacho", 23, "Argentina", "Delantero", null, false );
-		// s.savePlayer(player5);
-		// league1.setPlayer(player5);
-		// manchesterUnited.setPlayer(player5);
+		Player player5 = new Player(league1, manchesterUnited, "Garnacho", 23, "Argentina", "Delantero", null, false );
+		s.savePlayer(player5);
+		league1.setPlayer(player5);
+		manchesterUnited.setPlayer(player5);
 
-		// Player player6 = new Player(league1, manchesterUnited, "Bruno Fernandes", 28, "Portuguesa", "MedioCampista", null, false );
-		// s.savePlayer(player6);
-		// league1.setPlayer(player6);
-		// manchesterUnited.setPlayer(player6);
+		Player player6 = new Player(league1, manchesterUnited, "Bruno Fernandes", 28, "Portuguesa", "MedioCampista", null, false );
+		s.savePlayer(player6);
+		league1.setPlayer(player6);
+		manchesterUnited.setPlayer(player6);
 
-		// Team manchesterCity = new Team(league1, "Manchester City", 36, "England", "Pep Guardiola", "Juanma Lillo",
-		// 		"Sheikh Mansour", "Etihad Stadium", null, false);
-		// s.saveTeam(manchesterCity);
-		// league1.setTeam(manchesterUnited);
+		Team manchesterCity = new Team(league1, "Manchester City", 36, "England", "Pep Guardiola", "Juanma Lillo",
+				"Sheikh Mansour", "Etihad Stadium", null, false);
+		s.saveTeam(manchesterCity);
+		league1.setTeam(manchesterUnited);
 
-		// Player player7 = new Player(league1, manchesterCity, "Gvardiol", 23, "Croata", "Defensa", null, false );
-		// s.savePlayer(player7);
-		// league1.setPlayer(player7);
-		// manchesterCity.setPlayer(player7);;
+		Player player7 = new Player(league1, manchesterCity, "Gvardiol", 23, "Croata", "Defensa", null, false );
+		s.savePlayer(player7);
+		league1.setPlayer(player7);
+		manchesterCity.setPlayer(player7);;
 
-		// Player player8 = new Player(league1, manchesterCity, "Rodrigo Hernandez", 21, "Española", "MedioCampista", null, false );
-		// s.savePlayer(player8);
-		// league1.setPlayer(player8);
-		// manchesterCity.setPlayer(player8);
+		Player player8 = new Player(league1, manchesterCity, "Rodrigo Hernandez", 21, "Española", "MedioCampista", null, false );
+		s.savePlayer(player8);
+		league1.setPlayer(player8);
+		manchesterCity.setPlayer(player8);
 
-		// League league2 = new League("Bundesliga", "Donata Hopfen", "Alemana", null, false);
-		// s.saveLeague(league2);
+		Match match1 = new Match(league, manchesterUnited, manchesterCity, manchesterUnited.getName() + '-' + manchesterCity.getName(), manchesterUnited.getStadium());
+		s.saveMatch(match1);
+		league1.setMatch(match1);
+		s.updateTeamInfo(manchesterUnited);
+        s.updateTeamInfo(manchesterCity);
+		TeamMatch teamMatch3 = new TeamMatch(manchesterUnited, match1);
+		match1.setTeamMatch(teamMatch3);
+		manchesterUnited.setTeamMatch(teamMatch3);
+		TeamMatch teamMatch4 = new TeamMatch(manchesterCity, match1);
+		match1.setTeamMatch(teamMatch4);
+		manchesterCity.setTeamMatch(teamMatch4);
+		s.saveTeamMatch(teamMatch3);
+		s.saveTeamMatch(teamMatch4);
+		PlayerMatch playerMatch3 = new PlayerMatch();
+		s.savePlayerMatch(playerMatch3, match1, player5);
+		PlayerMatch playerMatch4 = new PlayerMatch();
+		s.savePlayerMatch(playerMatch4, match1, player6);
 
-		// Team bayernMunich = new Team(league2, "Bayern Munich", 83, "Germany", "Thomas Tuchel", "Arno Michels",
-		// 	"Herbert Hainer", "Allianz Arena", null, false);
-		// s.saveTeam(bayernMunich);
-		// league2.setTeam(bayernMunich);
+		a.setLeague(league1);
 
-		// Team borussiaDortmund = new Team(league2, "Borussia Dortmund", 59, "Germany", "Edin Terzić",
-		// 		"Sebastian Geppert", "Hans-Joachim Watzke", "Signal Iduna Park", null, false);
-		// s.saveTeam(borussiaDortmund);
-		// league2.setTeam(borussiaDortmund);
+		League league2 = new League("Bundesliga", "Donata Hopfen", "Alemana", null, false);
+		s.saveLeague(league2);
+
+		Team bayernMunich = new Team(league2, "Bayern Munich", 83, "Germany", "Thomas Tuchel", "Arno Michels",
+			"Herbert Hainer", "Allianz Arena", null, false);
+		s.saveTeam(bayernMunich);
+		league2.setTeam(bayernMunich);
+
+		Team borussiaDortmund = new Team(league2, "Borussia Dortmund", 59, "Germany", "Edin Terzić",
+				"Sebastian Geppert", "Hans-Joachim Watzke", "Signal Iduna Park", null, false);
+		s.saveTeam(borussiaDortmund);
+		league2.setTeam(borussiaDortmund);
 	}
 }

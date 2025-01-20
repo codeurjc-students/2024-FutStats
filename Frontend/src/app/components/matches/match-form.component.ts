@@ -88,7 +88,7 @@ export class MatchFormComponent implements OnInit {
       }
   }
 
-  private afterSave(match: Match) {
+  afterSave(match: Match) {
     this.leagueService.getLeagueByName(this.match.league).subscribe({
       next: (league: League) => {
         this.league = league;
