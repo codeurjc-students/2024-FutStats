@@ -25,12 +25,10 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y docker-compose
 
-      # Levantamos TODO con docker-compose (MySQL + backend + frontend)
-      - name: Docker Compose up
-        run: docker-compose up 
+      - name: Levantar contenedores en segundo plano
+        run: docker-compose up -d --build
         working-directory: ./Docker
 
-      # Esperamos a que MySQL esté disponible
       - name: Wait for MySQL in Docker
         run: |
           echo "Waiting for MySQL to be ready..."
