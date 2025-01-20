@@ -9,9 +9,26 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:8.0.22 # Puedes cambiar la imagen a la base de datos que necesites
+        options: >-
+          --env MYSQL_ROOT_PASSWORD=17042002
+          --env MYSQL_DATABASE=api_rest
+          --env MYSQL_USER=root
+          --env MYSQL_PASSWORD=17042002
+          --publish 3306:3306  # Exponer el puerto 3306 para MySQL
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+
+    - name: Wait for MySQL to be ready
+      run: |
+            while ! mysqladmin ping -h"localhost" --silent; do
+            echo "Waiting for MySQL to be ready..."
+            sleep 5
+            done
 
     - name: Set up Java 21
       uses: actions/setup-java@v2
