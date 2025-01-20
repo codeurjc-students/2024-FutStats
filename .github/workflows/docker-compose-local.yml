@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main  # Cambia 'main' por la rama que quieras monitorizar
+      - tester
 
 jobs:
   build-and-deploy:
