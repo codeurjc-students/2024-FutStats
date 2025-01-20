@@ -81,7 +81,7 @@ public class LeagueFormTest extends BaseTest {
         createButton.click();
         
         WebDriverWait waitForLeague = new WebDriverWait(driver, Duration.ofSeconds(1));
-        waitForTeam.until(ExpectedConditions.urlContains("/leagues/"));
+        waitForLeague.until(ExpectedConditions.urlContains("/leagues/"));
 
         assertTrue(driver.getCurrentUrl().contains("/leagues/"), "La URL de la liga no es la correcta.");
         System.out.println("Acceso correcto a la liga " + driver.getCurrentUrl());
