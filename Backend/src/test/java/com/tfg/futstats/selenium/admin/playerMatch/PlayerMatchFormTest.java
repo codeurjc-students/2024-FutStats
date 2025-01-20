@@ -1,6 +1,7 @@
 package com.tfg.futstats.selenium.admin.playerMatch;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
 
@@ -81,6 +82,9 @@ public class PlayerMatchFormTest extends BaseTest {
         assertNotNull(cancelButton, "El botón 'Cancelar' no está presente.");
 
         cancelButton.click();
+
+        assertTrue(driver.getCurrentUrl().contains("/matches/"), "La URL del partido no es la correcta.");
+        System.out.println("Acceso correcto al partido " + driver.getCurrentUrl());
     }
 
     @Test
@@ -102,6 +106,9 @@ public class PlayerMatchFormTest extends BaseTest {
         assertNotNull(saveButton, "El botón 'Crear Estadística de Jugador' no está presente.");
 
         saveButton.click();
+
+        assertTrue(driver.getCurrentUrl().contains("/playerMatches/"), "La URL del jugador no es la correcta.");
+        System.out.println("Acceso correcto al jugador " + driver.getCurrentUrl());
     }
 
 }

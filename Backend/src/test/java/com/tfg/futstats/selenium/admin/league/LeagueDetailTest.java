@@ -32,6 +32,10 @@ public class LeagueDetailTest extends BaseTest {
         usernameField.sendKeys("admin");
         passwordField.sendKeys("pass");
         loginButton.click();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        WebElement myProfileButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Mi perfil')]")));
+        assertNotNull(myProfileButton, "No se ha iniciado sesión correctamente");
     }
 
     @Test
@@ -102,7 +106,6 @@ public class LeagueDetailTest extends BaseTest {
         assertTrue(driver.getCurrentUrl().contains("/teams/"), "La URL del equipo no es la correcta.");
         System.out.println("Acceso correcto al equipo: " + driver.getCurrentUrl());
 
-        driver.navigate().back();
     }
 
     @Test
@@ -117,6 +120,12 @@ public class LeagueDetailTest extends BaseTest {
         assertNotNull(createTeamButton, "El botón 'Crear Equipo' no está visible para el administrador.");
 
         createTeamButton.click();
+
+        WebDriverWait waitForTeam = new WebDriverWait(driver, Duration.ofSeconds(1));
+        waitForTeam.until(ExpectedConditions.urlContains("/teams/new"));
+
+        assertTrue(driver.getCurrentUrl().contains("/teams/new"), "La URL del equipo no es la correcta.");
+        System.out.println("Acceso correcto a la creación del equipo: " + driver.getCurrentUrl());
     }
 
     @Test
@@ -132,6 +141,11 @@ public class LeagueDetailTest extends BaseTest {
 
         createMatchButton.click();
 
+        WebDriverWait waitForMatch = new WebDriverWait(driver, Duration.ofSeconds(1));
+        waitForMatch.until(ExpectedConditions.urlContains("/matches/new"));
+
+        assertTrue(driver.getCurrentUrl().contains("/matches/new"), "La URL del partido no es la correcta.");
+        System.out.println("Acceso correcto a la creacion del partido: " + driver.getCurrentUrl());
     }
 
     @Test

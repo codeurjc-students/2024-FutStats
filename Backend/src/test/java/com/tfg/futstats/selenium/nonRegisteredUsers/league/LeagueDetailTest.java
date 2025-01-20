@@ -100,8 +100,6 @@ public class LeagueDetailTest extends BaseTest {
 
         assertTrue(driver.getCurrentUrl().contains("/teams/"), "La URL del equipo no es la correcta.");
         System.out.println("Acceso correcto al equipo: " + driver.getCurrentUrl());
-
-        driver.navigate().back();
     }
 
     @Test
@@ -146,7 +144,5 @@ public class LeagueDetailTest extends BaseTest {
 
         assertTrue(driver.getCurrentUrl().contains("/matches/"), "La URL del partido no es la correcta.");
         System.out.println("Acceso correcto al partido: " + driver.getCurrentUrl());
-
-        driver.navigate().back();
     }
 }

@@ -2,6 +2,7 @@ package com.tfg.futstats.selenium.admin.user;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
 import java.io.File;
@@ -91,6 +92,9 @@ public class UserFormTest extends BaseTest {
 
         saveButton.click();
         System.out.println("Clic en botón 'Guardar'.");
+
+        assertTrue(driver.getCurrentUrl().contains("/users/"), "La URL del usuario no es la correcta.");
+        System.out.println("Acceso correcto al usuario " + driver.getCurrentUrl());
 
     }
 

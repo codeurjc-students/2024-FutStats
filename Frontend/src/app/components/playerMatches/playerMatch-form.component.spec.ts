@@ -81,7 +81,7 @@ describe('PlayerMatchFormComponent', () => {
     );
 
     expect(component.newPlayerMatch).toBeFalse();
-    expect(mockPlayerMatchesService.getPlayerMatch).toHaveBeenCalledWith('123');
+    expect(mockPlayerMatchesService.getPlayerMatch).toHaveBeenCalledWith(1);
   });
 
   it('should fetch matches and players on init', () => {

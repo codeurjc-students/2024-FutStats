@@ -1,6 +1,7 @@
 package com.tfg.futstats.selenium.admin.team;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -118,6 +119,9 @@ public class TeamDetailTest extends BaseTest {
         // Hacer clic en el botón "Eliminar Equipo"
         deleteButton.click();
         System.out.println("Clic en botón 'Eliminar Equipo'.");
+
+        assertTrue(driver.getCurrentUrl().contains("/leagues/"), "La URL de la liga no es la correcta.");
+        System.out.println("Acceso correcto a la liga " + driver.getCurrentUrl());
 
     }
 

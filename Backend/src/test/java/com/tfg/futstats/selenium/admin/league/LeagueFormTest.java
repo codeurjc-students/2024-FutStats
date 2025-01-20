@@ -2,6 +2,7 @@ package com.tfg.futstats.selenium.admin.league;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -78,6 +79,12 @@ public class LeagueFormTest extends BaseTest {
         assertNotNull(createButton, "El botón 'Crear Liga' no está presente.");
 
         createButton.click();
+        
+        WebDriverWait waitForLeague = new WebDriverWait(driver, Duration.ofSeconds(1));
+        waitForTeam.until(ExpectedConditions.urlContains("/leagues/"));
+
+        assertTrue(driver.getCurrentUrl().contains("/leagues/"), "La URL de la liga no es la correcta.");
+        System.out.println("Acceso correcto a la liga " + driver.getCurrentUrl());
     }
 
     @Test
@@ -88,5 +95,8 @@ public class LeagueFormTest extends BaseTest {
         assertNotNull(cancelButton, "El botón 'Cancelar' no está presente.");
 
         cancelButton.click();
+
+        assertTrue(driver.getCurrentUrl().contains("/leagues/"), "La URL de la liga no es la correcta.");
+        System.out.println("Acceso correcto a las ligas " + driver.getCurrentUrl());
     }
 }

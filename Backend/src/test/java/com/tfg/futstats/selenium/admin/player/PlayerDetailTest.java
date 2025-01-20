@@ -1,6 +1,8 @@
 package com.tfg.futstats.selenium.admin.player;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.time.Duration;
 
 import org.junit.jupiter.api.Test;
@@ -141,6 +143,7 @@ public class PlayerDetailTest extends BaseTest {
         assertNotNull(editButton, "El botón 'Editar Jugador' no está presente.");
 
         editButton.click();
+        
         System.out.println("Clic en botón 'Editar Jugador'.");
 
         WebElement editPlayerHeader = wait.until(ExpectedConditions.visibilityOfElementLocated(
@@ -159,6 +162,9 @@ public class PlayerDetailTest extends BaseTest {
         assertNotNull(deleteButton, "El botón 'Eliminar Jugador' no está presente.");
 
         deleteButton.click();
+
+        assertTrue(driver.getCurrentUrl().contains("/players/"), "La URL de los jugadores no es la correcta.");
+        System.out.println("Acceso correcto a los jugadores " + driver.getCurrentUrl());
     }
 
 }
