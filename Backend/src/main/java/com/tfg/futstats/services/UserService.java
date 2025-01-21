@@ -59,9 +59,9 @@ public class UserService {
         // Enviar correo al usuario recién creado
         try {
             emailService.sendEmail(
-                email, 
+                user.getEmail(), 
                 "Bienvenido a FutStats", 
-                "<h1>Bienvenido, " + userName + "!</h1><p>Gracias por unirte a FutStats.</p>"
+                "<h1>Bienvenido, " + user.getName() + "!</h1><p>Gracias por unirte a FutStats.</p>"
             );
         } catch (MessagingException e) {
             e.printStackTrace();
