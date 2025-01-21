@@ -58,7 +58,7 @@ public class UserServiceUnitaryTests {
 
     @Test
     void testFindUserById() {
-        User user = new User("user1", "password1", null, false, "ROLE_USER");
+        User user = new User("user1", "password1", "example@gmail.com", null, false, "ROLE_USER");
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 

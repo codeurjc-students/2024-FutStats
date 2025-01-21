@@ -74,7 +74,7 @@ public class UserServiceTest {
             byte[] imageBlob = convertImageToBlob("resources/static/piramide.jpeg");
             Blob blob = new SerialBlob(imageBlob);
 
-            User user = new User("prueba", "pass", blob, true, "[user]","[admin]");
+            User user = new User("prueba", "pass", "example@gmail.com", blob, true, "[user]","[admin]");
 
             userService.createUser(user);
 
@@ -125,7 +125,7 @@ public class UserServiceTest {
     @Test
     public void testSaveuser(){
 
-        User user = new User("prueba", "pass", null, false, "[user]");
+        User user = new User("prueba", "pass", "example@gmail.com", null, false, "[user]");
 
         userService.save(user);
 
