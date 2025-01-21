@@ -1,3 +1,5 @@
+package com.tfg.futstats.services;
+
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import jakarta.mail.MessagingException;
