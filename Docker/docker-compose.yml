@@ -9,7 +9,6 @@ services:
       MYSQL_PASSWORD: 17042002
     ports:
       - "3307:3306"
-    image: danielpandolfo/futstats-bd:latest
     command: >
       --init-connect='GRANT ALL PRIVILEGES ON *.* TO "root"@"%" WITH GRANT OPTION; FLUSH PRIVILEGES;'
     healthcheck:
@@ -22,7 +21,6 @@ services:
     build:
       context: ../Backend/
       dockerfile: Dockerfile
-    image: danielpandolfo/futstats-backend:latest
     depends_on:
       db:
         condition: service_healthy
@@ -31,7 +29,6 @@ services:
     build:
       context: ../Frontend/  # Directorio donde se encuentra el Dockerfile
       dockerfile: Dockerfile
-    image: danielpandolfo/futstats-frontend:latest
     depends_on:
       - backend
     ports:
