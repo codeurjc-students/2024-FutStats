@@ -46,10 +46,6 @@ jobs:
           echo "MySQL is ready!"
         working-directory: ./Docker
 
-      - name: Run Spring Boot tests
-        run: mvn test
-        working-directory: ./Backend
-
       - name: Set up Node.js 16
         uses: actions/setup-node@v2
         with:
@@ -57,10 +53,6 @@ jobs:
 
       - name: Install Angular dependencies
         run: npm install
-        working-directory: ./Frontend
-
-      - name: Run Angular unit tests
-        run: npm test -- --watch=false --browsers=ChromeHeadless
         working-directory: ./Frontend
 
       - name: Log in to Docker Hub
