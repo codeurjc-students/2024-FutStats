@@ -3,6 +3,7 @@ package com.tfg.futstats.services;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.mail.MessagingException;
 
 import java.util.Optional;
 import java.util.ArrayList;
