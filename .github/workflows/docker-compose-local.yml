@@ -62,6 +62,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push Docker image
+        working-directory: ./Docker
         run: |
           tag=$(date +'%Y%m%d.%H%M%S')
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/tfg:main -t ${{ secrets.DOCKERHUB_USERNAME }}/tfg:$tag -f Docker/Dockerfile .
