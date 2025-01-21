@@ -31,6 +31,7 @@ export class UserFormComponent {
             this.user = {
                 name: '',
                 password: '',
+                eamil: '',
                 roles: [],
                 image: false
 

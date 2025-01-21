@@ -28,6 +28,9 @@ public class UserService {
     RestService restService;
 
     @Autowired
+    private EmailService emailService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     public List<UserResponseDTO> findAllUsers() {
@@ -50,7 +53,20 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setImageFile(null);
         user.setRoles(user.getRoles().toString());
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        // Enviar correo al usuario recién creado
+        try {
+            emailService.sendEmail(
+                email, 
+                "Bienvenido a FutStats", 
+                "<h1>Bienvenido, " + userName + "!</h1><p>Gracias por unirte a FutStats.</p>"
+            );
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+        return savedUser;
     }
 
     public void updateUser(User oldUser, UserDTO updatedUser) {

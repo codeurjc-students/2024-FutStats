@@ -7,6 +7,7 @@ import com.tfg.futstats.models.User;
 public class UserResponseDTO {
     private long id;
     private String name;
+    private String email;
     private List<String> roles;
     private boolean image;
     
@@ -14,6 +15,7 @@ public class UserResponseDTO {
 
     public UserResponseDTO(User user){
         this.id = user.getId();
+        this.email = user.getEmail();
         this.name = user.getName();
         this.roles = user.getRoles();
         this.image = user.getImage();
@@ -33,6 +35,14 @@ public class UserResponseDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public List<String> getRoles()
