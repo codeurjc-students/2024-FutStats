@@ -31,7 +31,7 @@ export class UserFormComponent {
             this.user = {
                 name: '',
                 password: '',
-                eamil: '',
+                email: '',
                 roles: [],
                 image: false
 
@@ -92,7 +92,7 @@ export class UserFormComponent {
     }
 
     userImage() {
-        return this.user.image ? this.service.getImage(this.user.id) : 'assets/no_image.png';
+        return this.user.image ? this.service.getImage(this.user.id) : 'assets/no_image.jpg';
     }
 
     private afterUploadImage(user: User) {

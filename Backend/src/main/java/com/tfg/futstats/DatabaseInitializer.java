@@ -36,19 +36,19 @@ public class DatabaseInitializer {
 	@PostConstruct
 	void init() throws IOException {
 
-		User a = new User("admin", passwordEncoder.encode("pass"), "example@gmail.com", null, false, "[user]", "[admin]");
+		User a = new User("admin", passwordEncoder.encode("pass"), "example-1@gmail.com", null, false, "[user]", "[admin]");
 		ur.save(a);
 
 		for (int i = 0; i < 10; i++) {
 
-			User u = new User("user" + i, passwordEncoder.encode("pass"), "example@gmail.com", null, false, "[user]");
+			User u = new User("user" + i, passwordEncoder.encode("pass"), "example"+i+"@gmail.com", null, false, "[user]");
 			ur.save(u);
 
 		}
 
 		for (int i = 10; i < 20; i++) {
 
-			User u = new User("admin" + i, passwordEncoder.encode("pass"), "example@gmail.com", null, false, "[admin]");
+			User u = new User("admin" + i, passwordEncoder.encode("pass"), "example"+i+"@gmail.com", null, false, "[admin]");
 			ur.save(u);
 		}
 

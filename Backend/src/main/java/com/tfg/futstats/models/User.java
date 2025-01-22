@@ -91,6 +91,7 @@ public class User {
     public User(UserDTO user) {
         this.name = user.getName();
         this.password = user.getPassword();
+        this.email = user.getEmail();
         this.roles = user.getRoles();
         this.image = user.getImage();
     }
