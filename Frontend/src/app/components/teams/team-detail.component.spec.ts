@@ -138,21 +138,21 @@ describe('TeamDetailComponent', () => {
     expect(teamMatchService.getPointsPerMatch).toHaveBeenCalledWith(1);
   });
 
-  it('should generate team image URL', () => {
+  it('should generate team image', () => {
     const mockTeam: Team = { id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1'};
 
     component.team = mockTeam;
-    const url = component.teamImage();
+    const image = component.teamImage();
 
-    expect(url).toBe('mock-url');
+    expect(image).toBe('assets/401-background.jpg');
   });
 
   it('should return default image if team has no image', () => {
     const mockTeam: Team = { id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1'};
 
     component.team = mockTeam;
-    const url = component.teamImage();
+    const image = component.teamImage();
 
-    expect(url).toBe('assets/no_image.jpg');
+    expect(image).toBe('assets/no_image.jpg');
   });
 });

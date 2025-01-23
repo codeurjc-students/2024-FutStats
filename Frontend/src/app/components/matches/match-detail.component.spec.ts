@@ -17,16 +17,16 @@ describe('MatchDetailComponent', () => {
 
   beforeEach(async () => {
     mockMatchesService = {
-      getMatch: jasmine.createSpy('getMatch').and.returnValue(of({ id: 1, leagueId: 1 })),
-      getLeague: jasmine.createSpy('getLeague').and.returnValue(of({ id: 1, name: false })),
-      getTeam1: jasmine.createSpy('getTeam1').and.returnValue(of({ id: 1, image: false })),
-      getTeam2: jasmine.createSpy('getTeam2').and.returnValue(of({ id: 2, image: false })),
+      getMatch: jasmine.createSpy('getMatch').and.returnValue(of({ id: 1, league: "League 1", name: 'El clasico', date: new Date(), team1: 'Team', team2: 'Team2', place: 'Lepe' })),
+      getLeague: jasmine.createSpy('getLeague').and.returnValue(of({ id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false })),
+      getTeam1: jasmine.createSpy('getTeam1').and.returnValue(of({ id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1' })),
+      getTeam2: jasmine.createSpy('getTeam2').and.returnValue(of({ id: 2, name: 'Team 2', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1' })),
       getPlayerMatches: jasmine.createSpy('getPlayerMatches').and.returnValue(of([])),
-      deleteMatch: jasmine.createSpy('deleteMatch').and.returnValue(of(null)),
+      deleteMatch: jasmine.createSpy('deleteMatch').and.returnValue(of()),
     };
 
     mockTeamsService = {
-      getImage: jasmine.createSpy('getImage').and.returnValue('http://example.com/team1.jpg'),
+      getImage: jasmine.createSpy('getImage').and.returnValue('assets/401-background.jpg'),
     };
 
     mockLoginService = {};
@@ -68,45 +68,45 @@ describe('MatchDetailComponent', () => {
     expect(component.league).toEqual({ id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false });
   });
 
-  it('should return team1 image URL if image exists', () => {
-    component.team1 = { id: 1, image: true } as any;
-    const result = component.team1Image();
+  it('should return team1 image if image exists', () => {
+    component.team1 = { id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: true, league: 'League 1' };
 
-    expect(result).toBe('http://example.com/401-background.jpg');
-    expect(mockTeamsService.getImage).toHaveBeenCalledWith('1');
+    const image = component.team1Image();
+
+    expect(image).toBe('assets/401-background.jpg');
   });
 
   it('should return default image if team1 image does not exist', () => {
-    component.team1 = { id: 1, image: false } as any;
-    const result = component.team1Image();
+    component.team1 = { id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1' };
+    const image = component.team1Image();
 
-    expect(result).toBe('assets/no_image.jpg');
+    expect(image).toBe('assets/no_image.jpg');
   });
 
   it('should return team2 image URL if image exists', () => {
-    component.team2 = { id: 2, image: true} as any;
+    component.team2 = { id: 2, name: 'Team 2', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: true, league: 'League 1' };
     const result = component.team2Image();
 
-    expect(result).toBe('http://example.com/401-background.jpg');
+    expect(result).toBe('assets/401-background.jpg');
     expect(mockTeamsService.getImage).toHaveBeenCalledWith(2);
   });
 
   it('should return default image if team2 image does not exist', () => {
-    component.team2 = { id: 2, image: false } as any;
+    component.team2 = { id: 2, name: 'Team 2', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1' };
     const result = component.team2Image();
 
     expect(result).toBe('assets/no_image.jpg');
   });
 
   it('should navigate back to the league details page', () => {
-    component.league = { id: 1 } as any;
+    component.league = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false };
     component.goBack();
 
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/leagues', 1]);
   });
 
   it('should navigate to edit match page', () => {
-    component.match = { id:1 } as any;
+    component.match = { id: 1, league: "League 1", name: 'El clasico', date: new Date(), team1: 'Team', team2: 'Team2', place: 'Lepe' };
     component.editMatch();
 
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/matches/edit', 1]);
@@ -114,7 +114,7 @@ describe('MatchDetailComponent', () => {
 
   it('should confirm and delete match', () => {
     spyOn(window, 'confirm').and.returnValue(true);
-    component.match = { id: 1 } as any;
+    component.match = { id: 1, league: "League 1", name: 'El clasico', date: new Date(), team1: 'Team', team2: 'Team2', place: 'Lepe' };
 
     component.removeMatch();
 

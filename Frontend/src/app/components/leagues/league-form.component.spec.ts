@@ -6,12 +6,12 @@ import { of, throwError } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 
 class MockLeaguesService {
-  getLeagueById = jasmine.createSpy('getLeagueById').and.returnValue(of({ id: 1, name: 'Test League', image: true }));
-  addLeague = jasmine.createSpy('addLeague').and.returnValue(of({ id: 2, name: 'New League' }));
-  updateLeague = jasmine.createSpy('updateLeague').and.returnValue(of({ id: 1, name: 'Updated League' }));
+  getLeagueById = jasmine.createSpy('getLeagueById').and.returnValue(of({ id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false }));
+  addLeague = jasmine.createSpy('addLeague').and.returnValue(of({ name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false }));
+  updateLeague = jasmine.createSpy('updateLeague').and.returnValue(of({ id: 1, name: 'Updated League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false }));
   addImage = jasmine.createSpy('addImage').and.returnValue(of(null));
   deleteImage = jasmine.createSpy('deleteImage').and.returnValue(of(null));
-  getImage = jasmine.createSpy('getImage').and.returnValue('mocked_image_url');
+  getImage = jasmine.createSpy('getImage').and.returnValue('assets/401-background.jpg');
 }
 
 class MockRouter {
@@ -48,7 +48,7 @@ describe('LeagueFormComponent', () => {
   it('should initialize with an existing league if id is present', () => {
     expect(service.getLeagueById).toHaveBeenCalledWith(1);
     expect(component.newLeague).toBeFalse();
-    expect(component.league.name).toBe('Test League');
+    expect(component.league).toEqual({ id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false });
   });
 
   it('should initialize with a new league if no id is present', () => {
@@ -63,12 +63,11 @@ describe('LeagueFormComponent', () => {
   it('should navigate back on cancel', () => {
     component.cancel();
     expect(router.navigate).not.toHaveBeenCalled();
-    // Verify the call to window.history.back (mocked)
   });
 
   it('should call addLeague on save for new leagues', () => {
     component.newLeague = true;
-    component.league = { name: 'New League', nationality: '', president: '', teams: [], image: false };
+    component.league = { name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false };
     component.save();
 
     expect(service.addLeague).toHaveBeenCalledWith(component.league);
@@ -77,14 +76,15 @@ describe('LeagueFormComponent', () => {
 
   it('should call updateLeague on save for existing leagues', () => {
     component.newLeague = false;
-    component.league = { id: 1, name: 'Updated League', nationality: '', president: '', teams: [], image: false };
+    component.league = { id: 1, name: 'Updated League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false };
     component.save();
 
     expect(service.updateLeague).toHaveBeenCalledWith(component.league);
   });
 
   it('should handle image upload if file is present', () => {
-    component.file = { nativeElement: { files: [new Blob()] } };
+    const mockFile = new Blob([''], { type: 'assets/401-background.jpg' });
+    component.file = { nativeElement: { files: [mockFile] } };
     const league = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: true };
 
     component.uploadImage(league);
@@ -103,11 +103,15 @@ describe('LeagueFormComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/leagues', 1]);
   });
 
-  it('should return the correct league image URL', () => {
+  it('should return the correct league image', () => {
     component.league = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: true };
-    expect(component.leagueImage()).toBe('401-background.png');
+    image = component.leagueImage();
+    expect(image).toBe('assets/401-background.jpg');
+  });
 
-    component.league.image = false;
-    expect(component.leagueImage()).toBe('assets/no_image.png');
+  it('should return a default image if no image exists', () => {
+    component.league = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false };
+    image = component.leagueImage();
+    expect(image).toBe('assets/no_image.jpg');
   });
 });

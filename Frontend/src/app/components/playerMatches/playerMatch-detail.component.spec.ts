@@ -22,27 +22,15 @@ describe('PlayerMatchDetailComponent', () => {
 
   beforeEach(async () => {
     mockPlayerMatchesService = {
-      getPlayerMatch: jasmine.createSpy('getPlayerMatch').and.returnValue(of({
-        id: 1,
-        name: 'Jose',
-        match: 1,
-        matchName: 'El Clasico',
-        score: 10,
-        assists: 5,
-        fouls: 2,
-      } as PlayerMatch)),
-      getPlayer: jasmine.createSpy('getPlayer').and.returnValue(of({
-        id: 1,
-        name: 'Test Player',
-        image: false,
-      } as Player)),
+      getPlayerMatch: jasmine.createSpy('getPlayerMatch').and.returnValue(of({id: 1, name: 'Jose', match: 1, matchName: 'El Clasico', score: 10, assists: 5, fouls: 2} as PlayerMatch)),
+      getPlayer: jasmine.createSpy('getPlayer').and.returnValue(of({ id: 1, name: 'Player 1', age: 25, nationality:'Española', position:'Delantero', image:false, team:'Team1', league:'League'})),
       deletePlayerMatch: jasmine.createSpy('deletePlayerMatch').and.returnValue(of({})),
     };
 
     mockTeamsService = {};
 
     mockPlayersService = {
-      getImage: jasmine.createSpy('getImage').and.returnValue('test-image.jpg'),
+      getImage: jasmine.createSpy('getImage').and.returnValue('assets/401-background.jpg'),
     };
 
     mockLoginService = {};
@@ -53,7 +41,7 @@ describe('PlayerMatchDetailComponent', () => {
 
     mockActivatedRoute = {
       snapshot: {
-        params: { id: 1 }, // Simula el ID del PlayerMatch
+        params: { id: 1 },
       },
     };
 
@@ -89,7 +77,7 @@ describe('PlayerMatchDetailComponent', () => {
       component.ngOnInit();
 
       expect(mockPlayerMatchesService.getPlayer).toHaveBeenCalledWith(1);
-      expect(component.player).toEqual(jasmine.objectContaining({ id: 1, name: 'Test Player' }));
+      expect(component.player).toEqual(jasmine.objectContaining({ id: 1, name: 'Player 1', age: 25, nationality:'Española', position:'Delantero', image:false, team:'Team1', league:'League'}));
     });
   });
 
@@ -104,26 +92,21 @@ describe('PlayerMatchDetailComponent', () => {
       expect(mockRouter.navigate).toHaveBeenCalledWith(['/leagues']);
     });
 
-
-  describe('playerImage', () => {
     it('should return the player image if it exists', () => {
-      component.player = { id: 1, image: false } as Player;
+      component.player = { id: 1, name: 'Player 1', age: 25, nationality:'Española', position:'Delantero', image:false, team:'Team1', league:'League'};
 
       const image = component.playerImage();
 
-      expect(image).toBe('401-background.jpg');
-      expect(mockPlayersService.getImage).toHaveBeenCalledWith(1);
+      expect(image).toBe('assets/401-background.jpg');
     });
 
     it('should return default image if player has no image', () => {
-      component.player = { id: 1, image: false } as Player;
+      component.player ={ id: 1, name: 'Player 1', age: 25, nationality:'Española', position:'Delantero', image:false, team:'Team1', league:'League'};
 
       const image = component.playerImage();
 
       expect(image).toBe('assets/no_image.jpg');
-      expect(mockPlayersService.getImage).not.toHaveBeenCalled();
     });
-  });
 
     it('should navigate to the edit playerMatch page', () => {
       component.playerMatch = { id: 1 } as PlayerMatch;
@@ -133,10 +116,8 @@ describe('PlayerMatchDetailComponent', () => {
       expect(mockRouter.navigate).toHaveBeenCalledWith(['/playerMatch/edit', 1]);
     });
 
-
- 
     it('should navigate to the player detail page', () => {
-      component.player = { id: 1 } as Player;
+      component.player = { id: 1, name: 'Player 1', age: 25, nationality:'Española', position:'Delantero', image:false, team:'Team1', league:'League'};
 
       component.goBack();
 

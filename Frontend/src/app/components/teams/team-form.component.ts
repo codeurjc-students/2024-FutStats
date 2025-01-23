@@ -123,6 +123,6 @@ export class TeamFormComponent implements OnInit {
   
 
   teamImage() {
-    return this.team.image ? this.service.getImage(this.team.id) : 'assets/no_image.png';
+    return this.team.image ? this.service.getImage(this.team.id) : 'assets/no_image.jpg';
   }
 }

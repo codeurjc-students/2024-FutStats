@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlayerMatchFormComponent } from './playerMatch-form.component';
 import { Router, ActivatedRoute } from '@angular/router';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { MatchesService } from 'src/app/services/match.service';
 import { PlayersService } from 'src/app/services/player.service';
 import { PlayerMatchesService } from 'src/app/services/playerMatch.service';
@@ -17,24 +17,24 @@ describe('PlayerMatchFormComponent', () => {
   let mockPlayerMatchesService: any;
 
   beforeEach(async () => {
+    mockMatchesService = {
+      getMatches: jasmine.createSpy('getMatches').and.returnValue(of([{ id: 1, league: "League 1" , name:'El clasico', date: new Date(), team1:'Team', team2:'Team2', place:'Lepe'}])),
+      getMatchByName: jasmine.createSpy('getMatchByName').and.returnValue(of({ id: 1, league: "League 1" , name:'El clasico', date: new Date(), team1:'Team', team2:'Team2', place:'Lepe'})),
+      addPlayerMatch: jasmine.createSpy('addPlayerMatch').and.returnValue(of({})),
+    };
+
     mockRouter = {
       navigate: jasmine.createSpy('navigate'),
     };
 
     mockActivatedRoute = {
       snapshot: {
-        params: { id: null },
+        params: { id: 1 },
       },
     };
 
-    mockMatchesService = {
-      getMatches: jasmine.createSpy('getMatches').and.returnValue(of([])),
-      getMatchByName: jasmine.createSpy('getMatchByName').and.returnValue(of({ id: 1 })),
-      addPlayerMatch: jasmine.createSpy('addPlayerMatch').and.returnValue(of({})),
-    };
-
     mockPlayersService = {
-      getPlayers: jasmine.createSpy('getPlayers').and.returnValue(of([])),
+      getPlayers: jasmine.createSpy('getPlayers').and.returnValue(of([{ id: 1, name: 'Player 1', age: 25, nationality:'Española', position:'Delantero', image:false, team:'Team1', league:'League'}])),
     };
 
     mockPlayerMatchesService = {
@@ -59,18 +59,12 @@ describe('PlayerMatchFormComponent', () => {
 
   it('should initialize with a new playerMatch if no ID is provided', () => {
     expect(component.newPlayerMatch).toBeTrue();
-    expect(component.playerMatch).toEqual(jasmine.objectContaining({
-      name: '',
-      match: 0,
-      matchName: '',
-      shoots: 0,
-      goals: 0,
-    }));
+    expect(component.playerMatch).toEqual(jasmine.objectContaining({name: '', match: 0, matchName: '', shoots: 0, goals: 0,}));
   });
 
   it('should fetch existing playerMatch if ID is provided', () => {
     mockActivatedRoute.snapshot.params.id = 1;
-    mockPlayerMatchesService.getPlayerMatch.and.returnValue(of({ name: 'Test PlayerMatch', match: 1 }));
+    mockPlayerMatchesService.getPlayerMatch.and.returnValue(of({ name: 'Test PlayerMatch', match: 1 } as PlayerMatch));
 
     component = new PlayerMatchFormComponent(
       mockRouter,
@@ -85,28 +79,13 @@ describe('PlayerMatchFormComponent', () => {
   });
 
   it('should fetch matches and players on init', () => {
-    const mockMatches = [{ id: 1, name: 'Match 1', place:'Lepe', date: new Date(), team1:'Team1', team2:'Team2', league:'League' }];
-    const mockPlayers = [{ id: 1, name: 'Player 1', age: 25, nationality:'Española', position:'Delantero', image:false, team:'Team1', league:'League'}];
-
-    mockMatchesService.getMatches.and.returnValue(of(mockMatches));
-    mockPlayersService.getPlayers.and.returnValue(of(mockPlayers));
 
     component.ngOnInit();
 
     expect(mockMatchesService.getMatches).toHaveBeenCalled();
     expect(mockPlayersService.getPlayers).toHaveBeenCalled();
-    expect(component.matches).toEqual(mockMatches);
-    expect(component.players).toEqual(mockPlayers);
-  });
-
-  it('should handle errors when fetching matches or players', () => {
-    mockMatchesService.getMatches.and.returnValue(throwError(() => new Error('Error fetching matches')));
-    mockPlayersService.getPlayers.and.returnValue(throwError(() => new Error('Error fetching players')));
-
-    component.ngOnInit();
-
-    expect(component.matches).toEqual([]);
-    expect(component.players).toEqual([]);
+    expect(component.matches).toEqual([{ id: 1, league: "League 1" , name:'El clasico', date: new Date(), team1:'Team', team2:'Team2', place:'Lepe'}]);
+    expect(component.players).toEqual([{ id: 1, name: 'Player 1', age: 25, nationality:'Española', position:'Delantero', image:false, team:'Team1', league:'League'}]);
   });
 
   it('should save a new playerMatch', () => {

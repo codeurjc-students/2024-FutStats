@@ -35,12 +35,12 @@ describe('PlayerDetailComponent', () => {
     };
 
     mockPlayersService = {
-      getPlayer: jasmine.createSpy('getPlayer').and.returnValue(of({ id: 1, name: 'Test Player' })),
-      getLeague: jasmine.createSpy('getLeague').and.returnValue(of({ id: 1, name: 'Test League' })),
-      getTeam: jasmine.createSpy('getTeam').and.returnValue(of({ id: 1, name: 'Test Team' })),
+      getPlayer: jasmine.createSpy('getPlayer').and.returnValue(of({ id: 1, name: 'Player 1', age: 25, nationality:'Española', position:'Delantero', image:false, team:'Team1', league:'League'})),
+      getLeague: jasmine.createSpy('getLeague').and.returnValue(of({ id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false })),
+      getTeam: jasmine.createSpy('getTeam').and.returnValue(of({ id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1'})),
       getPlayerMatches: jasmine.createSpy('getPlayerMatches').and.returnValue(of([])),
       deletePlayer: jasmine.createSpy('deletePlayer').and.returnValue(of({})),
-      getImage: jasmine.createSpy('getImage').and.returnValue('image_url'),
+      getImage: jasmine.createSpy('getImage').and.returnValue('assets/401-background.jpg'),
     };
 
     mockLoginService = {
@@ -48,7 +48,7 @@ describe('PlayerDetailComponent', () => {
     };
 
     mockUsersService = {
-      getMe: jasmine.createSpy('getMe').and.returnValue(of({ id: 1, username: 'testuser' })),
+      getMe: jasmine.createSpy('getMe').and.returnValue(of({ id: 1, name: 'testUser', password: 'pass', email:'email', image: true, roles: ['[user]'] })),
       addPlayer: jasmine.createSpy('addPlayer').and.returnValue(of({})),
     };
 
@@ -101,14 +101,16 @@ describe('PlayerDetailComponent', () => {
     expect((component as any).crearGrafica).toHaveBeenCalledWith(['Match 1'], [3]);
   });
 
-  it('should return player image URL', () => {
+  it('should return player image', () => {
     component.player = { id: 1, image: false } as Player;
-    expect(component.playerImage()).toBe('image_url');
+    const image = component.playerImage()
+    expect(image).toBe('assets/401-background.jpg');
   });
 
   it('should return default image if no player image is present', () => {
     component.player = { id: 1, image: false } as Player;
-    expect(component.playerImage()).toBe('assets/no_image.jpg');
+    const image = component.playerImage()
+    expect(image).toBe('assets/no_image.jpg');
   });
 
   it('should navigate back on goBack', () => {

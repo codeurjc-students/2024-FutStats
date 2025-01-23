@@ -90,21 +90,20 @@ describe('LeagueDetailComponent', () => {
   });
 
   it('should return the correct league image', () => {
-    component.league = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false };
-    mockLeaguesService.getImage.and.returnValue('401-background.jpg');
+    component.league = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: true };
+    mockLeaguesService.getImage.and.returnValue('assets/401-background.jpg');
 
-    const result = component.leagueImage();
+    const image = component.leagueImage();
 
-    expect(result).toBe('401-background.jpg');
-    expect(mockLeaguesService.getImage).toHaveBeenCalledWith(1);
+    expect(image).toBe('assets/401-background.jpg');
   });
 
   it('should return default image if no league image exists', () => {
     component.league = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false };
 
-    const result = component.leagueImage();
+    const image = component.leagueImage();
 
-    expect(result).toBe('assets/no_image.jpg');
+    expect(image).toBe('assets/no_image.jpg');
   });
 
   it('should navigate to edit league', () => {

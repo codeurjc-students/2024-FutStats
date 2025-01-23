@@ -15,16 +15,16 @@ describe('UserFormComponent', () => {
 
   beforeEach(async () => {
     mockUsersService = {
-      getUser: jasmine.createSpy('getUser').and.returnValue(of({ id: 1, name: 'User A', roles: ['user'], image: false })),
-      addUser: jasmine.createSpy('addUser').and.returnValue(of({ id: 1, name: 'User A' })),
-      updateUser: jasmine.createSpy('updateUser').and.returnValue(of({ id: 1, name: 'Updated User' })),
+      getUser: jasmine.createSpy('getUser').and.returnValue(of({ id: 1, name: 'testUser', password: 'pass', email:'email', image: true, roles: ['[user]'] })),
+      addUser: jasmine.createSpy('addUser').and.returnValue(of({ name: 'New User', password: 'pass123', email:'email', roles: [], image: false })),
+      updateUser: jasmine.createSpy('updateUser').and.returnValue(of({ id: 1, name: 'Updated User', password: 'pass123', email:'email', roles: ['user'], image: false })),
       addImage: jasmine.createSpy('addImage').and.returnValue(of({})),
       deleteImage: jasmine.createSpy('deleteImage').and.returnValue(of({})),
-      getImage: jasmine.createSpy('getImage').and.returnValue('image/url.png'),
+      getImage: jasmine.createSpy('getImage').and.returnValue('assets/401-background.jpg'),
     };
 
     mockActivatedRoute = {
-      snapshot: { params: { id: '1' } },
+      snapshot: { params: { id: 1 } },
     };
 
     mockRouter = {
@@ -51,7 +51,7 @@ describe('UserFormComponent', () => {
   });
 
   it('should load user data if ID is provided', () => {
-    expect(mockUsersService.getUser).toHaveBeenCalledWith('1');
+    expect(mockUsersService.getUser).toHaveBeenCalledWith(1);
     expect(component.user.name).toEqual('User A');
     expect(component.newUser).toBeFalse();
   });
@@ -65,7 +65,7 @@ describe('UserFormComponent', () => {
 
   it('should save a new user', () => {
     component.newUser = true;
-    component.user = { name: 'New User', password: 'pass123', roles: [], image: false };
+    component.user = { name: 'New User', password: 'pass123', email:'email', roles: [], image: false };
     component.save();
 
     expect(mockUsersService.addUser).toHaveBeenCalledWith(component.user);
@@ -74,7 +74,7 @@ describe('UserFormComponent', () => {
 
   it('should update an existing user', () => {
     component.newUser = false;
-    component.user = { id: 1, name: 'Updated User', password: 'pass123', roles: ['user'], image: false };
+    component.user = { id: 1, name: 'Updated User', password: 'pass123', email:'email', roles: ['user'], image: false };
     component.save();
 
     expect(mockUsersService.updateUser).toHaveBeenCalledWith(component.user);
@@ -84,14 +84,14 @@ describe('UserFormComponent', () => {
   it('should upload an image after saving a user', () => {
     const mockFile = new Blob([''], { type: 'image/png' });
     component.file = { nativeElement: { files: [mockFile] } };
-    component.uploadImage({ id: 1, name: 'testUser', password: 'pass', image: false, roles: ['[user]'] });
+    component.uploadImage({ id: 1, name: 'testUser', password: 'pass', email:'email', image: true, roles: ['[user]'] });
 
     expect(mockUsersService.addImage).toHaveBeenCalled();
   });
 
   it('should delete an image if removeImage is true', () => {
     component.removeImage = true;
-    component.uploadImage({ id: 1, name: 'testUser', password: 'pass', image: false, roles: ['[user]'] });
+    component.uploadImage({ id: 1, name: 'testUser', password: 'pass', email:'email', image: true, roles: ['[user]'] });
 
     expect(mockUsersService.deleteImage).toHaveBeenCalled();
   });
@@ -102,15 +102,15 @@ describe('UserFormComponent', () => {
     expect(window.history.back).toHaveBeenCalled();
   });
 
-  it('should return the correct user image URL', () => {
-    component.user = { id: 1, name: 'testUser', password: 'pass', image: false, roles: ['[user]'] };
+  it('should return the correct user image', () => {
+    component.user = { id: 1, name: 'testUser', password: 'pass', email:'email', image: false, roles: ['[user]'] };
     const imageUrl = component.userImage();
-    expect(imageUrl).toBe('image/url.png');
+    expect(imageUrl).toBe('assets/401-background.jpg');
   });
 
-  it('should return a default image URL if no image exists', () => {
-    component.user = { id: 1, name: 'testUser', password: 'pass', image: false, roles: ['[user]'] };
+  it('should return a default image if no image exists', () => {
+    component.user = { id: 1, name: 'testUser', password: 'pass', email:'email', image: false, roles: ['[user]'] };
     const imageUrl = component.userImage();
-    expect(imageUrl).toBe('assets/no_image.png');
+    expect(imageUrl).toBe('assets/no_image.jpg');
   });
 });

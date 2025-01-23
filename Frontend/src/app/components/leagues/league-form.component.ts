@@ -82,7 +82,7 @@ export class LeagueFormComponent {
   }
 
   leagueImage() {
-    return this.league.image ? this.service.getImage(this.league.id) : 'assets/no_image.png';
+    return this.league.image ? this.service.getImage(this.league.id) : 'assets/no_image.jpg';
   }
 
   private afterUploadImage(league: League) {

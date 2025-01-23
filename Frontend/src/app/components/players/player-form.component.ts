@@ -135,7 +135,7 @@ export class PlayerFormComponent implements OnInit {
   }
 
   playerImage() {
-    return this.player.image ? this.service.getImage(this.player.id) : 'assets/no_image.png';
+    return this.player.image ? this.service.getImage(this.player.id) : 'assets/no_image.jpg';
   }
 
   cancel() {
