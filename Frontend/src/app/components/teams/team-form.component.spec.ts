@@ -26,8 +26,8 @@ describe('TeamFormComponent', () => {
     };
 
     mockLeaguesService = {
-      getLeagues: jasmine.createSpy('getLeagues').and.returnValue(of([{ id: 1, name: 'League A' }])),
-      getLeagueByName: jasmine.createSpy('getLeagueByName').and.returnValue(of({ id: 1, name: 'League A' })),
+      getLeagues: jasmine.createSpy('getLeagues').and.returnValue(of([{ id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false }])),
+      getLeagueByName: jasmine.createSpy('getLeagueByName').and.returnValue(of({ id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false })),
     };
 
     mockActivatedRoute = {
@@ -66,7 +66,7 @@ describe('TeamFormComponent', () => {
 
   it('should load team data if ID is provided', () => {
     expect(mockTeamsService.getTeam).toHaveBeenCalledWith(1);
-    expect(component.team.name).toEqual('Team A');
+    expect(component.team).toEqual({ id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1'});
     expect(component.newTeam).toBeFalse();
   });
 

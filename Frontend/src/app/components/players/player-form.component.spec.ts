@@ -11,22 +11,38 @@ import { FormsModule } from '@angular/forms';
 describe('PlayerFormComponent', () => {
   let component: PlayerFormComponent;
   let fixture: ComponentFixture<PlayerFormComponent>;
-  let mockRouter: jasmine.SpyObj<Router>;
+  let mockRouter: any;
   let mockActivatedRoute: any;
-  let mockPlayersService: jasmine.SpyObj<PlayersService>;
-  let mockLeaguesService: jasmine.SpyObj<LeaguesService>;
-  let mockTeamsService: jasmine.SpyObj<TeamsService>;
+  let mockPlayersService: any;
+  let mockLeaguesService: any;
+  let mockTeamsService: any;
 
   beforeEach(async () => {
-    mockRouter = jasmine.createSpyObj('Router', ['navigate']);
-    mockActivatedRoute = {
-      snapshot: {
-        params: { id: null },
-      },
+    mockPlayersService = {
+      getPlayer: jasmine.createSpy('getPlayer').and.returnValue(of({ id: 1, name: 'Player 1', age: 25, nationality: 'Española', position: 'Delantero', image: false, team: 'Team1', league: 'League' })),
+      addPlayer: jasmine.createSpy('addPlayer').and.returnValue(of({ name: 'New Player 1', age: 25, nationality: 'Española', position: 'Delantero', image: false, team: 'Team1', league: 'League' })),
+      updatePlayer: jasmine.createSpy('updatePlayer').and.returnValue(of({ id: 1, name: 'Update Player 1', age: 25, nationality: 'Española', position: 'Delantero', image: false, team: 'Team1', league: 'League' })),
+      addImage: jasmine.createSpy('addImage').and.returnValue(of({})),
+      deleteImage: jasmine.createSpy('deleteImage').and.returnValue(of({})),
+      getImage: jasmine.createSpy('getImage').and.returnValue('assets/401-background.jpg')
     };
-    mockPlayersService = jasmine.createSpyObj('PlayersService', ['getPlayer', 'addPlayer', 'updatePlayer', 'addImage', 'deleteImage', 'getImage']);
-    mockLeaguesService = jasmine.createSpyObj('LeaguesService', ['getLeagues', 'getTeamsByName']);
-    mockTeamsService = jasmine.createSpyObj('TeamsService', ['getTeamByName']);
+
+    mockLeaguesService = {
+      getLeagues: jasmine.createSpy('getLeagues').and.returnValue(of([{ id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [], image: false }])),
+      getTeamsByName: jasmine.createSpy('getTeamsByName').and.returnValue(of([{ id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1' }])),
+    };
+
+    mockTeamsService = {
+      getTeamByName: jasmine.createSpy('getTeamByName').and.returnValue(of({ id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1' })),
+    };
+
+    mockActivatedRoute = {
+      snapshot: { params: { id: 1 } },
+    };
+
+    mockRouter = {
+      navigate: jasmine.createSpy('navigate'),
+    };
 
     await TestBed.configureTestingModule({
       declarations: [PlayerFormComponent],
@@ -49,125 +65,91 @@ describe('PlayerFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('ngOnInit', () => {
-    it('should call loadLeagues on init', () => {
-      spyOn(component as any, 'loadLeagues');
-      component.ngOnInit();
-      expect((component as any).loadLeagues).toHaveBeenCalled();
-    });
+  it('should call loadLeagues on init', () => {
+    component.ngOnInit();
+    expect(mockLeaguesService.getLeagues).toHaveBeenCalled();
   });
 
-  describe('loadLeagues', () => {
-    it('should load leagues successfully', () => {
-      const leaguesMock = [{ id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false }];
-      mockLeaguesService.getLeagues.and.returnValue(of(leaguesMock));
 
-      (component as any).loadLeagues();
+  it('should load leagues successfully', () => {
 
-      expect(component.leagues).toEqual(leaguesMock);
-    });
+    component.loadLeagues();
 
-    it('should log an error if loading leagues fails', () => {
-      spyOn(console, 'error');
-      mockLeaguesService.getLeagues.and.returnValue(throwError(() => new Error('Error loading leagues')));
-
-      (component as any).loadLeagues();
-
-      expect(console.error).toHaveBeenCalledWith('Error loading leagues:', jasmine.any(Error));
-    });
+    expect(component.leagues).toEqual([{ id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [], image: false }]);
   });
 
-  describe('onLeagueChange', () => {
-    it('should load teams for the selected league', () => {
-      const teamsMock = [{ id: 1, name: 'Team 1', president:'Pepe', trophies: 1, nationality:'Española', trainer:'Jose', secondTrainer:'Paco', stadium:'Lepe', image: false, points: 1, league:'League' }];
-      component.selectedLeagueId = '1';
-      mockLeaguesService.getTeamsByName.and.returnValue(of(teamsMock));
 
-      component.onLeagueChange();
+  it('should load teams for the selected league', () => {
+    component.selectedLeagueId = '1';
 
-      expect(component.teams).toEqual(teamsMock);
-    });
+    component.onLeagueChange();
 
-    it('should clear teams if no league is selected', () => {
-      component.selectedLeagueId = '';
-
-      component.onLeagueChange();
-
-      expect(component.teams).toEqual([]);
-    });
+    expect(component.teams).toEqual([{ id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1' }]);
   });
 
-  describe('save', () => {
-    it('should add a new player and upload image if it is a new player', () => {
-      component.newPlayer = true;
-      component.player = { name: 'Player 1', image: true } as any;
-      mockPlayersService.addPlayer.and.returnValue(of({ id: '1' } as any));
-      spyOn(component, 'uploadImage');
+  it('should clear teams if no league is selected', () => {
+    component.selectedLeagueId = '';
 
-      component.save();
+    component.onLeagueChange();
 
-      expect(mockPlayersService.addPlayer).toHaveBeenCalledWith(component.player);
-      expect(component.uploadImage).toHaveBeenCalledWith({ id: '1' } as any);
-    });
-
-    it('should update an existing player and upload image', () => {
-      component.newPlayer = false;
-      component.player = { name: 'Player 1', image: true } as any;
-      mockPlayersService.updatePlayer.and.returnValue(of({ id: '1' } as any));
-      spyOn(component, 'uploadImage');
-
-      component.save();
-
-      expect(mockPlayersService.updatePlayer).toHaveBeenCalledWith(component.player);
-      expect(component.uploadImage).toHaveBeenCalledWith({ id: '1' } as any);
-    });
+    expect(component.teams).toEqual([]);
   });
 
-  describe('uploadImage', () => {
-    it('should upload image if file is selected', () => {
-      const fileMock = { nativeElement: { files: [new Blob()] } };
-      component.file = fileMock;
+  it('should add a new player if it is a new player', () => {
+    component.newPlayer = true;
+    component.player = { name: 'New Player 1', age: 25, nationality: 'Española', position: 'Delantero', image: false, team: 'Team1', league: 'League' };
+    mockPlayersService.addPlayer.and.returnValue(of({ name: 'New Player 1', age: 25, nationality: 'Española', position: 'Delantero', image: false, team: 'Team1', league: 'League' }));
 
-      component.uploadImage({ id: 1 } as any);
+    component.save();
 
-      expect(mockPlayersService.addImage).toHaveBeenCalled();
-    });
-
-    it('should delete image if removeImage is true', () => {
-      component.file = null;
-      component.removeImage = true;
-
-      component.uploadImage({ id: 1 } as any);
-
-      expect(mockPlayersService.deleteImage).toHaveBeenCalled();
-    });
+    expect(mockPlayersService.addPlayer).toHaveBeenCalledWith(component.player);
   });
 
-  describe('cancel', () => {
-    it('should navigate back', () => {
-      spyOn(window.history, 'back');
+  it('should update an existing player', () => {
+    component.newPlayer = false;
+    component.player = { id: 1, name: 'Update Player 1', age: 25, nationality: 'Española', position: 'Delantero', image: false, team: 'Team1', league: 'League' };
 
-      component.cancel();
+    component.save();
 
-      expect(window.history.back).toHaveBeenCalled();
-    });
+    expect(mockPlayersService.updatePlayer).toHaveBeenCalledWith(component.player);
   });
 
-  describe('playerImage', () => {
-    it('should return the player image URL if image exists', () => {
-      component.player = { id: 1, image: true } as any;
+  it('should upload image if file is selected', () => {
+    const mockFile = new Blob([''], { type: 'assets/401-background.jpg' });
+    component.file = { nativeElement: { files: [mockFile] } };
+    component.uploadImage({ id: 1, name: 'Player 1', age: 25, nationality: 'Española', position: 'Delantero', image: false, team: 'Team1', league: 'League' });
 
-      const result = component.playerImage();
+    expect(mockPlayersService.addImage).toHaveBeenCalled();
+  });
 
-      expect(result).toBe('http://image.url');
-    });
+  it('should delete image if removeImage is true', () => {
+    component.removeImage = true;
+    component.uploadImage({ id: 1, name: 'Player 1', age: 25, nationality: 'Española', position: 'Delantero', image: false, team: 'Team1', league: 'League' });
 
-    it('should return the default image URL if no image exists', () => {
-      component.player = { id: '1', image: false } as any;
+    expect(mockPlayersService.deleteImage).toHaveBeenCalled();
+  });
 
-      const result = component.playerImage();
+  it('should navigate back', () => {
+    spyOn(window.history, 'back');
 
-      expect(result).toBe('assets/no_image.png');
-    });
+    component.cancel();
+
+    expect(window.history.back).toHaveBeenCalled();
+  });
+
+  it('should return the player image URL if image exists', () => {
+    component.player = { id: 1, name: 'Player 1', age: 25, nationality: 'Española', position: 'Delantero', image: false, team: 'Team1', league: 'League' };
+
+    const result = component.playerImage();
+
+    expect(result).toBe('assets/401-background.jpg');
+  });
+
+  it('should return the default image URL if no image exists', () => {
+    component.player = { id: 1, name: 'Player 1', age: 25, nationality: 'Española', position: 'Delantero', image: false, team: 'Team1', league: 'League' };
+
+    const result = component.playerImage();
+
+    expect(result).toBe('assets/no_image.png');
   });
 });

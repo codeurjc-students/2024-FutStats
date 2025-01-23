@@ -55,7 +55,7 @@ export class PlayerFormComponent implements OnInit {
     this.loadLeagues();
   }
 
-  private loadLeagues() {
+  loadLeagues() {
     this.leagueService.getLeagues().subscribe({
       next: (leagues) => (this.leagues = leagues),
       error: (error) => console.error('Error loading leagues:', error),
