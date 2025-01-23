@@ -2,7 +2,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { LeagueFormComponent } from './league-form.component';
 import { LeaguesService } from '../../services/league.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 
 class MockLeaguesService {
