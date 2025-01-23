@@ -16,8 +16,8 @@ describe('UserListComponent', () => {
   beforeEach(async () => {
     mockUsersService = {
       getUsers: jasmine.createSpy('getUsers').and.returnValue(of([
-        { id: '1', name: 'User 1', email: 'user1@example.com' },
-        { id: '2', name: 'User 2', email: 'user2@example.com' },
+        { id: 1, name: 'testUser', password: 'pass', image: false, roles: ['[user]'] },
+        { id: 2, name: 'testUser', password: 'pass', image: false, roles: ['[user]'] },
       ] as User[])),
     };
 
@@ -50,8 +50,8 @@ describe('UserListComponent', () => {
 
       expect(mockUsersService.getUsers).toHaveBeenCalled();
       expect(component.users).toEqual([
-        { id: '1', name: 'User 1', email: 'user1@example.com' },
-        { id: '2', name: 'User 2', email: 'user2@example.com' },
+        { id: 1, name: 'testUser', password: 'pass', image: false, roles: ['[user]'] },
+        { id: 2, name: 'testUser', password: 'pass', image: false, roles: ['[user]'] },
       ]);
     });
   });

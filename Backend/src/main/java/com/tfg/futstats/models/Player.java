@@ -108,6 +108,7 @@ public class Player {
     // Constructors
     public Player() {
         this.playerMatches = new ArrayList<PlayerMatch>();
+        this.users = new ArrayList<User>();
     }
 
     public Player(League league,
@@ -128,6 +129,7 @@ public class Player {
         this.nationality = nationality;
         this.position = position;
         this.playerMatches = new ArrayList<PlayerMatch>();
+        this.users = new ArrayList<User>();
     }
 
     public Player(PlayerDTO player) {

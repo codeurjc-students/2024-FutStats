@@ -59,7 +59,7 @@ describe('PlayerFormComponent', () => {
 
   describe('loadLeagues', () => {
     it('should load leagues successfully', () => {
-      const leaguesMock = [{ id: '1', name: 'League 1' }];
+      const leaguesMock = [{ id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false }];
       mockLeaguesService.getLeagues.and.returnValue(of(leaguesMock));
 
       (component as any).loadLeagues();
@@ -79,7 +79,7 @@ describe('PlayerFormComponent', () => {
 
   describe('onLeagueChange', () => {
     it('should load teams for the selected league', () => {
-      const teamsMock = [{ id: '1', name: 'Team 1' }];
+      const teamsMock = [{ id: 1, name: 'Team 1', president:'Pepe', trophies: 1, nationality:'Española', trainer:'Jose', secondTrainer:'Paco', stadium:'Lepe', image: false, points: 1, league:'League' }];
       component.selectedLeagueId = '1';
       mockLeaguesService.getTeamsByName.and.returnValue(of(teamsMock));
 
@@ -127,9 +127,8 @@ describe('PlayerFormComponent', () => {
     it('should upload image if file is selected', () => {
       const fileMock = { nativeElement: { files: [new Blob()] } };
       component.file = fileMock;
-      mockPlayersService.addImage.and.returnValue(of(null));
 
-      component.uploadImage({ id: '1' } as any);
+      component.uploadImage({ id: 1 } as any);
 
       expect(mockPlayersService.addImage).toHaveBeenCalled();
     });
@@ -137,9 +136,8 @@ describe('PlayerFormComponent', () => {
     it('should delete image if removeImage is true', () => {
       component.file = null;
       component.removeImage = true;
-      mockPlayersService.deleteImage.and.returnValue(of(null));
 
-      component.uploadImage({ id: '1' } as any);
+      component.uploadImage({ id: 1 } as any);
 
       expect(mockPlayersService.deleteImage).toHaveBeenCalled();
     });
@@ -157,8 +155,7 @@ describe('PlayerFormComponent', () => {
 
   describe('playerImage', () => {
     it('should return the player image URL if image exists', () => {
-      component.player = { id: '1', image: true } as any;
-      mockPlayersService.getImage.and.returnValue('http://image.url');
+      component.player = { id: 1, image: true } as any;
 
       const result = component.playerImage();
 

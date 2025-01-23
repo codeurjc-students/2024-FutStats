@@ -37,7 +37,7 @@ describe('LeagueDetailComponent', () => {
     mockActivatedRoute = {
       snapshot: {
         params: {
-          id: '123',
+          id: 1,
         },
       },
     };
@@ -62,7 +62,7 @@ describe('LeagueDetailComponent', () => {
     const mockLeague = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false };
     const mockTeams = [{ id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1'}];
     const mockMatches = [{ id: 1, team1: 'Team 1', team2: 'Team 2', date:  new Date('2023-01-01'), place: 'Bernabeu', league: 'League 1', name: '1'}];
-    const mockUser = [{ id: 1, name: 'testUser', password: 'pass', image: false, roles: ['[user]'] }];
+    const mockUser = { id: 1, name: 'testUser', password: 'pass', image: false, roles: ['[user]'] };
 
     mockLeaguesService.getLeagueById.and.returnValue(of(mockLeague));
     mockLeaguesService.getTeams.and.returnValue(of(mockTeams));
@@ -90,17 +90,17 @@ describe('LeagueDetailComponent', () => {
   });
 
   it('should return the correct league image', () => {
-    component.league = { id: '123', image: '401-background.jpg' } as any;
-    mockLeaguesService.getImage.and.returnValue('http://example.com/401-background.jpg');
+    component.league = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false };
+    mockLeaguesService.getImage.and.returnValue('401-background.jpg');
 
     const result = component.leagueImage();
 
-    expect(result).toBe('http://example.com/401-background.jpg');
-    expect(mockLeaguesService.getImage).toHaveBeenCalledWith('123');
+    expect(result).toBe('401-background.jpg');
+    expect(mockLeaguesService.getImage).toHaveBeenCalledWith(1);
   });
 
   it('should return default image if no league image exists', () => {
-    component.league = { id: '123', image: null } as any;
+    component.league = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false };
 
     const result = component.leagueImage();
 
@@ -108,18 +108,18 @@ describe('LeagueDetailComponent', () => {
   });
 
   it('should navigate to edit league', () => {
-    component.league = { id: '123' } as any;
+    component.league = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false };
 
     component.editLeague();
 
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/leagues/edit', '123']);
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/leagues/edit', 1]);
   });
 
   it('should confirm and delete league', () => {
     spyOn(window, 'confirm').and.returnValue(true);
     mockLeaguesService.deleteLeague.and.returnValue(of(null));
 
-    component.league = { id: '123' } as any;
+    component.league = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false };
     component.removeLeague();
 
     expect(window.confirm).toHaveBeenCalledWith('Quieres borrar esta liga?');
@@ -143,14 +143,14 @@ describe('LeagueDetailComponent', () => {
     spyOn(window, 'confirm').and.returnValue(true);
     mockUsersService.addLeague.and.returnValue(of(null));
 
-    component.user = { id: '1' } as any;
-    component.league = { id: '123' } as any;
+    component.user = { id: 1, name: 'testUser', password: 'pass', image: false, roles: ['[user]'] };
+    component.league = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false };
 
     component.addLeague();
 
     expect(window.confirm).toHaveBeenCalledWith('Quieres añadir esta liga?');
     expect(mockUsersService.addLeague).toHaveBeenCalledWith(component.user, component.league);
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/users', '1']);
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/users', 1]);
   });
 
   it('should navigate back to leagues', () => {

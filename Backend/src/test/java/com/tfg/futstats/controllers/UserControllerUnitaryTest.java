@@ -1,10 +1,6 @@
 package com.tfg.futstats.controllers;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 import com.tfg.futstats.controllers.dtos.user.UserDTO;
@@ -64,7 +60,7 @@ public class UserControllerUnitaryTest {
         when(request.getUserPrincipal()).thenReturn(() -> "testuser");
         when(userService.findUserByName("testuser")).thenReturn(Optional.of(mockUser));
 
-        ResponseEntity<UserResponseDTO> response = userController.me(request);
+        ResponseEntity<UserResponseDTO> response = userController.me(null);
 
         assertEquals(200, response.getStatusCode().value());
         assertEquals("testuser", response.getBody().getName());
@@ -88,12 +84,13 @@ public class UserControllerUnitaryTest {
     void testPostUser() {
         UserDTO userDto = new UserDTO();
         userDto.setName("newuser");
+        userDto.setId(1);
         UserResponseDTO mockUserResponse = new UserResponseDTO();
         mockUserResponse.setName("newuser");
         User user = new User();
         user.setId(1);
 
-        when(userService.createUser(anyString(), anyString(), any(), anyBoolean(), anyList())).thenReturn(user);
+        when(userService.createUser(user)).thenReturn(user);
 
         ResponseEntity<UserResponseDTO> response = userController.postUser(userDto);
 
@@ -135,6 +132,8 @@ public class UserControllerUnitaryTest {
     @Test
     void testGetLeaguesOfUser() {
         User mockUser = new User();
+        mockUser.setId(1);
+        mockUser.setName("testuser");
         when(request.getUserPrincipal()).thenReturn(() -> "testuser");
         when(userService.findUserById(1)).thenReturn(Optional.of(mockUser));
 
@@ -150,6 +149,8 @@ public class UserControllerUnitaryTest {
     @Test
     void testGetTeamsOfUser() {
         User mockUser = new User();
+        mockUser.setId(1);
+        mockUser.setName("testuser");
         when(request.getUserPrincipal()).thenReturn(() -> "testuser");
         when(userService.findUserById(1)).thenReturn(Optional.of(mockUser));
 
@@ -165,6 +166,8 @@ public class UserControllerUnitaryTest {
     @Test
     void testGetPlayersOfUser() {
         User mockUser = new User();
+        mockUser.setId(1);
+        mockUser.setName("testuser");
         when(request.getUserPrincipal()).thenReturn(() -> "testuser");
         when(userService.findUserById(1)).thenReturn(Optional.of(mockUser));
 

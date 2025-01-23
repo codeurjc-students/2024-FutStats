@@ -102,12 +102,12 @@ describe('PlayerDetailComponent', () => {
   });
 
   it('should return player image URL', () => {
-    component.player = { id: 1, image: 'test_image' } as Player;
+    component.player = { id: 1, image: false } as Player;
     expect(component.playerImage()).toBe('image_url');
   });
 
   it('should return default image if no player image is present', () => {
-    component.player = { id: 1, image: null } as Player;
+    component.player = { id: 1, image: false } as Player;
     expect(component.playerImage()).toBe('assets/no_image.jpg');
   });
 

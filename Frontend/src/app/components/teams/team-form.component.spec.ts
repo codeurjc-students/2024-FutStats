@@ -31,7 +31,7 @@ describe('TeamFormComponent', () => {
     };
 
     mockActivatedRoute = {
-      snapshot: { params: { id: '1' } },
+      snapshot: { params: { id: 1 } },
     };
 
     mockRouter = {
@@ -97,14 +97,14 @@ describe('TeamFormComponent', () => {
   it('should upload an image after saving a team', () => {
     const mockFile = new Blob([''], { type: '401-background.png' });
     component.file = { nativeElement: { files: [mockFile] } };
-    component.uploadImage({ id: 1, name: 'Team A', league: 'League A', image: true });
+    component.uploadImage({ id: 1, name: 'Updated Team', league: 'League A', image: true, trophies: 0, nationality: '', trainer: '', secondTrainer: '', president: '', stadium: '', points: 0 });
 
     expect(mockTeamsService.addImage).toHaveBeenCalled();
   });
 
   it('should delete an image if removeImage is true', () => {
     component.removeImage = true;
-    component.uploadImage({ id: 1, name: 'Team A', league: 'League A', image: true });
+    component.uploadImage({ id: 1, name: 'Updated Team', league: 'League A', image: true, trophies: 0, nationality: '', trainer: '', secondTrainer: '', president: '', stadium: '', points: 0 });
 
     expect(mockTeamsService.deleteImage).toHaveBeenCalled();
   });
@@ -116,13 +116,13 @@ describe('TeamFormComponent', () => {
   });
 
   it('should return the correct team image URL', () => {
-    component.team = { id: 1, name: 'Team A', league: 'League A', image: true };
+    component.team = { id: 1, name: 'Updated Team', league: 'League A', image: false, trophies: 0, nationality: '', trainer: '', secondTrainer: '', president: '', stadium: '', points: 0 };
     const imageUrl = component.teamImage();
     expect(imageUrl).toBe('401-backend.png');
   });
 
   it('should return a default image URL if no image exists', () => {
-    component.team = { id: 1, name: 'Team A', league: 'League A', image: false };
+    component.team = { id: 1, name: 'Updated Team', league: 'League A', image: false, trophies: 0, nationality: '', trainer: '', secondTrainer: '', president: '', stadium: '', points: 0 };
     const imageUrl = component.teamImage();
     expect(imageUrl).toBe('assets/no_image.png');
   });

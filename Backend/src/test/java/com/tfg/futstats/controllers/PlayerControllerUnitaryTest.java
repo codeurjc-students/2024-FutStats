@@ -176,14 +176,19 @@ public class PlayerControllerUnitaryTest {
         team.setId(1);
         Player mockPlayer = new Player();
         mockPlayer.setId(1);
-        mockPlayer.setName(("Paco"));
+        playerDto.setId(1);
+        playerDto.setName(("Paco"));
+        playerDto.setLeague("LaLiga");
+        playerDto.setTeam("Real Madrid");
 
         mockPlayer.setLeague(league);
         mockPlayer.setTeam(team);
 
         doNothing().when(restService).createPlayer(any(Player.class), any(League.class), any(Team.class));
+        when(restService.findLeagueByName("LaLiga")).thenReturn(Optional.of(league));
+        when(restService.findTeamByName("Real Madrid")).thenReturn(Optional.of(team));
 
-        ResponseEntity<PlayerResponseDTO> response = playerController.postPlayers(playerDto);
+        ResponseEntity<PlayerResponseDTO> response = playerController.postPlayers(null, playerDto);
 
         assertEquals(201, response.getStatusCode().value());
         assertEquals(1, response.getBody().getId());

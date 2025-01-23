@@ -67,12 +67,12 @@ describe('TeamDetailComponent', () => {
   });
 
   it('should load team data on init', () => {
-    const mockTeam: Team = { id: 1, name: 'Team A', league: 'League A', image: false };
-    const mockLeague: League = { id: 1, name: 'League A' };
+    const mockTeam: Team = { id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1'};
+    const mockLeague: League = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false };
     const mockPlayers: Player[] = [
-      { id: 1, name: 'Player 1', team: 'Team A', league: 'League A', image: false },
+      { id: 1, name: 'Player 1', team: 'Team A', league: 'League A', image: false, nationality:'Española', age: 22, position:'Delantero' },
     ];
-    const mockUser = { id: 1, username: 'User1' };
+    const mockUser = { id: 1, name: 'testUser', password: 'pass', image: false, roles: ['[user]'] };
 
     teamsService.getTeam.and.returnValue(of(mockTeam));
     teamsService.getPlayersByTeam.and.returnValue(of(mockPlayers));
@@ -97,9 +97,8 @@ describe('TeamDetailComponent', () => {
 
   it('should navigate to leagues after removing a team', () => {
     spyOn(window, 'confirm').and.returnValue(true);
-    teamsService.deleteTeam.and.returnValue(of(null));
 
-    component.team = { id: 1, name: 'Team A', league: 'League A', image: false };
+    component.team = { id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1'};
     component.removeTeam();
 
     expect(router.navigate).toHaveBeenCalledWith(['/leagues']);
@@ -114,14 +113,14 @@ describe('TeamDetailComponent', () => {
   });
 
   it('should navigate to edit team page', () => {
-    component.team = { id: 1, name: 'Team A', league: 'League A', image: false };
+    component.team = { id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1'};
     component.editTeam();
 
     expect(router.navigate).toHaveBeenCalledWith(['/teams/edit', 1]);
   });
 
   it('should navigate to leagues page on goBack', () => {
-    component.league = { id: 1, name: 'League A' };
+    component.league = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false };
     component.goBack();
 
     expect(router.navigate).toHaveBeenCalledWith(['leagues', 1]);
@@ -140,8 +139,7 @@ describe('TeamDetailComponent', () => {
   });
 
   it('should generate team image URL', () => {
-    const mockTeam: Team = { id: 1, name: 'Team A', league: 'League A', image: true };
-    teamsService.getImage.and.returnValue('mock-url');
+    const mockTeam: Team = { id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1'};
 
     component.team = mockTeam;
     const url = component.teamImage();
@@ -150,7 +148,7 @@ describe('TeamDetailComponent', () => {
   });
 
   it('should return default image if team has no image', () => {
-    const mockTeam: Team = { id: 1, name: 'Team A', league: 'League A', image: false };
+    const mockTeam: Team = { id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1'};
 
     component.team = mockTeam;
     const url = component.teamImage();

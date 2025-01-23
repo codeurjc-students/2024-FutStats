@@ -84,14 +84,14 @@ describe('UserFormComponent', () => {
   it('should upload an image after saving a user', () => {
     const mockFile = new Blob([''], { type: 'image/png' });
     component.file = { nativeElement: { files: [mockFile] } };
-    component.uploadImage({ id: 1, name: 'User A', roles: ['user'], image: true });
+    component.uploadImage({ id: 1, name: 'testUser', password: 'pass', image: false, roles: ['[user]'] });
 
     expect(mockUsersService.addImage).toHaveBeenCalled();
   });
 
   it('should delete an image if removeImage is true', () => {
     component.removeImage = true;
-    component.uploadImage({ id: 1, name: 'User A', roles: ['user'], image: true });
+    component.uploadImage({ id: 1, name: 'testUser', password: 'pass', image: false, roles: ['[user]'] });
 
     expect(mockUsersService.deleteImage).toHaveBeenCalled();
   });
@@ -103,13 +103,13 @@ describe('UserFormComponent', () => {
   });
 
   it('should return the correct user image URL', () => {
-    component.user = { id: 1, name: 'User A', roles: ['user'], image: true };
+    component.user = { id: 1, name: 'testUser', password: 'pass', image: false, roles: ['[user]'] };
     const imageUrl = component.userImage();
     expect(imageUrl).toBe('image/url.png');
   });
 
   it('should return a default image URL if no image exists', () => {
-    component.user = { id: 1, name: 'User A', roles: ['user'], image: false };
+    component.user = { id: 1, name: 'testUser', password: 'pass', image: false, roles: ['[user]'] };
     const imageUrl = component.userImage();
     expect(imageUrl).toBe('assets/no_image.png');
   });

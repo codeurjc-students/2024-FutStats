@@ -3,11 +3,11 @@ package com.tfg.futstats.services;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.mail.MessagingException;
 
 import java.util.Optional;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Blob;
 
 import com.tfg.futstats.models.User;
 import com.tfg.futstats.repositories.UserRepository;
@@ -29,6 +29,9 @@ public class UserService {
     RestService restService;
 
     @Autowired
+    private EmailService emailService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     public List<UserResponseDTO> findAllUsers() {
@@ -47,9 +50,24 @@ public class UserService {
         return userRepository.findByName(userName);
     }
 
-    public User createUser(String userName, String password, Blob imageFile, boolean image, List<String> roles) {
-        User user = new User(userName, passwordEncoder.encode(password), imageFile, image, roles.toString());
-        return userRepository.save(user);
+    public User createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setImageFile(null);
+        user.setRoles(user.getRoles().toString());
+        User savedUser = userRepository.save(user);
+
+        // Enviar correo al usuario recién creado
+        try {
+            emailService.sendEmail(
+                user.getEmail(), 
+                "Bienvenido a FutStats", 
+                "<h1>Bienvenido, " + user.getName() + "!</h1><p>Gracias por unirte a FutStats.</p>"
+            );
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+        return savedUser;
     }
 
     public void updateUser(User oldUser, UserDTO updatedUser) {

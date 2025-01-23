@@ -201,7 +201,7 @@ public class Playercontroller {
 
         })
         @PostMapping("/")
-        public ResponseEntity<PlayerResponseDTO> postPlayers(@RequestBody PlayerDTO playerDto) {
+        public ResponseEntity<PlayerResponseDTO> postPlayers(HttpServletRequest request, @RequestBody PlayerDTO playerDto) {
                 // We don`t need this because it is already controlled in SecurityConfig
 
                 Player newPlayer = new Player(playerDto);

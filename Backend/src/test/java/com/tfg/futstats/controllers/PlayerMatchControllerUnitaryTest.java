@@ -202,7 +202,7 @@ public class PlayerMatchControllerUnitaryTest {
         team2.setLeague(league);
         Player mockPlayer = new Player();
         mockPlayer.setId(1);
-        mockPlayer.setName(("Paco"));
+        mockPlayer.setName(("Vinicius Jr."));
         Match mockMatch = new Match();
         mockMatch.setId(1);
         mockMatch.setName("El Clásico");
@@ -219,7 +219,7 @@ public class PlayerMatchControllerUnitaryTest {
         mockPlayerMatch.setMatch(mockMatch);
 
         when(restService.findPlayerMatchById(1)).thenReturn(Optional.of(mockPlayerMatch));
-        when(restService.findMatchById(2L)).thenReturn(Optional.of(mockMatch));
+        when(restService.findMatchById(1)).thenReturn(Optional.of(mockMatch));
         when(restService.findPlayerByName(mockPlayerMatch.getName())).thenReturn(Optional.of(mockPlayer));
 
         ResponseEntity<PlayerMatch> response = playerMatchController.deletePlayersMatch(1);

@@ -42,8 +42,8 @@ public class UserServiceUnitaryTests {
 
     @Test
     void testFindAllUsers() {
-        User user1 = new User("user1", "password1", null, false, "ROLE_USER");
-        User user2 = new User("user2", "password2", null, false, "ROLE_ADMIN");
+        User user1 = new User("user1", "password1", "example@gmail.com", null, false, "ROLE_USER");
+        User user2 = new User("user2", "password2", "example@gmail.com", null, false, "ROLE_ADMIN");
         user1.setId(1);
         user2.setId(2);
 
@@ -58,7 +58,7 @@ public class UserServiceUnitaryTests {
 
     @Test
     void testFindUserById() {
-        User user = new User("user1", "password1", null, false, "ROLE_USER");
+        User user = new User("user1", "password1", "example@gmail.com", null, false, "ROLE_USER");
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
@@ -79,7 +79,7 @@ public class UserServiceUnitaryTests {
 
     @Test
     void testFindUserByName() {
-        User user = new User("user1", "password1", null, false, "ROLE_USER");
+        User user = new User("user1", "password1", "example@gmail.com", null, false, "ROLE_USER");
 
         when(userRepository.findByName("user1")).thenReturn(Optional.of(user));
 
@@ -103,12 +103,12 @@ public class UserServiceUnitaryTests {
         String rawPassword = "password1";
         String encodedPassword = "encodedPassword1";
         Blob image = null;
-        User user = new User("user1", encodedPassword, image, false, "ROLE_USER");
+        User user = new User("user1", encodedPassword, "example@gmail.com", image, false, "[user]");
 
         when(passwordEncoder.encode(rawPassword)).thenReturn(encodedPassword);
         when(userRepository.save(any(User.class))).thenReturn(user);
 
-        User result = userService.createUser("user1", rawPassword, image, false, List.of("ROLE_USER"));
+        User result = userService.createUser(user);
 
         assertEquals("user1", result.getName());
         assertEquals(encodedPassword, result.getPassword());
@@ -125,7 +125,7 @@ public class UserServiceUnitaryTests {
 
     @Test
     void testUpdateUser() {
-        User existingUser = new User("user1", "password1", null, false, "ROLE_USER");
+        User existingUser = new User("user1", "password1", "example@gmail.com", null, false, "ROLE_USER");
         UserDTO updatedUserDTO = new UserDTO();
         updatedUserDTO.setName("newUser1");
         String encodedPassword = "encodedNewPassword1";

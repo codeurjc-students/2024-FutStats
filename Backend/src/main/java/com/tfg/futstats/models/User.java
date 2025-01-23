@@ -27,9 +27,11 @@ public class User {
     private Long id;
 
     // User attributes
-    @Column(unique = true)
-    @NotNull
+    @Column(unique = true, nullable = false)
     private String name;
+
+    @Column(unique = true, nullable = false)
+    private String email;
 
     private String password;
 
@@ -71,20 +73,25 @@ public class User {
         this.belongedPlayers = new ArrayList<>();
     }
 
-    public User(String name, String password, Blob imageFile, boolean image, String... roles) {
+    public User(String name, String password, String email, Blob imageFile, boolean image, String... roles) {
         this.name = name;
         this.password = password;
+        this.email = email;
         this.belongedLeagues = new ArrayList<>();
         this.belongedTeams = new ArrayList<>();
         this.belongedPlayers = new ArrayList<>();
         this.roles = List.of(roles);
         this.image = image;
         this.imageFile = imageFile;
+        this.belongedLeagues = new ArrayList<>();
+        this.belongedTeams = new ArrayList<>();
+        this.belongedPlayers = new ArrayList<>();
     }
 
     public User(UserDTO user) {
         this.name = user.getName();
         this.password = user.getPassword();
+        this.email = user.getEmail();
         this.roles = user.getRoles();
         this.image = user.getImage();
     }
@@ -105,6 +112,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     // ------------------------------------ LEAGUE

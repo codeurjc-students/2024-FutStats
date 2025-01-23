@@ -19,7 +19,7 @@ describe('MatchFormComponent', () => {
   beforeEach(async () => {
     mockMatchesService = {
       getMatch: jasmine.createSpy('getMatch').and.returnValue(of({
-        id: '1',
+        id: 1,
         place: 'Test Place',
         name: 'Test Match',
         date: new Date(),
@@ -27,14 +27,14 @@ describe('MatchFormComponent', () => {
         team2: '2',
         league: '1',
       } as Match)),
-      addMatch: jasmine.createSpy('addMatch').and.returnValue(of({ id: '1' } as Match)),
-      updateMatch: jasmine.createSpy('updateMatch').and.returnValue(of({ id: '1' } as Match)),
+      addMatch: jasmine.createSpy('addMatch').and.returnValue(of({ id: 1 } as Match)),
+      updateMatch: jasmine.createSpy('updateMatch').and.returnValue(of({ id: 1} as Match)),
     };
 
     mockLeaguesService = {
-      getLeagues: jasmine.createSpy('getLeagues').and.returnValue(of([{ id: '1', name: 'Test League' }] as League[])),
-      getTeamsByName: jasmine.createSpy('getTeamsByName').and.returnValue(of([{ id: '1', name: 'Team 1' }, { id: '2', name: 'Team 2' }] as Team[])),
-      getLeagueByName: jasmine.createSpy('getLeagueByName').and.returnValue(of({ id: '1', name: 'Test League' } as League)),
+      getLeagues: jasmine.createSpy('getLeagues').and.returnValue(of([{ id: 1, name: 'Test League' }] as League[])),
+      getTeamsByName: jasmine.createSpy('getTeamsByName').and.returnValue(of([{ id: 1, name: 'Team 1' }, { id: '2', name: 'Team 2' }] as Team[])),
+      getLeagueByName: jasmine.createSpy('getLeagueByName').and.returnValue(of({ id: 1, name: 'Test League' } as League)),
     };
 
     mockRouter = {
@@ -95,7 +95,7 @@ describe('MatchFormComponent', () => {
       component.ngOnInit();
 
       expect(mockLeaguesService.getLeagues).toHaveBeenCalled();
-      expect(component.leagues).toEqual([{ id: '1', name: 'Test League' }]);
+      expect(component.leagues).toEqual([{ id: 1, name: 'Test League' } as League]);
     });
   });
 
@@ -106,7 +106,7 @@ describe('MatchFormComponent', () => {
       component.onLeagueChange();
 
       expect(mockLeaguesService.getTeamsByName).toHaveBeenCalledWith('1');
-      expect(component.teams).toEqual([{ id: '1', name: 'Team 1' }, { id: '2', name: 'Team 2' }]);
+      expect(component.teams).toEqual([{ id: 1, name: 'Team 1' } as Team, { id: 2, name: 'Team 2' } as Team]);
     });
 
     it('should clear teams if no league is selected', () => {
@@ -139,7 +139,7 @@ describe('MatchFormComponent', () => {
     it('should update an existing match if newMatch is false', () => {
       component.newMatch = false;
       component.match = {
-        id: '1',
+        id: 1,
         place: 'Updated Place',
         name: 'Updated Match',
         date: new Date(),
@@ -159,7 +159,7 @@ describe('MatchFormComponent', () => {
     it('should navigate to league details after saving', () => {
       component.match = { league: 'Test League' } as Match;
 
-      component.afterSave({ id: '1' } as Match);
+      component.afterSave({ id: 1 } as Match);
 
       expect(mockLeaguesService.getLeagueByName).toHaveBeenCalledWith('Test League');
       expect(mockRouter.navigate).toHaveBeenCalledWith(['/leagues', '1']);

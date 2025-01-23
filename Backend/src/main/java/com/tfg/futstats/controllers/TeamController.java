@@ -200,7 +200,7 @@ public class TeamController {
 
     })
     @PostMapping("/")
-    public ResponseEntity<TeamResponseDTO> postTeams(@RequestBody TeamCreationDTO teamDto) {
+    public ResponseEntity<TeamResponseDTO> postTeams(HttpServletRequest request, @RequestBody TeamCreationDTO teamDto) {
             // We don`t need security here because it`s already controlled in SecurityConfig
 
             Team newTeam = new Team(teamDto);

@@ -76,7 +76,7 @@
 
     <h3>Jugadores</h3>
     <ul class="items">
-        <li *ngFor="let player of players | paginate: {itemsPerPage: 10, currentPage: playerPage}">
+        <li *ngFor="let player of players | paginate: {itemsPerPage: 1, currentPage: playerPage}">
             <a [routerLink]="['/players', player.id]">{{player.name}}</a>
             <a> {{player.position}}</a>
         </li>
@@ -94,7 +94,7 @@
 
     <p>
     <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="removeTeam()">Borrar Equipo</button>
-    <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="editTeam()">Editarn Equipo</button>
+    <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="editTeam()">Editar Equipo</button>
     </p>
 
     <p>

@@ -472,8 +472,6 @@ public class RestServiceUnitaryTests {
     // }
     // #endregion
 
-    // TODO METODOS DE ERROR
-
     // #region PLAYER TESTS
 
     @Test
@@ -849,6 +847,7 @@ public class RestServiceUnitaryTests {
         team1.setId(1);
         team1.setLeague(league);
         team1.setName("Real Madrid");
+        team1.setStadium("Santiago Bernabéu");
         Team team2 = new Team();
         team2.setId(2);
         team2.setLeague(league);
@@ -856,7 +855,6 @@ public class RestServiceUnitaryTests {
         Match oldMatch = new Match(league, team1, team2, "Match1", "");
         oldMatch.setId(1);
         MatchDTO matchDTO = new MatchDTO();
-        matchDTO.setPlace("Santiago Bernabéu");
 
         // Act
         restService.updateMatch(oldMatch, matchDTO, league, team1, team2);

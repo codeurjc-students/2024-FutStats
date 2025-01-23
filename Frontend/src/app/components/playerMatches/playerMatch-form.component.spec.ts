@@ -69,7 +69,7 @@ describe('PlayerMatchFormComponent', () => {
   });
 
   it('should fetch existing playerMatch if ID is provided', () => {
-    mockActivatedRoute.snapshot.params.id = '123';
+    mockActivatedRoute.snapshot.params.id = 1;
     mockPlayerMatchesService.getPlayerMatch.and.returnValue(of({ name: 'Test PlayerMatch', match: 1 }));
 
     component = new PlayerMatchFormComponent(
@@ -81,12 +81,12 @@ describe('PlayerMatchFormComponent', () => {
     );
 
     expect(component.newPlayerMatch).toBeFalse();
-    expect(mockPlayerMatchesService.getPlayerMatch).toHaveBeenCalledWith('123');
+    expect(mockPlayerMatchesService.getPlayerMatch).toHaveBeenCalledWith(1);
   });
 
   it('should fetch matches and players on init', () => {
-    const mockMatches = [{ id: 1, name: 'Match 1' }];
-    const mockPlayers = [{ id: '1', name: 'Player 1' }];
+    const mockMatches = [{ id: 1, name: 'Match 1', place:'Lepe', date: new Date(), team1:'Team1', team2:'Team2', league:'League' }];
+    const mockPlayers = [{ id: 1, name: 'Player 1', age: 25, nationality:'Española', position:'Delantero', image:false, team:'Team1', league:'League'}];
 
     mockMatchesService.getMatches.and.returnValue(of(mockMatches));
     mockPlayersService.getPlayers.and.returnValue(of(mockPlayers));

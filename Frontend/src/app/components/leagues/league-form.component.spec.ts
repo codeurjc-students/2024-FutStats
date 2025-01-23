@@ -19,7 +19,7 @@ class MockRouter {
 }
 
 class MockActivatedRoute {
-  snapshot = { params: { id: '1' } };
+  snapshot = { params: { id: 1 } };
 }
 
 describe('LeagueFormComponent', () => {
@@ -46,15 +46,13 @@ describe('LeagueFormComponent', () => {
   });
 
   it('should initialize with an existing league if id is present', () => {
-    component.ngOnInit();
-    expect(service.getLeagueById).toHaveBeenCalledWith('1');
+    expect(service.getLeagueById).toHaveBeenCalledWith(1);
     expect(component.newLeague).toBeFalse();
     expect(component.league.name).toBe('Test League');
   });
 
   it('should initialize with a new league if no id is present', () => {
     const route = TestBed.inject(ActivatedRoute) as unknown as MockActivatedRoute;
-    route.snapshot.params = {};
 
     component = new LeagueFormComponent(router as any, route as any, service as any);
 
@@ -87,7 +85,7 @@ describe('LeagueFormComponent', () => {
 
   it('should handle image upload if file is present', () => {
     component.file = { nativeElement: { files: [new Blob()] } };
-    const league = { id: 1, name: 'League with Image' };
+    const league = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: true };
 
     component.uploadImage(league);
 
@@ -97,7 +95,7 @@ describe('LeagueFormComponent', () => {
 
   it('should handle image deletion if removeImage is true', () => {
     component.removeImage = true;
-    const league = { id: 1, name: 'League without Image' };
+    const league = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false };
 
     component.uploadImage(league);
 
@@ -106,8 +104,8 @@ describe('LeagueFormComponent', () => {
   });
 
   it('should return the correct league image URL', () => {
-    component.league = { id: 1, name: 'League', image: true };
-    expect(component.leagueImage()).toBe('mocked_image_url');
+    component.league = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: true };
+    expect(component.leagueImage()).toBe('401-background.png');
 
     component.league.image = false;
     expect(component.leagueImage()).toBe('assets/no_image.png');

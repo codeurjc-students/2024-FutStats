@@ -178,27 +178,16 @@ public class UserControllerTest {
     @Test
     @Transactional
     void testCreateUser() throws Exception {
-        HttpServletRequest mockRequest = mock(HttpServletRequest.class);
-        when(mockRequest.getUserPrincipal()).thenReturn(() -> "admin");
         String newLeagueJson = """
                 {
                     "name": "admin2",
                     "password": "pass",
-                    "roles": "[user]",
-                    "imageFile": null,
+                    "roles": ["[user]"],
                     "image": false
                 }
                 """;
 
         mockMvc.perform(post("/api/v1/users/")
-                .with(request -> {
-                    request.setUserPrincipal(mockRequest.getUserPrincipal());
-                    return request;
-                })
-                .with(request -> {
-                    request.setUserPrincipal(mockRequest.getUserPrincipal());
-                    return request;
-                })
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newLeagueJson))
                 .andExpect(status().isCreated())
@@ -266,6 +255,9 @@ public class UserControllerTest {
         String newLeagueJson = """
                 {
                     "name": "adminPrueba",
+                    "password": "pass",
+                    "roles": ["[user]"],
+                    "image": false
                 }
                 """;
 

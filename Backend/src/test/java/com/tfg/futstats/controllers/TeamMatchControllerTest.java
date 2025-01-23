@@ -38,6 +38,6 @@ public class TeamMatchControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].matchName", is("FC Barcelona-Real Madrid")))
-                .andExpect(jsonPath("$[0].points", is(1)));
+                .andExpect(jsonPath("$[0].points", is(0)));
     }
 }

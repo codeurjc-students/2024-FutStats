@@ -58,7 +58,7 @@
 
     <h3>Estadisticas de los jugadores</h3>
     <ul class="items">
-        <li *ngFor="let playerMatch of playerMatches | paginate: {itemsPerPage: 10, currentPage: playerMatchPage}">
+        <li *ngFor="let playerMatch of playerMatches | paginate: {itemsPerPage: 1, currentPage: playerMatchPage}">
             <a [routerLink]="['/playerMatch', playerMatch.id]">{{playerMatch?.name}}</a>
         </li>
     </ul>

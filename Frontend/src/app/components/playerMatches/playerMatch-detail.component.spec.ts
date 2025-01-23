@@ -23,15 +23,18 @@ describe('PlayerMatchDetailComponent', () => {
   beforeEach(async () => {
     mockPlayerMatchesService = {
       getPlayerMatch: jasmine.createSpy('getPlayerMatch').and.returnValue(of({
-        id: '1',
+        id: 1,
+        name: 'Jose',
+        match: 1,
+        matchName: 'El Clasico',
         score: 10,
         assists: 5,
         fouls: 2,
       } as PlayerMatch)),
       getPlayer: jasmine.createSpy('getPlayer').and.returnValue(of({
-        id: '1',
+        id: 1,
         name: 'Test Player',
-        image: 'test-image.jpg',
+        image: false,
       } as Player)),
       deletePlayerMatch: jasmine.createSpy('deletePlayerMatch').and.returnValue(of({})),
     };
@@ -50,7 +53,7 @@ describe('PlayerMatchDetailComponent', () => {
 
     mockActivatedRoute = {
       snapshot: {
-        params: { id: '1' }, // Simula el ID del PlayerMatch
+        params: { id: 1 }, // Simula el ID del PlayerMatch
       },
     };
 
@@ -78,22 +81,22 @@ describe('PlayerMatchDetailComponent', () => {
     it('should load playerMatch details on init', () => {
       component.ngOnInit();
 
-      expect(mockPlayerMatchesService.getPlayerMatch).toHaveBeenCalledWith('1');
-      expect(component.playerMatch).toEqual(jasmine.objectContaining({ id: '1', score: 10 }));
+      expect(mockPlayerMatchesService.getPlayerMatch).toHaveBeenCalledWith(1);
+      expect(component.playerMatch).toEqual(jasmine.objectContaining({ id: 1, score: 10 }));
     });
 
     it('should load player details on init', () => {
       component.ngOnInit();
 
-      expect(mockPlayerMatchesService.getPlayer).toHaveBeenCalledWith('1');
-      expect(component.player).toEqual(jasmine.objectContaining({ id: '1', name: 'Test Player' }));
+      expect(mockPlayerMatchesService.getPlayer).toHaveBeenCalledWith(1);
+      expect(component.player).toEqual(jasmine.objectContaining({ id: 1, name: 'Test Player' }));
     });
   });
 
     it('should delete the playerMatch and navigate to leagues if confirmed', () => {
       spyOn(window, 'confirm').and.returnValue(true);
 
-      component.playerMatch = { id: '1' } as PlayerMatch;
+      component.playerMatch = { id: 1 } as PlayerMatch;
       component.removePlayerMatch();
 
       expect(window.confirm).toHaveBeenCalledWith('Quieres borrar este jugador?');
@@ -104,16 +107,16 @@ describe('PlayerMatchDetailComponent', () => {
 
   describe('playerImage', () => {
     it('should return the player image if it exists', () => {
-      component.player = { id: '1', image: '401-background.jpg' } as Player;
+      component.player = { id: 1, image: false } as Player;
 
       const image = component.playerImage();
 
       expect(image).toBe('401-background.jpg');
-      expect(mockPlayersService.getImage).toHaveBeenCalledWith('1');
+      expect(mockPlayersService.getImage).toHaveBeenCalledWith(1);
     });
 
     it('should return default image if player has no image', () => {
-      component.player = { id: '1', image: '' } as Player;
+      component.player = { id: 1, image: false } as Player;
 
       const image = component.playerImage();
 
@@ -123,20 +126,20 @@ describe('PlayerMatchDetailComponent', () => {
   });
 
     it('should navigate to the edit playerMatch page', () => {
-      component.playerMatch = { id: '1' } as PlayerMatch;
+      component.playerMatch = { id: 1 } as PlayerMatch;
 
       component.editPlayerMatch();
 
-      expect(mockRouter.navigate).toHaveBeenCalledWith(['/playerMatch/edit', '1']);
+      expect(mockRouter.navigate).toHaveBeenCalledWith(['/playerMatch/edit', 1]);
     });
 
 
  
     it('should navigate to the player detail page', () => {
-      component.player = { id: '1' } as Player;
+      component.player = { id: 1 } as Player;
 
       component.goBack();
 
-      expect(mockRouter.navigate).toHaveBeenCalledWith(['/players', '1']);
+      expect(mockRouter.navigate).toHaveBeenCalledWith(['/players', 1]);
     });
 });

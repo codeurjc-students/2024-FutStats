@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.sql.Blob;
@@ -75,11 +74,9 @@ public class UserServiceTest {
             byte[] imageBlob = convertImageToBlob("resources/static/piramide.jpeg");
             Blob blob = new SerialBlob(imageBlob);
 
-            List<String> roles = new ArrayList<>();
-            roles.add("[user]");
-            roles.add("[admin]");
+            User user = new User("prueba", "pass", "example@gmail.com", blob, true, "[user]","[admin]");
 
-            userService.createUser("prueba", "pass", blob, false, roles);
+            userService.createUser(user);
 
             Optional<User> userU = userService.findUserById(22);
 
@@ -128,11 +125,11 @@ public class UserServiceTest {
     @Test
     public void testSaveuser(){
 
-        User user = new User("prueba", "pass", null, false, "[user]");
+        User user = new User("prueba", "pass", "example@gmail.com", null, false, "[user]");
 
         userService.save(user);
 
-        Optional<User> userU = userService.findUserById(22);
+        Optional<User> userU = userService.findUserById(user.getId());
 
         assertTrue(userU.isPresent(), "User should be present");
 

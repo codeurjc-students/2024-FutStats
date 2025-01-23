@@ -14,11 +14,13 @@ export class LeagueListComponent implements OnInit {
   leagues: League[];
   public leaguePage!: number;
   errorMsg!: string;
+  title: string;
 
 
   constructor(private router: Router, private service: LeaguesService, public loginService: LoginService) { }
 
   ngOnInit() {
+    this.title = 'Ligas';
     this.service.getLeagues().subscribe((data: League[]) => {
       this.leagues = data;
     });
