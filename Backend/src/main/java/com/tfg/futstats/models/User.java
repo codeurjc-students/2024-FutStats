@@ -17,7 +17,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class User {
@@ -89,6 +88,7 @@ public class User {
     }
 
     public User(UserDTO user) {
+        this.id = user.getId();
         this.name = user.getName();
         this.password = user.getPassword();
         this.email = user.getEmail();

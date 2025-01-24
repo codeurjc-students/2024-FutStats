@@ -4,6 +4,7 @@ import { catchError, EMPTY, throwError } from 'rxjs';
 import { League } from 'src/app/models/league.model';
 import { LeaguesService } from 'src/app/services/league.service';
 import { LoginService } from 'src/app/services/login.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
     templateUrl: './league-list.component.html',

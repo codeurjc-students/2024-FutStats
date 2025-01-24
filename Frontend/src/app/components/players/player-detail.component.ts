@@ -14,9 +14,9 @@ import { PlayerMatchesService } from 'src/app/services/playerMatch.service';
 import { Chart } from 'chart.js/auto';
 
 @Component({
-    templateUrl: './player-detail.component.html',
-    styleUrls: ['./player-detail.component.css'],
-    standalone: false
+  templateUrl: './player-detail.component.html',
+  styleUrls: ['./player-detail.component.css'],
+  standalone: false
 })
 export class PlayerDetailComponent implements OnInit {
 
@@ -97,17 +97,22 @@ export class PlayerDetailComponent implements OnInit {
   }
 
   crearGrafica(matchNames: string[], goals: number[]) {
+    const chartElement = document.getElementById('golesChart') as HTMLCanvasElement;
+
+    if (!chartElement) {
+      return;
+    }
     new Chart('golesChart', {
-      type: 'line', // Cambiamos el tipo a "line"
+      type: 'line',
       data: {
-        labels: matchNames, // Nombres de los partidos
+        labels: matchNames,
         datasets: [
           {
             label: 'Goles por Partido',
             data: goals,
             fill: false,
             borderColor: 'rgba(75, 192, 192, 1)',
-            tension: 0.2, // Suaviza las líneas
+            tension: 0.2,
             pointBackgroundColor: 'rgba(75, 192, 192, 1)',
             pointBorderColor: '#fff',
             pointHoverBackgroundColor: '#fff',
@@ -151,7 +156,7 @@ export class PlayerDetailComponent implements OnInit {
   }
 
   addPlayer() {
-    const okResponse = window.confirm('Quieres añadir esta jugador?');
+    const okResponse = window.confirm('Quieres añadir este jugador?');
     if (okResponse) {
       this.userService.addPlayer(this.user, this.player).subscribe(
         _ => this.router.navigate(['/users', this.user.id]),

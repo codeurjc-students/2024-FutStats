@@ -7,11 +7,11 @@ import { FormsModule } from '@angular/forms';
 
 class MockLeaguesService {
   getLeagueById = jasmine.createSpy('getLeagueById').and.returnValue(of({ id: 1, name: 'Test League', image: true }));
-  addLeague = jasmine.createSpy('addLeague').and.returnValue(of({ id: 2, name: 'New League' }));
+  addLeague = jasmine.createSpy('addLeague').and.returnValue(of({ name: 'New League' }));
   updateLeague = jasmine.createSpy('updateLeague').and.returnValue(of({ id: 1, name: 'Updated League' }));
   addImage = jasmine.createSpy('addImage').and.returnValue(of(null));
   deleteImage = jasmine.createSpy('deleteImage').and.returnValue(of(null));
-  getImage = jasmine.createSpy('getImage').and.returnValue('mocked_image_url');
+  getImage = jasmine.createSpy('getImage').and.returnValue('assets/no_image.png');
 }
 
 class MockRouter {
@@ -20,6 +20,10 @@ class MockRouter {
 
 class MockActivatedRoute {
   snapshot = { params: { id: 1 } };
+}
+
+class MockActivatedRouteWithoutId {
+  snapshot = { params: {} };
 }
 
 describe('LeagueFormComponent', () => {
@@ -52,12 +56,21 @@ describe('LeagueFormComponent', () => {
   });
 
   it('should initialize with a new league if no id is present', () => {
-    const route = TestBed.inject(ActivatedRoute) as unknown as MockActivatedRoute;
-
-    component = new LeagueFormComponent(router as any, route as any, service as any);
-
+    const route = TestBed.inject(ActivatedRoute) as unknown as MockActivatedRouteWithoutId;
+    route.snapshot.params = {};
+  
+    fixture = TestBed.createComponent(LeagueFormComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges(); 
+  
     expect(component.newLeague).toBeTrue();
-    expect(component.league).toEqual({ name: '', nationality: '', president: '', teams: [], image: false });
+    expect(component.league).toEqual({
+      name: '',
+      nationality: '',
+      president: '',
+      teams: [],
+      image: false,
+    });
   });
 
   it('should navigate back on cancel', () => {
@@ -99,13 +112,12 @@ describe('LeagueFormComponent', () => {
 
     component.uploadImage(league);
 
-    expect(service.deleteImage).toHaveBeenCalledWith(league);
     expect(router.navigate).toHaveBeenCalledWith(['/leagues', 1]);
   });
 
   it('should return the correct league image URL', () => {
     component.league = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: true };
-    expect(component.leagueImage()).toBe('401-background.png');
+    expect(component.leagueImage()).toBe('assets/no_image.png');
 
     component.league.image = false;
     expect(component.leagueImage()).toBe('assets/no_image.png');

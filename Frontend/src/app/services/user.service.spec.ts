@@ -27,8 +27,8 @@ describe('UsersService', () => {
 
   it('should retrieve all users', () => {
     const mockUsers: User[] = [
-        { id: 1, name: 'testUser', password: 'pass', image: false, roles: ['[user]'] },
-        { id: 2, name: 'testUser 2', password: 'pass', image: false, roles: ['[user]'] },
+        { id: 1, name: 'testUser', password: 'pass', email:'', image: false, roles: ['[user]'] },
+        { id: 2, name: 'testUser 2', password: 'pass', email:'', image: false, roles: ['[user]'] },
     ];
 
     service.getUsers().subscribe(users => {
@@ -41,7 +41,7 @@ describe('UsersService', () => {
   });
 
   it('should retrieve a user by ID', () => {
-    const mockUser: User = { id: 1, name: 'testUser', password: 'pass', image: false, roles: ['[user]'] };
+    const mockUser: User = { id: 1, name: 'testUser', password: 'pass', email:'', image: false, roles: ['[user]'] };
 
     service.getUser(1).subscribe(user => {
       expect(user).toEqual(mockUser);
@@ -53,7 +53,7 @@ describe('UsersService', () => {
   });
 
   it('should retrieve the logged-in user', () => {
-    const mockUser: User = { id: 1, name: 'testUser', password: 'pass', image: false, roles: ['[user]'] };
+    const mockUser: User = { id: 1, name: 'testUser', password: 'pass', email:'', image: false, roles: ['[user]'] };
 
     service.getMe().subscribe(user => {
       expect(user).toEqual(mockUser);
@@ -110,7 +110,7 @@ describe('UsersService', () => {
   });
 
   it('should add a new user', () => {
-    const newUser: User = { id: 1, name: 'testUser', password: 'pass', image: false, roles: ['[user]'] };
+    const newUser: User = { id: 1, name: 'testUser', password: 'pass', email:'', image: false, roles: ['[user]'] };
 
     service.addUser(newUser).subscribe(user => {
       expect(user).toEqual(newUser);
@@ -122,7 +122,7 @@ describe('UsersService', () => {
   });
 
   it('should update a user', () => {
-    const updatedUser: User = { id: 1, name: 'testUser', password: 'pass', image: false, roles: ['[user]'] };
+    const updatedUser: User = { id: 1, name: 'testUser', password: 'pass', email:'', image: false, roles: ['[user]'] };
 
     service.updateUser(updatedUser).subscribe(user => {
       expect(user).toEqual(updatedUser);
@@ -134,7 +134,7 @@ describe('UsersService', () => {
   });
 
   it('should delete a user', () => {
-    service.deleteUser({ id: 1, name: 'testUser', password: 'pass', image: false, roles: ['[user]'] }).subscribe(response => {
+    service.deleteUser({ id: 1, name: 'testUser', password: 'pass', email:'', image: false, roles: ['[user]'] }).subscribe(response => {
       expect(response).toBeTruthy();
     });
 

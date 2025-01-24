@@ -9,6 +9,7 @@ import { Player } from 'src/app/models/player.model';
 import { UsersService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user.model';
 import { UserFormComponent } from '../users/user-form.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
     templateUrl: './league-detail.component.html',

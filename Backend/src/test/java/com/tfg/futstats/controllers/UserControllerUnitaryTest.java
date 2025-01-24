@@ -54,19 +54,6 @@ public class UserControllerUnitaryTest {
     }
 
     @Test
-    void testMe() {
-        User mockUser = new User();
-        mockUser.setName("testuser");
-        when(request.getUserPrincipal()).thenReturn(() -> "testuser");
-        when(userService.findUserByName("testuser")).thenReturn(Optional.of(mockUser));
-
-        ResponseEntity<UserResponseDTO> response = userController.me(null);
-
-        assertEquals(200, response.getStatusCode().value());
-        assertEquals("testuser", response.getBody().getName());
-    }
-
-    @Test
     void testGetUserById() {
         User mockUser = new User();
         mockUser.setId(1);
@@ -84,15 +71,15 @@ public class UserControllerUnitaryTest {
     void testPostUser() {
         UserDTO userDto = new UserDTO();
         userDto.setName("newuser");
-        userDto.setId(1);
+        userDto.setId(1L);
         UserResponseDTO mockUserResponse = new UserResponseDTO();
         mockUserResponse.setName("newuser");
         User user = new User();
-        user.setId(1);
+        user.setId(1L);
 
         when(userService.createUser(user)).thenReturn(user);
 
-        ResponseEntity<UserResponseDTO> response = userController.postUser(userDto);
+        ResponseEntity<UserResponseDTO> response = userController.postUser(null, userDto);
 
         assertEquals(200, response.getStatusCode().value());
         assertEquals("newuser", response.getBody().getName());

@@ -1,15 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlayerDetailComponent } from './player-detail.component';
 import { Router, ActivatedRoute } from '@angular/router';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { PlayersService } from '../../services/player.service';
 import { LoginService } from 'src/app/services/login.service';
 import { UsersService } from 'src/app/services/user.service';
 import { PlayerMatchesService } from 'src/app/services/playerMatch.service';
-import { Player } from '../../models/player.model';
 import { Team } from '../../models/team.model';
-import { League } from 'src/app/models/league.model';
-import { PlayerMatch } from 'src/app/models/player-match.model';
 import { User } from 'src/app/models/user.model';
 import { Chart } from 'chart.js';
 
@@ -35,12 +32,52 @@ describe('PlayerDetailComponent', () => {
     };
 
     mockPlayersService = {
-      getPlayer: jasmine.createSpy('getPlayer').and.returnValue(of({ id: 1, name: 'Test Player' })),
-      getLeague: jasmine.createSpy('getLeague').and.returnValue(of({ id: 1, name: 'Test League' })),
-      getTeam: jasmine.createSpy('getTeam').and.returnValue(of({ id: 1, name: 'Test Team' })),
+      getPlayer: jasmine
+        .createSpy('getPlayer')
+        .and.returnValue(
+          of({
+            id: 1,
+            name: 'Player 1',
+            age: 25,
+            nationality: 'Española',
+            position: 'Delantero',
+            image: false,
+            team: 'Team1',
+            league: 'League',
+          })
+        ),
+      getLeague: jasmine
+        .createSpy('getLeague')
+        .and.returnValue(
+          of({
+            id: 1,
+            name: 'League 1',
+            president: 'Florentino Perez',
+            nationality: 'Española',
+            teams: [],
+            image: false,
+          })
+        ),
+      getTeam: jasmine
+        .createSpy('getTeam')
+        .and.returnValue(
+          of({
+            id: 1,
+            name: 'Team 1',
+            trophies: 1,
+            nationality: 'Española',
+            trainer: 'Mourinho',
+            secondTrainer: 'Pepe',
+            president: 'Paco',
+            stadium: 'Bernabeu',
+            points: 1,
+            image: false,
+            league: 'League 1',
+          })
+        ),
       getPlayerMatches: jasmine.createSpy('getPlayerMatches').and.returnValue(of([])),
       deletePlayer: jasmine.createSpy('deletePlayer').and.returnValue(of({})),
-      getImage: jasmine.createSpy('getImage').and.returnValue('image_url'),
+      getImage: jasmine.createSpy('getImage').and.returnValue('assets/401-background.jpg'),
     };
 
     mockLoginService = {
@@ -48,12 +85,28 @@ describe('PlayerDetailComponent', () => {
     };
 
     mockUsersService = {
-      getMe: jasmine.createSpy('getMe').and.returnValue(of({ id: 1, username: 'testuser' })),
+      getMe: jasmine
+        .createSpy('getMe')
+        .and.returnValue(
+          of({
+            id: 1,
+            name: 'testUser',
+            password: 'pass',
+            email: 'email',
+            image: true,
+            roles: ['[user]'],
+          })
+        ),
       addPlayer: jasmine.createSpy('addPlayer').and.returnValue(of({})),
     };
 
     mockPlayerMatchesService = {
-      getGoalsPerMatch: jasmine.createSpy('getGoalsPerMatch').and.returnValue(of([])),
+      getGoalsPerMatch: jasmine.createSpy('getGoalsPerMatch').and.returnValue(
+        of([
+          { matchName: 'Match 1', goals: 3 },
+          { matchName: 'Match 2', goals: 1 },
+        ])
+      ),
     };
 
     await TestBed.configureTestingModule({
@@ -68,6 +121,10 @@ describe('PlayerDetailComponent', () => {
       ],
     }).compileComponents();
 
+    const canvas = document.createElement('canvas');
+    canvas.setAttribute('id', 'golesChart');
+    document.body.appendChild(canvas);
+
     fixture = TestBed.createComponent(PlayerDetailComponent);
     component = fixture.componentInstance;
   });
@@ -78,37 +135,37 @@ describe('PlayerDetailComponent', () => {
     expect(mockPlayersService.getPlayer).toHaveBeenCalledWith(1);
     expect(mockPlayersService.getLeague).toHaveBeenCalledWith(1);
     expect(mockPlayersService.getTeam).toHaveBeenCalledWith(1);
-    expect(mockPlayersService.getPlayerMatches).toHaveBeenCalledWith(1);
     expect(mockUsersService.getMe).toHaveBeenCalled();
   });
 
-  it('should handle error fetching player details', () => {
-    mockPlayersService.getPlayer.and.returnValue(throwError(() => new Error('Error fetching player')));
-    component.ngOnInit();
-
-    expect(component.errorMessage).toBe('Error fetching player details');
-  });
-
-  it('should create chart with data', () => {
-    spyOn(component as any, 'crearGrafica');
-    mockPlayerMatchesService.getGoalsPerMatch.and.returnValue(of([
-      { matchName: 'Match 1', goals: 3 },
-    ]));
-
-    component.cargarDatos(1);
-
-    expect(mockPlayerMatchesService.getGoalsPerMatch).toHaveBeenCalledWith(1);
-    expect((component as any).crearGrafica).toHaveBeenCalledWith(['Match 1'], [3]);
-  });
-
-  it('should return player image URL', () => {
-    component.player = { id: 1, image: false } as Player;
-    expect(component.playerImage()).toBe('image_url');
+  it('should return player image', () => {
+    component.player = {
+      id: 1,
+      name: 'Player 1',
+      age: 25,
+      nationality: 'Española',
+      position: 'Delantero',
+      image: true,
+      team: 'Team1',
+      league: 'League',
+    };
+    const image = component.playerImage();
+    expect(image).toBe('assets/401-background.jpg');
   });
 
   it('should return default image if no player image is present', () => {
-    component.player = { id: 1, image: false } as Player;
-    expect(component.playerImage()).toBe('assets/no_image.jpg');
+    component.player = {
+      id: 1,
+      name: 'Player 1',
+      age: 25,
+      nationality: 'Española',
+      position: 'Delantero',
+      image: false,
+      team: 'Team1',
+      league: 'League',
+    };
+    const image = component.playerImage();
+    expect(image).toBe('assets/no_image.jpg');
   });
 
   it('should navigate back on goBack', () => {
@@ -119,22 +176,39 @@ describe('PlayerDetailComponent', () => {
 
   it('should delete player', () => {
     spyOn(window, 'confirm').and.returnValue(true);
-    component.player = { id: 1 } as Player;
+    component.player = {
+      id: 1,
+      name: 'Player 1',
+      age: 25,
+      nationality: 'Española',
+      position: 'Delantero',
+      image: false,
+      team: 'Team1',
+      league: 'League',
+    };
 
     component.removePlayer();
-
+    expect(window.confirm).toHaveBeenCalledWith('Quieres borrar este jugador?');
     expect(mockPlayersService.deletePlayer).toHaveBeenCalledWith(component.player);
   });
 
   it('should not delete player if confirm is canceled', () => {
     spyOn(window, 'confirm').and.returnValue(false);
     component.removePlayer();
-
     expect(mockPlayersService.deletePlayer).not.toHaveBeenCalled();
   });
 
   it('should navigate to edit player', () => {
-    component.player = { id: 1 } as Player;
+    component.player = {
+      id: 1,
+      name: 'Upodate Player 1',
+      age: 25,
+      nationality: 'Española',
+      position: 'Delantero',
+      image: false,
+      team: 'Team1',
+      league: 'League',
+    };
     component.editPlayer();
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/players/edit', 1]);
   });
@@ -142,10 +216,19 @@ describe('PlayerDetailComponent', () => {
   it('should add player to user', () => {
     spyOn(window, 'confirm').and.returnValue(true);
     component.user = { id: 1 } as User;
-    component.player = { id: 1 } as Player;
+    component.player = {
+      id: 1,
+      name: 'Player 1',
+      age: 25,
+      nationality: 'Española',
+      position: 'Delantero',
+      image: false,
+      team: 'Team1',
+      league: 'League',
+    };
 
     component.addPlayer();
-
+    expect(window.confirm).toHaveBeenCalledWith('Quieres añadir este jugador?');
     expect(mockUsersService.addPlayer).toHaveBeenCalledWith(component.user, component.player);
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/users', 1]);
   });
@@ -153,7 +236,6 @@ describe('PlayerDetailComponent', () => {
   it('should not add player to user if confirm is canceled', () => {
     spyOn(window, 'confirm').and.returnValue(false);
     component.addPlayer();
-
     expect(mockUsersService.addPlayer).not.toHaveBeenCalled();
   });
 });

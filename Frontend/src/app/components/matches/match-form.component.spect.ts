@@ -18,23 +18,16 @@ describe('MatchFormComponent', () => {
 
   beforeEach(async () => {
     mockMatchesService = {
-      getMatch: jasmine.createSpy('getMatch').and.returnValue(of({
-        id: 1,
-        place: 'Test Place',
-        name: 'Test Match',
-        date: new Date(),
-        team1: '1',
-        team2: '2',
-        league: '1',
-      } as Match)),
-      addMatch: jasmine.createSpy('addMatch').and.returnValue(of({ id: 1 } as Match)),
-      updateMatch: jasmine.createSpy('updateMatch').and.returnValue(of({ id: 1} as Match)),
+      getMatch: jasmine.createSpy('getMatch').and.returnValue(of({ id: 1, league: "League 1", name: 'El clasico', date: new Date(), team1: 'Team', team2: 'Team2', place: 'Lepe' })),
+      addMatch: jasmine.createSpy('addMatch').and.returnValue(of({ league: "League 1", name: ' New El clasico', date: new Date(), team1: 'Team', team2: 'Team2', place: 'Lepe' })),
+      updateMatch: jasmine.createSpy('updateMatch').and.returnValue(of({ id: 1, league: "League 1", name: ' Updated El clasico', date: new Date(), team1: 'Team', team2: 'Team2', place: 'Lepe' })),
     };
 
     mockLeaguesService = {
-      getLeagues: jasmine.createSpy('getLeagues').and.returnValue(of([{ id: 1, name: 'Test League' }] as League[])),
-      getTeamsByName: jasmine.createSpy('getTeamsByName').and.returnValue(of([{ id: 1, name: 'Team 1' }, { id: '2', name: 'Team 2' }] as Team[])),
-      getLeagueByName: jasmine.createSpy('getLeagueByName').and.returnValue(of({ id: 1, name: 'Test League' } as League)),
+      getLeagues: jasmine.createSpy('getLeagues').and.returnValue(of([{ id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [], image: false }])),
+      getTeamsByName: jasmine.createSpy('getTeamsByName').and.returnValue(of([{ id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1' },
+      { id: 2, name: 'Team 2', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1' }])),
+      getLeagueByName: jasmine.createSpy('getLeagueByName').and.returnValue(of({ id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [], image: false })),
     };
 
     mockRouter = {
@@ -43,7 +36,7 @@ describe('MatchFormComponent', () => {
 
     mockActivatedRoute = {
       snapshot: {
-        params: { id: '1' }, // Simula un partido existente
+        params: { id: 1 },
       },
     };
 
@@ -65,114 +58,84 @@ describe('MatchFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Initialization', () => {
-    it('should load match details if ID is provided', () => {
-      component.ngOnInit();
+  it('should load match details if ID is provided', () => {
+    component.ngOnInit();
 
-      expect(mockMatchesService.getMatch).toHaveBeenCalledWith('1');
-      expect(component.match).toEqual(jasmine.objectContaining({ id: '1', name: 'Test Match' }));
-      expect(component.newMatch).toBeFalse();
-    });
-
-    it('should create a new match if no ID is provided', () => {
-      mockActivatedRoute.snapshot.params = {}; // Simula creación de un nuevo partido
-      component = new MatchFormComponent(mockRouter, mockActivatedRoute, mockMatchesService, mockLeaguesService);
-
-      component.ngOnInit();
-
-      expect(component.newMatch).toBeTrue();
-      expect(component.match).toEqual(jasmine.objectContaining({
-        place: '',
-        name: '',
-        date: jasmine.any(Date),
-        team1: '',
-        team2: '',
-        league: '',
-      }));
-    });
-
-    it('should load leagues on initialization', () => {
-      component.ngOnInit();
-
-      expect(mockLeaguesService.getLeagues).toHaveBeenCalled();
-      expect(component.leagues).toEqual([{ id: 1, name: 'Test League' } as League]);
-    });
+    expect(mockMatchesService.getMatch).toHaveBeenCalledWith(1);
+    expect(component.match).toEqual({ id: 1, league: "League 1", name: 'El clasico', date: new Date(), team1: 'Team', team2: 'Team2', place: 'Lepe' });
+    expect(component.newMatch).toBeFalse();
   });
 
-  describe('onLeagueChange', () => {
-    it('should load teams when a league is selected', () => {
-      component.selectedLeagueId = '1';
+  it('should create a new match if no ID is provided', () => {
+    mockActivatedRoute.snapshot.params = {};
+    component = new MatchFormComponent(mockRouter, mockActivatedRoute, mockMatchesService, mockLeaguesService);
 
-      component.onLeagueChange();
+    component.ngOnInit();
 
-      expect(mockLeaguesService.getTeamsByName).toHaveBeenCalledWith('1');
-      expect(component.teams).toEqual([{ id: 1, name: 'Team 1' } as Team, { id: 2, name: 'Team 2' } as Team]);
-    });
-
-    it('should clear teams if no league is selected', () => {
-      component.selectedLeagueId = '';
-
-      component.onLeagueChange();
-
-      expect(component.teams).toEqual([]);
-    });
+    expect(component.newMatch).toBeTrue();
+    expect(component.match).toEqual({ place: '', name: '', date: new Date, team1: '', team2: '', league: '' });
   });
 
-  describe('save', () => {
-    it('should add a new match if newMatch is true', () => {
-      component.newMatch = true;
-      component.match = {
-        place: 'New Place',
-        name: 'New Match',
-        date: new Date(),
-        team1: '1',
-        team2: '2',
-        league: '',
-      };
-      component.selectedLeagueId = '1';
+  it('should load leagues on initialization', () => {
+    component.ngOnInit();
 
-      component.save();
-
-      expect(mockMatchesService.addMatch).toHaveBeenCalledWith(component.match);
-    });
-
-    it('should update an existing match if newMatch is false', () => {
-      component.newMatch = false;
-      component.match = {
-        id: 1,
-        place: 'Updated Place',
-        name: 'Updated Match',
-        date: new Date(),
-        team1: '1',
-        team2: '2',
-        league: '',
-      };
-      component.selectedLeagueId = '1';
-
-      component.save();
-
-      expect(mockMatchesService.updateMatch).toHaveBeenCalledWith(component.match);
-    });
+    expect(mockLeaguesService.getLeagues).toHaveBeenCalled();
+    expect(component.leagues).toEqual([{ id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [], image: false }]);
   });
 
-  describe('afterSave', () => {
-    it('should navigate to league details after saving', () => {
-      component.match = { league: 'Test League' } as Match;
+  it('should load teams when a league is selected', () => {
+    component.selectedLeagueId = '1';
 
-      component.afterSave({ id: 1 } as Match);
+    component.onLeagueChange();
 
-      expect(mockLeaguesService.getLeagueByName).toHaveBeenCalledWith('Test League');
-      expect(mockRouter.navigate).toHaveBeenCalledWith(['/leagues', '1']);
-    });
+    expect(mockLeaguesService.getTeamsByName).toHaveBeenCalledWith(1);
+    expect(component.teams).toEqual([{ id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1' },
+    { id: 2, name: 'Team 2', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1' }]);
   });
 
-  describe('cancel', () => {
-    it('should navigate back when cancel is called', () => {
-      spyOn(window.history, 'back');
+  it('should clear teams if no league is selected', () => {
+    component.selectedLeagueId = '';
 
-      component.cancel();
+    component.onLeagueChange();
 
-      expect(window.history.back).toHaveBeenCalled();
-    });
+    expect(component.teams).toEqual([]);
   });
+
+  it('should add a new match if newMatch is true', () => {
+    component.newMatch = true;
+    component.match = { league: "League 1", name: ' New El clasico', date: new Date(), team1: 'Team', team2: 'Team2', place: 'Lepe' };
+    component.selectedLeagueId = '1';
+
+    component.save();
+
+    expect(mockMatchesService.addMatch).toHaveBeenCalledWith(component.match);
+  });
+
+  it('should update an existing match if newMatch is false', () => {
+    component.newMatch = false;
+    component.match = { id: 1, league: "League 1", name: ' Updated El clasico', date: new Date(), team1: 'Team', team2: 'Team2', place: 'Lepe' };
+    component.selectedLeagueId = '1';
+
+    component.save();
+
+    expect(mockMatchesService.updateMatch).toHaveBeenCalledWith(component.match);
+  });
+
+  it('should navigate to league details after saving', () => {
+    component.match = { id: 1, league: "League 1", name: ' Updated El clasico', date: new Date(), team1: 'Team', team2: 'Team2', place: 'Lepe' };
+
+    component.afterSave({ id: 1, league: "League 1", name: ' Updated El clasico', date: new Date(), team1: 'Team', team2: 'Team2', place: 'Lepe' });
+
+    expect(mockLeaguesService.getLeagueByName).toHaveBeenCalledWith('Test League');
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/leagues', 1]);
+  });
+
+  it('should navigate back when cancel is called', () => {
+    spyOn(window.history, 'back');
+
+    component.cancel();
+
+    expect(window.history.back).toHaveBeenCalled();
+  });
+
 });

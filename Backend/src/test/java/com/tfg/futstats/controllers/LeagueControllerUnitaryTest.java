@@ -107,7 +107,7 @@ public class LeagueControllerUnitaryTest {
 
         doNothing().when(restService).createLeague(league);
 
-        ResponseEntity<LeagueDTO> response = leagueController.postLeagues(leagueDto);
+        ResponseEntity<LeagueDTO> response = leagueController.postLeagues(null, leagueDto);
 
         assertEquals(201, response.getStatusCode().value());
         assertEquals(1, response.getBody().getId());

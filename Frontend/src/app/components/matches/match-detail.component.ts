@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 import { MatchesService } from '../../services/match.service';
 

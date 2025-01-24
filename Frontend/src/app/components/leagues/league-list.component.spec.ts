@@ -3,7 +3,8 @@ import { LeagueListComponent } from './league-list.component';
 import { LeaguesService } from 'src/app/services/league.service';
 import { LoginService } from 'src/app/services/login.service';
 import { Router } from '@angular/router';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 class MockLeaguesService {
   getLeagues = jasmine.createSpy('getLeagues').and.returnValue(of([
@@ -26,6 +27,10 @@ describe('LeagueListComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [
+        // Asegúrate de incluirlo aquí
+        NgxPaginationModule
+      ],
       declarations: [LeagueListComponent],
       providers: [
         { provide: LeaguesService, useClass: MockLeaguesService },

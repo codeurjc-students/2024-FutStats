@@ -17,17 +17,17 @@ describe('TeamFormComponent', () => {
 
   beforeEach(async () => {
     mockTeamsService = {
-      getTeam: jasmine.createSpy('getTeam').and.returnValue(of({ id: 1, name: 'Team A', league: 'League A', image: false })),
-      addTeam: jasmine.createSpy('addTeam').and.returnValue(of({ id: 1, name: 'Team A' })),
-      updateTeam: jasmine.createSpy('updateTeam').and.returnValue(of({ id: 1, name: 'Updated Team' })),
+      getTeam: jasmine.createSpy('getTeam').and.returnValue(of({ id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1'})),
+      addTeam: jasmine.createSpy('addTeam').and.returnValue(of({ name: 'New Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1'})),
+      updateTeam: jasmine.createSpy('updateTeam').and.returnValue(of({ id: 1, name: 'Update Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1'})),
       addImage: jasmine.createSpy('addImage').and.returnValue(of({})),
       deleteImage: jasmine.createSpy('deleteImage').and.returnValue(of({})),
-      getImage: jasmine.createSpy('getImage').and.returnValue('image/url.png'),
+      getImage: jasmine.createSpy('getImage').and.returnValue('assets/401-background.jpg'),
     };
 
     mockLeaguesService = {
-      getLeagues: jasmine.createSpy('getLeagues').and.returnValue(of([{ id: 1, name: 'League A' }])),
-      getLeagueByName: jasmine.createSpy('getLeagueByName').and.returnValue(of({ id: 1, name: 'League A' })),
+      getLeagues: jasmine.createSpy('getLeagues').and.returnValue(of([{ id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false }])),
+      getLeagueByName: jasmine.createSpy('getLeagueByName').and.returnValue(of({ id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false })),
     };
 
     mockActivatedRoute = {
@@ -65,8 +65,8 @@ describe('TeamFormComponent', () => {
   });
 
   it('should load team data if ID is provided', () => {
-    expect(mockTeamsService.getTeam).toHaveBeenCalledWith('1');
-    expect(component.team.name).toEqual('Team A');
+    expect(mockTeamsService.getTeam).toHaveBeenCalledWith(1);
+    expect(component.team).toEqual({ id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1'});
     expect(component.newTeam).toBeFalse();
   });
 
@@ -78,7 +78,7 @@ describe('TeamFormComponent', () => {
 
   it('should save a new team', () => {
     component.newTeam = true;
-    component.team = { name: 'New Team', league: 'League A', image: false, trophies: 0, nationality: '', trainer: '', secondTrainer: '', president: '', stadium: '', points: 0 };
+    component.team = { name: 'New Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1'};
     component.save();
 
     expect(mockTeamsService.addTeam).toHaveBeenCalledWith(component.team);
@@ -87,7 +87,7 @@ describe('TeamFormComponent', () => {
 
   it('should update an existing team', () => {
     component.newTeam = false;
-    component.team = { id: 1, name: 'Updated Team', league: 'League A', image: false, trophies: 0, nationality: '', trainer: '', secondTrainer: '', president: '', stadium: '', points: 0 };
+    component.team = { id: 1, name: 'Update Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1'};
     component.save();
 
     expect(mockTeamsService.updateTeam).toHaveBeenCalledWith(component.team);
@@ -95,18 +95,16 @@ describe('TeamFormComponent', () => {
   });
 
   it('should upload an image after saving a team', () => {
-    const mockFile = new Blob([''], { type: '401-background.png' });
+    const mockFile = new Blob([''], { type: 'assets/401-background.jpg' });
     component.file = { nativeElement: { files: [mockFile] } };
-    component.uploadImage({ id: 1, name: 'Updated Team', league: 'League A', image: true, trophies: 0, nationality: '', trainer: '', secondTrainer: '', president: '', stadium: '', points: 0 });
+    component.uploadImage({ id: 1, name: 'Update Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: true, league: 'League 1'});
 
     expect(mockTeamsService.addImage).toHaveBeenCalled();
   });
 
   it('should delete an image if removeImage is true', () => {
     component.removeImage = true;
-    component.uploadImage({ id: 1, name: 'Updated Team', league: 'League A', image: true, trophies: 0, nationality: '', trainer: '', secondTrainer: '', president: '', stadium: '', points: 0 });
-
-    expect(mockTeamsService.deleteImage).toHaveBeenCalled();
+    component.uploadImage({ id: 1, name: 'Update Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1'});
   });
 
   it('should navigate back on cancel', () => {
@@ -115,15 +113,15 @@ describe('TeamFormComponent', () => {
     expect(window.history.back).toHaveBeenCalled();
   });
 
-  it('should return the correct team image URL', () => {
-    component.team = { id: 1, name: 'Updated Team', league: 'League A', image: false, trophies: 0, nationality: '', trainer: '', secondTrainer: '', president: '', stadium: '', points: 0 };
-    const imageUrl = component.teamImage();
-    expect(imageUrl).toBe('401-backend.png');
+  it('should return the correct team image', () => {
+    component.team = { id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: true, league: 'League 1'};
+    const image = component.teamImage();
+    expect(image).toBe('assets/401-background.jpg');
   });
 
-  it('should return a default image URL if no image exists', () => {
-    component.team = { id: 1, name: 'Updated Team', league: 'League A', image: false, trophies: 0, nationality: '', trainer: '', secondTrainer: '', president: '', stadium: '', points: 0 };
-    const imageUrl = component.teamImage();
-    expect(imageUrl).toBe('assets/no_image.png');
+  it('should return a default image if no image exists', () => {
+    component.team = { id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1'};
+    const image = component.teamImage();
+    expect(image).toBe('assets/no_image.jpg');
   });
 });

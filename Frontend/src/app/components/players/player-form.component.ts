@@ -55,7 +55,7 @@ export class PlayerFormComponent implements OnInit {
     this.loadLeagues();
   }
 
-  private loadLeagues() {
+  loadLeagues() {
     this.leagueService.getLeagues().subscribe({
       next: (leagues) => (this.leagues = leagues),
       error: (error) => console.error('Error loading leagues:', error),
@@ -135,7 +135,7 @@ export class PlayerFormComponent implements OnInit {
   }
 
   playerImage() {
-    return this.player.image ? this.service.getImage(this.player.id) : 'assets/no_image.png';
+    return this.player.image ? this.service.getImage(this.player.id) : 'assets/no_image.jpg';
   }
 
   cancel() {

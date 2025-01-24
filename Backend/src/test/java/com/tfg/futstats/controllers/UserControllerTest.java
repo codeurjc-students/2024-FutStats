@@ -182,6 +182,7 @@ public class UserControllerTest {
                 {
                     "name": "admin2",
                     "password": "pass",
+                    "email": "example@gmail.com",
                     "roles": ["[user]"],
                     "image": false
                 }

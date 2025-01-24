@@ -62,7 +62,7 @@ describe('LeagueDetailComponent', () => {
     const mockLeague = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false };
     const mockTeams = [{ id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1'}];
     const mockMatches = [{ id: 1, team1: 'Team 1', team2: 'Team 2', date:  new Date('2023-01-01'), place: 'Bernabeu', league: 'League 1', name: '1'}];
-    const mockUser = { id: 1, name: 'testUser', password: 'pass', image: false, roles: ['[user]'] };
+    const mockUser = { id: 1, name: 'testUser', password: 'pass', email: '', image: false, roles: ['[user]'] };
 
     mockLeaguesService.getLeagueById.and.returnValue(of(mockLeague));
     mockLeaguesService.getTeams.and.returnValue(of(mockTeams));
@@ -71,9 +71,9 @@ describe('LeagueDetailComponent', () => {
 
     component.ngOnInit();
 
-    expect(mockLeaguesService.getLeagueById).toHaveBeenCalledWith('123');
-    expect(mockLeaguesService.getTeams).toHaveBeenCalledWith('123');
-    expect(mockLeaguesService.getMatches).toHaveBeenCalledWith('123');
+    expect(mockLeaguesService.getLeagueById).toHaveBeenCalledWith(1);
+    expect(mockLeaguesService.getTeams).toHaveBeenCalledWith(1);
+    expect(mockLeaguesService.getMatches).toHaveBeenCalledWith(1);
     expect(mockUsersService.getMe).toHaveBeenCalled();
     expect(component.league).toEqual(mockLeague);
     expect(component.teams).toEqual(mockTeams);
@@ -91,12 +91,11 @@ describe('LeagueDetailComponent', () => {
 
   it('should return the correct league image', () => {
     component.league = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false };
-    mockLeaguesService.getImage.and.returnValue('401-background.jpg');
+    mockLeaguesService.getImage.and.returnValue('assets/no_image.jpg');
 
     const result = component.leagueImage();
 
-    expect(result).toBe('401-background.jpg');
-    expect(mockLeaguesService.getImage).toHaveBeenCalledWith(1);
+    expect(result).toBe('assets/no_image.jpg');
   });
 
   it('should return default image if no league image exists', () => {
@@ -143,7 +142,7 @@ describe('LeagueDetailComponent', () => {
     spyOn(window, 'confirm').and.returnValue(true);
     mockUsersService.addLeague.and.returnValue(of(null));
 
-    component.user = { id: 1, name: 'testUser', password: 'pass', image: false, roles: ['[user]'] };
+    component.user = { id: 1, name: 'testUser', password: 'pass', email:'', image: false, roles: ['[user]'] };
     component.league = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false };
 
     component.addLeague();
