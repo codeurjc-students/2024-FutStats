@@ -46,14 +46,6 @@ jobs:
           echo "MySQL is ready!"
         working-directory: ./Docker
 
-      - name: Run Spring Boot tests Controllers
-        run:  mvn test -Dtest="com.tfg.futstats.controllers.**"
-        working-directory: ./Backend
-
-      - name: Run Spring Boot tests Services
-        run:  mvn test -Dtest="com.tfg.futstats.services.**" 
-        working-directory: ./Backend
-
       - name: Set up Node.js 18.119
         uses: actions/setup-node@v2
         with:
@@ -65,6 +57,14 @@ jobs:
       - name: Install Angular Dependencies
         run: npm install
         working-directory: ./Frontend
+
+      - name: Run Spring Boot tests Controllers
+        run:  mvn test -Dtest="com.tfg.futstats.controllers.**"
+        working-directory: ./Backend
+
+      - name: Run Spring Boot tests Services
+        run:  mvn test -Dtest="com.tfg.futstats.services.**" 
+        working-directory: ./Backend
 
       - name: Run Angular Unit Tests
         run: ng test --watch=false --browsers=ChromeHeadless
