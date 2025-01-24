@@ -46,18 +46,33 @@ jobs:
           echo "MySQL is ready!"
         working-directory: ./Docker
 
-      - name: Set up Node.js 16
+      - name: Run Spring Boot tests Controllers
+        run:  mvn test -Dtest="com.tfg.futstats.controllers.**"
+        working-directory: ./Backend
+
+      - name: Run Spring Boot tests Services
+        run:  mvn test -Dtest="com.tfg.futstats.services.**" 
+        working-directory: ./Backend
+
+      - name: Set up Node.js 18.119
         uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: '18.19'
 
-      - name: Install Angular dependencies
+      - name: Install Angular CLI Globally
+        run: npm install -g @angular/cli
+
+      - name: Install Angular Dependencies
         run: npm install
         working-directory: ./Frontend
 
-      - name: Run Angular unit tests
-        run: npm test -- --watch=false --browsers=ChromeHeadless
+      - name: Run Angular Unit Tests
+        run: ng test --watch=false --browsers=ChromeHeadless
         working-directory: ./Frontend
+
+      - name: Run Spring Boot tests Selenium
+        run:  mvn test -Dtest="com.tfg.futstats.selenium.**" 
+        working-directory: ./Backend
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
