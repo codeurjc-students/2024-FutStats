@@ -24,41 +24,44 @@ jobs:
         run: |
             sudo apt-get update
             sudo apt-get install -y docker-compose
-
       - name: Levantar contenedores en segundo plano
         run: docker-compose up -d --build
         working-directory: ./Docker
 
-      - name: Stop running containers before tests
-        run: docker-compose down
-        working-directory: ./Docker
-
-      - name: Levantar contenedor para pruebas
-        run: docker-compose up -d db_test
-        working-directory: ./Docker
-
-      - name: Wait for MySQL Test in Docker
+      - name: Wait for MySQL in Docker
         run: |
-          echo "Waiting for Test MySQL to be ready..."
+          echo "Waiting for MySQL to be ready..."
           retries=12
-          until docker-compose exec -T db_test mysql -u root -p"17042002" -e "SELECT 1"; do
+          # "db" es el servicio definido en docker-compose.yml
+          until docker-compose exec -T db mysql -u root -p"17042002" -e "SELECT 1"; do
             if [ $retries -le 0 ]; then
-              echo "MySQL Test not ready after multiple attempts, failing..."
+              echo "MySQL not ready after multiple attempts, failing..."
               exit 1
             fi
-            echo "MySQL Test not ready, waiting..."
+            echo "MySQL not ready, waiting..."
             retries=$((retries-1))
             sleep 5
           done
-          echo "MySQL Test is ready!"
+          echo "MySQL is ready!"
         working-directory: ./Docker
 
-      - name: Run Spring Boot tests Controllers
-        run: mvn test -Dtest="com.tfg.futstats.controllers.**" -Dspring.profiles.active=test
-        working-directory: ./Backend
+      - name: Set up Node.js 18.119
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18.19'
 
+      - name: Install Angular CLI Globally
+        run: npm install -g @angular/cli
+
+      - name: Install Angular Dependencies
+        run: npm install
+        working-directory: ./Frontend
+        
+      - name: Run Spring Boot tests Controllers
+        run:  mvn test -Dtest="com.tfg.futstats.controllers.**"
+        working-directory: ./Backend
       - name: Run Spring Boot tests Services
-        run: mvn test -Dtest="com.tfg.futstats.services.**" -Dspring.profiles.active=test
+        run:  mvn test -Dtest="com.tfg.futstats.services.**" 
         working-directory: ./Backend
 
       - name: Run Angular Unit Tests
@@ -66,7 +69,7 @@ jobs:
         working-directory: ./Frontend
 
       - name: Run Spring Boot tests Selenium
-        run: mvn test -Dtest="com.tfg.futstats.selenium.**" -Dspring.profiles.active=test
+        run:  mvn test -Dtest="com.tfg.futstats.selenium.**" 
         working-directory: ./Backend
 
       - name: Log in to Docker Hub
