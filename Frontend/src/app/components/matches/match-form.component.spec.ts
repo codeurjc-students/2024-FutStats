@@ -67,7 +67,7 @@ describe('MatchFormComponent', () => {
   });
 
   it('should create a new match if no ID is provided', () => {
-    mockActivatedRoute.snapshot.params = {}; // Simula creación de un nuevo partido
+    mockActivatedRoute.snapshot.params = {};
     component = new MatchFormComponent(mockRouter, mockActivatedRoute, mockMatchesService, mockLeaguesService);
 
     component.ngOnInit();

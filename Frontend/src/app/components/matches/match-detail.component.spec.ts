@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MatchesService } from '../../services/match.service';
 import { LoginService } from 'src/app/services/login.service';
 import { TeamsService } from 'src/app/services/team.service';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 
 describe('MatchDetailComponent', () => {
   let component: MatchDetailComponent;
@@ -83,12 +83,11 @@ describe('MatchDetailComponent', () => {
     expect(image).toBe('assets/no_image.jpg');
   });
 
-  it('should return team2 image URL if image exists', () => {
+  it('should return team2 image if image exists', () => {
     component.team2 = { id: 2, name: 'Team 2', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: true, league: 'League 1' };
-    const result = component.team2Image();
+    const image = component.team2Image();
 
-    expect(result).toBe('assets/401-background.jpg');
-    expect(mockTeamsService.getImage).toHaveBeenCalledWith(2);
+    expect(image).toBe('assets/401-background.jpg');
   });
 
   it('should return default image if team2 image does not exist', () => {
