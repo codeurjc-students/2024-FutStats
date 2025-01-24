@@ -51,15 +51,15 @@ jobs:
         with:
           node-version: '16'
 
-      - name: Install Angular dependencies
+      - name: Install Angular CLI Globally
+        run: npm install -g @angular/cli
+
+      - name: Install Angular Dependencies
         run: npm install
         working-directory: ./Frontend
 
-      - name: Install Angular CLI
-        run: npm list -g @angular/cli
-
-      - name: Run Angular unit tests
-        run: ng test 
+      - name: Run Angular Unit Tests
+        run: ng test --watch=false --browsers=ChromeHeadless
         working-directory: ./Frontend
 
       - name: Log in to Docker Hub
