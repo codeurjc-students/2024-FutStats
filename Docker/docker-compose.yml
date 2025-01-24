@@ -1,21 +1,35 @@
-version: "3.3"
+version: "3.8"
+
 services:
   db:
     image: mysql:8.0.22
     environment:
       MYSQL_ROOT_PASSWORD: 17042002
-      MYSQL_ROOT_USER: root
       MYSQL_DATABASE: api_rest
-      MYSQL_PASSWORD: 17042002
     ports:
       - "3307:3306"
-    command: >
-      --init-connect='GRANT ALL PRIVILEGES ON *.* TO "root"@"%" WITH GRANT OPTION; FLUSH PRIVILEGES;'
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
       retries: 3
+    volumes:
+      - db_data:/var/lib/mysql
+
+  db_test:
+    image: mysql:8.0.22
+    environment:
+      MYSQL_ROOT_PASSWORD: 17042002
+      MYSQL_DATABASE: test_database
+    ports:
+      - "3308:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - db_test_data:/var/lib/mysql
 
   backend:
     build:
@@ -24,13 +38,22 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/api_rest
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 17042002
+    ports:
+      - "8080:8080"
 
   frontend:
     build:
-      context: ../Frontend/  # Directorio donde se encuentra el Dockerfile
+      context: ../Frontend/
       dockerfile: Dockerfile
     depends_on:
       - backend
     ports:
       - "4200:4200"
 
+volumes:
+  db_data:
+  db_test_data:
