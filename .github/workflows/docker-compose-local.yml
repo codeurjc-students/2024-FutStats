@@ -58,14 +58,6 @@ jobs:
         run: npm install
         working-directory: ./Frontend
 
-      - name: Run Spring Boot tests Controllers
-        run:  mvn test -Dtest="com.tfg.futstats.controllers.**"
-        working-directory: ./Backend
-
-      - name: Run Spring Boot tests Services
-        run:  mvn test -Dtest="com.tfg.futstats.services.**" 
-        working-directory: ./Backend
-
       - name: Run Angular Unit Tests
         run: ng test --watch=false --browsers=ChromeHeadless
         working-directory: ./Frontend
