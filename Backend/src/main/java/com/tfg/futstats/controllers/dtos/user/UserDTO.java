@@ -10,6 +10,8 @@ public class UserDTO {
     private List<String> roles;
     private boolean image;
 
+    public UserDTO (){}
+
     public long getId(){
         return this.id;
     }

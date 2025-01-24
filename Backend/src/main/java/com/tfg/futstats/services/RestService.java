@@ -171,10 +171,11 @@ public class RestService {
         teamRepository.save(team);
     }
 
-    public void createTeam(Team team, League league) {
+    public Team createTeam(Team team, League league) {
         team.setLeague(league);
         league.setTeam(team);
         teamRepository.save(team);
+        return team;
     }
 
     public void deleteTeam(Team team) {
@@ -403,7 +404,7 @@ public class RestService {
         playerRepository.save(player);
     }
 
-    public void createPlayer(Player player, League league, Team team) {
+    public Player createPlayer(Player player, League league, Team team) {
         league.setPlayer(player);
         team.setPlayer(player);
 
@@ -411,6 +412,8 @@ public class RestService {
         player.setTeam(team);
 
         playerRepository.save(player);
+
+        return player;
     }
 
     public void createPlayerMatch(PlayerMatch newPlayerMatch, Match match, Player player) {
@@ -726,7 +729,7 @@ public class RestService {
         matchRepository.save(match);
     }
 
-    public void createMatch(Match newMatch, League league, Team team1, Team team2) {
+    public Match createMatch(Match newMatch, League league, Team team1, Team team2) {
 
         newMatch.setLeague(league);
         newMatch.setTeam1(team1);
@@ -752,6 +755,8 @@ public class RestService {
 
         createTeamMatch(teamMatch1, newMatch, team1);
         createTeamMatch(teamMatch2, newMatch, team2);
+
+        return newMatch;
     }
 
     public void deleteMatch(Match match) {

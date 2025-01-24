@@ -56,7 +56,6 @@ public class UserService {
         user.setRoles(user.getRoles().toString());
         User savedUser = userRepository.save(user);
 
-        // Enviar correo al usuario recién creado
         try {
             emailService.sendEmail(
                 user.getEmail(), 

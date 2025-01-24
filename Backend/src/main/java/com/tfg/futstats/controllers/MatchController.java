@@ -217,7 +217,7 @@ public class MatchController {
                 Team team2 = restService.findTeamByName(matchDto.getTeam2())
                                 .orElseThrow(() -> new ElementNotFoundException("No existe un equipo con ese nombre"));
 
-                restService.createMatch(newMatch, league, team1, team2);
+                newMatch = restService.createMatch(newMatch, league, team1, team2);
 
                 URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                                 .buildAndExpand(newMatch.getId())

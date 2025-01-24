@@ -212,7 +212,7 @@ public class Playercontroller {
                 Team team = restService.findTeamByName(playerDto.getTeam())
                                 .orElseThrow(() -> new ElementNotFoundException("No existe un equipo con ese nombre"));
 
-                restService.createPlayer(newPlayer, league, team);
+                newPlayer = restService.createPlayer(newPlayer, league, team);
 
                 URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                                 .buildAndExpand(newPlayer.getId())

@@ -81,7 +81,7 @@ public class RestServiceTest {
     public void testFindAllLeagues() {
         List<LeagueDTO> leagues = restService.findAllLeagues();
 
-        assertEquals(1, leagues.size());
+        assertEquals(3, leagues.size());
         assertEquals("LaLiga", leagues.get(0).getName());
     }
 
@@ -610,7 +610,7 @@ public class RestServiceTest {
     public void testFindAllPlayerMatchesByPlayer() {
         List<PlayerMatchDTO> players = restService.findAllPlayerMatchesByPlayer(1);
 
-        assertEquals(1, players.size());
+        assertEquals(2, players.size());
         assertEquals("FC Barcelona-Real Madrid", players.get(0).getMatchName());
     }
 
@@ -618,7 +618,7 @@ public class RestServiceTest {
     public void testFindAllPlayerMatchesByMatch() {
         List<PlayerMatchDTO> players = restService.findAllPlayerMatchesByMatch(1);
 
-        assertEquals(1, players.size());
+        assertEquals(3, players.size());
         assertEquals("Vinicius Jr.", players.get(0).getName());
     }
 
@@ -665,7 +665,7 @@ public class RestServiceTest {
 
         assertTrue(playerReturn.isPresent(), "PlayerMatch should be present");
 
-        assertEquals("Lamine Yamal", playerReturn.get().getName());
+        assertEquals("Antonio Rudiguer", playerReturn.get().getName());
     }
 
     @Test

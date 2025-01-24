@@ -1,6 +1,7 @@
 package com.tfg.futstats.controllers;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.tfg.futstats.controllers.dtos.user.UserDTO;
@@ -12,20 +13,24 @@ import com.tfg.futstats.models.User;
 import com.tfg.futstats.services.RestService;
 import com.tfg.futstats.services.UserService;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
 public class UserControllerUnitaryTest {
-    
-        @Mock
+
+    @Mock
     private RestService restService;
 
     @Mock
@@ -40,6 +45,11 @@ public class UserControllerUnitaryTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void tearDown() {
+        RequestContextHolder.resetRequestAttributes();
     }
 
     @Test
@@ -69,6 +79,12 @@ public class UserControllerUnitaryTest {
 
     @Test
     void testPostUser() {
+        // Configurar el contexto simulado del servlet
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        ServletRequestAttributes attributes = new ServletRequestAttributes(mockRequest);
+        RequestContextHolder.setRequestAttributes(attributes);
+
+        // Crear objetos de prueba
         UserDTO userDto = new UserDTO();
         userDto.setName("newuser");
         userDto.setId(1L);
@@ -77,12 +93,18 @@ public class UserControllerUnitaryTest {
         User user = new User();
         user.setId(1L);
 
-        when(userService.createUser(user)).thenReturn(user);
+        // Configurar mocks
+        when(userService.createUser(any(User.class))).thenReturn(user);
 
+        // Llamar al controlador
         ResponseEntity<UserResponseDTO> response = userController.postUser(null, userDto);
 
-        assertEquals(200, response.getStatusCode().value());
+        // Verificar resultados
+        assertEquals(201, response.getStatusCode().value());
         assertEquals("newuser", response.getBody().getName());
+
+        // Limpiar el contexto después del test
+        RequestContextHolder.resetRequestAttributes();
     }
 
     @Test

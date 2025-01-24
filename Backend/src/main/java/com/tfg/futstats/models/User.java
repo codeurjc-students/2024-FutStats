@@ -2,6 +2,7 @@ package com.tfg.futstats.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.sql.Blob;
@@ -79,7 +80,7 @@ public class User {
         this.belongedLeagues = new ArrayList<>();
         this.belongedTeams = new ArrayList<>();
         this.belongedPlayers = new ArrayList<>();
-        this.roles = List.of(roles);
+        this.roles = new ArrayList<>(Arrays.asList(roles));
         this.image = image;
         this.imageFile = imageFile;
         this.belongedLeagues = new ArrayList<>();

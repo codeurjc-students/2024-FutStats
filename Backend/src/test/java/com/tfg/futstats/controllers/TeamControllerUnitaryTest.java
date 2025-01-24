@@ -14,19 +14,22 @@ import com.tfg.futstats.models.League;
 import com.tfg.futstats.models.Team;
 import com.tfg.futstats.services.RestService;
 
-
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.List;
 import java.util.Optional;
 
 public class TeamControllerUnitaryTest {
-    
+
     @Mock
     private RestService restService;
 
@@ -36,6 +39,11 @@ public class TeamControllerUnitaryTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void tearDown() {
+        RequestContextHolder.resetRequestAttributes();
     }
 
     @Test
@@ -58,7 +66,7 @@ public class TeamControllerUnitaryTest {
         mockTeam.setId(1);
         mockTeam.setName("Osasuna");
         mockTeam.setLeague(league);
-        
+
         when(restService.findTeamById(1)).thenReturn(Optional.of(mockTeam));
 
         ResponseEntity<TeamResponseDTO> response = teamController.getTeam(1);
@@ -146,6 +154,10 @@ public class TeamControllerUnitaryTest {
 
     @Test
     void testPostTeam() {
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        ServletRequestAttributes attributes = new ServletRequestAttributes(mockRequest);
+        RequestContextHolder.setRequestAttributes(attributes);
+
         League league = new League();
         league.setId(1);
         league.setName("LaLiga");
@@ -156,13 +168,15 @@ public class TeamControllerUnitaryTest {
         TeamCreationDTO teamDto = new TeamCreationDTO();
         teamDto.setLeague("LaLiga");
 
-        doNothing().when(restService).createTeam(any(Team.class), any(League.class));
+        when(restService.createTeam(any(Team.class), any(League.class))).thenReturn(mockTeam);
         when(restService.findLeagueByName("LaLiga")).thenReturn(Optional.of(league));
 
         ResponseEntity<TeamResponseDTO> response = teamController.postTeams(null, teamDto);
 
         assertEquals(201, response.getStatusCode().value());
         assertEquals(1, response.getBody().getId());
+
+        RequestContextHolder.resetRequestAttributes();
     }
 
     @Test

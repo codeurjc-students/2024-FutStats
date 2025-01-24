@@ -4,6 +4,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.tfg.futstats.controllers.dtos.league.LeagueDTO;
 import com.tfg.futstats.controllers.dtos.player.PlayerDTO;
@@ -15,6 +18,7 @@ import com.tfg.futstats.models.Player;
 import com.tfg.futstats.models.Team;
 import com.tfg.futstats.services.RestService;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -35,6 +39,11 @@ public class PlayerControllerUnitaryTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void tearDown() {
+        RequestContextHolder.resetRequestAttributes();
     }
 
     @Test
@@ -62,7 +71,7 @@ public class PlayerControllerUnitaryTest {
 
         mockPlayer.setLeague(league);
         mockPlayer.setTeam(team);
-        
+
         when(restService.findPlayerById(1)).thenReturn(Optional.of(mockPlayer));
 
         ResponseEntity<PlayerResponseDTO> response = playerController.getPlayer(1);
@@ -132,7 +141,6 @@ public class PlayerControllerUnitaryTest {
         mockPlayer.setLeague(league);
         mockPlayer.setTeam(team);
 
-
         when(restService.findPlayerById(1)).thenReturn(Optional.of(mockPlayer));
 
         ResponseEntity<TeamResponseDTO> response = playerController.getTeamByPlayer(1);
@@ -154,7 +162,6 @@ public class PlayerControllerUnitaryTest {
         mockPlayer.setLeague(league);
         mockPlayer.setTeam(team);
 
-
         when(restService.findPlayerById(1)).thenReturn(Optional.of(mockPlayer));
 
         List<PlayerMatchDTO> mockPlayerMatches = List.of(new PlayerMatchDTO());
@@ -169,6 +176,11 @@ public class PlayerControllerUnitaryTest {
 
     @Test
     void testPostPlayer() {
+        // Configurar el contexto simulado del servlet
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        ServletRequestAttributes attributes = new ServletRequestAttributes(mockRequest);
+        RequestContextHolder.setRequestAttributes(attributes);
+
         PlayerDTO playerDto = new PlayerDTO();
         League league = new League();
         league.setId(1);
@@ -177,14 +189,14 @@ public class PlayerControllerUnitaryTest {
         Player mockPlayer = new Player();
         mockPlayer.setId(1);
         playerDto.setId(1);
-        playerDto.setName(("Paco"));
+        playerDto.setName("Paco");
         playerDto.setLeague("LaLiga");
         playerDto.setTeam("Real Madrid");
 
         mockPlayer.setLeague(league);
         mockPlayer.setTeam(team);
 
-        doNothing().when(restService).createPlayer(any(Player.class), any(League.class), any(Team.class));
+        when(restService.createPlayer(any(Player.class), eq(league), eq(team))).thenReturn(mockPlayer);
         when(restService.findLeagueByName("LaLiga")).thenReturn(Optional.of(league));
         when(restService.findTeamByName("Real Madrid")).thenReturn(Optional.of(team));
 

@@ -208,7 +208,7 @@ public class TeamController {
             League league = restService.findLeagueByName(teamDto.getLeague())
                 .orElseThrow(() -> new ElementNotFoundException("No existe una liga con ese nombre"));
 
-            restService.createTeam(newTeam, league);
+            newTeam = restService.createTeam(newTeam, league);
 
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                             .buildAndExpand(newTeam.getId())

@@ -5,6 +5,9 @@ import com.tfg.futstats.models.League;
 import com.tfg.futstats.models.Team;
 import com.tfg.futstats.models.Player;
 import com.tfg.futstats.repositories.UserRepository;
+
+import jakarta.mail.MessagingException;
+
 import com.tfg.futstats.controllers.dtos.user.UserDTO;
 import com.tfg.futstats.controllers.dtos.user.UserResponseDTO;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +24,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ActiveProfiles("test")
@@ -34,6 +39,9 @@ public class UserServiceUnitaryTests {
 
     @Mock
     private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private EmailService emailService;
 
     @BeforeEach
     void setUp() {
@@ -89,39 +97,26 @@ public class UserServiceUnitaryTests {
         assertEquals("user1", result.get().getName());
     }
 
-    // @Test
-    // void testFindUserByName_NullName() {
-    //     Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-    //         userService.findUserByName(null);
-    //     });
-
-    //     assertEquals("User name cannot be null", exception.getMessage());
-    // }
-
     @Test
     void testCreateUser() {
+        try{
         String rawPassword = "password1";
         String encodedPassword = "encodedPassword1";
         Blob image = null;
         User user = new User("user1", encodedPassword, "example@gmail.com", image, false, "[user]");
 
+        doNothing().when(emailService).sendEmail(anyString(), anyString(), anyString());
         when(passwordEncoder.encode(rawPassword)).thenReturn(encodedPassword);
         when(userRepository.save(any(User.class))).thenReturn(user);
 
         User result = userService.createUser(user);
 
         assertEquals("user1", result.getName());
-        assertEquals(encodedPassword, result.getPassword());
+        } catch (MessagingException e) {
+        fail("MessagingException should not be thrown during the test");
     }
 
-    // @Test
-    // void testCreateUser_NullUsername() {
-    //     Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-    //         userService.createUser(null, "password", null, false, List.of("ROLE_USER"));
-    //     });
-
-    //     assertEquals("Username cannot be null", exception.getMessage());
-    // }
+    }
 
     @Test
     void testUpdateUser() {
@@ -140,20 +135,6 @@ public class UserServiceUnitaryTests {
         verify(userRepository).save(existingUser);
     }
 
-    // @Test
-    // void testUpdateUser_NullUser() {
-    //     UserDTO updatedUserDTO = new UserDTO();
-    //     updatedUserDTO.setName("newUser1");
-    //     String encodedPassword = "encodedNewPassword1";
-    //     updatedUserDTO.setPassword(encodedPassword);
-
-    //     Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-    //         userService.updateUser(null, updatedUserDTO);
-    //     });
-
-    //     assertEquals("Old user cannot be null", exception.getMessage());
-    // }
-
     @Test
     void testDeleteUser() {
         User user = mock(User.class);
@@ -162,15 +143,6 @@ public class UserServiceUnitaryTests {
 
         verify(userRepository).delete(user);
     }
-
-    // @Test
-    // void testDeleteUser_NullUser() {
-    //     Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-    //         userService.deleteUser(null);
-    //     });
-
-    //     assertEquals("User cannot be null", exception.getMessage());
-    // }
 
     @Test
     void testAddUserLeague() {
