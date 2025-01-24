@@ -55,6 +55,9 @@ jobs:
         run: npm install
         working-directory: ./Frontend
 
+      - name: Install Angular CLI
+        run: npm list -g @angular/cli
+
       - name: Run Angular unit tests
         run: ng test 
         working-directory: ./Frontend
