@@ -58,7 +58,7 @@ jobs:
       run: npm install
 
     - name: Run Angular unit tests
-      run: npm test -- --watch=false --browsers=ChromeHeadless
+      run: ng test 
       working-directory: ./Frontend
 
     - name: Log in to Docker Hub
