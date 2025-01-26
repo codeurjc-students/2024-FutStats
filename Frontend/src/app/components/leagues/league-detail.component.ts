@@ -13,6 +13,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
     templateUrl: './league-detail.component.html',
+    styleUrls: ['./league-detail.component.css'],
     standalone: false
 })
 export class LeagueDetailComponent implements OnInit {

@@ -9,6 +9,7 @@ import { TeamsService } from 'src/app/services/team.service';
 
 @Component({
     templateUrl: './player-form.component.html',
+    styleUrls: ['./player-form.component.css'],
     standalone: false
 })
 export class PlayerFormComponent implements OnInit {
@@ -119,6 +120,13 @@ export class PlayerFormComponent implements OnInit {
     }
     this.afterUploadImage(player);
 
+  }
+
+  onFileSelected(event: any): void {
+    const fileInput = event.target.files[0];
+    if (fileInput) {
+      console.log('Archivo seleccionado:', fileInput.name);
+    }
   }
 
   private afterUploadImage(player: Player) {

@@ -53,7 +53,7 @@ describe('PlayerMatchDetailComponent', () => {
 
     mockActivatedRoute = {
       snapshot: {
-        params: { id: 1 }, // Simula el ID del PlayerMatch
+        params: { id: 1 },
       },
     };
 

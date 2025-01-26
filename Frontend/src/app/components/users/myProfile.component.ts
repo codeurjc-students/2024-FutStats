@@ -10,6 +10,7 @@ import { Player } from 'src/app/models/player.model';
 
 @Component({
     templateUrl: './myProfile.component.html',
+    styleUrls: ['./myProfile.component.css'],
     standalone: false
 })
 export class myProfileComponent implements OnInit {

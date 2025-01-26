@@ -10,6 +10,7 @@ import { MatchesService } from 'src/app/services/match.service';
 
 @Component({
     templateUrl: './playerMatch-form.component.html',
+    styleUrls: ['./playerMatch-form.component.css'],
     standalone: false
 })
 export class PlayerMatchFormComponent implements OnInit {

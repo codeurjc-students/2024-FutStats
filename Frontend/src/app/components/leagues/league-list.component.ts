@@ -7,7 +7,9 @@ import { LoginService } from 'src/app/services/login.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
+  selector: 'league-list',
     templateUrl: './league-list.component.html',
+    styleUrls: ['./league-list.component.css'],
     standalone: false
 })
 export class LeagueListComponent implements OnInit {

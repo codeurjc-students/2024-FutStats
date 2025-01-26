@@ -1,53 +1,66 @@
-<div *ngIf="league">
+<body>
+  <div class="container" *ngIf="league">
 
-  <img [src]="leagueImage()">
-  <h2>"{{league?.name}}"</h2>
-  <div>
+    <img [src]="leagueImage()">
+    <h2>"{{league?.name}}"</h2>
+    <div>
+      <h4>Presidente</h4>
       <p>{{league?.president}}</p>
+      <br>
+      <h4>Nacionalidad</h4>
       <p>{{league?.nationality}}</p>
+    </div>
+
+    <p>
+      <button *ngIf="loginService.isLogged()" (click)="addLeague()">Añadir Liga a favoritos</button>
+    </p>
+
+    <h3>Equipos</h3>
+    <ul class="items">
+      <li *ngFor="let team of teams | paginate: {id: 'team', itemsPerPage: 1, currentPage: teamPage}">
+        <a [routerLink]="['/teams', team.id]">{{team?.name}}</a>
+        <div class="team-stats">
+          <p>PG: {{team.wonMatches}}</p>
+          <p>PE: {{team.drawMatches}}</p>
+          <p>PP: {{team.lostMatches}}</p>
+          <p>Puntos: {{team?.points}}</p>
+        </div>
+      </li>
+    </ul>
+
+    <pagination-controls id='team' (pageChange)="teamPage = $event" previousLabel="Atrás"
+      nextLabel="Siguiente"></pagination-controls>
+
+    <p>
+      <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="createTeam()">Crear Equipo</button>
+    </p>
+
+    <h3>Partidos</h3>
+    <ul class="items">
+      <li *ngFor="let match of matches| paginate: {id: 'match', itemsPerPage: 1, currentPage: matchPage}">
+        <a [routerLink]="['/matches', match.id]">{{match?.name}}</a>
+        <a>{{match?.place}}</a>
+      </li>
+    </ul>
+
+    <pagination-controls id='match' (pageChange)="matchPage = $event" previousLabel="Atrás"
+      nextLabel="Siguiente"></pagination-controls>
+
+    <p>
+      <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="createMatch()">Crear Partido</button>
+    </p>
+
+    <h3 *ngIf="loginService.isLogged() && loginService.isAdmin()"> Opciones de Administrador </h3>
+
+    <p>
+      <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="removeLeague()">Borrar Liga</button>
+      <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="editLeague()">Editar Liga</button>
+    </p>
+
+
+
+    <p>
+      <button (click)="goBack()">Volver</button>
+    </p>
   </div>
-
-  <p>
-    <button *ngIf="loginService.isLogged()" (click)="addLeague()">Añadir Liga a favoritos</button>
-  </p>
-
-  <h3>Equipos</h3>
-  <ul class="items">
-    <li *ngFor="let team of teams | paginate: {id: 'team', itemsPerPage: 1, currentPage: teamPage}">
-      <a [routerLink]="['/teams', team.id]">{{team?.name}}</a>
-      <a>{{team?.points}}</a>
-    </li>
-  </ul>
-
-  <pagination-controls id='team' (pageChange)="teamPage = $event" previousLabel="Atrás" nextLabel="Siguiente"></pagination-controls>
-
-  <p>
-  <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="createTeam()">Crear Equipo</button>
-  </p>
-
-  <h3>Partidos</h3>
-  <ul class="items">
-    <li *ngFor="let match of matches| paginate: {id: 'match', itemsPerPage: 1, currentPage: matchPage}">
-      <a [routerLink]="['/matches', match.id]">{{match?.name}}</a>
-      <a>{{match?.place}}</a>
-    </li>
-  </ul>
-  
-  <pagination-controls id='match' (pageChange)="matchPage = $event" previousLabel="Atrás" nextLabel="Siguiente"></pagination-controls>
-
-  <p>
-    <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="createMatch()">Crear Partido</button>
-  </p>
-
-  <h3 *ngIf="loginService.isLogged() && loginService.isAdmin()"> Opciones de Administrador </h3>
-
-  <p> 
-  <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="removeLeague()">Borrar Liga</button>
-  <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="editLeague()">Editar Liga</button>
-  </p>
-
-</div>
-
-<p>
-  <button (click)="goBack()">Volver</button>
-</p>
+</body>

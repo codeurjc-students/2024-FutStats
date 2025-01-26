@@ -117,9 +117,9 @@ describe('LeagueFormComponent', () => {
 
   it('should return the correct league image URL', () => {
     component.league = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: true };
-    expect(component.leagueImage()).toBe('assets/no_image.png');
+    expect(component.leagueImage()).toBe('assets/no_image.jpg');
 
     component.league.image = false;
-    expect(component.leagueImage()).toBe('assets/no_image.png');
+    expect(component.leagueImage()).toBe('assets/no_image.jpg');
   });
 });

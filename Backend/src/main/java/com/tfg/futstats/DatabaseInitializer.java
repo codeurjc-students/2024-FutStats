@@ -137,7 +137,7 @@ public class DatabaseInitializer {
 		league1.setPlayer(player8);
 		manchesterCity.setPlayer(player8);
 
-		Match match1 = new Match(league, manchesterUnited, manchesterCity, manchesterUnited.getName() + '-' + manchesterCity.getName(), manchesterUnited.getStadium());
+		Match match1 = new Match(league1, manchesterUnited, manchesterCity, manchesterUnited.getName() + '-' + manchesterCity.getName(), manchesterUnited.getStadium());
 		s.saveMatch(match1);
 		league1.setMatch(match1);
 		s.updateTeamInfo(manchesterUnited);

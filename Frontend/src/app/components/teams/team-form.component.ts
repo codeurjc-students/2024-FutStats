@@ -7,6 +7,7 @@ import { LeaguesService } from 'src/app/services/league.service';
 
 @Component({
     templateUrl: './team-form.component.html',
+    styleUrls: ['./team-form.component.css'],
     standalone: false
 })
 export class TeamFormComponent implements OnInit {
@@ -17,8 +18,8 @@ export class TeamFormComponent implements OnInit {
 
   removeImage: boolean;
 
-  @ViewChild("file")
-  file: any;
+  @ViewChild('uploadImage', { static: false })
+  fileInput: any;
 
   constructor(
     private router: Router,
@@ -45,16 +46,15 @@ export class TeamFormComponent implements OnInit {
         stadium: '',
         points: 0,
         league: '',
-      }; // Valores predeterminados
+      };
       this.newTeam = true;
     }
   }
 
   ngOnInit(): void {
-    this.loadLeagues(); // Cargar ligas al iniciar el componente
+    this.loadLeagues(); 
   }
 
-  // Cargar las ligas desde el servicio
   private loadLeagues() {
     this.leagueService.getLeagues().subscribe({
       next: (leagues) => (this.leagues = leagues),
@@ -88,8 +88,8 @@ export class TeamFormComponent implements OnInit {
 
   uploadImage(team: Team): void {
 
-    if (this.file) {
-      const image = this.file.nativeElement.files[0];
+    if (this.fileInput) {
+      const image = this.fileInput.nativeElement.files[0];
       if (image) {
         let formData = new FormData();
         formData.append("imageFile", image);
@@ -105,6 +105,13 @@ export class TeamFormComponent implements OnInit {
       }
     } else {
       this.afterUploadImage(team);
+    }
+  }
+
+  onFileSelected(event: any): void {
+    const fileInput = event.target.files[0];
+    if (fileInput) {
+      console.log('Archivo seleccionado:', fileInput.name);
     }
   }
 

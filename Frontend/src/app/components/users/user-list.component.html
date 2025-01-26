@@ -1,17 +1,19 @@
-<div *ngIf="users">
-<h2>Usuarios</h2>
-<ul class="items">
-    <li *ngFor="let user of users">
-        <a [routerLink]="['/users', user.id]">{{user.name}}</a>
-        <a>  Id del Usuario: {{user.id}}</a>
-    </li>
-</ul>
+<body>
+    <div class="container" *ngIf="users">
+        <h2>Usuarios</h2>
+        <ul class="items">
+            <li *ngFor="let user of users">
+                <a [routerLink]="['/users', user.id]">{{user.name}}</a>
+                <a> Id del Usuario: {{user.id}}</a>
+            </li>
+        </ul>
 
-<h3 *ngIf="loginService.isLogged() && loginService.isAdmin()"> Opciones de Administrador</h3>
+        <h3 *ngIf="loginService.isLogged() && loginService.isAdmin()"> Opciones de Administrador</h3>
 
-<button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="newUser()">Crear un usuario</button>
+        <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="newUser()">Crear un usuario</button>
 
-<p>
-    <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="goBack()">Volver</button>
-</p>
-</div>
+        <p>
+            <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="goBack()">Volver</button>
+        </p>
+    </div>
+</body>

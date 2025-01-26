@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     templateUrl: './user-form.component.html',
+    styleUrls: ['./user-form.component.css'],
     standalone: false
 })
 export class UserFormComponent {
@@ -90,6 +91,13 @@ export class UserFormComponent {
         this.afterUploadImage(user);
         
     }
+
+    onFileSelected(event: any): void {
+        const fileInput = event.target.files[0];
+        if (fileInput) {
+          console.log('Archivo seleccionado:', fileInput.name);
+        }
+      }
 
     userImage() {
         return this.user.image ? this.service.getImage(this.user.id) : 'assets/no_image.jpg';

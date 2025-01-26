@@ -12,6 +12,7 @@ import { PlayersService } from 'src/app/services/player.service';
 
 @Component({
     templateUrl: './playerMatch-detail.component.html',
+    styleUrls: ['./playerMatch-detail.component.css'],
     standalone: false
 })
 export class PlayerMatchDetailComponent implements OnInit {

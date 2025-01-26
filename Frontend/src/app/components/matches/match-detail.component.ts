@@ -13,6 +13,7 @@ import { TeamsService } from 'src/app/services/team.service';
 
 @Component({
     templateUrl: './match-detail.component.html',
+    styleUrls: ['./match-detail.component.css'],
     standalone: false
 })
 export class MatchDetailComponent implements OnInit {

@@ -1,5 +1,5 @@
-<div *ngIf="player">
-
+<body>
+<div class="container" *ngIf="player">
 
     <h1>"{{player.name}}"</h1>
     <br>
@@ -89,9 +89,9 @@
     <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="editPlayer()">Editar Jugador</button>
     </p>
 
-    <br> 
+    <p>
+        <button (click)="goBack()">Volver</button>
+    </p>
 </div>
+</body>
 
-<p>
-    <button (click)="goBack()">Volver</button>
-</p>

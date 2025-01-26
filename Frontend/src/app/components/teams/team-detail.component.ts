@@ -12,6 +12,7 @@ import { Chart } from 'chart.js/auto';
 
 @Component({
   templateUrl: './team-detail.component.html',
+  styleUrls: ['./team-detail.component.css'],
   standalone: false
 })
 export class TeamDetailComponent implements OnInit {

@@ -11,14 +11,15 @@ import { Player } from 'src/app/models/player.model';
 @Component({
     selector: 'user-detail',
     templateUrl: './user-detail.component.html',
+    styleUrls: ['./user-detail.component.css'],
     standalone: false
 })
 export class UserDetailComponent implements OnInit {
 
     user: User;
     leagues: League[];
-    teams: Team[] = [];  // To store the players
-    players: Player[] = []; // To store the players
+    teams: Team[] = [];
+    players: Player[] = [];
     errorMessage: string;
 
     constructor(
@@ -43,7 +44,6 @@ export class UserDetailComponent implements OnInit {
                     }
                 );
 
-                // Once we have the league we get the teams
                 this.service.getTeams(id).subscribe(
                     (teams: Team[]) => {
                         this.teams = teams;
@@ -53,7 +53,6 @@ export class UserDetailComponent implements OnInit {
                     }
                 );
 
-                // Once we have the league we get the matches
                 this.service.getPlayers(id).subscribe(
                     (players: Player[]) => {
                         this.players = players;

@@ -1,2 +1,75 @@
+.navbar {
+    background-color: #343a40;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
+.navbar .navbar-brand {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-decoration: none;
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
+}
 
+.navbar .navbar-brand:hover {
+    color: #ccc;
+}
+
+.navbar .navbar-nav {
+    display: flex;
+    align-items: center;
+}
+
+.navbar .navbar-nav a {
+    color: #fff;
+    margin-right: 1rem;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.navbar .navbar-nav a:hover {
+    color: #ccc;
+}
+
+.navbar .login {
+    margin-right: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.navbar .title-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.navbar .navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-right: 1rem;
+}
+
+.navbar-right .login-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.navbar .navbar-right button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+}

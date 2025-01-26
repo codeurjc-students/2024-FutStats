@@ -1,13 +1,18 @@
-<h2>{{title}}</h2>
-<ul class="items">
-    <li *ngFor="let league of leagues | paginate: {itemsPerPage: 2, currentPage: leaguePage}">
-        <a [routerLink]="['/leagues', league.id]">{{league?.name}}</a>
-        <a>{{league?.nationality}}</a>
-    </li>
-</ul>
+<body>
+    <div class="container">
+        <h2>{{title}}</h2>
+        <ul class="items">
+            <li *ngFor="let league of leagues | paginate: {itemsPerPage: 2, currentPage: leaguePage}">
+                <a [routerLink]="['/leagues', league.id]">{{league?.name}}</a>
+                <a>{{league?.nationality}}</a>
+            </li>
+        </ul>
 
-<pagination-controls (pageChange)="leaguePage = $event" previousLabel="Atrás" nextLabel="Siguiente"></pagination-controls>
+        <pagination-controls (pageChange)="leaguePage = $event" previousLabel="Atrás"
+            nextLabel="Siguiente"></pagination-controls>
 
-<h3 *ngIf="loginService.isLogged() && loginService.isAdmin()"> Opciones de Administrador</h3>
+        <h3 *ngIf="loginService.isLogged() && loginService.isAdmin()"> Opciones de Administrador</h3>
 
-<button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="newLeague()">Crear una liga</button>
+        <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="newLeague()">Crear una liga</button>
+    </div>
+</body>

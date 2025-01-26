@@ -9,6 +9,7 @@ import { League } from 'src/app/models/league.model';
 
 @Component({
     templateUrl: './match-form.component.html',
+    styleUrls: ['./match-form.component.css'],
     standalone: false
 })
 export class MatchFormComponent implements OnInit {
@@ -17,7 +18,7 @@ export class MatchFormComponent implements OnInit {
   leagues: League[] = [];
   teams: Team[] = [];
   league: League;
-  selectedLeagueId: string; // Liga seleccionada
+  selectedLeagueId: string;
 
   constructor(
     private router: Router,
@@ -46,7 +47,7 @@ export class MatchFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadLeagues(); // Cargar todas las ligas al iniciar
+    this.loadLeagues();
   }
 
   private loadLeagues() {
@@ -102,6 +103,6 @@ export class MatchFormComponent implements OnInit {
   }
 
   cancel() {
-    window.history.back(); // Volver atrás sin guardar
+    window.history.back();
   }
 }
