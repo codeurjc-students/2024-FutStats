@@ -83,20 +83,22 @@ export class UserDetailComponent implements OnInit {
     }
 
     removeLeague(league: League){
+        const id = this.activatedRoute.snapshot.params['id'];
         const okResponse = window.confirm('Quieres borrar esta Liga');
         if (okResponse) {
             this.service.deleteLeague(this.user, league).subscribe(
-                _ => window.location.reload(),
+                _ => this.router.navigate(['/users/' + id]),
                 error => console.error(error)
             );
         }
     }
 
     removeTeam(team: Team){
+        const id = this.activatedRoute.snapshot.params['id'];
         const okResponse = window.confirm('Quieres borrar este Equipo');
         if (okResponse) {
             this.service.deleteTeam(this.user, team).subscribe(
-                _ => window.location.reload(),
+                _ => this.router.navigate(['/users/' + id]),
                 error => console.error(error)
             );
         }

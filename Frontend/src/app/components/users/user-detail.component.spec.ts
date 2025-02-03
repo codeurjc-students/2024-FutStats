@@ -82,21 +82,19 @@ describe('UserDetailComponent', () => {
     expect(image).toBe('assets/no_image.jpg');
   });
 
-//   it('should remove a league from favorites', () => {
-//     spyOn(window, 'confirm').and.returnValue(true);
-//     const league = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [], image: false };
-//     component.removeLeague(league);
-//     expect(window.confirm).toHaveBeenCalledWith('Quieres borrar esta liga?');
-//     expect(mockUserService.removeLeague).toHaveBeenCalledWith(league);
-//   });
+  it('should remove a league from favorites', () => {
+    spyOn(window, 'confirm').and.returnValue(true);
+    const league = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [], image: false };
+    component.removeLeague(league);
+    expect(window.confirm).toHaveBeenCalledWith('Quieres borrar esta Liga');
+  });
 
-//   it('should remove a team from favorites', () => {
-//     spyOn(window, 'confirm').and.returnValue(true);
-//     const team = { id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1' };
-//     component.removeTeam(team);
-//     expect(window.confirm).toHaveBeenCalledWith('Quieres borrar este equipo?');
-//     expect(mockUserService.removeTeam).toHaveBeenCalledWith(team);
-//   });
+  it('should remove a team from favorites', () => {
+    spyOn(window, 'confirm').and.returnValue(true);
+    const team = { id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1' };
+    component.removeTeam(team);
+    expect(window.confirm).toHaveBeenCalledWith('Quieres borrar este Equipo');
+  });
 
   it('should remove a player from favorites', () => {
     spyOn(window, 'confirm').and.returnValue(true);
