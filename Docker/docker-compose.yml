@@ -5,7 +5,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 17042002
       MYSQL_ROOT_USER: root
-      MYSQL_DATABASE: api_rest
+      MYSQL_DATABASE: apirest
       MYSQL_PASSWORD: 17042002
     ports:
       - "3306:3306"
