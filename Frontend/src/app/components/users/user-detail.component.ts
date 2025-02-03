@@ -103,10 +103,11 @@ export class UserDetailComponent implements OnInit {
     }
 
     removePlayer(player: Player){
+        const id = this.activatedRoute.snapshot.params['id'];
         const okResponse = window.confirm('Quieres borrar este Jugador');
         if (okResponse) {
             this.service.deletePlayer(this.user, player).subscribe(
-                _ => window.location.reload(),
+                _ => this.router.navigate(['/users/' + id]),
                 error => console.error(error)
             );
         }

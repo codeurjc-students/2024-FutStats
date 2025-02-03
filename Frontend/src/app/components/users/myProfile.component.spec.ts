@@ -96,7 +96,7 @@ describe('TeamFormComponent', () => {
 
   it('should upload an image after saving a team', () => {
     const mockFile = new Blob([''], { type: 'assets/no_image.jpg' });
-    component.file = { nativeElement: { files: [mockFile] } };
+    component.fileInput = { nativeElement: { files: [mockFile] } };
     component.uploadImage({ id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: true, league: 'League 1'});
 
     expect(mockTeamsService.addImage).toHaveBeenCalled();

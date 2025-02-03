@@ -11,7 +11,7 @@ class MockLeaguesService {
   updateLeague = jasmine.createSpy('updateLeague').and.returnValue(of({ id: 1, name: 'Updated League' }));
   addImage = jasmine.createSpy('addImage').and.returnValue(of(null));
   deleteImage = jasmine.createSpy('deleteImage').and.returnValue(of(null));
-  getImage = jasmine.createSpy('getImage').and.returnValue('assets/no_image.png');
+  getImage = jasmine.createSpy('getImage').and.returnValue('assets/no_image.jpg');
 }
 
 class MockRouter {
@@ -97,7 +97,7 @@ describe('LeagueFormComponent', () => {
   });
 
   it('should handle image upload if file is present', () => {
-    component.file = { nativeElement: { files: [new Blob()] } };
+    component.fileInput = { nativeElement: { files: [new Blob()] } };
     const league = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: true };
 
     component.uploadImage(league);

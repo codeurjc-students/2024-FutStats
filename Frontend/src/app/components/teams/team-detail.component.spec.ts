@@ -193,7 +193,7 @@ describe('TeamDetailComponent', () => {
     expect(mockRouter.navigate).toHaveBeenCalledWith(['leagues', 1]);
   });
 
-  it('should generate team image if team.image = false but we have a custom image', () => {
+  it('should return team image', () => {
     const mockTeam: Team = {
       id: 1,
       name: 'Team 1',
