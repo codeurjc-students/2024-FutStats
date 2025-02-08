@@ -2,9 +2,11 @@
   text-align: center;
   padding: 50px;
   font-family: Arial, sans-serif;
-  background: url('src/assets/403-background.webp') no-repeat center center;
-  background-size: contain; 
+  background: url('src/assets/401-background.webp') no-repeat center center;
+  background-size: contain;
+  background-repeat: no-repeat;
   background-position: center;
+  background-attachment: fixed;
   color: white;
   min-height: 100vh;
   display: flex;
@@ -19,7 +21,7 @@
   margin-bottom: 10px;
   color: #ffeb3b;
   text-transform: uppercase;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); 
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
 }
 
 .message {
@@ -42,11 +44,10 @@
 
 .btn-home:hover {
   background-color: rgba(25, 118, 210, 0.9);
-  transform: scale(1.1); 
+  transform: scale(1.1);
 }
 
 .btn-home:focus {
-  outline: 2px solid #ffeb3b; 
+  outline: 2px solid #ffeb3b;
   outline-offset: 2px;
 }
-

@@ -1,9 +1,8 @@
-/* Estilo general para myProfile */
 body {
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
     background-image: url('src/assets/Backend.jpg');
-    background-size: 70%;
+    background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
@@ -13,6 +12,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    height: 100%;
 }
 
 .container {
