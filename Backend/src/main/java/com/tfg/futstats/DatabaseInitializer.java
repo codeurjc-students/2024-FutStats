@@ -169,5 +169,9 @@ public class DatabaseInitializer {
 				"Sebastian Geppert", "Hans-Joachim Watzke", "Signal Iduna Park", null, false);
 		s.saveTeam(borussiaDortmund);
 		league2.setTeam(borussiaDortmund);
+
+		a.setLeague(league);
+		a.setTeam(borussiaDortmund);
+		a.setPlayer(player8);
 	}
 }

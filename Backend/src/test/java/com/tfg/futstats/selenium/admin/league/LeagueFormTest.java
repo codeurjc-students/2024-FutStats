@@ -18,7 +18,7 @@ public class LeagueFormTest extends BaseTest {
 
     @Test
     public void testLoginFunctionality() {
-
+        driver.get("http://localhost:4200/leagues");
         WebElement usernameField = driver.findElement(By.name("username"));
         WebElement passwordField = driver.findElement(By.name("password"));
         WebElement loginButton = driver.findElement(By.xpath("//button[contains(text(), 'Iniciar Sesión')]"));
@@ -96,7 +96,7 @@ public class LeagueFormTest extends BaseTest {
 
         cancelButton.click();
 
-        assertTrue(driver.getCurrentUrl().contains("/leagues/"), "La URL de la liga no es la correcta.");
+        assertTrue(driver.getCurrentUrl().contains("/leagues"), "La URL de la liga no es la correcta.");
         System.out.println("Acceso correcto a las ligas " + driver.getCurrentUrl());
     }
 }

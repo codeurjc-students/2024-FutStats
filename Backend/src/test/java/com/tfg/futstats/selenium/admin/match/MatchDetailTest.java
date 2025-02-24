@@ -137,9 +137,9 @@ public class MatchDetailTest extends BaseTest {
 
         WebElement ligaSelect = driver.findElement(By.xpath("//select[@class='ng-untouched ng-pristine ng-valid']"));
         WebElement team1Select = driver
-                .findElement(By.xpath("//label[contains(text(), 'Equipo Local:')]//following-sibling::select"));
+                .findElement(By.xpath("//h3[contains(text(), 'Equipo Local:')]//following-sibling::select"));
         WebElement team2Select = driver
-                .findElement(By.xpath("//label[contains(text(), 'Equipo Visitante:')]//following-sibling::select"));
+                .findElement(By.xpath("//h3[contains(text(), 'Equipo Visitante:')]//following-sibling::select"));
 
         assertNotNull(ligaSelect, "El campo 'Liga' no está presente.");
         assertNotNull(team1Select, "El campo 'Equipo Local' no está presente.");
@@ -162,9 +162,9 @@ public class MatchDetailTest extends BaseTest {
         backButton.click();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.urlContains("/matches"));
+        wait.until(ExpectedConditions.urlContains("/leagues/1"));
 
-        assertTrue(driver.getCurrentUrl().contains("/matches"), "No redirige correctamente al listado de partidos.");
+        assertTrue(driver.getCurrentUrl().contains("/leagues/1"), "No redirige correctamente al listado de partidos.");
     }
 
 }

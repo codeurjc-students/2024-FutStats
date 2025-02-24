@@ -83,7 +83,7 @@ public class PlayerMatchFormTest extends BaseTest {
 
         cancelButton.click();
 
-        assertTrue(driver.getCurrentUrl().contains("/matches/"), "La URL del partido no es la correcta.");
+        assertTrue(driver.getCurrentUrl().contains("/playerMatch/"), "La URL del partido no es la correcta.");
         System.out.println("Acceso correcto al partido " + driver.getCurrentUrl());
     }
 
@@ -107,7 +107,7 @@ public class PlayerMatchFormTest extends BaseTest {
 
         saveButton.click();
 
-        assertTrue(driver.getCurrentUrl().contains("/playerMatches/"), "La URL del jugador no es la correcta.");
+        assertTrue(driver.getCurrentUrl().contains("/playerMatch/"), "La URL del jugador no es la correcta.");
         System.out.println("Acceso correcto al jugador " + driver.getCurrentUrl());
     }
 

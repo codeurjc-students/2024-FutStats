@@ -157,7 +157,7 @@ public class PlayerFormTest extends BaseTest {
         assertNotNull(formTitle, "El título del formulario 'Nuevo Jugador' no se muestra.");
 
         WebElement removeImageCheckbox = driver.findElement(By.xpath("//input[@name='removeImage']"));
-        WebElement imageUploadLabel = driver.findElement(By.xpath("//label[contains(text(), 'Subir imágen')]"));
+        WebElement imageUploadLabel = driver.findElement(By.xpath("//label[contains(text(), 'Subir imagen')]"));
 
         if (isEditingPlayer()) {
             assertTrue(removeImageCheckbox.isDisplayed(),

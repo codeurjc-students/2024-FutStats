@@ -93,9 +93,9 @@ public class MatchDetailTest extends BaseTest {
         backButton.click();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.urlContains("/matches"));
+        wait.until(ExpectedConditions.urlContains("/leagues"));
 
-        assertTrue(driver.getCurrentUrl().contains("/matches"), "No redirige correctamente al listado de partidos.");
+        assertTrue(driver.getCurrentUrl().contains("/leagues"), "No redirige correctamente al listado de partidos.");
     }
 
 }

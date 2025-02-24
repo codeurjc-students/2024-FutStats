@@ -19,6 +19,7 @@ export class PlayerMatchFormComponent implements OnInit {
   players: Player[] = [];
   matches: Match[] = [];
   match: Match;
+  id: number;
   selectedPlayerId: string;
   selectedMatchId: number;
 
@@ -29,9 +30,9 @@ export class PlayerMatchFormComponent implements OnInit {
     private playerService: PlayersService,
     private service: PlayerMatchesService
   ) {
-    const id = activatedRoute.snapshot.params['id'];
-    if (id) {
-      service.getPlayerMatch(id).subscribe(
+    this.id = activatedRoute.snapshot.params['id'];
+    if (this.id) {
+      service.getPlayerMatch(this.id).subscribe(
         playerMatch => this.playerMatch = playerMatch,
         error => console.error(error)
       );
@@ -112,7 +113,7 @@ export class PlayerMatchFormComponent implements OnInit {
   }
 
   private afterSave(playerMatch: PlayerMatch) {
-    this.router.navigate(['/leagues']);
+    this.router.navigate(['/playerMatch', this.id]);
   }
 
   cancel() {

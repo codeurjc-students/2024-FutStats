@@ -83,9 +83,9 @@ public class MatchFormTest extends BaseTest {
 
         WebElement ligaSelect = driver.findElement(By.xpath("//select[@class='ng-untouched ng-pristine ng-valid']"));
         WebElement team1Select = driver
-                .findElement(By.xpath("//label[contains(text(), 'Equipo Local:')]//following-sibling::select"));
+                .findElement(By.xpath("//h3[contains(text(), 'Equipo Local:')]//following-sibling::select"));
         WebElement team2Select = driver
-                .findElement(By.xpath("//label[contains(text(), 'Equipo Visitante:')]//following-sibling::select"));
+                .findElement(By.xpath("//h3[contains(text(), 'Equipo Visitante:')]//following-sibling::select"));
 
         assertNotNull(ligaSelect, "El campo 'Liga' no está presente.");
         assertNotNull(team1Select, "El campo 'Equipo Local' no está presente.");
@@ -136,17 +136,14 @@ public class MatchFormTest extends BaseTest {
 
         WebElement leagueSelect = wait
         .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//select[@class='ng-untouched ng-pristine ng-valid']")));
-        leagueSelect = driver.findElement(By.xpath("//select[@class='ng-untouched ng-pristine ng-valid']"));
         leagueSelect.click();
 
         WebElement teamSelect = wait
-        .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//label[contains(text(), 'Equipo Local:')]//following-sibling::select")));
-        teamSelect = driver.findElement(By.xpath("//label[contains(text(), 'Equipo Local:')]//following-sibling::select"));
+        .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//label[h3[contains(text(), 'Equipo Local:')]]/select")));
         teamSelect.click();
 
         teamSelect = wait
-        .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//label[contains(text(), 'Equipo Visitante:')]//following-sibling::select")));
-        teamSelect = driver.findElement(By.xpath("//label[contains(text(), 'Equipo Visitante:')]//following-sibling::select"));
+        .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[contains(text(), 'Equipo Visitante:')]//following-sibling::select")));
         teamSelect.click();
     }
 

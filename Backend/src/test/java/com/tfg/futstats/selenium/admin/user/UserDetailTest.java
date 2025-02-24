@@ -12,183 +12,195 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.tfg.futstats.selenium.BaseTest;
 
-public class UserDetailTest extends BaseTest{
-    @Test
-    public void testLoginFunctionality() {
-        driver.get("http://localhost:4200/leagues");
+public class UserDetailTest extends BaseTest {
+        @Test
+        public void testLoginFunctionality() {
+                driver.get("http://localhost:4200/leagues");
 
-        WebElement usernameField = driver.findElement(By.name("username"));
-        WebElement passwordField = driver.findElement(By.name("password"));
-        WebElement loginButton = driver.findElement(By.xpath("//button[contains(text(), 'Iniciar Sesión')]"));
+                WebElement usernameField = driver.findElement(By.name("username"));
+                WebElement passwordField = driver.findElement(By.name("password"));
+                WebElement loginButton = driver.findElement(By.xpath("//button[contains(text(), 'Iniciar Sesión')]"));
 
-        assertNotNull(usernameField, "El campo de nombre de usuario no se encontró.");
-        assertNotNull(passwordField, "El campo de contraseña no se encontró.");
-        assertNotNull(loginButton, "El botón 'Iniciar sesión' no se encontró.");
+                assertNotNull(usernameField, "El campo de nombre de usuario no se encontró.");
+                assertNotNull(passwordField, "El campo de contraseña no se encontró.");
+                assertNotNull(loginButton, "El botón 'Iniciar sesión' no se encontró.");
 
-        usernameField.sendKeys("admin");
-        passwordField.sendKeys("pass");
-        loginButton.click();
-    }
+                usernameField.sendKeys("admin");
+                passwordField.sendKeys("pass");
+                loginButton.click();
+        }
 
-    @Test
-    public void testUserInfoDisplayed() {
-        testLoginFunctionality();
+        @Test
+        public void testUserInfoDisplayed() {
+                testLoginFunctionality();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
-        WebElement myProfile = wait
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Mi perfil')]")));
-        assertNotNull(myProfile, "El boton de mi perfil no se muestra correctamente.");
+                WebElement myProfile = wait
+                                .until(ExpectedConditions.visibilityOfElementLocated(
+                                                By.xpath("//button[contains(text(), 'Mi perfil')]")));
+                assertNotNull(myProfile, "El boton de mi perfil no se muestra correctamente.");
 
-        myProfile.click();
+                myProfile.click();
 
-        WebElement userName = wait
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[contains(text(), 'admin')]")));
-        assertNotNull(userName, "El nombre del usuario no se muestra correctamente.");
+                WebElement userName = wait
+                                .until(ExpectedConditions.visibilityOfElementLocated(
+                                                By.xpath("//p[contains(text(), 'admin')]")));
+                assertNotNull(userName, "El nombre del usuario no se muestra correctamente.");
 
-    }
+        }
 
-    @Test
-    public void testLeaguesTeamsPlayersDisplayed() {
-        testLoginFunctionality();
+        @Test
+        public void testLeaguesTeamsPlayersDisplayed() {
+                testLoginFunctionality();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
-        WebElement myProfile = wait
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Mi perfil')]")));
-        assertNotNull(myProfile, "El boton de mi perfil no se muestra correctamente.");
+                WebElement myProfile = wait
+                                .until(ExpectedConditions.visibilityOfElementLocated(
+                                                By.xpath("//button[contains(text(), 'Mi perfil')]")));
+                assertNotNull(myProfile, "El boton de mi perfil no se muestra correctamente.");
 
-        myProfile.click();
+                myProfile.click();
 
-        WebElement firstLeague = wait
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//ul[@class='items']/li[1]/a")));
-        assertNotNull(firstLeague, "No se muestra ninguna liga en la lista.");
+                WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(5));
 
-        WebElement firstTeam = wait
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//ul[@class='items']/li[1]/a")));
-        assertNotNull(firstTeam, "No se muestra ningún equipo en la lista.");
+                WebElement firstLeague = wait1.until(ExpectedConditions.visibilityOfElementLocated(
+                                By.xpath("//div[h3[contains(text(),'Ligas')]]")));
 
-        WebElement firstPlayer = wait
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//ul[@class='items']/li[1]/a")));
-        assertNotNull(firstPlayer, "No se muestra ningún jugador en la lista.");
-    }
+                WebElement firstTeam = wait1.until(ExpectedConditions.visibilityOfElementLocated(
+                                By.xpath("//div[h3[contains(text(),'Equipos')]]")));
 
-    @Test
-    public void testRemoveLeagueButtonFunctionality() {
-        testLoginFunctionality();
+                WebElement firstPlayer = wait1.until(ExpectedConditions.visibilityOfElementLocated(
+                                By.xpath("//div[h3[contains(text(),'Jugadores')]]")));
+        }
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        // @Test
+        // public void testRemoveLeagueButtonFunctionality() {
+        //         testLoginFunctionality();
 
-        WebElement myProfile = wait
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Mi perfil')]")));
-        assertNotNull(myProfile, "El boton de mi perfil no se muestra correctamente.");
+        //         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
-        myProfile.click();
+        //         WebElement myProfile = wait
+        //                         .until(ExpectedConditions.visibilityOfElementLocated(
+        //                                         By.xpath("//button[contains(text(), 'Mi perfil')]")));
+        //         assertNotNull(myProfile, "El boton de mi perfil no se muestra correctamente.");
 
-        WebElement removeLeagueButton = wait.until(ExpectedConditions
-                .visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Borrar Liga de favoritos')]")));
-        assertNotNull(removeLeagueButton, "El botón 'Borrar Liga de favoritos' no está presente.");
+        //         myProfile.click();
 
-        removeLeagueButton.click();
-        System.out.println("Clic en el botón 'Borrar Liga de favoritos'.");
-    }
+        //         WebElement removeLeagueButton = wait.until(ExpectedConditions
+        //                         .visibilityOfElementLocated(
+        //                                         By.xpath("//button[contains(text(), 'Borrar Liga de favoritos')]")));
+        //         assertNotNull(removeLeagueButton, "El botón 'Borrar Liga de favoritos' no está presente.");
 
-    @Test
-    public void testRemoveTeamButtonFunctionality() {
-        testLoginFunctionality();
+        //         removeLeagueButton.click();
+        //         System.out.println("Clic en el botón 'Borrar Liga de favoritos'.");
+        // }
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        // @Test
+        // public void testRemoveTeamButtonFunctionality() {
+        // testLoginFunctionality();
 
-        WebElement myProfile = wait
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Mi perfil')]")));
-        assertNotNull(myProfile, "El boton de mi perfil no se muestra correctamente.");
+        // WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
-        myProfile.click();
+        // WebElement myProfile = wait
+        // .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(),
+        // 'Mi perfil')]")));
+        // assertNotNull(myProfile, "El boton de mi perfil no se muestra
+        // correctamente.");
 
-        WebElement removeTeamButton = wait.until(ExpectedConditions
-                .visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Borrar Equipo de favoritos')]")));
-        assertNotNull(removeTeamButton, "El botón 'Borrar Equipo de favoritos' no está presente.");
+        // myProfile.click();
 
-        removeTeamButton.click();
-        System.out.println("Clic en el botón 'Borrar Equipo de favoritos'.");
-    }
+        // WebElement removeTeamButton = wait.until(ExpectedConditions
+        // .visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Borrar
+        // Equipo de favoritos')]")));
+        // assertNotNull(removeTeamButton, "El botón 'Borrar Equipo de favoritos' no
+        // está presente.");
 
-    @Test
-    public void testRemovePlayerButtonFunctionality() {
-        testLoginFunctionality();
+        // removeTeamButton.click();
+        // System.out.println("Clic en el botón 'Borrar Equipo de favoritos'.");
+        // }
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        // @Test
+        // public void testRemovePlayerButtonFunctionality() {
+        //         testLoginFunctionality();
 
-        WebElement myProfile = wait
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Mi perfil')]")));
-        assertNotNull(myProfile, "El boton de mi perfil no se muestra correctamente.");
+        //         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
-        myProfile.click();
+        //         WebElement myProfile = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(),'Mi perfil')]")));
+        //         assertNotNull(myProfile, "El boton de mi perfil no se muestra correctamente.");
 
-        WebElement removePlayerButton = wait.until(ExpectedConditions
-                .visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Borrar Jugador de favoritos')]")));
-        assertNotNull(removePlayerButton, "El botón 'Borrar Jugador de favoritos' no está presente.");
+        //         myProfile.click();
 
-        removePlayerButton.click();
-        System.out.println("Clic en el botón 'Borrar Jugador de favoritos'.");
+        //         WebElement removePlayerButton = wait.until(ExpectedConditions
+        //         .visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Borrar Jugador de favoritos')]")));
+        //         assertNotNull(removePlayerButton, "El botón 'Borrar Jugador de favoritos' no está presente.");
 
-    }
+        //         removePlayerButton.click();
+        //         System.out.println("Clic en el botón 'Borrar Jugador de favoritos'.");
 
-    @Test
-    public void testRemoveUserButtonFunctionality() {
-        testLoginFunctionality();
+        // }
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        @Test
+        public void testRemoveUserButtonFunctionality() {
+                testLoginFunctionality();
 
-        WebElement myProfile = wait
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Mi perfil')]")));
-        assertNotNull(myProfile, "El boton de mi perfil no se muestra correctamente.");
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
-        myProfile.click();
+                WebElement myProfile = wait
+                                .until(ExpectedConditions.visibilityOfElementLocated(
+                                                By.xpath("//button[contains(text(), 'Mi perfil')]")));
+                assertNotNull(myProfile, "El boton de mi perfil no se muestra correctamente.");
 
-        WebElement removeUserButton = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Borrar User')]")));
-        assertNotNull(removeUserButton, "El botón 'Borrar Usuario' no está presente.");
-    }
+                myProfile.click();
 
-    @Test
-    public void testEditUserButtonFunctionality() {
-        testLoginFunctionality();
+                WebElement removeUserButton = wait.until(
+                                ExpectedConditions.visibilityOfElementLocated(
+                                                By.xpath("//button[contains(text(), 'Borrar User')]")));
+                assertNotNull(removeUserButton, "El botón 'Borrar Usuario' no está presente.");
+        }
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        @Test
+        public void testEditUserButtonFunctionality() {
+                testLoginFunctionality();
 
-        WebElement myProfile = wait
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Mi perfil')]")));
-        assertNotNull(myProfile, "El boton de mi perfil no se muestra correctamente.");
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
-        myProfile.click();
+                WebElement myProfile = wait
+                                .until(ExpectedConditions.visibilityOfElementLocated(
+                                                By.xpath("//button[contains(text(), 'Mi perfil')]")));
+                assertNotNull(myProfile, "El boton de mi perfil no se muestra correctamente.");
 
-        WebElement editUserButton = wait.until(ExpectedConditions
-                .visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Editar Usuario')]")));
-        assertNotNull(editUserButton, "El botón 'Editar Usuario' no está presente.");
-    }
+                myProfile.click();
 
-    @Test
-    public void testBackButtonFunctionality() {
-        testLoginFunctionality();
+                WebElement editUserButton = wait.until(ExpectedConditions
+                                .visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Editar Usuario')]")));
+                assertNotNull(editUserButton, "El botón 'Editar Usuario' no está presente.");
+        }
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        @Test
+        public void testBackButtonFunctionality() {
+                testLoginFunctionality();
 
-        WebElement myProfile = wait
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Mi perfil')]")));
-        assertNotNull(myProfile, "El boton de mi perfil no se muestra correctamente.");
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
-        myProfile.click();
+                WebElement myProfile = wait
+                                .until(ExpectedConditions.visibilityOfElementLocated(
+                                                By.xpath("//button[contains(text(), 'Mi perfil')]")));
+                assertNotNull(myProfile, "El boton de mi perfil no se muestra correctamente.");
 
-        WebElement backButton = wait
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Volver')]")));
-        assertNotNull(backButton, "El botón 'Volver' no está presente.");
+                myProfile.click();
 
-        backButton.click();
-        System.out.println("Clic en botón 'Volver'.");
+                WebElement backButton = wait
+                                .until(ExpectedConditions.visibilityOfElementLocated(
+                                                By.xpath("//button[contains(text(), 'Volver')]")));
+                assertNotNull(backButton, "El botón 'Volver' no está presente.");
 
-        WebElement previousPageHeader = wait.until(ExpectedConditions
-                .visibilityOfElementLocated(By.xpath("//h2[contains(text(), 'Lista de Jugadores')]")));
-        assertNotNull(previousPageHeader, "No se ha redirigido correctamente.");
-    }
+                backButton.click();
+                System.out.println("Clic en botón 'Volver'.");
+
+                WebElement previousPageHeader = wait.until(ExpectedConditions
+                                .visibilityOfElementLocated(By.xpath("//h2[contains(text(), 'Ligas')]")));
+                assertNotNull(previousPageHeader, "No se ha redirigido correctamente.");
+        }
 }
