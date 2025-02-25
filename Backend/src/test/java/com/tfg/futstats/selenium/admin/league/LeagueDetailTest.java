@@ -4,22 +4,51 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
 
 import java.time.Duration;
 import java.util.List;
 
-import com.tfg.futstats.selenium.BaseTest;
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class LeagueDetailTest{
 
-public class LeagueDetailTest extends BaseTest {
+    @LocalServerPort
+	int port;
+
+	WebDriver driver;
+	
+	@BeforeEach
+	public void setup() {
+		ChromeOptions options = new ChromeOptions();
+		options.addArguments("--headless");
+		driver = new ChromeDriver(options);
+	}
+	
+	@AfterEach
+	public void teardown() {
+		if(driver != null) {
+			driver.quit();
+		}
+	}
 
     @Test
     public void testLoginFunctionality() {
+<<<<<<< Updated upstream
         driver.get("http://frontend:4200/leagues/1");
+=======
+        driver.get("http://localhost:"+this.port+"/leagues/1");
+>>>>>>> Stashed changes
 
         WebElement usernameField = driver.findElement(By.name("username"));
         WebElement passwordField = driver.findElement(By.name("password"));
@@ -40,7 +69,11 @@ public class LeagueDetailTest extends BaseTest {
 
     @Test
     public void testLeagueInfoDisplayed() {
+<<<<<<< Updated upstream
         driver.get("http://frontend:4200/leagues/1");
+=======
+        driver.get("http://localhost:/"+this.port+"/leagues/1");
+>>>>>>> Stashed changes
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         WebElement leagueName = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2")));
@@ -65,7 +98,11 @@ public class LeagueDetailTest extends BaseTest {
 
     @Test
     public void testTeamsPagination() {
+<<<<<<< Updated upstream
         driver.get("http://frontend:4200/leagues/1"); 
+=======
+        driver.get("http://localhost:/"+this.port+"/leagues/1"); 
+>>>>>>> Stashed changes
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
 
@@ -90,7 +127,11 @@ public class LeagueDetailTest extends BaseTest {
 
     @Test
     public void testAccessToTeam() {
+<<<<<<< Updated upstream
         driver.get("http://frontend:4200/leagues/1");
+=======
+        driver.get("http://localhost:"+this.port+"/leagues/1");
+>>>>>>> Stashed changes
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
         List<WebElement> teamLinks = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
@@ -164,7 +205,11 @@ public class LeagueDetailTest extends BaseTest {
 
     @Test
     public void testGoBackButton() {
+<<<<<<< Updated upstream
         driver.get("http://frontend:4200/leagues/1");
+=======
+        driver.get("\"http://localhost:/"+this.port+"/leagues/1");
+>>>>>>> Stashed changes
 
         WebElement goBackButton = driver.findElement(By.xpath("//button[contains(text(), 'Volver')]"));
         assertNotNull(goBackButton, "El botón 'Volver' no está presente.");
@@ -202,7 +247,11 @@ public class LeagueDetailTest extends BaseTest {
 
     @Test
     public void testAccessToMatch() {
+<<<<<<< Updated upstream
         driver.get("http://frontend:4200/leagues/1");
+=======
+        driver.get("\"http://localhost:"+this.port+"/leagues/1");
+>>>>>>> Stashed changes
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
         List<WebElement> matchLinks = wait.until(ExpectedConditions
