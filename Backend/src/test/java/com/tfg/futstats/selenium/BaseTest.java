@@ -1,8 +1,5 @@
 package com.tfg.futstats.selenium;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
@@ -14,16 +11,9 @@ public abstract class BaseTest {
     protected WebDriver driver;
 
     @BeforeEach
-    public void setUp() throws Exception {
-        ChromeOptions options = new ChromeOptions();
-        
-        Path tempProfile = Files.createTempDirectory("chrome-profile-" + UUID.randomUUID().toString());
-        options.addArguments("--user-data-dir=" + tempProfile.toAbsolutePath().toString());
-        
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-        
-        driver = new ChromeDriver(options);
+    public void setUp() {
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
     }
 
     @AfterEach
