@@ -5,8 +5,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 public abstract class BaseTest {
 
@@ -14,10 +12,7 @@ public abstract class BaseTest {
 
     @BeforeEach
 public void setUp() throws Exception {
-    ChromeOptions options = new ChromeOptions();
-    Path tempProfileDir = Files.createTempDirectory("chromeProfile");
-    options.addArguments("--user-data-dir=" + tempProfileDir.toAbsolutePath().toString());
-    driver = new ChromeDriver(options);
+    driver = new ChromeDriver();
     driver.manage().window().maximize();
 }
 
