@@ -1,83 +1,24 @@
-name: Selenium Tests with Frontend Container
+name: CD Docker Build
 
 on:
   push:
     branches:
       - main
       - tester
-  pull_request:
-    branches:
-      - main
-
 jobs:
-  selenium-tests:
+  build:
     runs-on: ubuntu-latest
-    services:
-      selenium:
-        image: selenium/standalone-chrome:latest
-        ports:
-          - 4444:4444
-        options: --shm-size=2g --add-host=host.docker.internal:host-gateway
-      frontend:
-        image: myorg/frontend:latest
-        ports:
-          - 4200:4200
-        options: >-
-          --health-cmd "curl -f http://localhost:4200 || exit 1"
-          --health-interval=10s --health-timeout=5s --health-retries=3
-
-    env:
-      SELENIUM_REMOTE_URL: http://localhost:4444
-      BASE_URL: http://frontend:4200
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Set up Java 21
-        uses: actions/setup-java@v2
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Wait for Frontend Container to be Ready
-        run: |
-          echo "Waiting for Frontend container (frontend) to be ready..."
-          retries=30
-          until curl -s $BASE_URL | grep -qi "<html"; do
-            if [ $retries -le 0 ]; then
-              echo "Frontend container not ready after multiple attempts, failing..."
-              exit 1
-            fi
-            echo "Frontend container not ready, waiting..."
-            retries=$((retries-1))
-            sleep 5
-          done
-          echo "Frontend container is ready!"
-
-      - name: Wait for Selenium to be Ready
-        run: |
-          echo "Waiting for Selenium to be ready..."
-          retries=24
-          until curl -s http://localhost:4444/status | grep -q -E '"ready":\s*true'; do
-            if [ $retries -le 0 ]; then
-              echo "Selenium not ready after multiple attempts, failing..."
-              curl -s http://localhost:4444/status
-              exit 1
-            fi
-            echo "Selenium not ready, waiting..."
-            retries=$((retries-1))
-            sleep 5
-          done
-          echo "Selenium is ready!"
-
-      - name: Run Selenium Tests with Maven Debug
-        run: mvn test -Dtest="com.tfg.futstats.selenium.**" -e -X
+      - name: Run tests
+        run: mvn test -Dtest="com.tfg.futstats.selenium.**"
         working-directory: ./Backend
-
-      - name: Upload Surefire Reports on Failure
-        if: failure()
-        uses: actions/upload-artifact@v3.1.0
-        with:
-          name: surefire-reports
-          path: ./Backend/target/surefire-reports
