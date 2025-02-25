@@ -1,4 +1,4 @@
-name: Selenium Tests
+name: Selenium Tests with Frontend Container
 
 on:
   push:
@@ -17,12 +17,22 @@ jobs:
         image: selenium/standalone-chrome:latest
         ports:
           - 4444:4444
+        options: --shm-size=2g --add-host=host.docker.internal:host-gateway
+      frontend:
+        build:
+          context: ./Frontend
+          dockerfile: Dockerfile
+        ports:
+          - 4200:4200
         options: >-
-          --shm-size=2g
+          --health-cmd "curl -f http://localhost:4200 || exit 1"
+          --health-interval=10s --health-timeout=5s --health-retries=3
 
     env:
-      # Variable que usa BaseTest para conectarse al Selenium remoto.
+      # URL para conectarse al contenedor Selenium
       SELENIUM_REMOTE_URL: http://localhost:4444
+      # Base URL que usarán los tests (ya integrada en el código)
+      BASE_URL: http://frontend:4200
 
     steps:
       - name: Checkout repository
@@ -34,7 +44,22 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Wait for Selenium to be ready
+      - name: Wait for Frontend Container to be Ready
+        run: |
+          echo "Waiting for Frontend container (frontend) to be ready..."
+          retries=30
+          until curl -s $BASE_URL | grep -qi "<html"; do
+            if [ $retries -le 0 ]; then
+              echo "Frontend container not ready after multiple attempts, failing..."
+              exit 1
+            fi
+            echo "Frontend container not ready, waiting..."
+            retries=$((retries-1))
+            sleep 5
+          done
+          echo "Frontend container is ready!"
+
+      - name: Wait for Selenium to be Ready
         run: |
           echo "Waiting for Selenium to be ready..."
           retries=24
@@ -53,3 +78,10 @@ jobs:
       - name: Run Selenium Tests with Maven Debug
         run: mvn test -Dtest="com.tfg.futstats.selenium.**" -e -X
         working-directory: ./Backend
+
+      - name: Upload Surefire Reports on Failure
+        if: failure()
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: surefire-reports
+          path: ./Backend/target/surefire-reports
