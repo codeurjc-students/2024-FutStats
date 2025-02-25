@@ -20,6 +20,10 @@ jobs:
         options: >-
           --shm-size=2g
 
+    env:
+      # Esta variable se usa en BaseTest para conectarse al Selenium remoto.
+      SELENIUM_REMOTE_URL: http://localhost:4444
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -46,8 +50,13 @@ jobs:
           done
           echo "Selenium is ready!"
 
-      - name: Run Selenium Tests
-        env:
-          SELENIUM_REMOTE_URL: http://localhost:4444
-        run: mvn test -Dtest="com.tfg.futstats.selenium.**"
+      - name: Run Selenium Tests with Maven Debug
+        run: mvn test -Dtest="com.tfg.futstats.selenium.**" -e -X
         working-directory: ./Backend
+
+      - name: Upload Surefire Reports on Failure
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: surefire-reports
+          path: ./Backend/target/surefire-reports
