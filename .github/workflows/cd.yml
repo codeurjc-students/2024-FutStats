@@ -19,9 +19,7 @@ jobs:
           - 4444:4444
         options: --shm-size=2g --add-host=host.docker.internal:host-gateway
       frontend:
-        build:
-          context: ./Frontend
-          dockerfile: Dockerfile
+        image: myorg/frontend:latest
         ports:
           - 4200:4200
         options: >-
@@ -29,9 +27,7 @@ jobs:
           --health-interval=10s --health-timeout=5s --health-retries=3
 
     env:
-      # URL para conectarse al contenedor Selenium
       SELENIUM_REMOTE_URL: http://localhost:4444
-      # Base URL que usarán los tests (ya integrada en el código)
       BASE_URL: http://frontend:4200
 
     steps:
