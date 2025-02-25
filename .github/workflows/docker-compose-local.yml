@@ -9,6 +9,13 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    services:
+      selenium:
+        image: selenium/standalone-chrome:latest
+        ports:
+          - 4444:4444
+        options: >-
+          --shm-size=2g
 
     steps:
       - name: Checkout repository
@@ -22,8 +29,9 @@ jobs:
 
       - name: Install Docker Compose
         run: |
-            sudo apt-get update
-            sudo apt-get install -y docker-compose
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
       - name: Levantar contenedores en segundo plano
         run: docker-compose up -d --build
         working-directory: ./Docker
@@ -32,7 +40,6 @@ jobs:
         run: |
           echo "Waiting for MySQL to be ready..."
           retries=12
-          # "db" es el servicio definido en docker-compose.yml
           until docker-compose exec -T db mysql -u root -p"17042002" -e "SELECT 1"; do
             if [ $retries -le 0 ]; then
               echo "MySQL not ready after multiple attempts, failing..."
@@ -44,6 +51,21 @@ jobs:
           done
           echo "MySQL is ready!"
         working-directory: ./Docker
+
+      - name: Wait for Selenium to be ready
+        run: |
+          echo "Waiting for Selenium to be ready..."
+          retries=12
+          until curl -s http://localhost:4444/wd/hub/status | grep '"ready":true'; do
+            if [ $retries -le 0 ]; then
+              echo "Selenium not ready after multiple attempts, failing..."
+              exit 1
+            fi
+            echo "Selenium not ready, waiting..."
+            retries=$((retries-1))
+            sleep 5
+          done
+          echo "Selenium is ready!"
 
       - name: Set up Node.js 18.119
         uses: actions/setup-node@v2
@@ -58,10 +80,11 @@ jobs:
         working-directory: ./Frontend
         
       - name: Run Spring Boot tests Controllers
-        run:  mvn test -Dtest="com.tfg.futstats.controllers.**"
+        run: mvn test -Dtest="com.tfg.futstats.controllers.**"
         working-directory: ./Backend
+
       - name: Run Spring Boot tests Services
-        run:  mvn test -Dtest="com.tfg.futstats.services.**" 
+        run: mvn test -Dtest="com.tfg.futstats.services.**"
         working-directory: ./Backend
 
       - name: Run Angular Unit Tests
@@ -69,7 +92,9 @@ jobs:
         working-directory: ./Frontend
 
       - name: Run Spring Boot tests Selenium
-        run:  mvn test -Dtest="com.tfg.futstats.selenium.**" 
+        env:
+          SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
+        run: mvn test -Dtest="com.tfg.futstats.selenium.**"
         working-directory: ./Backend
 
       - name: Log in to Docker Hub
@@ -85,3 +110,4 @@ jobs:
       - name: Push images
         working-directory: ./Docker
         run: docker-compose push
+
