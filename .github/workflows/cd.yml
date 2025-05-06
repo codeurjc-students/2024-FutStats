@@ -1,24 +1,24 @@
-name: CD Docker Build
+# name: CD Docker Build
 
-on:
-  push:
-    branches:
-      - main
-      - tester
-jobs:
-  build:
-    runs-on: ubuntu-latest
+# on:
+#   push:
+#     branches:
+#       - main
+#       - tester
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
 
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
+#       - name: Set up JDK 21
+#         uses: actions/setup-java@v4
+#         with:
+#           java-version: '21'
+#           distribution: 'temurin'
 
-      - name: Run tests
-        run: mvn test -Dtest="com.tfg.futstats.selenium.**"
-        working-directory: ./Backend
+#       - name: Run tests
+#         run: mvn test -Dtest="com.tfg.futstats.selenium.**"
+#         working-directory: ./Backend
