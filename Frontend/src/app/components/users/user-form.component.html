@@ -28,10 +28,8 @@
             <input type='checkbox' name='removeImage' [(ngModel)]="removeImage">
             <br>
             <label for="uploadImage">Subir imagen:</label>
-            <input type="file" id="uploadImage" #uploadImage (change)="onFileSelected($event)" />
+            <input type="file" id="imageFile" (change)="onFileSelected($event)" accept=".jpg, .jpeg" />
         </ng-template>
-
-        <input #file type='file' name='imageFile' accept=".jpg, .jpeg" />
 
         <p>
             <button (click)="cancel()">Cancelar</button>
