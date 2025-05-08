@@ -105,6 +105,6 @@ export class UserFormComponent {
 
     private afterUploadImage(user: User) {
 
-        this.router.navigate(['/users']);
+        this.router.navigate(['/myProfile']);
     }
 }
