@@ -23,54 +23,31 @@ jobs:
         run: |
             sudo apt-get update
             sudo apt-get install -y docker-compose
-
-      - name: Check if ports are available
-        run: |
-          if netstat -tuln | grep -q ":3306 "; then
-            echo "Port 3306 is already in use"
-            exit 1
-          fi
-
-      - name: Stop any running containers
-        run: docker-compose -f ./Docker/docker-compose.yml down
-        working-directory: .
-
-      - name: Levantar solo la base de datos
-        run: docker-compose -f ./Docker/docker-compose.yml up -d db
-        working-directory: .
-
-      - name: Check container status
-        run: |
-          echo "Checking container status..."
-          docker ps -a
-          docker-compose -f ./Docker/docker-compose.yml ps
-        working-directory: .
-
-      - name: Check MySQL logs
-        run: docker-compose -f ./Docker/docker-compose.yml logs db
-        working-directory: .
+      - name: Levantar contenedores en segundo plano
+        run: docker-compose up -d --build
+        working-directory: ./Docker
 
       - name: Wait for MySQL in Docker
         run: |
           echo "Waiting for MySQL to be ready..."
-          retries=30
-          until docker-compose -f ./Docker/docker-compose.yml exec -T db mysqladmin ping -h localhost -u root -p"17042002" --silent; do
+          retries=12
+          # "db" es el servicio definido en docker-compose.yml
+          until docker-compose exec -T db mysql -u root -p"17042002" -e "SELECT 1"; do
             if [ $retries -le 0 ]; then
               echo "MySQL not ready after multiple attempts, failing..."
-              docker-compose -f ./Docker/docker-compose.yml logs db
               exit 1
             fi
             echo "MySQL not ready, waiting..."
             retries=$((retries-1))
-            sleep 10
+            sleep 5
           done
           echo "MySQL is ready!"
-        working-directory: .
+        working-directory: ./Docker
 
-      - name: Set up Node.js
+      - name: Set up Node.js 18.119
         uses: actions/setup-node@v2
         with:
-          node-version: '18.19.0'
+          node-version: '18.19'
 
       - name: Install Angular CLI Globally
         run: npm install -g @angular/cli
@@ -97,9 +74,9 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build images
-        run: docker-compose -f ./Docker/docker-compose.yml build
-        working-directory: .
+        working-directory: ./Docker
+        run: docker-compose build
 
       - name: Push images
-        run: docker-compose -f ./Docker/docker-compose.yml push
-        working-directory: .
+        working-directory: ./Docker
+        run: docker-compose push
