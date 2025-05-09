@@ -1,26 +1,29 @@
+version: "3.8"
 services:
   db:
     image: mysql:8.0.22
     environment:
       MYSQL_ROOT_PASSWORD: 17042002
       MYSQL_ROOT_USER: root
-      MYSQL_DATABASE: apirest
+      MYSQL_DATABASE: api_rest
       MYSQL_PASSWORD: 17042002
     ports:
       - "3306:3306"
+    command: >
+      --init-connect='GRANT ALL PRIVILEGES ON *.* TO "root"@"%" WITH GRANT OPTION; FLUSH PRIVILEGES;'
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 5s
       timeout: 10s
       retries: 5
- 
+
   app:
     build:
       context: ..
       dockerfile: Dockerfile
     environment:
       - SPRING_PROFILES_ACTIVE=local
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3307/api_rest?serverTimezone=Europe/Madrid
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/api_rest?serverTimezone=Europe/Madrid
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=17042002
       - SPRING_JACKSON_TIMEZONE=Europe/Madrid
