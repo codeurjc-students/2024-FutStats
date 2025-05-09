@@ -23,31 +23,46 @@ jobs:
         run: |
             sudo apt-get update
             sudo apt-get install -y docker-compose
+
+      - name: Check if ports are available
+        run: |
+          if netstat -tuln | grep -q ":3306 "; then
+            echo "Port 3306 is already in use"
+            exit 1
+          fi
+
+      - name: Stop any running containers
+        run: docker-compose down
+        working-directory: ./Docker
+
       - name: Levantar contenedores en segundo plano
         run: docker-compose up -d --build
+        working-directory: ./Docker
+
+      - name: Check MySQL logs
+        run: docker-compose logs db
         working-directory: ./Docker
 
       - name: Wait for MySQL in Docker
         run: |
           echo "Waiting for MySQL to be ready..."
-          retries=12
-          # "db" es el servicio definido en docker-compose.yml
-          until docker-compose exec -T db mysql -u root -p"17042002" -e "SELECT 1"; do
+          retries=30
+          until docker-compose exec -T db mysqladmin ping -h localhost -u root -p"17042002" --silent; do
             if [ $retries -le 0 ]; then
               echo "MySQL not ready after multiple attempts, failing..."
+              docker-compose logs db
               exit 1
             fi
             echo "MySQL not ready, waiting..."
             retries=$((retries-1))
-            sleep 5
+            sleep 10
           done
           echo "MySQL is ready!"
-        working-directory: ./Docker
 
-      - name: Set up Node.js 18.119
+      - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18.19'
+          node-version: '18.19.0'
 
       - name: Install Angular CLI Globally
         run: npm install -g @angular/cli
