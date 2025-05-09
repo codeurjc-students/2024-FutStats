@@ -32,25 +32,32 @@ jobs:
           fi
 
       - name: Stop any running containers
-        run: docker-compose down
-        working-directory: ./Docker
+        run: docker-compose -f ./Docker/docker-compose.yml down
+        working-directory: .
 
-      - name: Levantar contenedores en segundo plano
-        run: docker-compose up -d --build
-        working-directory: ./Docker
+      - name: Levantar solo la base de datos
+        run: docker-compose -f ./Docker/docker-compose.yml up -d db
+        working-directory: .
+
+      - name: Check container status
+        run: |
+          echo "Checking container status..."
+          docker ps -a
+          docker-compose -f ./Docker/docker-compose.yml ps
+        working-directory: .
 
       - name: Check MySQL logs
-        run: docker-compose logs db
-        working-directory: ./Docker
+        run: docker-compose -f ./Docker/docker-compose.yml logs db
+        working-directory: .
 
       - name: Wait for MySQL in Docker
         run: |
           echo "Waiting for MySQL to be ready..."
           retries=30
-          until docker-compose exec -T db mysqladmin ping -h localhost -u root -p"17042002" --silent; do
+          until docker-compose -f ./Docker/docker-compose.yml exec -T db mysqladmin ping -h localhost -u root -p"17042002" --silent; do
             if [ $retries -le 0 ]; then
               echo "MySQL not ready after multiple attempts, failing..."
-              docker-compose logs db
+              docker-compose -f ./Docker/docker-compose.yml logs db
               exit 1
             fi
             echo "MySQL not ready, waiting..."
@@ -58,6 +65,7 @@ jobs:
             sleep 10
           done
           echo "MySQL is ready!"
+        working-directory: .
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
@@ -89,9 +97,9 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build images
-        working-directory: ./Docker
-        run: docker-compose build
+        run: docker-compose -f ./Docker/docker-compose.yml build
+        working-directory: .
 
       - name: Push images
-        working-directory: ./Docker
-        run: docker-compose push
+        run: docker-compose -f ./Docker/docker-compose.yml push
+        working-directory: .
