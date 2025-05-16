@@ -15,7 +15,7 @@ public class PlayerMatchDetailTest extends BaseTest {
 
     @Test
     public void testLoginFunctionality() {
-        driver.get("http://localhost:" + this.port + "/playerMatch/1");
+        driver.get("https://localhost:" + this.port + "/playerMatch/1");
 
         WebElement usernameField = driver.findElement(By.name("username"));
         WebElement passwordField = driver.findElement(By.name("password"));
@@ -32,7 +32,7 @@ public class PlayerMatchDetailTest extends BaseTest {
 
     @Test
     public void testLoginFunctionality2() {
-        driver.get("http://localhost:" + this.port + "/matches/1");
+        driver.get("https://localhost:" + this.port + "/matches/1");
 
         WebElement usernameField = driver.findElement(By.name("username"));
         WebElement passwordField = driver.findElement(By.name("password"));

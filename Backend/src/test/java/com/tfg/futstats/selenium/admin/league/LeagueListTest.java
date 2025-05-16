@@ -16,7 +16,7 @@ public class LeagueListTest extends BaseTest{
 
     @Test
     public void testLoginFunctionality() {
-        driver.get("http://localhost:" + this.port + "/");
+        driver.get("https://localhost:" + this.port + "/");
         WebElement usernameField = driver.findElement(By.name("username"));
         WebElement passwordField = driver.findElement(By.name("password"));
         WebElement loginButton = driver.findElement(By.xpath("//button[contains(text(), 'Iniciar Sesión')]"));

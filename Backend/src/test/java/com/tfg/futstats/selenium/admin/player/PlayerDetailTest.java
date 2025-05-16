@@ -16,7 +16,7 @@ public class PlayerDetailTest extends BaseTest {
 
     @Test
     public void testLoginFunctionality() {
-        driver.get("http://localhost:" + this.port + "/players/1");
+        driver.get("https://localhost:" + this.port + "/players/1");
 
         WebElement usernameField = driver.findElement(By.name("username"));
         WebElement passwordField = driver.findElement(By.name("password"));
@@ -92,7 +92,7 @@ public class PlayerDetailTest extends BaseTest {
 
     @Test
     public void testBackButtonFunctionality() {
-        driver.get("http://localhost:4200/players/1");
+        driver.get("https://localhost:4200/players/1");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 

@@ -16,7 +16,7 @@ import com.tfg.futstats.selenium.BaseTest;
 public class PlayerMatchFormTest extends BaseTest {
     @Test
     public void testLoginFunctionality() {
-        driver.get("http://localhost:" + this.port + "/playerMatch/1");
+        driver.get("https://localhost:" + this.port + "/playerMatch/1");
 
         WebElement usernameField = driver.findElement(By.name("username"));
         WebElement passwordField = driver.findElement(By.name("password"));

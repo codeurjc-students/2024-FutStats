@@ -17,7 +17,7 @@ public class MatchDetailTest extends BaseTest {
 
     @Test
     public void testMatchDetailVisibility() {
-        driver.get("http://localhost:" + this.port + "/matches/1");
+        driver.get("https://localhost:" + this.port + "/matches/1");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
@@ -33,7 +33,7 @@ public class MatchDetailTest extends BaseTest {
 
     @Test
     public void testMatchStatistics() {
-        driver.get("http://localhost:" + this.port + "/matches/1");
+        driver.get("https://localhost:" + this.port + "/matches/1");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
@@ -53,7 +53,7 @@ public class MatchDetailTest extends BaseTest {
 
     @Test
     public void testPlayerMatchesPagination() {
-        driver.get("http://localhost:" + this.port + "/matches/1");
+        driver.get("https://localhost:" + this.port + "/matches/1");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
@@ -85,7 +85,7 @@ public class MatchDetailTest extends BaseTest {
 
     @Test
     public void testBackButtonFunctionality() {
-        driver.get("http://localhost:" + this.port + "/matches/1");
+        driver.get("https://localhost:" + this.port + "/matches/1");
 
         WebElement backButton = driver.findElement(By.xpath("//button[contains(text(), 'Volver')]"));
         assertNotNull(backButton, "El botón 'Volver' no está presente.");

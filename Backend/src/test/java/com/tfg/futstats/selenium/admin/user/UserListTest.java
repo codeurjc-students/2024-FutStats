@@ -16,7 +16,7 @@ public class UserListTest extends BaseTest {
 
     @Test
     public void testLoginFunctionality() {
-        driver.get("http://localhost:" + this.port + "/leagues");
+        driver.get("https://localhost:" + this.port + "/leagues");
 
         WebElement usernameField = driver.findElement(By.name("username"));
         WebElement passwordField = driver.findElement(By.name("password"));

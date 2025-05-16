@@ -21,7 +21,7 @@ public class LeagueDetailTest extends BaseTest {
         @Test
         public void testLoginFunctionality() {
 
-                driver.get("http://localhost:" + this.port + "/leagues/1");
+                driver.get("https://localhost:" + this.port + "/leagues/1");
 
                 WebElement usernameField = driver.findElement(By.name("username"));
                 WebElement passwordField = driver.findElement(By.name("password"));
@@ -186,7 +186,7 @@ public class LeagueDetailTest extends BaseTest {
 
                 goBackButton.click();
 
-                assertEquals("http://localhost:" + this.port + "/leagues", driver.getCurrentUrl(), "No se redirigió correctamente.");
+                assertEquals("https://localhost:" + this.port + "/leagues", driver.getCurrentUrl(), "No se redirigió correctamente.");
         }
 
         @Test
