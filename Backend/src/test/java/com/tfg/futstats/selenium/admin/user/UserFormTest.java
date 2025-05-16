@@ -19,7 +19,7 @@ public class UserFormTest extends BaseTest {
 
     @Test
     public void testUserFormLoaded() {
-        driver.get("http://localhost:4200/users/new");
+        driver.get("http://localhost:" + this.port + "/users/new");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
@@ -36,7 +36,7 @@ public class UserFormTest extends BaseTest {
 
     @Test
     public void testUserFormFieldsInteraction() {
-        driver.get("http://localhost:4200/users/new");
+        driver.get("http://localhost:" + this.port + "/users/new");
 
         WebElement nameField = driver.findElement(By.xpath("//input[@placeholder='Nombre']"));
         WebElement passwordField = driver.findElement(By.xpath("//input[@placeholder='Contraseña']"));
@@ -52,7 +52,7 @@ public class UserFormTest extends BaseTest {
 
     @Test
     public void testCancelButtonFunctionality() {
-        driver.get("http://localhost:4200/leagues/");
+        driver.get("http://localhost:" + this.port + "/leagues/");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
@@ -76,7 +76,7 @@ public class UserFormTest extends BaseTest {
 
     @Test
     public void testSaveButtonFunctionality() {
-        driver.get("http://localhost:4200/users/new");
+        driver.get("http://localhost:" + this.port + "/users/new");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
@@ -100,7 +100,7 @@ public class UserFormTest extends BaseTest {
 
     @Test
     public void testImageUploadFunctionality() {
-        driver.get("http://localhost:4200/users/new");
+        driver.get("http://localhost:" + this.port + "/users/new");
 
         WebElement imageFileInput = driver.findElement(By.xpath("//input[@type='file']"));
         assertNotNull(imageFileInput, "El campo de carga de imagen no está presente.");

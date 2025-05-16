@@ -14,8 +14,25 @@ import java.time.Duration;
 public class PlayerMatchDetailTest extends BaseTest {
 
     @Test
+    public void testLoginFunctionality() {
+        driver.get("http://localhost:" + this.port + "/playerMatch/1");
+
+        WebElement usernameField = driver.findElement(By.name("username"));
+        WebElement passwordField = driver.findElement(By.name("password"));
+        WebElement loginButton = driver.findElement(By.xpath("//button[contains(text(), 'Iniciar Sesión')]"));
+
+        assertNotNull(usernameField, "El campo de nombre de usuario no se encontró.");
+        assertNotNull(passwordField, "El campo de contraseña no se encontró.");
+        assertNotNull(loginButton, "El botón 'Iniciar sesión' no se encontró.");
+
+        usernameField.sendKeys("user0");
+        passwordField.sendKeys("pass");
+        loginButton.click();
+    }
+
+    @Test
     public void testPlayerNameAndImage() {
-        driver.get("http://localhost:4200/playerMatch/1");
+        testLoginFunctionality();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
@@ -30,7 +47,7 @@ public class PlayerMatchDetailTest extends BaseTest {
 
     @Test
     public void testPlayerMatchStats() {
-        driver.get("http://localhost:4200/playerMatch/1");
+        testLoginFunctionality();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
@@ -59,7 +76,7 @@ public class PlayerMatchDetailTest extends BaseTest {
 
     @Test
     public void testBackButtonFunctionality() {
-        driver.get("http://localhost:4200/matches/1");
+        driver.get("http://localhost:" + this.port + "/matches/1");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 

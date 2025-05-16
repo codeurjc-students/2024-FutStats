@@ -15,8 +15,25 @@ import com.tfg.futstats.selenium.BaseTest;
 public class PlayerDetailTest extends BaseTest {
 
     @Test
+    public void testLoginFunctionality() {
+        driver.get("http://localhost:" + this.port + "/players/1");
+
+        WebElement usernameField = driver.findElement(By.name("username"));
+        WebElement passwordField = driver.findElement(By.name("password"));
+        WebElement loginButton = driver.findElement(By.xpath("//button[contains(text(), 'Iniciar Sesión')]"));
+
+        assertNotNull(usernameField, "El campo de nombre de usuario no se encontró.");
+        assertNotNull(passwordField, "El campo de contraseña no se encontró.");
+        assertNotNull(loginButton, "El botón 'Iniciar sesión' no se encontró.");
+
+        usernameField.sendKeys("admin");
+        passwordField.sendKeys("pass");
+        loginButton.click();
+    }
+
+    @Test
     public void testPlayerInfoDisplayed() {
-        driver.get("http://localhost:4200/players/1");
+        testLoginFunctionality();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
@@ -38,7 +55,7 @@ public class PlayerDetailTest extends BaseTest {
 
     @Test
     public void testPlayerStatsDisplayed() {
-        driver.get("http://localhost:4200/players/1");
+        testLoginFunctionality();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
@@ -57,23 +74,6 @@ public class PlayerDetailTest extends BaseTest {
 
         assertNotNull(committedFaults, "El campo 'Faltas cometidas' no está presente.");
         assertNotNull(recovers, "El campo 'Recuperaciones' no está presente.");
-    }
-
-    @Test
-    public void testLoginFunctionality() {
-        driver.get("http://localhost:4200/players/1");
-
-        WebElement usernameField = driver.findElement(By.name("username"));
-        WebElement passwordField = driver.findElement(By.name("password"));
-        WebElement loginButton = driver.findElement(By.xpath("//button[contains(text(), 'Iniciar Sesión')]"));
-
-        assertNotNull(usernameField, "El campo de nombre de usuario no se encontró.");
-        assertNotNull(passwordField, "El campo de contraseña no se encontró.");
-        assertNotNull(loginButton, "El botón 'Iniciar sesión' no se encontró.");
-
-        usernameField.sendKeys("admin");
-        passwordField.sendKeys("pass");
-        loginButton.click();
     }
 
     @Test
@@ -110,7 +110,7 @@ public class PlayerDetailTest extends BaseTest {
 
     @Test
     public void testPlayerMatchesPagination() {
-        driver.get("http://localhost:4200/players/1");
+        testLoginFunctionality();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 

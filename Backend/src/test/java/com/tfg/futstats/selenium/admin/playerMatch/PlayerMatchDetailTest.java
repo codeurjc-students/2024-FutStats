@@ -15,7 +15,7 @@ public class PlayerMatchDetailTest extends BaseTest {
 
     @Test
     public void testLoginFunctionality() {
-        driver.get("http://localhost:4200/playerMatch/1");
+        driver.get("http://localhost:" + this.port + "/playerMatch/1");
 
         WebElement usernameField = driver.findElement(By.name("username"));
         WebElement passwordField = driver.findElement(By.name("password"));
@@ -32,7 +32,7 @@ public class PlayerMatchDetailTest extends BaseTest {
 
     @Test
     public void testLoginFunctionality2() {
-        driver.get("http://localhost:4200/matches/1");
+        driver.get("http://localhost:" + this.port + "/matches/1");
 
         WebElement usernameField = driver.findElement(By.name("username"));
         WebElement passwordField = driver.findElement(By.name("password"));
@@ -49,7 +49,7 @@ public class PlayerMatchDetailTest extends BaseTest {
 
     @Test
     public void testPlayerNameAndImage() {
-        driver.get("http://localhost:4200/playerMatch/1");
+       testLoginFunctionality();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
@@ -64,7 +64,7 @@ public class PlayerMatchDetailTest extends BaseTest {
 
     @Test
     public void testPlayerMatchStats() {
-        driver.get("http://localhost:4200/playerMatch/1");
+        testLoginFunctionality();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
@@ -109,7 +109,7 @@ public class PlayerMatchDetailTest extends BaseTest {
 
     @Test
     public void testBackButtonFunctionality() {
-        driver.get("http://localhost:4200/matches/1");
+        testLoginFunctionality2();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 

@@ -16,7 +16,7 @@ public class LoginTest extends BaseTest {
 
     @Test
     public void testLoginFormVisibility() {
-        driver.get("http://localhost:4200/leagues/");
+        driver.get("http://localhost:" + this.port + "/leagues/");
         
         WebElement loginForm = driver.findElement(By.className("navbar-form"));
         assertNotNull(loginForm, "El formulario de inicio de sesión no se muestra.");
@@ -36,7 +36,7 @@ public class LoginTest extends BaseTest {
 
     @Test
     public void testCreateUserButton() {
-        driver.get("http://localhost:4200/login");
+        driver.get("http://localhost:" + this.port + "/login");
 
         // Verificar que el botón "Crear Usuario" está presente
         WebElement createUserButton = driver.findElement(By.xpath("//button[contains(text(), 'Crear Usuario')]"));

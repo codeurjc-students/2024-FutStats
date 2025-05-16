@@ -12,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 public abstract class BaseTest {
 
     public WebDriver driver;
+
+	public int port = 8443;
 	
 	@BeforeEach
 	public void setup() {

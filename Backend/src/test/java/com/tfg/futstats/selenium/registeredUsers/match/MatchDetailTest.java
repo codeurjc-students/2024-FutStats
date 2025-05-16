@@ -16,8 +16,24 @@ import java.util.List;
 public class MatchDetailTest extends BaseTest {
 
     @Test
+    public void testLoginFunctionality() {
+        driver.get("http://localhost:" + this.port + "/matches/1");
+        WebElement usernameField = driver.findElement(By.name("username"));
+        WebElement passwordField = driver.findElement(By.name("password"));
+        WebElement loginButton = driver.findElement(By.xpath("//button[contains(text(), 'Iniciar Sesión')]"));
+
+        assertNotNull(usernameField, "El campo de nombre de usuario no se encontró.");
+        assertNotNull(passwordField, "El campo de contraseña no se encontró.");
+        assertNotNull(loginButton, "El botón 'Iniciar sesión' no se encontró.");
+
+        usernameField.sendKeys("user0");
+        passwordField.sendKeys("pass");
+        loginButton.click();
+    }
+
+    @Test
     public void testMatchDetailVisibility() {
-        driver.get("http://localhost:4200/matches/1");
+        testLoginFunctionality();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
@@ -33,7 +49,7 @@ public class MatchDetailTest extends BaseTest {
 
     @Test
     public void testMatchStatistics() {
-        driver.get("http://localhost:4200/matches/1");
+        testLoginFunctionality();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
@@ -53,7 +69,7 @@ public class MatchDetailTest extends BaseTest {
 
     @Test
     public void testPlayerMatchesPagination() {
-        driver.get("http://localhost:4200/matches/1");
+        testLoginFunctionality();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
@@ -85,7 +101,7 @@ public class MatchDetailTest extends BaseTest {
 
     @Test
     public void testBackButtonFunctionality() {
-        driver.get("http://localhost:4200/matches/1");
+        testLoginFunctionality();
 
         WebElement backButton = driver.findElement(By.xpath("//button[contains(text(), 'Volver')]"));
         assertNotNull(backButton, "El botón 'Volver' no está presente.");

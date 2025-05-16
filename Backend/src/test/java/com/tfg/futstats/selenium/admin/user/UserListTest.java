@@ -16,7 +16,7 @@ public class UserListTest extends BaseTest {
 
     @Test
     public void testLoginFunctionality() {
-        driver.get("http://localhost:4200/leagues");
+        driver.get("http://localhost:" + this.port + "/leagues");
 
         WebElement usernameField = driver.findElement(By.name("username"));
         WebElement passwordField = driver.findElement(By.name("password"));
@@ -77,7 +77,7 @@ public class UserListTest extends BaseTest {
 
     @Test
     public void testCreateUserButtonVisibility() {
-        driver.get("http://localhost:4200/leagues");
+        testLoginFunctionality();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 

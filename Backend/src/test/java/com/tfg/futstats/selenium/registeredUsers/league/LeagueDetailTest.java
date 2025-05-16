@@ -18,7 +18,7 @@ public class LeagueDetailTest extends BaseTest {
 
     @Test
     public void testLoginFunctionality() {
-        driver.get("http://localhost:4200/leagues/1");
+        driver.get("http://localhost:" + this.port + "/leagues/1");
 
         WebElement usernameField = driver.findElement(By.name("username"));
         WebElement passwordField = driver.findElement(By.name("password"));
@@ -35,7 +35,7 @@ public class LeagueDetailTest extends BaseTest {
 
     @Test
     public void testLeagueInfoDisplayed() {
-        driver.get("http://localhost:4200/leagues/1");
+        testLoginFunctionality();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         WebElement leagueName = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2")));
@@ -60,7 +60,7 @@ public class LeagueDetailTest extends BaseTest {
 
     @Test
     public void testTeamsPagination() {
-        driver.get("http://localhost:4200/leagues/1"); 
+        testLoginFunctionality();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
 
@@ -85,7 +85,7 @@ public class LeagueDetailTest extends BaseTest {
 
     @Test
     public void testAccessToTeam() {
-        driver.get("http://localhost:4200/leagues/1");
+        testLoginFunctionality();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
         List<WebElement> teamLinks = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
@@ -104,7 +104,7 @@ public class LeagueDetailTest extends BaseTest {
 
     @Test
     public void testMatchesPagination() {
-        driver.get("http://localhost:4200/leagues/1");
+        testLoginFunctionality();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
 
@@ -130,7 +130,7 @@ public class LeagueDetailTest extends BaseTest {
 
     @Test
     public void testAccessToMatch() {
-        driver.get("http://localhost:4200/leagues/1");
+        testLoginFunctionality();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
         List<WebElement> matchLinks = wait.until(ExpectedConditions

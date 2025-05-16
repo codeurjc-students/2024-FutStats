@@ -15,7 +15,7 @@ public class MyProfileTest extends BaseTest {
 
         @Test
         public void testLoginFunctionality() {
-                driver.get("http://localhost:4200/leagues");
+                driver.get("http://localhost:" + this.port + "/leagues");
 
                 WebElement usernameField = driver.findElement(By.name("username"));
                 WebElement passwordField = driver.findElement(By.name("password"));
@@ -74,75 +74,6 @@ public class MyProfileTest extends BaseTest {
                 WebElement firstPlayer = wait1.until(ExpectedConditions.visibilityOfElementLocated(
                                 By.xpath("//div[h3[contains(text(),'Jugadores')]]")));
         }
-        
-        // @Test
-        // public void testRemoveLeagueButtonFunctionality() {
-        // testLoginFunctionality();
-
-        // WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-
-        // WebElement myProfile = wait
-        // .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(),
-        // 'Mi perfil')]")));
-        // assertNotNull(myProfile, "El boton de mi perfil no se muestra
-        // correctamente.");
-
-        // myProfile.click();
-
-        // WebElement removeLeagueButton = wait.until(ExpectedConditions
-        // .visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Borrar Liga
-        // de favoritos')]")));
-        // assertNotNull(removeLeagueButton, "El botón 'Borrar Liga de favoritos' no
-        // está presente.");
-
-        // removeLeagueButton.click();
-        // }
-
-        // @Test
-        // public void testRemoveTeamButtonFunctionality() {
-        // testLoginFunctionality();
-
-        // WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-
-        // WebElement myProfile = wait
-        // .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(),
-        // 'Mi perfil')]")));
-        // assertNotNull(myProfile, "El boton de mi perfil no se muestra
-        // correctamente.");
-
-        // myProfile.click();
-
-        // WebElement removeTeamButton = wait.until(ExpectedConditions
-        // .visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Borrar
-        // Equipo de favoritos')]")));
-        // assertNotNull(removeTeamButton, "El botón 'Borrar Equipo de favoritos' no
-        // está presente.");
-
-        // removeTeamButton.click();
-        // }
-
-        // @Test
-        // public void testRemovePlayerButtonFunctionality() {
-        // testLoginFunctionality();
-
-        // WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-
-        // WebElement myProfile = wait
-        // .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(),
-        // 'Mi perfil')]")));
-        // assertNotNull(myProfile, "El boton de mi perfil no se muestra
-        // correctamente.");
-
-        // myProfile.click();
-
-        // WebElement removePlayerButton = wait.until(ExpectedConditions
-        // .visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Borrar
-        // Jugador de favoritos')]")));
-        // assertNotNull(removePlayerButton, "El botón 'Borrar Jugador de favoritos' no
-        // está presente.");
-
-        // removePlayerButton.click();
-        // }
 
         @Test
         public void testRemoveUserButtonFunctionality() {

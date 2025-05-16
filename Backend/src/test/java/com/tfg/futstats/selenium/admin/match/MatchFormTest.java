@@ -16,7 +16,7 @@ public class MatchFormTest extends BaseTest {
 
     @Test
     public void testLoginFunctionality() {
-        driver.get("http://localhost:4200/leagues/1");
+        driver.get("http://localhost:" + this.port + "/leagues/1");
 
         WebElement usernameField = driver.findElement(By.name("username"));
         WebElement passwordField = driver.findElement(By.name("password"));

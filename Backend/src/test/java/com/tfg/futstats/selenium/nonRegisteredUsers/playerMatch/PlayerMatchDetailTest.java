@@ -15,7 +15,7 @@ public class PlayerMatchDetailTest extends BaseTest {
 
     @Test
     public void testPlayerNameAndImage() {
-        driver.get("http://localhost:4200/playerMatch/1");
+        driver.get("http://localhost:" + this.port + "/playerMatch/1");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
@@ -30,7 +30,7 @@ public class PlayerMatchDetailTest extends BaseTest {
 
     @Test
     public void testPlayerMatchStats() {
-        driver.get("http://localhost:4200/playerMatch/1");
+        driver.get("http://localhost:" + this.port + "/playerMatch/1");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
@@ -60,7 +60,7 @@ public class PlayerMatchDetailTest extends BaseTest {
 
     @Test
     public void testBackButtonFunctionality() {
-        driver.get("http://localhost:4200/matches/1");
+        driver.get("http://localhost:" + this.port + "/matches/1");
         
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 

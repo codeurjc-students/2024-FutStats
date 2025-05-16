@@ -16,14 +16,14 @@ public class LeagueListTest extends BaseTest{
 
      @Test
     public void testHomePageLoadsSuccessfully() {
-        driver.get("http://localhost:4200/");
+        driver.get("http://localhost:" + this.port + "/");
         String title = driver.getTitle();
         assertEquals("Fut-Stats", title, "El título de la página no es el esperado.");
     }
 
     @Test
     public void testLeagueListIsDisplayed() {
-        driver.get("http://localhost:4200/");
+        driver.get("http://localhost:" + this.port + "/");
         WebElement leagueList = driver.findElement(By.className("items"));
         assertNotNull(leagueList, "La lista de ligas no se encontró.");
         assertTrue(leagueList.findElements(By.tagName("li")).size() > 0, "La lista de ligas está vacía.");
@@ -31,7 +31,7 @@ public class LeagueListTest extends BaseTest{
 
     @Test
     public void testPaginationControls() {
-        driver.get("http://localhost:4200/");
+        driver.get("http://localhost:" + this.port + "/");
 
         WebElement paginationControls = driver.findElement(By.tagName("pagination-controls"));
         assertNotNull(paginationControls, "El componente de controles de paginación no se encontró.");

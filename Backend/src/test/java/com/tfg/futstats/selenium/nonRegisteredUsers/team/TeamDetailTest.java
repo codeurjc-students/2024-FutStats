@@ -15,7 +15,7 @@ public class TeamDetailTest extends BaseTest {
 
     @Test
     public void testTeamInfoDisplayed() {
-        driver.get("http://localhost:4200/teams/1");
+        driver.get("http://localhost:" + this.port + "/teams/1");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
@@ -36,7 +36,7 @@ public class TeamDetailTest extends BaseTest {
 
     @Test
     public void testBackButtonFunctionality() {
-        driver.get("http://localhost:4200/teams/1");
+        driver.get("http://localhost:" + this.port + "/teams/1");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
@@ -54,7 +54,7 @@ public class TeamDetailTest extends BaseTest {
 
     @Test
     public void testLoginFunctionality() {
-        driver.get("http://localhost:4200/teams/1");
+        driver.get("http://localhost:" + this.port + "/teams/1");
 
         WebElement usernameField = driver.findElement(By.name("username"));
         WebElement passwordField = driver.findElement(By.name("password"));
@@ -63,10 +63,6 @@ public class TeamDetailTest extends BaseTest {
         assertNotNull(usernameField, "El campo de nombre de usuario no se encontró.");
         assertNotNull(passwordField, "El campo de contraseña no se encontró.");
         assertNotNull(loginButton, "El botón 'Iniciar sesión' no se encontró.");
-
-        usernameField.sendKeys("admin");
-        passwordField.sendKeys("pass");
-        loginButton.click();
     }
 
     @Test
@@ -93,7 +89,7 @@ public class TeamDetailTest extends BaseTest {
 
     @Test
     public void testPointsChartDisplayed() {
-        driver.get("http://localhost:4200/teams/1");
+        driver.get("http://localhost:" + this.port + "/teams/1");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
@@ -103,7 +99,7 @@ public class TeamDetailTest extends BaseTest {
 
     @Test
     public void testPlayersPagination() {
-        driver.get("http://localhost:4200/teams/1");
+        driver.get("http://localhost:" + this.port + "/teams/1");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 

@@ -4,43 +4,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
+import com.tfg.futstats.selenium.BaseTest;
 
 import java.time.Duration;
 import java.util.List;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class LeagueDetailTest {
-
-        @LocalServerPort
-        int port;
-
-        WebDriver driver;
-
-        @BeforeEach
-        public void setup() {
-                ChromeOptions options = new ChromeOptions();
-                options.addArguments("--headless");
-                driver = new ChromeDriver(options);
-        }
-
-        @AfterEach
-        public void teardown() {
-                if (driver != null) {
-                        driver.quit();
-                }
-        }
+@SpringBootTest()
+public class LeagueDetailTest extends BaseTest {
 
         @Test
         public void testLoginFunctionality() {
@@ -68,7 +44,7 @@ public class LeagueDetailTest {
         @Test
         public void testLeagueInfoDisplayed() {
 
-                driver.get("http://localhost:/" + this.port + "/leagues/1");
+                testLoginFunctionality();
 
                 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
                 WebElement leagueName = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2")));
@@ -95,7 +71,7 @@ public class LeagueDetailTest {
         @Test
         public void testTeamsPagination() {
 
-                driver.get("http://localhost:/" + this.port + "/leagues/1");
+                testLoginFunctionality();
 
                 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
 
@@ -122,7 +98,7 @@ public class LeagueDetailTest {
         @Test
         public void testAccessToTeam() {
 
-                driver.get("http://localhost:" + this.port + "/leagues/1");
+                testLoginFunctionality();
 
                 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
                 List<WebElement> teamLinks = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
@@ -203,19 +179,19 @@ public class LeagueDetailTest {
         @Test
         public void testGoBackButton() {
 
-                driver.get("\"http://localhost:/" + this.port + "/leagues/1");
+                testLoginFunctionality();
 
                 WebElement goBackButton = driver.findElement(By.xpath("//button[contains(text(), 'Volver')]"));
                 assertNotNull(goBackButton, "El botón 'Volver' no está presente.");
 
                 goBackButton.click();
 
-                assertEquals("http://frontend:4200/leagues", driver.getCurrentUrl(), "No se redirigió correctamente.");
+                assertEquals("http://localhost:" + this.port + "/leagues", driver.getCurrentUrl(), "No se redirigió correctamente.");
         }
 
         @Test
         public void testMatchesPagination() {
-                driver.get("http://frontend:4200/leagues/1");
+                testLoginFunctionality();
 
                 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
 
@@ -242,7 +218,7 @@ public class LeagueDetailTest {
         @Test
         public void testAccessToMatch() {
 
-                driver.get("\"http://localhost:" + this.port + "/leagues/1");
+                testLoginFunctionality();
 
                 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
                 List<WebElement> matchLinks = wait.until(ExpectedConditions
