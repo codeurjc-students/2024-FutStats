@@ -13,7 +13,7 @@ public abstract class BaseTest {
 
     public WebDriver driver;
 
-	public int port = 8443;
+	public int port = 8080;
 	
 	@BeforeEach
 	public void setup() {
