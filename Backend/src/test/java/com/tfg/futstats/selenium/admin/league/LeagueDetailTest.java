@@ -23,6 +23,7 @@ public class LeagueDetailTest extends BaseTest {
 
                 driver.get("https://localhost:" + this.port + "/leagues/1");
 
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
                 WebElement usernameField = driver.findElement(By.name("username"));
                 WebElement passwordField = driver.findElement(By.name("password"));
                 WebElement loginButton = driver.findElement(By.xpath("//button[contains(text(), 'Iniciar Sesión')]"));
