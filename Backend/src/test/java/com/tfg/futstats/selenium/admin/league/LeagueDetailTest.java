@@ -36,7 +36,7 @@ public class LeagueDetailTest extends BaseTest {
                 passwordField.sendKeys("pass");
                 loginButton.click();
 
-                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+                wait = new WebDriverWait(driver, Duration.ofSeconds(5));
                 WebElement myProfileButton = wait.until(ExpectedConditions
                                 .visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Mi perfil')]")));
                 assertNotNull(myProfileButton, "No se ha iniciado sesión correctamente");
