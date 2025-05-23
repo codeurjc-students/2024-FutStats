@@ -17,6 +17,8 @@ public class LeagueListTest extends BaseTest{
     @Test
     public void testLoginFunctionality() {
         driver.get("https://localhost:" + this.port + "/");
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         WebElement usernameField = driver.findElement(By.name("username"));
         WebElement passwordField = driver.findElement(By.name("password"));
         WebElement loginButton = driver.findElement(By.xpath("//button[contains(text(), 'Iniciar Sesión')]"));
@@ -33,6 +35,8 @@ public class LeagueListTest extends BaseTest{
     @Test
     public void testHomePageLoadsSuccessfully() {
         testLoginFunctionality();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         String title = driver.getTitle();
         assertEquals("Fut-Stats", title, "El título de la página no es el esperado.");
     }
@@ -40,6 +44,8 @@ public class LeagueListTest extends BaseTest{
     @Test
     public void testLeagueListIsDisplayed() {
         testLoginFunctionality();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         WebElement leagueList = driver.findElement(By.className("items"));
         assertNotNull(leagueList, "La lista de ligas no se encontró.");
         assertTrue(leagueList.findElements(By.tagName("li")).size() > 0, "La lista de ligas está vacía.");
@@ -49,6 +55,7 @@ public class LeagueListTest extends BaseTest{
     public void testPaginationControls() {
         testLoginFunctionality();
 
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         WebElement paginationControls = driver.findElement(By.tagName("pagination-controls"));
         assertNotNull(paginationControls, "El componente de controles de paginación no se encontró.");
 
