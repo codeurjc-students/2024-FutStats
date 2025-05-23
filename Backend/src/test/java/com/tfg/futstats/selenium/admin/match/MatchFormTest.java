@@ -18,6 +18,7 @@ public class MatchFormTest extends BaseTest {
     public void testLoginFunctionality() {
         driver.get("https://localhost:" + this.port + "/leagues/1");
 
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         WebElement usernameField = driver.findElement(By.name("username"));
         WebElement passwordField = driver.findElement(By.name("password"));
         WebElement loginButton = driver.findElement(By.xpath("//button[contains(text(), 'Iniciar Sesión')]"));
@@ -35,6 +36,7 @@ public class MatchFormTest extends BaseTest {
     public void testLoginFunctionality2() {
         driver.get("https://localhost:4200/matches/1");
 
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         WebElement usernameField = driver.findElement(By.name("username"));
         WebElement passwordField = driver.findElement(By.name("password"));
         WebElement loginButton = driver.findElement(By.xpath("//button[contains(text(), 'Iniciar Sesión')]"));
