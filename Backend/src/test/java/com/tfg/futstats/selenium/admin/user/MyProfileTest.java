@@ -17,6 +17,8 @@ public class MyProfileTest extends BaseTest {
         public void testLoginFunctionality() {
                 driver.get("https://localhost:" + this.port + "/leagues");
 
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+
                 WebElement usernameField = driver.findElement(By.name("username"));
                 WebElement passwordField = driver.findElement(By.name("password"));
                 WebElement loginButton = driver.findElement(By.xpath("//button[contains(text(), 'Iniciar Sesión')]"));
