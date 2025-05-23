@@ -20,6 +20,7 @@ public class MatchDetailTest extends BaseTest {
     public void testLoginFunctionality() {
         driver.get("https://localhost:" + this.port + "/matches/1");
 
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         WebElement usernameField = driver.findElement(By.name("username"));
         WebElement passwordField = driver.findElement(By.name("password"));
         WebElement loginButton = driver.findElement(By.xpath("//button[contains(text(), 'Iniciar Sesión')]"));
@@ -155,6 +156,8 @@ public class MatchDetailTest extends BaseTest {
     @Test
     public void testBackButtonFunctionality() {
         testLoginFunctionality();
+        
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
         WebElement backButton = driver.findElement(By.xpath("//button[contains(text(), 'Volver')]"));
         assertNotNull(backButton, "El botón 'Volver' no está presente.");
