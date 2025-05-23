@@ -38,6 +38,8 @@ public class UserFormTest extends BaseTest {
     public void testUserFormFieldsInteraction() {
         driver.get("https://localhost:" + this.port + "/users/new");
 
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+
         WebElement nameField = driver.findElement(By.xpath("//input[@placeholder='Nombre']"));
         WebElement passwordField = driver.findElement(By.xpath("//input[@placeholder='Contraseña']"));
 
@@ -101,6 +103,8 @@ public class UserFormTest extends BaseTest {
     @Test
     public void testImageUploadFunctionality() {
         driver.get("https://localhost:" + this.port + "/users/new");
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
         WebElement imageFileInput = driver.findElement(By.xpath("//input[@type='file']"));
         assertNotNull(imageFileInput, "El campo de carga de imagen no está presente.");
