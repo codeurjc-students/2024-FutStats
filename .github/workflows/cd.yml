@@ -3,7 +3,6 @@ name: CD Docker Build
 on:
   push:
     branches:
-      - Hotfix
 
 jobs:
   build-and-deploy:
