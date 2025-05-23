@@ -19,6 +19,8 @@ public class PlayerFormTest extends BaseTest {
     public void testLoginFunctionality() {
         driver.get("https://localhost:" + this.port + "/players/1");
 
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        
         WebElement usernameField = driver.findElement(By.name("username"));
         WebElement passwordField = driver.findElement(By.name("password"));
         WebElement loginButton = driver.findElement(By.xpath("//button[contains(text(), 'Iniciar Sesión')]"));
@@ -173,6 +175,10 @@ public class PlayerFormTest extends BaseTest {
     }
 
     private boolean isEditingPlayer() {
+        testLoginFunctionality();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+
         return driver.findElements(By.xpath("//h2[contains(text(), 'Nuevo Jugador')]")).isEmpty();
     }
 
