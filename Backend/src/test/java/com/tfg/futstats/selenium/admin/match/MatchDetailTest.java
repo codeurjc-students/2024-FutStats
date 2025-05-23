@@ -21,6 +21,7 @@ public class MatchDetailTest extends BaseTest {
         driver.get("https://localhost:" + this.port + "/matches/1");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        
         WebElement usernameField = driver.findElement(By.name("username"));
         WebElement passwordField = driver.findElement(By.name("password"));
         WebElement loginButton = driver.findElement(By.xpath("//button[contains(text(), 'Iniciar Sesión')]"));
@@ -164,7 +165,7 @@ public class MatchDetailTest extends BaseTest {
 
         backButton.click();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.urlContains("/leagues/1"));
 
         assertTrue(driver.getCurrentUrl().contains("/leagues/1"), "No redirige correctamente al listado de partidos.");
