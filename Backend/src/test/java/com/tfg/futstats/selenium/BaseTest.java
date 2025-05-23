@@ -18,7 +18,7 @@ public abstract class BaseTest {
 	@BeforeEach
 	public void setup() {
 		ChromeOptions options = new ChromeOptions();
-		options.addArguments("--headless");
+		options.setAcceptInsecureCerts(true);
 		driver = new ChromeDriver(options);
 	}
 	
