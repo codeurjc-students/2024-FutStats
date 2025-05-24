@@ -17,9 +17,11 @@ public abstract class BaseTest {
 	
 	@BeforeEach
 	public void setup() {
-		ChromeOptions options = new ChromeOptions();
 		options.setAcceptInsecureCerts(true);
-		driver = new ChromeDriver(options);
+    		options.addArguments("--headless=new");
+    		options.addArguments("--no-sandbox");
+    		options.addArguments("--disable-dev-shm-usage");
+    		options.addArguments("--disable-gpu");
 	}
 	
 	@AfterEach
