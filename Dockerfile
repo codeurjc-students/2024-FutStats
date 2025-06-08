@@ -1,5 +1,6 @@
 # Angular
 FROM node:22.12.0-slim AS frontend
+
 WORKDIR /app/
 COPY Frontend/package*.json Frontend/angular.json ./
 RUN npm install && npm install -g @angular/cli

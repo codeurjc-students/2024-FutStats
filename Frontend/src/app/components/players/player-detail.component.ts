@@ -138,7 +138,7 @@ export class PlayerDetailComponent implements OnInit {
   }
 
   playerImage() {
-    return this.player.image ? "api/v1/players/" + this.player.id + "/image" : 'assets/no_image.jpg';
+    return this.player.image ? this.service.getImage(this.player.id) : 'assets/no_image.jpg';
   }
 
   removePlayer() {
@@ -152,7 +152,7 @@ export class PlayerDetailComponent implements OnInit {
   }
 
   editPlayer(): void {
-    this.router.navigate(['/players/edit/', this.player.id]);
+    this.router.navigate(['/players/edit', this.player.id]);
   }
 
   addPlayer() {

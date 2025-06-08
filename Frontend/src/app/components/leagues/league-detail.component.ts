@@ -83,12 +83,10 @@ export class LeagueDetailComponent implements OnInit {
         this.errorMessage = 'Error fetching league details';
       }
     );
-
-    this.leagueImage();
   }
 
   leagueImage() {
-    return this.league.image ? "api/v1/leagues/" + this.league.id + "/image" : 'assets/no_image.jpg';
+    return this.league.image ? this.service.getImage(this.league.id) : 'assets/no_image.jpg';
   }
 
   removeLeague() {
