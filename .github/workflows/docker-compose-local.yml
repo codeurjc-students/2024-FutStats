@@ -43,10 +43,10 @@ jobs:
           echo "MySQL is ready!"
         working-directory: ./Docker
 
-      - name: Set up Node.js 18.119
+      - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18.19'
+          node-version: '22.12.0'
 
       - name: Install Angular CLI Globally
         run: npm install -g @angular/cli
