@@ -53,6 +53,7 @@ export class TeamFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadLeagues(); 
+    this.teamImage();
   }
 
   private loadLeagues() {
@@ -68,26 +69,25 @@ export class TeamFormComponent implements OnInit {
 
   save() {
     if (this.newTeam) {
-      if (this.team.image && this.removeImage) {
+      if (this.removeImage) {
         this.team.image = false;
       }
       this.service.addTeam(this.team).subscribe(
         (team: Team) => this.uploadImage(team),
-        error => alert('Error creating new league: ' + error)
+        error => alert('Error creating new team: ' + error)
       );
     } else {
-      if (this.team.image && this.removeImage) {
+      if (this.removeImage) {
         this.team.image = false;
       }
       this.service.updateTeam(this.team).subscribe(
         (team: Team,) => this.uploadImage(team),
-        error => alert('Error creating new league: ' + error)
+        error => alert('Error creating new team: ' + error)
       );
     }
   }
 
   uploadImage(team: Team): void {
-
     if (this.fileInput) {
       const image = this.fileInput.nativeElement.files[0];
       if (image) {
@@ -103,9 +103,8 @@ export class TeamFormComponent implements OnInit {
           error => alert('Error deleting team image: ' + error)
         );
       }
-    } else {
-      this.afterUploadImage(team);
     }
+    this.afterUploadImage(team);
   }
 
   onFileSelected(event: any): void {
@@ -116,20 +115,10 @@ export class TeamFormComponent implements OnInit {
   }
 
   private afterUploadImage(team: Team) {
-    this.leagueService.getLeagueByName(this.team.league).subscribe({
-      next: (league: League) => {
-        this.league = league;
-        this.router.navigate(['/leagues', this.league.id]); // Navigate after league is fetched
-      },
-      error: (error) => {
-        console.error('Error fetching league:', error);
-        alert('Failed to fetch league details. Please try again.');
-      },
-    });
+    this.router.navigate(['/teams', this.team.id]);
   }
   
-
   teamImage() {
-    return this.team.image ? this.service.getImage(this.team.id) : 'assets/no_image.jpg';
+    return this.team.image ? "api/v1/teams/" + this.team.id + "/image" : 'assets/no_image.jpg';
   }
 }

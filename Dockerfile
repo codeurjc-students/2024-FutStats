@@ -1,5 +1,5 @@
 # Angular
-FROM node:22.0.0-slim AS frontend
+FROM node:20.19.0-slim AS frontend
 WORKDIR /app/
 COPY Frontend/package*.json Frontend/angular.json ./
 RUN npm install && npm install -g @angular/cli
