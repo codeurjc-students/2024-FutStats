@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
+import { Match } from '../models/match.model';
 import { Player } from '../models/player.model';
 import { PlayerMatch } from '../models/player-match.model';
 
@@ -19,8 +20,8 @@ export class PlayerMatchesService {
 		);
 	}
 
-	getMatch(id: number): Observable<PlayerMatch> {
-		return this.httpClient.get<PlayerMatch>(BASE_URL + id + '/match').pipe(
+	getMatch(id: number): Observable<Match> {
+		return this.httpClient.get<PMatch>(BASE_URL + id + '/match').pipe(
 			catchError(error => this.handleError(error))
 		);
 	}
