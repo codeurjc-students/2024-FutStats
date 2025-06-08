@@ -54,6 +54,35 @@ public class UserControllerTest {
     }
 
     @Test
+    void testGetUserById() throws Exception {
+        HttpServletRequest mockRequest = mock(HttpServletRequest.class);
+        when(mockRequest.getUserPrincipal()).thenReturn(() -> "admin");
+
+        mockMvc.perform(get("/api/v1/users/{id}", 1)
+                .with(request -> {
+                    request.setUserPrincipal(mockRequest.getUserPrincipal());
+                    return request;
+                })
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("admin"));
+    }
+
+    @Test
+    void testGetImage() throws Exception {
+        HttpServletRequest mockRequest = mock(HttpServletRequest.class);
+        when(mockRequest.getUserPrincipal()).thenReturn(() -> "admin");
+
+        mockMvc.perform(get("/api/v1/users/{id}/image", 1)
+                .with(request -> {
+                    request.setUserPrincipal(mockRequest.getUserPrincipal());
+                    return request;
+                }) // autenticado
+                .accept(MediaType.APPLICATION_OCTET_STREAM))
+                .andExpect(status().isOk()); // Verifica que el estado sea 200 OK
+    }
+
+    @Test
     void testAddUserLeague() throws Exception {
         HttpServletRequest mockRequest = mock(HttpServletRequest.class);
         when(mockRequest.getUserPrincipal()).thenReturn(() -> "admin");

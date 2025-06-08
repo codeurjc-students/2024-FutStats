@@ -35,16 +35,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-
 import java.io.IOException;
 import java.net.URI;
 import java.sql.Blob;
 import java.util.List;
-import java.sql.SQLException;
-        
+
 @RestController
 @RequestMapping("/api/v1/teams")
 public class TeamController {
@@ -119,14 +114,11 @@ public class TeamController {
             @ApiResponse(responseCode = "404", description = "team not found", content = @Content)
     })
     @GetMapping("/{id}/image")
-    public ResponseEntity<Object> getImage(HttpServletRequest request, @PathVariable long id)throws SQLException {
+    public ResponseEntity<Blob> getImage(HttpServletRequest request, @PathVariable long id) {
         Team team = restService.findTeamById(id)
                 .orElseThrow(() -> new ElementNotFoundException("No esta registrado"));
 
-        Resource file = new InputStreamResource(team.getImageFile().getBinaryStream());
- 
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
-		.contentLength(team.getImageFile().length()).body(file);
+        return ResponseEntity.ok(team.getImageFile());
     }
 
     @Operation(summary = "Get league of a team")

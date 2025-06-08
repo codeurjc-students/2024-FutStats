@@ -1,4 +1,3 @@
-
 import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -38,13 +37,8 @@ export class LeagueFormComponent {
     }
   }
 
-  ngOnInit(): void {
-    this.leagueImage();
-  }
-
-
   cancel() {
-    this.router.navigate(['/leagues']);
+    window.history.back();
   }
 
   save() {
@@ -67,6 +61,7 @@ export class LeagueFormComponent {
     }
   }
   
+
   uploadImage(league: League): void {
     if (this.fileInput) {
       const file = this.fileInput.nativeElement.files[0];
@@ -94,8 +89,9 @@ export class LeagueFormComponent {
     }
   }
   
+
   leagueImage() {
-    return this.league.image ? "api/v1/leagues/" + this.league.id + "/image" : 'assets/no_image.jpg';
+    return this.league.image ? this.service.getImage(this.league.id) : 'assets/no_image.jpg';
   }
 
   private afterUploadImage(league: League) {
