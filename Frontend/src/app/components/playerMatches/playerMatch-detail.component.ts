@@ -43,25 +43,13 @@ export class PlayerMatchDetailComponent implements OnInit {
                 console.error(error);
             }
         );
-
-        this.service.getMatch(id).subscribe(
-            (match: Match) => {
-                this.match = match;
-                console.log(this.match);
-            },
-            (error: any) => {
-                this.errorMessage = 'Error finding match';
-                console.error(error);
-            }
-        );
-
+        
         this.service.getPlayer(id).subscribe(
             (player: Player) => {
                 this.player = player;
-                console.log(this.player);
             },
             (error: any) => {
-                this.errorMessage = 'Error finding match';
+                this.errorMessage = 'Error finding player';
                 console.error(error);
             }
         );
@@ -78,7 +66,7 @@ export class PlayerMatchDetailComponent implements OnInit {
     }
 
     playerImage() {
-        return this.player.image ? "api/v1/players/" + this.player.id + "/image" : 'assets/no_image.jpg';
+        return this.player.image ? this.playerService.getImage(this.player.id) : 'assets/no_image.jpg';
       }
 
     editPlayerMatch(){
@@ -86,6 +74,6 @@ export class PlayerMatchDetailComponent implements OnInit {
     }
 
     goBack(): void {
-        this.router.navigate(['/matches', this.match.id]);
+        window.history.back();
     }
 }

@@ -69,7 +69,7 @@ export class myProfileComponent implements OnInit {
     }
 
     userImage(){
-        return this.user.image? "api/v1/users/" + this.user.id + "/image" : 'assets/no_image.jpg';
+        return this.user.image? this.service.getImage(this.user.id) : 'assets/no_image.jpg';
     }
 
     removeUser() {

@@ -4,7 +4,6 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { Player } from '../models/player.model';
-import { Match } from '../models/match.model';
 import { PlayerMatch } from '../models/player-match.model';
 
 const BASE_URL = '/api/v1/playerMatches/';
@@ -20,8 +19,8 @@ export class PlayerMatchesService {
 		);
 	}
 
-	getMatch(id: number): Observable<Match> {
-		return this.httpClient.get<Match>(BASE_URL + id + '/match').pipe(
+	getMatch(id: number): Observable<PlayerMatch> {
+		return this.httpClient.get<PlayerMatch>(BASE_URL + id + '/match').pipe(
 			catchError(error => this.handleError(error))
 		);
 	}
@@ -33,7 +32,7 @@ export class PlayerMatchesService {
 	}
 
 	getGoalsPerMatch(playerId: number): Observable<any> {
-		return this.httpClient.get<any>(BASE_URL + `goals/${playerId}`).pipe(
+		return this.httpClient.get<any>(BASE_URL + `/goals/${playerId}`).pipe(
 			catchError(error => this.handleError(error))
 		);
 	}
