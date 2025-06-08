@@ -54,6 +54,7 @@ export class PlayerFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadLeagues();
+    this.playerImage();
   }
 
   loadLeagues() {
@@ -80,28 +81,39 @@ export class PlayerFormComponent implements OnInit {
   }
 
   save() {
-    if (this.newPlayer) {
-      if (this.player.image && this.removeImage) {
-        this.player.image = false;
-      }
+    if (this.player.image && this.removeImage) {
+      this.player.image = false;
+    }
+    
+    if (this.selectedLeagueId) {
       this.player.league = this.selectedLeagueId;
+    }
+
+    if (this.newPlayer) {
       this.service.addPlayer(this.player).subscribe({
         next: (player: Player) => this.uploadImage(player),
-        error: (error) => alert('Error creating new player: ' + error),
+        error: (error) => {
+          console.error('Error creating player:', error);
+          alert('Error creating new player: ' + error);
+        }
       });
     } else {
-      if (this.player.image && this.removeImage) {
-        this.player.image = false;
+      if (!this.player.id) {
+        alert('Error: Player ID is missing');
+        return;
       }
-      this.service.updatePlayer(this.player).subscribe(
-        (player: Player) => this.uploadImage(player),
-        error => alert('Error updating player: ' + error)
-      );
+      
+      this.service.updatePlayer(this.player).subscribe({
+        next: (player: Player) => this.uploadImage(player),
+        error: (error) => {
+          console.error('Error updating player:', error);
+          alert('Error updating player: ' + error);
+        }
+      });
     }
   }
 
   uploadImage(player: Player): void {
-
     if (this.file) {
       const image = this.file.nativeElement.files[0];
       if (image) {
@@ -130,23 +142,14 @@ export class PlayerFormComponent implements OnInit {
   }
 
   private afterUploadImage(player: Player) {
-    this.teamService.getTeamByName(this.player.team).subscribe({
-      next: (team: Team) => {
-        this.team = team;
-        this.router.navigate(['/teams', this.team.id]);
-      },
-      error: (error) => {
-        console.error('Error fetching team:', error);
-        alert('Failed to fetch league details. Please try again.');
-      },
-    });
+    this.router.navigate(['/players/', this.player.id]);
   }
 
   playerImage() {
-    return this.player.image ? this.service.getImage(this.player.id) : 'assets/no_image.jpg';
+    return this.player.image ? "api/v1/players/" + this.player.id + "/image" : 'assets/no_image.jpg';
   }
 
   cancel() {
-    window.history.back(); // Volver atrás sin guardar
+    window.history.back(); 
   }
 }
