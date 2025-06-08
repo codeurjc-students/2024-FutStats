@@ -45,7 +45,7 @@ describe('PlayerMatchesService', () => {
 
     const req = httpMock.expectOne(BASE_URL + '1/match');
     expect(req.request.method).toBe('GET');
-    req.flush(mockPlayerMatch);
+    req.flush(mockMatch);
   });
 
   it('should retrieve a player by player match ID', () => {
