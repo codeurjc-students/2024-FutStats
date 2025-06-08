@@ -68,13 +68,24 @@ public class UserControllerUnitaryTest {
         User mockUser = new User();
         mockUser.setId(1);
         mockUser.setName("testuser");
+        
+        UserResponseDTO mockResponseDTO = new UserResponseDTO();
+        mockResponseDTO.setId(1);
+        mockResponseDTO.setName("testuser");
+
         when(request.getUserPrincipal()).thenReturn(() -> "testuser");
         when(userService.findUserById(1)).thenReturn(Optional.of(mockUser));
+        when(restService.convertUserToDTO(mockUser)).thenReturn(mockResponseDTO);
 
         ResponseEntity<UserResponseDTO> response = userController.getUser(request, 1);
 
         assertEquals(200, response.getStatusCode().value());
+        assertNotNull(response.getBody());
         assertEquals(1, response.getBody().getId());
+        assertEquals("testuser", response.getBody().getName());
+    
+        verify(userService).findUserById(1);
+        verify(restService).convertUserToDTO(mockUser);
     }
 
     @Test
