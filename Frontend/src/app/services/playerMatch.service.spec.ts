@@ -3,6 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { PlayerMatchesService } from './playerMatch.service'; 
 import { PlayerMatch } from '../models/player-match.model';
 import { Player } from '../models/player.model';
+import { Match } from '../models/match.model';
 
 const BASE_URL = '/api/v1/playerMatches/';
 
@@ -36,11 +37,11 @@ describe('PlayerMatchesService', () => {
   });
 
   it('should retrieve a match by ID', () => {
-    const mockPlayerMatch: PlayerMatch = { id: 1, match: 1 ,name: 'Vinicius Jr.', matchName: "Match 1" };
+    const mockMatch: Match = { id: 1, team1: 'Team 1', team2: 'Team 2', date:  new Date('2023-01-01'), place: 'Bernabeu', league: 'League 1', name: '1'};
 
-    service.getMatch(1).subscribe(match => {
-      expect(match).toEqual(mockPlayerMatch);
-    });
+    service.getMatch(1).subscribe((match: Match) => {
+      expect(match).toEqual(mockMatch);
+  });
 
     const req = httpMock.expectOne(BASE_URL + '1/match');
     expect(req.request.method).toBe('GET');
