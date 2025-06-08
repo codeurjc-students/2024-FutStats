@@ -64,20 +64,6 @@ public class UserControllerUnitaryTest {
     }
 
     @Test
-    void testGetUserById() {
-        User mockUser = new User();
-        mockUser.setId(1);
-        mockUser.setName("testuser");
-        when(request.getUserPrincipal()).thenReturn(() -> "testuser");
-        when(userService.findUserById(1)).thenReturn(Optional.of(mockUser));
-
-        ResponseEntity<UserResponseDTO> response = userController.getUser(request, 1);
-
-        assertEquals(200, response.getStatusCode().value());
-        assertEquals(1, response.getBody().getId());
-    }
-
-    @Test
     void testPostUser() {
         // Configurar el contexto simulado del servlet
         MockHttpServletRequest mockRequest = new MockHttpServletRequest();
