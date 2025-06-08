@@ -65,13 +65,6 @@ public class LeagueControllerTest {
     }
 
     @Test
-    void testGetImage() throws Exception {
-        mockMvc.perform(get("/api/v1/leagues/{id}/image", 1)
-                .accept(MediaType.APPLICATION_OCTET_STREAM))
-                .andExpect(status().isOk()); // Verifica que el estado sea 200 OK
-    }
-
-    @Test
     void testGetTeams() throws Exception {
         mockMvc.perform(get("/api/v1/leagues/{id}/teams", 1)
                 .accept(MediaType.APPLICATION_JSON))

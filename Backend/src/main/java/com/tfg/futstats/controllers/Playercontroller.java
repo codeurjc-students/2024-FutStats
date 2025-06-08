@@ -35,10 +35,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+
 import java.io.IOException;
 import java.net.URI;
 import java.sql.Blob;
 import java.util.List;
+import java.sql.SQLException;
 
 @RestController
 @RequestMapping("/api/v1/players")
@@ -53,7 +58,7 @@ public class Playercontroller {
                         @ApiResponse(responseCode = "200", description = "Found players", content = {
                                         @Content(mediaType = "application/json", schema = @Schema(implementation = PlayerDTO.class))
                         }),
-                        @ApiResponse(responseCode = "204", description = "No content", content = @Content)
+                        @ApiResponse(responseCode = "404", description = "No content", content = @Content)
         })
         @GetMapping("/")
         public ResponseEntity<List<PlayerResponseDTO>> getAllPlayers() {
@@ -98,10 +103,6 @@ public class Playercontroller {
                 PlayerResponseDTO playerDto = new PlayerResponseDTO(player);
 
                 return ResponseEntity.ok(playerDto);
-
-                // if the player ins`t found we will never reach this point so it is not
-                // necessary
-                // to create a not found ResponseEntity
         }
 
         @Operation(summary = "Get player image")
@@ -113,11 +114,14 @@ public class Playercontroller {
                         @ApiResponse(responseCode = "404", description = "player not found", content = @Content)
         })
         @GetMapping("/{id}/image")
-        public ResponseEntity<Blob> getImage(HttpServletRequest request, @PathVariable long id) {
+        public ResponseEntity<Object> getImage(HttpServletRequest request, @PathVariable long id)throws SQLException {
                 Player player = restService.findPlayerById(id)
-                                .orElseThrow(() -> new ElementNotFoundException("No esta registrado"));
+                        .orElseThrow(() -> new ElementNotFoundException("No esta registrado"));
 
-                return ResponseEntity.ok(player.getImageFile());
+                Resource file = new InputStreamResource(player.getImageFile().getBinaryStream());
+ 
+                return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
+		        .contentLength(player.getImageFile().length()).body(file);
         }
 
         @Operation(summary = "Get league of a player")
@@ -137,9 +141,6 @@ public class Playercontroller {
 
                 return ResponseEntity.ok(leagueDto);
 
-                // if the player ins`t found we will never reach this point so it is not
-                // necessary
-                // to create a not found ResponseEntity
         }
 
         @Operation(summary = "Get team of a player")
@@ -159,9 +160,6 @@ public class Playercontroller {
 
                 return ResponseEntity.ok(teamDto);
 
-                // if the player ins`t found we will never reach this point so it is not
-                // necessary
-                // to create a not found ResponseEntity
         }
 
         @Operation(summary = "Get playerMatch of a plyer")
@@ -179,9 +177,6 @@ public class Playercontroller {
 
                 return ResponseEntity.ok(restService.findAllPlayerMatchesByPlayer(playerId));
 
-                // if the player ins`t found we will never reach this point so it is not
-                // necessary
-                // to create a not found ResponseEntity
         }
 
         // From this point the only one that can use this methods is the admin so we
@@ -222,9 +217,6 @@ public class Playercontroller {
 
                 return ResponseEntity.created(location).body(newPlayerDto);
 
-                // if the team or the league ins`t found we will never reach this point so it is
-                // not necessary
-                // to create a not found ResponseEntity
         }
 
         @Operation(summary = "Create a League image")
@@ -278,10 +270,6 @@ public class Playercontroller {
                 restService.deletePlayer(player);
 
                 return ResponseEntity.ok(playerDto);
-
-                // if the player ins`t found we will never reach this point so it is not
-                // necessary
-                // to create a not found ResponseEntity
         }
 
         @Operation(summary = "Delete a Player image")
@@ -357,9 +345,5 @@ public class Playercontroller {
                 PlayerResponseDTO newPlayerDto = new PlayerResponseDTO(oldPlayer);
 
                 return ResponseEntity.ok(newPlayerDto);
-
-                // if the player ins`t found we will never reach this point so it is not
-                // necessary
-                // to create a not found ResponseEntity
         }
 }

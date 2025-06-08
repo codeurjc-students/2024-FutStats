@@ -38,9 +38,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+import java.sql.SQLException;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -105,7 +110,9 @@ public class UserController {
                 User user = userService.findUserById(id)
                                 .orElseThrow(() -> new ElementNotFoundException("No esta registrado"));
 
-                if (!request.getUserPrincipal().getName().equals(user.getName())) {
+                String name = request.getUserPrincipal().getName();
+
+                if (!userService.findUserByName(name).get().getRoles().contains("[admin]")) {
                         return ResponseEntity.badRequest().build();
                 }
 
@@ -123,15 +130,14 @@ public class UserController {
                         @ApiResponse(responseCode = "404", description = "user not found", content = @Content)
         })
         @GetMapping("/{id}/image")
-        public ResponseEntity<Blob> getImage(HttpServletRequest request, @PathVariable long id) {
+        public ResponseEntity<Object> getImage(HttpServletRequest request, @PathVariable long id)throws SQLException {
                 User user = userService.findUserById(id)
-                                .orElseThrow(() -> new ElementNotFoundException("No esta registrado"));
+                        .orElseThrow(() -> new ElementNotFoundException("No esta registrado"));
 
-                if (!request.getUserPrincipal().getName().equals(user.getName())) {
-                        return ResponseEntity.badRequest().build();
-                }
-
-                return ResponseEntity.ok(user.getImageFile());
+                Resource file = new InputStreamResource(user.getImageFile().getBinaryStream());
+ 
+                return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
+		        .contentLength(user.getImageFile().length()).body(file);
         }
 
         @Operation(summary = "Create an user")
@@ -291,9 +297,9 @@ public class UserController {
                 User user = userService.findUserById(id)
                                 .orElseThrow(() -> new ElementNotFoundException("No existe un usuario con ese id"));
 
-                if (!request.getUserPrincipal().getName().equals(userService.findUserById(id)
-                                .orElseThrow(() -> new ElementNotFoundException("No existe un usuario con ese id"))
-                                .getName())) {
+                String name = request.getUserPrincipal().getName();
+
+                if (!name.equals(user.getName()) && !userService.findUserByName(name).get().getRoles().contains("[admin]")){
                         return ResponseEntity.badRequest().build();
                 }
                 // We can use directly the method .get() because we have already proved that the
@@ -377,7 +383,9 @@ public class UserController {
                 User user = userService.findUserById(id)
                                 .orElseThrow(() -> new ElementNotFoundException("No existe un usuario con ese id"));
 
-                if (!request.getUserPrincipal().getName().equals(user.getName())) {
+                String name = request.getUserPrincipal().getName();
+
+                if (!name.equals(user.getName()) && !userService.findUserByName(name).get().getRoles().contains("[admin]")){
                         return ResponseEntity.badRequest().build();
                 }
 
@@ -464,7 +472,9 @@ public class UserController {
                 User user = userService.findUserById(id)
                                 .orElseThrow(() -> new ElementNotFoundException("No existe un usuario con ese id"));
 
-                if (!request.getUserPrincipal().getName().equals(user.getName())) {
+                String name = request.getUserPrincipal().getName();
+
+                if (!name.equals(user.getName()) && !userService.findUserByName(name).get().getRoles().contains("[admin]")){
                         return ResponseEntity.badRequest().build();
                 }
 

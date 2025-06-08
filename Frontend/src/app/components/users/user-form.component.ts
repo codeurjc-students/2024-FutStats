@@ -100,11 +100,11 @@ export class UserFormComponent {
       }
 
     userImage() {
-        return this.user.image ? this.service.getImage(this.user.id) : 'assets/no_image.jpg';
+        return this.user.image ? "api/v1/users/" + this.user.id + "/image" : 'assets/no_image.jpg';
     }
 
     private afterUploadImage(user: User) {
 
-        this.router.navigate(['/users']);
+        this.router.navigate(['/users', this.user.id]);
     }
 }

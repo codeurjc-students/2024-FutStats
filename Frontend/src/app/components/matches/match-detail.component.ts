@@ -98,11 +98,11 @@ export class MatchDetailComponent implements OnInit {
   }
 
   team1Image(){
-    return this.team1.image? this.teamService.getImage(this.team1.id) : 'assets/no_image.jpg';
+    return this.team1.image? "api/v1/teams/" + this.team1.id + "/image" : 'assets/no_image.jpg';
   }
 
   team2Image(){
-    return this.team2.image? this.teamService.getImage(this.team2.id) : 'assets/no_image.jpg';
+    return this.team2.image? "api/v1/teams/" + this.team2.id + "/image" : 'assets/no_image.jpg';
   }
 
   goBack(): void {

@@ -122,7 +122,7 @@ export class TeamDetailComponent implements OnInit {
   }
 
   teamImage() {
-    return this.team.image ? this.service.getImage(this.team.id) : 'assets/no_image.jpg';
+    return this.team.image ? "api/v1/teams/" + this.team.id + "/image" : 'assets/no_image.jpg';
   }
 
   createPlayer(): void {
