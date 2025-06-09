@@ -138,10 +138,4 @@ describe('PlayerMatchDetailComponent', () => {
 
       expect(mockRouter.navigate).toHaveBeenCalledWith(['/playerMatch/edit', 1]);
     });
-
-
- 
-    it('should navigate to the player detail page', () => {
-      component.goBack();
-    });
 });
