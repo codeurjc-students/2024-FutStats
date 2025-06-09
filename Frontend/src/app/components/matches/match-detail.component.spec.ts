@@ -143,7 +143,7 @@ describe('MatchDetailComponent', () => {
     component.team1 = { id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1' };
     const image = component.team1Image();
 
-    expect(image).toBe('assets/no_image.jpge');
+    expect(image).toBe('assets/no_image.jpg');
   });
 
   it('should return team2 image if image exists', () => {

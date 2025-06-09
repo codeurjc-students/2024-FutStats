@@ -136,14 +136,12 @@ describe('PlayerMatchDetailComponent', () => {
 
       component.editPlayerMatch();
 
-      expect(mockRouter.navigate).toHaveBeenCalledWith(['/playerMatch/edit/', 1]);
+      expect(mockRouter.navigate).toHaveBeenCalledWith(['/playerMatch/edit', 1]);
     });
 
 
  
     it('should navigate to the player detail page', () => {
-      component.player = { id: 1 } as Player;
-
       component.goBack();
     });
 });
