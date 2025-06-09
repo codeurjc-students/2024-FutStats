@@ -105,6 +105,6 @@ export class UserFormComponent {
 
     private afterUploadImage(user: User) {
 
-        this.router.navigate(['/users', this.user.id]);
+        this.router.navigate(['/leagues']);
     }
 }

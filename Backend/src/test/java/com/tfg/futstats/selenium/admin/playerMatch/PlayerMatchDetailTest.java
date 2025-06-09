@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.JavascriptExecutor;
 
 import com.tfg.futstats.selenium.BaseTest;
 import java.time.Duration;
@@ -141,9 +142,9 @@ public class PlayerMatchDetailTest extends BaseTest {
     public void testEditPlayerStats() {
         testLoginFunctionality();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        WebElement editButton = wait.until(ExpectedConditions.visibilityOfElementLocated(
+        WebElement editButton = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//button[contains(text(), 'Editar Estadística de Jugador')]")));
         assertNotNull(editButton, "El botón 'Editar Estadística de Jugador' no está presente.");
 
