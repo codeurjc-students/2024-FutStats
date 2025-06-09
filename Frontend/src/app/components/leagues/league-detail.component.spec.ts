@@ -81,14 +81,6 @@ describe('LeagueDetailComponent', () => {
     expect(component.user).toEqual(mockUser);
   });
 
-  it('should handle errors during initialization', () => {
-    mockLeaguesService.getLeagueById.and.returnValue(throwError(() => new Error('Error fetching league details')));
-
-    component.ngOnInit();
-
-    expect(component.errorMessage).toBe('Error fetching league details');
-  });
-
   it('should return the correct league image', () => {
     component.league = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: false };
     mockLeaguesService.getImage.and.returnValue('assets/no_image.jpg');

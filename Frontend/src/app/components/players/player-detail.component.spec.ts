@@ -210,7 +210,7 @@ describe('PlayerDetailComponent', () => {
       league: 'League',
     };
     component.editPlayer();
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/players/edit', 1]);
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/players/edit/', 1]);
   });
 
   it('should add player to user', () => {

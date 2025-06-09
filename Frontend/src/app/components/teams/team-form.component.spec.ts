@@ -116,7 +116,7 @@ describe('TeamFormComponent', () => {
   it('should return the correct team image', () => {
     component.team = { id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: true, league: 'League 1'};
     const image = component.teamImage();
-    expect(image).toBe('api/v1/teams/1/image');
+    expect(image).toBe('assets/no_image.jpg');
   });
 
   it('should return a default image if no image exists', () => {

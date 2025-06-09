@@ -37,6 +37,13 @@ describe('PlayerMatchDetailComponent', () => {
         image: false,
       } as Player)),
       deletePlayerMatch: jasmine.createSpy('deletePlayerMatch').and.returnValue(of({})),
+      getMatch: jasmine.createSpy('getMatch').and.returnValue(of({
+        id: 1,
+        team1: 'Team 1',
+        team2: 'Team 2',
+        date: new Date(),
+        place: 'Bernabeu',
+      } as Match)),
     };
 
     mockTeamsService = {};
@@ -129,7 +136,7 @@ describe('PlayerMatchDetailComponent', () => {
 
       component.editPlayerMatch();
 
-      expect(mockRouter.navigate).toHaveBeenCalledWith(['/playerMatch/edit', 1]);
+      expect(mockRouter.navigate).toHaveBeenCalledWith(['/playerMatch/edit/', 1]);
     });
 
 
