@@ -150,7 +150,7 @@ describe('PlayerDetailComponent', () => {
       league: 'League',
     };
     const image = component.playerImage();
-    expect(image).toBe('assets/401-background.jpg');
+    expect(image).toBe('api/v1/players/1/image');
   });
 
   it('should return default image if no player image is present', () => {

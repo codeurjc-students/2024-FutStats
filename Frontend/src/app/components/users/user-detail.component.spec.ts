@@ -73,7 +73,7 @@ describe('UserDetailComponent', () => {
   it('should return user image', () => {
     component.user = { id: 1, name: 'User A', password:'123', email:'example@gmail.com', roles: ['user'], image: true };
     const image = component.userImage();
-    expect(image).toBe('assets/401-background.jpg');
+    expect(image).toBe('api/v1/users/1/image');
   });
 
   it('should return default image if no user image is present', () => {

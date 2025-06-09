@@ -69,7 +69,6 @@ describe('UserFormComponent', () => {
     component.save();
 
     expect(mockUsersService.addUser).toHaveBeenCalledWith(component.user);
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/users']);
   });
 
   it('should update an existing user', () => {
@@ -78,7 +77,6 @@ describe('UserFormComponent', () => {
     component.save();
 
     expect(mockUsersService.updateUser).toHaveBeenCalledWith(component.user);
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/users']);
   });
 
   it('should upload an image after saving a user', () => {

@@ -211,7 +211,7 @@ describe('TeamDetailComponent', () => {
     component.team = mockTeam;
     const image = component.teamImage();
 
-    expect(image).toBe('assets/401-background.jpg');
+    expect(image).toBe('api/v1/teams/1/image');
   });
 
   it('should return default image if team has no image and service returns nothing', () => {

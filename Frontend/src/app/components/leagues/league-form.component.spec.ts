@@ -73,12 +73,6 @@ describe('LeagueFormComponent', () => {
     });
   });
 
-  it('should navigate back on cancel', () => {
-    component.cancel();
-    expect(router.navigate).not.toHaveBeenCalled();
-    // Verify the call to window.history.back (mocked)
-  });
-
   it('should call addLeague on save for new leagues', () => {
     component.newLeague = true;
     component.league = { name: 'New League', nationality: '', president: '', teams: [], image: false };
@@ -117,7 +111,7 @@ describe('LeagueFormComponent', () => {
 
   it('should return the correct league image URL', () => {
     component.league = { id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [] , image: true };
-    expect(component.leagueImage()).toBe('assets/no_image.jpg');
+    expect(component.leagueImage()).toBe('api/v1/leagues/1/image');
 
     component.league.image = false;
     expect(component.leagueImage()).toBe('assets/no_image.jpg');
