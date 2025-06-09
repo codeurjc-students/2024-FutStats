@@ -53,6 +53,6 @@ export class PlayerMatchesService {
 	private handleError(error: any) {
 		console.log("ERROR:");
 		console.error(error);
-		return throwError("Server error (" + error.status + "): " + error.text())
+		return throwError(() => "Server error (" + error.status + "): " + (error.error?.message || error.message || 'Unknown error'));
 	}
 }
