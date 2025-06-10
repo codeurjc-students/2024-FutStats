@@ -21,8 +21,8 @@ export class PlayerFormComponent implements OnInit {
   team: Team;
   removeImage: boolean;
 
-  @ViewChild("file")
-  file: any;
+  @ViewChild('uploadImage', { static: false })
+  fileInput: any;
 
   constructor(
     private router: Router,
@@ -54,6 +54,7 @@ export class PlayerFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadLeagues();
+    this.loadTeams();
     this.playerImage();
   }
 
@@ -64,74 +65,51 @@ export class PlayerFormComponent implements OnInit {
     });
   }
 
-  onLeagueChange() {
-    console.log('Liga seleccionada:', this.selectedLeagueId);
-    if (this.selectedLeagueId) {
-      this.leagueService.getTeamsByName(this.selectedLeagueId).subscribe({
-        next: (teams) => {
-          console.log('Equipos cargados:', teams);
-          this.teams = teams;
-        },
-        error: (error) => console.error('Error al cargar equipos:', error),
-      });
-    } else {
-      console.log('No se seleccionó ninguna liga, limpiando equipos');
-      this.teams = [];
-    }
+  loadTeams() {
+    this.teamService.getTeams().subscribe({
+      next: (teams) => (this.teams = teams),
+      error: (error) => console.error('Error loading teams:', error),
+    });
   }
 
   save() {
-    if (this.player.image && this.removeImage) {
-      this.player.image = false;
-    }
-    
-    if (this.selectedLeagueId) {
-      this.player.league = this.selectedLeagueId;
-    }
-
     if (this.newPlayer) {
-      this.service.addPlayer(this.player).subscribe({
-        next: (player: Player) => this.uploadImage(player),
-        error: (error) => {
-          console.error('Error creating player:', error);
-          alert('Error creating new player: ' + error);
-        }
-      });
-    } else {
-      if (!this.player.id) {
-        alert('Error: Player ID is missing');
-        return;
+      if (this.removeImage) {
+        this.player.image = false;
       }
-      
-      this.service.updatePlayer(this.player).subscribe({
-        next: (player: Player) => this.uploadImage(player),
-        error: (error) => {
-          console.error('Error updating player:', error);
-          alert('Error updating player: ' + error);
-        }
-      });
+      this.service.addPlayer(this.player).subscribe(
+        (player: Player) => this.uploadImage(player),
+        error => alert('Error creating new player: ' + error)
+      );
+    } else {
+      if (this.removeImage) {
+        this.player.image = false;
+      }
+      this.service.updatePlayer(this.player).subscribe(
+        (player: Player,) => this.uploadImage(player),
+        error => alert('Error creating new player: ' + error)
+      );
     }
   }
 
   uploadImage(player: Player): void {
-    if (this.file) {
-      const image = this.file.nativeElement.files[0];
+    if (this.fileInput) {
+      const image = this.fileInput.nativeElement.files[0];
       if (image) {
         let formData = new FormData();
         formData.append("imageFile", image);
         this.service.addImage(player, formData).subscribe(
           _ => this.afterUploadImage(player),
-          error => alert('Error uploading user image: ' + error)
+          error => alert('Error uploading player image: ' + error)
         );
       } else if (this.removeImage) {
         this.service.deleteImage(player).subscribe(
           _ => this.afterUploadImage(player),
-          error => alert('Error deleting user image: ' + error)
+          error => alert('Error deleting player image: ' + error)
         );
       }
     }
     this.afterUploadImage(player);
-
   }
 
   onFileSelected(event: any): void {

@@ -119,10 +119,26 @@ p {
 img {
   display: block;
   margin: 1rem auto;
-  max-width: 150px;
-  height: auto;
+  max-width: 300px;
+  max-height: 300px;
+  object-fit: contain;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+img.loading {
+  opacity: 0.5;
+  transition: opacity 0.3s ease-in-out;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.5; }
+}
+
+img.loading {
+  animation: pulse 1.5s infinite;
 }
 
 div {

@@ -7,7 +7,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.JavascriptExecutor;
 
 import com.tfg.futstats.selenium.BaseTest;
 import java.time.Duration;
@@ -121,11 +120,16 @@ public class PlayerMatchDetailTest extends BaseTest {
         WebElement playerMatchLink = wait.until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//ul[@class='items']/li[1]/a"))); 
         assertNotNull(playerMatchLink, "El enlace del 'Player Match' no está presente.");
-
+        
+        // Scroll element into view
+        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", playerMatchLink);
+        
+        // Wait for element to be clickable
+        wait.until(ExpectedConditions.elementToBeClickable(playerMatchLink));
         playerMatchLink.click();
         System.out.println("Clic en el 'Player Match' (Partido 1).");
 
-        WebElement backButton = wait.until(ExpectedConditions.visibilityOfElementLocated(
+        WebElement backButton = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//button[contains(text(), 'Volver')]")));
         assertNotNull(backButton, "El botón 'Volver' no está presente.");
 

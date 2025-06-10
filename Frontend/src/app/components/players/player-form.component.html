@@ -33,13 +33,13 @@
     </div>
     <br>
     <label>
-      Liga:
-      <select [(ngModel)]="selectedLeagueId" (change)="onLeagueChange()">
-        <option *ngFor="let league of leagues" [value]="league.name">
-          {{ league.name }}
-        </option>
+      <h3>Liga:</h3>
+      <select [(ngModel)]="player.league" name="leagueName" required>
+          <option *ngFor="let league of leagues" [value]="league.name">
+              {{ league.name }}
+          </option>
       </select>
-    </label>
+  </label>
     <br>
 
     <label>

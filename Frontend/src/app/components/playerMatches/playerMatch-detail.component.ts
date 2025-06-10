@@ -61,7 +61,7 @@ export class PlayerMatchDetailComponent implements OnInit {
                 console.log(this.player);
             },
             (error: any) => {
-                this.errorMessage = 'Error finding match';
+                this.errorMessage = 'Error finding player';
                 console.error(error);
             }
         );
@@ -76,10 +76,6 @@ export class PlayerMatchDetailComponent implements OnInit {
             );
         }
     }
-
-    playerImage() {
-        return this.player.image ? "api/v1/players/" + this.player.id + "/image" : 'assets/no_image.jpg';
-      }
 
     editPlayerMatch(){
         this.router.navigate(['/playerMatch/edit', this.playerMatch.id]);

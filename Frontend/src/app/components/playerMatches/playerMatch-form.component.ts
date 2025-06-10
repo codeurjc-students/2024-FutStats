@@ -113,7 +113,7 @@ export class PlayerMatchFormComponent implements OnInit {
   }
 
   private afterSave(playerMatch: PlayerMatch) {
-    this.router.navigate(['/playerMatch', this.id]);
+    this.router.navigate(['/matches', this.match.id]);
   }
 
   cancel() {

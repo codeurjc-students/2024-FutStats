@@ -335,7 +335,7 @@ public class Playercontroller {
                 if (playerDto.getTeam() == null) {
                         team = oldPlayer.getTeam();
                 } else {
-                        team = restService.findTeamByName(playerDto.getLeague())
+                        team = restService.findTeamByName(playerDto.getTeam())
                                         .orElseThrow(() -> new ElementNotFoundException(
                                                         "No existe una equipo con ese nombre"));
                 }
