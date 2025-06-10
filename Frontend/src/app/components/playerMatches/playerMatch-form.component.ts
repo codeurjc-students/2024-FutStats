@@ -113,7 +113,24 @@ export class PlayerMatchFormComponent implements OnInit {
   }
 
   private afterSave(playerMatch: PlayerMatch) {
-    this.router.navigate(['/matches', this.match.id]);
+    if (this.playerMatch.match) {
+      this.teamService.getMatchByName(this.playerMatch.match).subscribe({
+        next: (match) => {
+          if (match && match.id) {
+            this.router.navigate(['/matches', match.id]);
+          } else {
+            console.error('Match not found');
+            this.router.navigate(['/matches']);
+          }
+        },
+        error: (error) => {
+          console.error('Error getting Match:', error);
+          this.router.navigate(['/matches']);
+        }
+      });
+    } else {
+      this.router.navigate(['/matches']);
+    }
   }
 
   cancel() {
