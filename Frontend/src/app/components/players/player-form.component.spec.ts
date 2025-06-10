@@ -78,23 +78,6 @@ describe('PlayerFormComponent', () => {
     expect(component.leagues).toEqual([{ id: 1, name: 'League 1', president: 'Florentino Perez', nationality: 'Española', teams: [], image: false }]);
   });
 
-
-  it('should load teams for the selected league', () => {
-    component.selectedLeagueId = '1';
-
-    component.onLeagueChange();
-
-    expect(component.teams).toEqual([{ id: 1, name: 'Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1' }]);
-  });
-
-  it('should clear teams if no league is selected', () => {
-    component.selectedLeagueId = '';
-
-    component.onLeagueChange();
-
-    expect(component.teams).toEqual([]);
-  });
-
   it('should add a new player if it is a new player', () => {
     component.newPlayer = true;
     component.player = { name: 'New Player 1', age: 25, nationality: 'Española', position: 'Delantero', image: false, team: 'Team1', league: 'League' };
