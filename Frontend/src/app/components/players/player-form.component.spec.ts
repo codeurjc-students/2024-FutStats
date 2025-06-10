@@ -1,4 +1,3 @@
-
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlayerFormComponent } from './player-form.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -117,7 +116,7 @@ describe('PlayerFormComponent', () => {
 
   it('should upload image if file is selected', () => {
     const mockFile = new Blob([''], { type: 'assets/401-background.jpg' });
-    component.file = { nativeElement: { files: [mockFile] } };
+    component.fileInput = { nativeElement: { files: [mockFile] } };
     component.uploadImage({ id: 1, name: 'Player 1', age: 25, nationality: 'Española', position: 'Delantero', image: false, team: 'Team1', league: 'League' });
 
     expect(mockPlayersService.addImage).toHaveBeenCalled();
