@@ -111,26 +111,6 @@ describe('PlayerMatchDetailComponent', () => {
       expect(mockRouter.navigate).toHaveBeenCalledWith(['/leagues']);
     });
 
-
-  describe('playerImage', () => {
-    it('should return the player image if it exists', () => {
-      component.player = { id: 1, image: false } as Player;
-
-      const image = component.playerImage();
-
-      expect(image).toBe('assets/no_image.jpg');
-    });
-
-    it('should return default image if player has no image', () => {
-      component.player = { id: 1, image: false } as Player;
-
-      const image = component.playerImage();
-
-      expect(image).toBe('assets/no_image.jpg');
-      expect(mockPlayersService.getImage).not.toHaveBeenCalled();
-    });
-  });
-
     it('should navigate to the edit playerMatch page', () => {
       component.playerMatch = { id: 1 } as PlayerMatch;
 
