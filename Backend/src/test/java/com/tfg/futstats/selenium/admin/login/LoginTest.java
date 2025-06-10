@@ -36,9 +36,14 @@ public class LoginTest extends BaseTest {
     public void testLoginFunctionality() {
         driver.get("https://localhost:" + this.port + "/leagues/");
 
-        WebElement usernameField = driver.findElement(By.name("username"));
-        WebElement passwordField = driver.findElement(By.name("password"));
-        WebElement loginButton = driver.findElement(By.xpath("//button[contains(text(), 'Iniciar Sesión')]"));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.className("navbar-form")));
+        
+        WebElement usernameField = wait.until(ExpectedConditions.presenceOfElementLocated(By.name("username")));
+        WebElement passwordField = wait.until(ExpectedConditions.presenceOfElementLocated(By.name("password")));
+        WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(
+            By.xpath("//button[contains(text(), 'Iniciar Sesión')]")));
 
         assertNotNull(usernameField, "El campo de nombre de usuario no se encontró.");
         assertNotNull(passwordField, "El campo de contraseña no se encontró.");
