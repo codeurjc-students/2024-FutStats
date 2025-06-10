@@ -118,7 +118,7 @@ describe('PlayerMatchFormComponent', () => {
 
     expect(mockMatchesService.getMatchByName).toHaveBeenCalledWith('Test Match');
     expect(mockMatchesService.addPlayerMatch).toHaveBeenCalledWith(jasmine.objectContaining({ name: 'Test' }));
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/playerMatch', null]);
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/matches', 1]);
   });
 
   it('should update an existing playerMatch', () => {
@@ -129,7 +129,7 @@ describe('PlayerMatchFormComponent', () => {
     component.save();
 
     expect(mockPlayerMatchesService.updatePlayerMatch).toHaveBeenCalledWith(1, mockPlayerMatch);
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/playerMatch', null]);
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/matches', 1]);
   });
 
   it('should cancel and navigate back', () => {

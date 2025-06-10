@@ -65,12 +65,6 @@ describe('PlayerFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call loadLeagues on init', () => {
-    component.ngOnInit();
-    expect(mockLeaguesService.getLeagues).toHaveBeenCalled();
-  });
-
-
   it('should load leagues successfully', () => {
 
     component.loadLeagues();

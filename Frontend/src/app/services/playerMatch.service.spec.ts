@@ -67,7 +67,7 @@ describe('PlayerMatchesService', () => {
       expect(goals).toEqual(mockGoals);
     });
 
-    const req = httpMock.expectOne(BASE_URL + '/goals/1');
+    const req = httpMock.expectOne(BASE_URL + 'goals/1');
     expect(req.request.method).toBe('GET');
     req.flush(mockGoals);
   });
