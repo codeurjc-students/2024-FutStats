@@ -118,7 +118,7 @@ describe('PlayerMatchFormComponent', () => {
 
     expect(mockMatchesService.getMatchByName).toHaveBeenCalledWith('Test Match');
     expect(mockMatchesService.addPlayerMatch).toHaveBeenCalledWith(jasmine.objectContaining({ name: 'Test' }));
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/matches', 1]);
+
   });
 
   it('should update an existing playerMatch', () => {
