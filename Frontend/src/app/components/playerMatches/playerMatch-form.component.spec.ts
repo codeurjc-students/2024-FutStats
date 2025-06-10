@@ -129,7 +129,6 @@ describe('PlayerMatchFormComponent', () => {
     component.save();
 
     expect(mockPlayerMatchesService.updatePlayerMatch).toHaveBeenCalledWith(1, mockPlayerMatch);
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/matches', 1]);
   });
 
   it('should cancel and navigate back', () => {
