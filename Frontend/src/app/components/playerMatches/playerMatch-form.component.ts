@@ -73,7 +73,6 @@ export class PlayerMatchFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.matchService.getMatches().subscribe({
       next: (matches: Match[]) => {
         this.matches = matches;
@@ -91,30 +90,28 @@ export class PlayerMatchFormComponent implements OnInit {
 
   save() {
     if (this.newPlayerMatch) {
-      this.matchService.getMatchByName(this.playerMatch.matchName).subscribe(
-        (match: Match) => {
+      this.matchService.getMatchByName(this.playerMatch.matchName).subscribe({
+        next: (match: Match) => {
           this.match = match;
-
           this.playerMatch.match = this.match.id;
-          console.log(this.match.id);
-          console.log(this.playerMatch.match);
-          console.log(this.playerMatch);
-          this.matchService.addPlayerMatch(this.playerMatch).subscribe({
+          this.service.addPlayerMatch(this.playerMatch).subscribe({
             next: (playerMatch: PlayerMatch) => this.afterSave(playerMatch),
             error: (error) => alert('Error creating new player match: ' + error),
           });
-        });
+        },
+        error: (error) => alert('Error finding match: ' + error)
+      });
     } else {
-      this.service.updatePlayerMatch(this.playerMatch.match, this.playerMatch).subscribe(
-        (playerMatch: PlayerMatch) => this.afterSave(playerMatch),
-        error => alert('Error creating new league: ' + error)
-      );
+      this.service.updatePlayerMatch(this.playerMatch.match, this.playerMatch).subscribe({
+        next: (playerMatch: PlayerMatch) => this.afterSave(playerMatch),
+        error: (error) => alert('Error updating player match: ' + error)
+      });
     }
   }
 
   private afterSave(playerMatch: PlayerMatch) {
-    if (this.playerMatch.match) {
-      this.teamService.getMatchByName(this.playerMatch.match).subscribe({
+    if (playerMatch && playerMatch.match) {
+      this.matchService.getMatch(playerMatch.match).subscribe({
         next: (match) => {
           if (match && match.id) {
             this.router.navigate(['/matches', match.id]);
@@ -124,7 +121,7 @@ export class PlayerMatchFormComponent implements OnInit {
           }
         },
         error: (error) => {
-          console.error('Error getting Match:', error);
+          console.error('Error getting match:', error);
           this.router.navigate(['/matches']);
         }
       });
