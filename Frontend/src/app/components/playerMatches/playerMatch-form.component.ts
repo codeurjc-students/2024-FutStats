@@ -94,7 +94,7 @@ export class PlayerMatchFormComponent implements OnInit {
         next: (match: Match) => {
           this.match = match;
           this.playerMatch.match = this.match.id;
-          this.service.addPlayerMatch(this.playerMatch).subscribe({
+          this.matchService.addPlayerMatch(this.playerMatch).subscribe({
             next: (playerMatch: PlayerMatch) => this.afterSave(playerMatch),
             error: (error) => alert('Error creating new player match: ' + error),
           });
