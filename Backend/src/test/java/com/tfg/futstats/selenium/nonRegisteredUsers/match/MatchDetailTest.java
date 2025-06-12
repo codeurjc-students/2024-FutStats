@@ -87,12 +87,26 @@ public class MatchDetailTest extends BaseTest {
     public void testBackButtonFunctionality() {
         driver.get("https://localhost:" + this.port + "/matches/1");
 
-        WebElement backButton = driver.findElement(By.xpath("//button[contains(text(), 'Volver')]"));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        
+        // Wait for the button to be present and visible
+        WebElement backButton = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[contains(text(), 'Volver')]")));
         assertNotNull(backButton, "El botón 'Volver' no está presente.");
 
-        backButton.click();
+        // Scroll the button into view
+        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", backButton);
+        
+        // Wait a bit for any animations to complete
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        // Wait for the button to be clickable and click it
+        wait.until(ExpectedConditions.elementToBeClickable(backButton)).click();
+
+        // Wait for URL change
         wait.until(ExpectedConditions.urlContains("/leagues"));
 
         assertTrue(driver.getCurrentUrl().contains("/leagues"), "No redirige correctamente al listado de partidos.");
