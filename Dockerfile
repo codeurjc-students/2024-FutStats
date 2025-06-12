@@ -3,7 +3,10 @@ FROM node:22.12.0-slim AS frontend
 
 WORKDIR /app/
 COPY Frontend/package*.json Frontend/angular.json ./
-RUN npm install && npm install -g @angular/cli
+RUN npm config set registry https://registry.npmjs.org/
+RUN npm install -g npm@latest
+RUN for i in 1 2 3; do npm install && break || sleep 10; done
+RUN npm install -g @angular/cli
 COPY Frontend/ ./
 RUN ng build --configuration production
 
