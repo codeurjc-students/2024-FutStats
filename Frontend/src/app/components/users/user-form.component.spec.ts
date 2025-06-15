@@ -81,7 +81,7 @@ describe('UserFormComponent', () => {
 
   it('should upload an image after saving a user', () => {
     const mockFile = new Blob([''], { type: 'assets/no_image.jpg' });
-    component.file = { nativeElement: { files: [mockFile] } };
+    component.fileInput = { nativeElement: { files: [mockFile] } };
     component.uploadImage({ id: 1, name: 'testUser', password: 'pass', email:'', image: false, roles: ['[user]'] });
 
     expect(mockUsersService.addImage).toHaveBeenCalled();
