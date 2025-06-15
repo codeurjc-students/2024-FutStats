@@ -1,5 +1,6 @@
 package com.tfg.futstats.models;
 
+// region imports
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -12,11 +13,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
-
+//endregion
 
 @Entity
 public class PlayerMatch {
 
+    // region Attributes
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Auto generated ID
     private Long id;
@@ -35,7 +37,7 @@ public class PlayerMatch {
 
     @ManyToOne
     @JsonIgnore
-     @OnDelete(action = OnDeleteAction.CASCADE)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Match match;
 
     // player stats
@@ -64,14 +66,15 @@ public class PlayerMatch {
     private int centers;
     private int ballLosses;
 
-    //Goalkeeper
+    // Goalkeeper
     private int shootsReceived;
     private int goalsConceded;
     private int saves;
     private int outBoxSaves;
     private int inBoxSaves;
+    // endregion
 
-    // Constructors
+    // region Constructors
     public PlayerMatch() {
     }
 
@@ -161,6 +164,9 @@ public class PlayerMatch {
         this.outBoxSaves = player.getOutBoxSaves();
         this.inBoxSaves = player.getInBoxSaves();
     }
+    // endregion
+
+    // region Getters & Setters
 
     public long getId() {
         return id;
@@ -354,43 +360,44 @@ public class PlayerMatch {
         this.ballLosses = ballLosses;
     }
 
-    public int getShootsReceived(){
+    public int getShootsReceived() {
         return shootsReceived;
     }
 
-    public void setShootsReceived(int shootsReceived){
+    public void setShootsReceived(int shootsReceived) {
         this.shootsReceived = shootsReceived;
     }
 
-    public int getGoalsConceded(){
+    public int getGoalsConceded() {
         return goalsConceded;
     }
 
-    public void setGoalsConceded(int goalsConceded){
+    public void setGoalsConceded(int goalsConceded) {
         this.goalsConceded = goalsConceded;
     }
 
-    public int getSaves(){
+    public int getSaves() {
         return saves;
     }
 
-    public void setSaves(int saves){
+    public void setSaves(int saves) {
         this.saves = saves;
     }
 
-    public int getOutBoxSaves(){
+    public int getOutBoxSaves() {
         return outBoxSaves;
     }
 
-    public void setOutBoxSaves(int outBoxSaves){
+    public void setOutBoxSaves(int outBoxSaves) {
         this.outBoxSaves = outBoxSaves;
     }
 
-    public int getInBoxSaves(){
+    public int getInBoxSaves() {
         return inBoxSaves;
     }
 
-    public void setInBoxSaves(int inBoxSaves){
+    public void setInBoxSaves(int inBoxSaves) {
         this.inBoxSaves = inBoxSaves;
     }
+    // endregion
 }

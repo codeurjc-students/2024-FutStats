@@ -41,7 +41,7 @@ public class DatabaseInitializer {
 
 		for (int i = 0; i < 10; i++) {
 
-			User u = new User("user" + i, passwordEncoder.encode("pass"), "example"+i+"@gmail.com", null, false, "[user]");
+			User u = new User("user" + i, passwordEncoder.encode("pasS123"), "example"+i+"@gmail.com", null, false, "[user]");
 			ur.save(u);
 
 		}

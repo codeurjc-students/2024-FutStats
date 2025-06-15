@@ -55,6 +55,14 @@ jobs:
         run: npm install
         working-directory: ./Frontend
 
-      - name: Run Spring Boot tests Controllers
-        run:  mvn test -Dtest="com.tfg.futstats.selenium.**"
+      - name: Run Admin Selenium Tests
+        run:  mvn test -Dtest="com.tfg.futstats.selenium.admin.**"
+        working-directory: ./Backend
+
+      - name: Run registeredUsers Selenium Tests
+        run:  mvn test -Dtest="com.tfg.futstats.selenium.registeredUsers.**"
+        working-directory: ./Backend
+
+      - name: Run nonRegisteredUsers Selenium Tests
+        run:  mvn test -Dtest="com.tfg.futstats.selenium.nonRegisteredUsers.**"
         working-directory: ./Backend

@@ -8,46 +8,75 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.JavascriptExecutor;
 
 import com.tfg.futstats.selenium.BaseTest;
 import java.time.Duration;
 
 public class LoginTest extends BaseTest {
 
+    private void scrollToElement(WebElement element) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
     @Test
     public void testLoginFormVisibility() {
-        driver.get("https://localhost:" + this.port + "/leagues/");
+        driver.get("https://localhost:" + this.port + "/leagues");
         
-        WebElement loginForm = driver.findElement(By.className("navbar-form"));
-        assertNotNull(loginForm, "El formulario de inicio de sesión no se muestra.");
-
-        // Verificar que los campos de entrada para nombre y contraseña estén presentes
-        WebElement usernameField = driver.findElement(By.name("username"));
-        WebElement passwordField = driver.findElement(By.name("password"));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        
+        WebElement usernameField = wait.until(ExpectedConditions.elementToBeClickable(
+            By.cssSelector("input[name='username']")));
+        WebElement passwordField = wait.until(ExpectedConditions.elementToBeClickable(
+            By.cssSelector("input[name='password']")));
+        
+        scrollToElement(usernameField);
+        scrollToElement(passwordField);
+        
         assertNotNull(usernameField, "El campo 'Nombre' no está presente.");
         assertNotNull(passwordField, "El campo 'Contraseña' no está presente.");
 
-        // Verificar que el botón de "Iniciar Sesión" y "Crear Usuario" estén presentes
-        WebElement loginButton = driver.findElement(By.xpath("//button[contains(text(), 'Iniciar Sesión')]"));
-        WebElement createUserButton = driver.findElement(By.xpath("//button[contains(text(), 'Crear Usuario')]"));
+        WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(
+            By.cssSelector("button[type='submit']")));
+        WebElement createUserButton = wait.until(ExpectedConditions.elementToBeClickable(
+            By.xpath("//button[contains(text(), 'Crear Usuario')]")));
+            
+        scrollToElement(loginButton);
+        scrollToElement(createUserButton);
+        
         assertNotNull(loginButton, "El botón 'Iniciar Sesión' no está presente.");
         assertNotNull(createUserButton, "El botón 'Crear Usuario' no está presente.");
     }
 
     @Test
     public void testLoginFunctionality() {
-        driver.get("https://localhost:" + this.port + "/leagues/");
+        driver.get("https://localhost:" + this.port + "/leagues");
 
-        WebElement usernameField = driver.findElement(By.name("username"));
-        WebElement passwordField = driver.findElement(By.name("password"));
-        WebElement loginButton = driver.findElement(By.xpath("//button[contains(text(), 'Iniciar Sesión')]"));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        
+        WebElement usernameField = wait.until(ExpectedConditions.presenceOfElementLocated(
+            By.cssSelector("input[name='username']")));
+        WebElement passwordField = wait.until(ExpectedConditions.presenceOfElementLocated(
+            By.cssSelector("input[name='password']")));
+        WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(
+            By.cssSelector("button[type='submit']")));
 
         assertNotNull(usernameField, "El campo de nombre de usuario no se encontró.");
         assertNotNull(passwordField, "El campo de contraseña no se encontró.");
         assertNotNull(loginButton, "El botón 'Iniciar sesión' no se encontró.");
 
+        usernameField.clear();
+        passwordField.clear();
+        
         usernameField.sendKeys("user0");
-        passwordField.sendKeys("pass");
+        passwordField.sendKeys("pasS123");
+        
+        wait.until(ExpectedConditions.elementToBeClickable(loginButton));
         loginButton.click();
     }
 
@@ -55,55 +84,41 @@ public class LoginTest extends BaseTest {
     public void testUserLoggedIn() {
         testLoginFunctionality();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(text(), 'Usuario Actual:')]")));
-
-        WebElement userLabel = driver.findElement(By.xpath("//a[contains(text(), 'Usuario Actual:')]"));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        
+        WebElement userLabel = wait.until(ExpectedConditions.presenceOfElementLocated(
+            By.cssSelector("a.navbar-brand")));
         assertNotNull(userLabel, "El nombre de usuario no se muestra después de iniciar sesión.");
+        assertTrue(userLabel.getText().contains("Usuario Actual:"), "El texto del usuario no es correcto");
 
-        WebElement profileButton = driver.findElement(By.xpath("//button[contains(text(), 'Mi perfil')]"));
-        assertNotNull(profileButton, "El botón 'Mi perfil' no está presente.");
+        WebElement profileButton = wait.until(ExpectedConditions.elementToBeClickable(
+            By.xpath("//button[contains(text(), 'Mi perfil')]")));
     }
 
     @Test
     public void testLogout() {
         testLoginFunctionality();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Cerrar Sesión')]")));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        WebElement logoutButton = driver.findElement(By.xpath("//button[contains(text(), 'Cerrar Sesión')]"));
+        WebElement logoutButton = wait.until(ExpectedConditions.elementToBeClickable(
+            By.xpath("//button[contains(text(), 'Cerrar Sesión')]")));
         assertNotNull(logoutButton, "El botón 'Cerrar Sesión' no está presente.");
-
         logoutButton.click();
-
-        WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(3));
-        wait1.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Iniciar Sesión')]")));
-
-        WebElement loginButton = driver.findElement(By.xpath("//button[contains(text(), 'Iniciar Sesión')]"));
-        WebElement createUserButton = driver.findElement(By.xpath("//button[contains(text(), 'Crear Usuario')]"));
-        assertNotNull(loginButton, "El botón 'Iniciar Sesión' no está presente.");
-        assertNotNull(createUserButton, "El botón 'Crear Usuario' no está presente.");
     }
 
     @Test
     public void testCreateUserButton() {
         driver.get("https://localhost:" + this.port + "/login");
 
-        // Verificar que el botón "Crear Usuario" está presente
-        WebElement createUserButton = driver.findElement(By.xpath("//button[contains(text(), 'Crear Usuario')]"));
-        assertNotNull(createUserButton, "El botón 'Crear Usuario' no está presente.");
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Hacer clic en el botón "Crear Usuario"
+        WebElement createUserButton = wait.until(ExpectedConditions.elementToBeClickable(
+            By.xpath("//button[contains(text(), 'Crear Usuario')]")));
+        assertNotNull(createUserButton, "El botón 'Crear Usuario' no está presente.");
         createUserButton.click();
 
-        // Esperar a que la página se actualice y redirija a la página de creación de
-        // usuario
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-        wait.until(ExpectedConditions.urlContains("/users/new")); // Ajustar la URL de destino según sea necesario.
-
-        // Verificar que estamos en la página de creación de usuario
+        wait.until(ExpectedConditions.urlContains("/users/new"));
         assertTrue(driver.getCurrentUrl().contains("/users/new"), "No redirige a la página de creación de usuario.");
     }
-
 }

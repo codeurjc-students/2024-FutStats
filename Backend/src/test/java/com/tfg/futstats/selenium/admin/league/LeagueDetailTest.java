@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -17,6 +18,15 @@ import java.util.List;
 
 @SpringBootTest()
 public class LeagueDetailTest extends BaseTest {
+
+        private void scrollToElement(WebElement element) {
+                ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+                try {
+                        Thread.sleep(500);
+                } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                }
+        }
 
         @Test
         public void testLoginFunctionality() {
@@ -128,6 +138,7 @@ public class LeagueDetailTest extends BaseTest {
 
                 WebElement createTeamButton = driver
                                 .findElement(By.xpath("//button[contains(text(), 'Crear Equipo')]"));
+                scrollToElement(createTeamButton);
                 assertNotNull(createTeamButton, "El botón 'Crear Equipo' no está visible para el administrador.");
 
                 createTeamButton.click();
@@ -150,6 +161,7 @@ public class LeagueDetailTest extends BaseTest {
 
                 WebElement createMatchButton = driver
                                 .findElement(By.xpath("//button[contains(text(), 'Crear Partido')]"));
+                scrollToElement(createMatchButton);
                 assertNotNull(createMatchButton, "El botón 'Crear Partido' no está visible para el administrador.");
 
                 createMatchButton.click();
@@ -182,7 +194,10 @@ public class LeagueDetailTest extends BaseTest {
 
                 testLoginFunctionality();
 
-                WebElement goBackButton = driver.findElement(By.xpath("//button[contains(text(), 'Volver')]"));
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+                WebElement goBackButton = wait.until(ExpectedConditions.presenceOfElementLocated(
+                                By.xpath("//button[contains(text(), 'Volver')]")));
+                scrollToElement(goBackButton);
                 assertNotNull(goBackButton, "El botón 'Volver' no está presente.");
 
                 goBackButton.click();
@@ -228,6 +243,7 @@ public class LeagueDetailTest extends BaseTest {
                 assertTrue(matchLinks.size() > 0, "No se encontraron partidos en la lista.");
 
                 WebElement matchLink = matchLinks.get(0);
+                scrollToElement(matchLink);
                 matchLink.click();
 
                 WebDriverWait waitForMatch = new WebDriverWait(driver, Duration.ofSeconds(10));

@@ -3,15 +3,16 @@ package com.tfg.futstats.controllers.dtos.match;
 import com.tfg.futstats.models.Match;
 
 public class MatchDTO {
-    // dto attributes
+    // region attributes
     private long id;
     private String league;
     private String team1;
     private String team2;
     private String name;
     private String place;
+    // endregion
 
-    // Team1 attributes
+    // region Team1 attributes
     private int shoots1;
     private int scores1;
     private int penaltys1;
@@ -37,8 +38,9 @@ public class MatchDTO {
     private int saves1;
     private int outBoxSaves1;
     private int inBoxSaves1;
+    // endregion
 
-    // Team2 attributes
+    // region Team2 attributes
     private int shoots2;
     private int scores2;
     private int penaltys2;
@@ -64,13 +66,16 @@ public class MatchDTO {
     private int saves2;
     private int outBoxSaves2;
     private int inBoxSaves2;
+    // endregion
 
     // We dont put the averages here because we only need the stadistics from were
     // it`s made
 
-    public MatchDTO(){}
+    // region Constructors
+    public MatchDTO() {
+    }
 
-    public MatchDTO(Match match){
+    public MatchDTO(Match match) {
         this.id = match.getId();
         this.league = match.getLeague().getName();
         this.team1 = match.getTeam1().getName();
@@ -127,8 +132,9 @@ public class MatchDTO {
         this.inBoxSaves2 = match.getInBoxSaves2();
 
     }
+    // endregion
 
-    // Getters & setters
+    // region Getters & setters
     public long getId() {
         return id;
     }
@@ -168,6 +174,7 @@ public class MatchDTO {
     public void setName(String name) {
         this.name = name;
     }
+
     public String getPlace() {
         return place;
     }
@@ -175,6 +182,9 @@ public class MatchDTO {
     public void setPlace(String place) {
         this.place = place;
     }
+
+    // --------------------------------------- TEAM 1
+    // --------------------------------
 
     public int getShoots1() {
         return shoots1;
@@ -578,4 +588,5 @@ public class MatchDTO {
     public void setInBoxSaves2(int inBoxSaves) {
         this.inBoxSaves2 = inBoxSaves;
     }
+    // endregion
 }

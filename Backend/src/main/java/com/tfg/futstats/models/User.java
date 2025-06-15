@@ -1,5 +1,6 @@
 package com.tfg.futstats.models;
 
+// region imports
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
@@ -18,10 +19,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
+//endregion
 
 @Entity
 public class User {
 
+    // region Attributes
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Auto generated ID
     private Long id;
@@ -40,32 +43,27 @@ public class User {
     // Realtions with other models in DB
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_leagues",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "league_id"))
+    @JoinTable(name = "user_leagues", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "league_id"))
     private List<League> belongedLeagues;
 
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_teams",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "team_id"))
+    @JoinTable(name = "user_teams", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "team_id"))
     private List<Team> belongedTeams;
 
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_players",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "player_id"))
+    @JoinTable(name = "user_players", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "player_id"))
     private List<Player> belongedPlayers;
 
     @Lob
-	@JsonIgnore
-	private Blob imageFile;
+    @JsonIgnore
+    private Blob imageFile;
 
-	private boolean image;
+    private boolean image;
+    // endregion
 
-    // Constructors
+    // region Constructors
 
     public User() {
         this.belongedLeagues = new ArrayList<>();
@@ -96,9 +94,9 @@ public class User {
         this.roles = user.getRoles();
         this.image = user.getImage();
     }
+    // endregion
 
-    // Getters & Setters
-
+    // region Getters & Setters
     public long getId() {
         return this.id;
     }
@@ -137,7 +135,7 @@ public class User {
         this.belongedLeagues = newLeagues;
     }
 
-    public void removeLeague(League league){
+    public void removeLeague(League league) {
         this.belongedLeagues.remove(league);
     }
 
@@ -155,7 +153,7 @@ public class User {
         this.belongedTeams = newTeams;
     }
 
-    public void removeTeam(Team team){
+    public void removeTeam(Team team) {
         this.belongedTeams.remove(team);
     }
 
@@ -173,7 +171,7 @@ public class User {
         this.belongedPlayers = newPlayers;
     }
 
-    public void removePlayer(Player player){
+    public void removePlayer(Player player) {
         this.belongedPlayers.remove(player);
     }
 
@@ -186,8 +184,7 @@ public class User {
         this.password = password;
     }
 
-    public void setRoles(String role)
-    {
+    public void setRoles(String role) {
         this.roles.add(role);
     }
 
@@ -201,18 +198,19 @@ public class User {
     }
 
     public Blob getImageFile() {
-		return imageFile;
-	}
+        return imageFile;
+    }
 
-	public void setImageFile(Blob image) {
-		this.imageFile = image;
-	}
+    public void setImageFile(Blob image) {
+        this.imageFile = image;
+    }
 
-	public boolean getImage() {
-		return this.image;
-	}
+    public boolean getImage() {
+        return this.image;
+    }
 
-	public void setImage(boolean image) {
-		this.image = image;
-	}
+    public void setImage(boolean image) {
+        this.image = image;
+    }
+    // endregion
 }

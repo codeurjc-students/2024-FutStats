@@ -98,6 +98,14 @@ export class LeagueFormComponent {
   }
 
   private afterUploadImage(league: League) {
-    this.router.navigate(['/leagues', league.id]);
+    if (league.id) {
+      this.service.getLeagueById(league.id).subscribe({
+        next: (updatedLeague) => {
+          this.league = updatedLeague;
+          this.router.navigate(['/leagues', this.league.id]);
+        },
+        error: () => this.router.navigate(['/leagues'])
+      });
+    }
   }
 }

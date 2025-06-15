@@ -1,5 +1,6 @@
 package com.tfg.futstats.controllers;
 
+// region imports
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,6 +41,7 @@ import java.net.URI;
 import java.sql.Blob;
 import java.util.List;
 import java.sql.SQLException;
+//endregion
 
 @RestController
 @RequestMapping("/api/v1/leagues")
@@ -49,6 +51,8 @@ public class LeagueController {
         RestService restService;
 
         // ------------------------------- League CRUD operations
+
+        // region Get
 
         @Operation(summary = "Get all the leagues")
         @ApiResponses(value = {
@@ -113,14 +117,14 @@ public class LeagueController {
                         @ApiResponse(responseCode = "404", description = "Image not found", content = @Content)
         })
         @GetMapping("/{id}/image")
-        public ResponseEntity<Object> getImage(HttpServletRequest request, @PathVariable long id)throws SQLException {
+        public ResponseEntity<Object> getImage(HttpServletRequest request, @PathVariable long id) throws SQLException {
                 League league = restService.findLeagueById(id)
-                        .orElseThrow(() -> new ElementNotFoundException("No esta registrado"));
+                                .orElseThrow(() -> new ElementNotFoundException("No esta registrado"));
 
                 Resource file = new InputStreamResource(league.getImageFile().getBinaryStream());
- 
+
                 return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
-		        .contentLength(league.getImageFile().length()).body(file);
+                                .contentLength(league.getImageFile().length()).body(file);
         }
 
         @Operation(summary = "Get teams of a league")
@@ -184,8 +188,12 @@ public class LeagueController {
                 // to create a not found ResponseEntity
         }
 
+        // endregion
+
         // From this point the only one that can use this methods is the admin, so we
-        // have to create security for that
+        // have to create security
+
+        // region Post
 
         @Operation(summary = "Create a League")
         @ApiResponses(value = {
@@ -245,6 +253,10 @@ public class LeagueController {
                 return ResponseEntity.ok(leagueDto);
         }
 
+        // endregion
+
+        // region Delete
+
         @Operation(summary = "Delete a League")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "League Deleted", content = {
@@ -297,6 +309,10 @@ public class LeagueController {
                 return ResponseEntity.ok(leagueDto);
         }
 
+        // endregion
+
+        // region Put
+
         @Operation(summary = "Update a League")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "League Updated", content = {
@@ -326,4 +342,6 @@ public class LeagueController {
                 // necessary
                 // to create a not found ResponseEntity
         }
+
+        // endregion
 }

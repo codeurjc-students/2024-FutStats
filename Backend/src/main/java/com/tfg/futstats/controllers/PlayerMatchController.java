@@ -1,5 +1,6 @@
 package com.tfg.futstats.controllers;
 
+// region imports
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,137 +34,143 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.Map;
-
+//endregion
 
 @RestController
 @RequestMapping("/api/v1/playerMatches")
 public class PlayerMatchController {
 
-    @Autowired
-    RestService restService;
+        @Autowired
+        RestService restService;
 
-    // ------------------------------- PlayerMatch CRUD operations
-    // --------------------------------------------
+        // ------------------------------- PlayerMatch CRUD operations
 
-    @Operation(summary = "Get playerMatch by id")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found playerMatch", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = PlayerMatchDTO.class))
+        // region Get
+        @Operation(summary = "Get playerMatch by id")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Found playerMatch", content = {
+                                        @Content(mediaType = "application/json", schema = @Schema(implementation = PlayerMatchDTO.class))
 
-            }),
-            @ApiResponse(responseCode = "404", description = "playerMatch not found", content = @Content)
-    })
-    @GetMapping("/{id}")
-    public ResponseEntity<PlayerMatchDTO> getPlayerMatchById(@PathVariable long id) {
-        PlayerMatch playerMatch = restService.findPlayerMatchById(id)
-                .orElseThrow(() -> new ElementNotFoundException("No existe el partido de ese jugador"));
+                        }),
+                        @ApiResponse(responseCode = "404", description = "playerMatch not found", content = @Content)
+        })
+        @GetMapping("/{id}")
+        public ResponseEntity<PlayerMatchDTO> getPlayerMatchById(@PathVariable long id) {
+                PlayerMatch playerMatch = restService.findPlayerMatchById(id)
+                                .orElseThrow(() -> new ElementNotFoundException("No existe el partido de ese jugador"));
 
-        PlayerMatchDTO playerMatchDto = new PlayerMatchDTO(playerMatch);
+                PlayerMatchDTO playerMatchDto = new PlayerMatchDTO(playerMatch);
 
-        return ResponseEntity.ok(playerMatchDto);
+                return ResponseEntity.ok(playerMatchDto);
 
-        // if the player ins`t found we will never reach this point so it is not
-        // necessary
-        // to create a not found ResponseEntity
-    }
+                // if the player ins`t found we will never reach this point so it is not
+                // necessary
+                // to create a not found ResponseEntity
+        }
 
-    @Operation(summary = "Get goals of a player")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found all the goals of a player", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = PlayerDTO.class))
+        @Operation(summary = "Get goals of a player")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Found all the goals of a player", content = {
+                                        @Content(mediaType = "application/json", schema = @Schema(implementation = PlayerDTO.class))
 
-            }),
-            @ApiResponse(responseCode = "404", description = "playerMatch not found", content = @Content)
-    })
-    @GetMapping("/goals/{playerId}")
-    public List<Map<String, Object>> getGoalsPerMatch(@PathVariable long playerId) {
-        List<PlayerMatchDTO> playerMatches = restService.findAllPlayerMatchesByPlayer(playerId);
+                        }),
+                        @ApiResponse(responseCode = "404", description = "playerMatch not found", content = @Content)
+        })
+        @GetMapping("/goals/{playerId}")
+        public List<Map<String, Object>> getGoalsPerMatch(@PathVariable long playerId) {
+                List<PlayerMatchDTO> playerMatches = restService.findAllPlayerMatchesByPlayer(playerId);
 
-        return playerMatches.stream().map(playerMatch -> {
-            Map<String, Object> map = new HashMap<>();
-            map.put("matchName", playerMatch.getMatchName());
-            map.put("goals", playerMatch.getGoals());
-            return map;
-        }).collect(Collectors.toList());
-    }
+                return playerMatches.stream().map(playerMatch -> {
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("matchName", playerMatch.getMatchName());
+                        map.put("goals", playerMatch.getGoals());
+                        return map;
+                }).collect(Collectors.toList());
+        }
 
-    @Operation(summary = "Get player of a playerMatch")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found playerMatch player", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = PlayerDTO.class))
+        @Operation(summary = "Get player of a playerMatch")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Found playerMatch player", content = {
+                                        @Content(mediaType = "application/json", schema = @Schema(implementation = PlayerDTO.class))
 
-            }),
-            @ApiResponse(responseCode = "404", description = "playerMatch not found", content = @Content)
-    })
-    @GetMapping("/{id}/player")
-    public ResponseEntity<PlayerDTO> getPlayer(@PathVariable long id) {
-        PlayerMatch playerMatch = restService.findPlayerMatchById(id)
-                .orElseThrow(() -> new ElementNotFoundException("No existe el partido de ese jugador"));
+                        }),
+                        @ApiResponse(responseCode = "404", description = "playerMatch not found", content = @Content)
+        })
+        @GetMapping("/{id}/player")
+        public ResponseEntity<PlayerDTO> getPlayer(@PathVariable long id) {
+                PlayerMatch playerMatch = restService.findPlayerMatchById(id)
+                                .orElseThrow(() -> new ElementNotFoundException("No existe el partido de ese jugador"));
 
-        PlayerDTO playerDto = new PlayerDTO(playerMatch.getPlayer());
+                PlayerDTO playerDto = new PlayerDTO(playerMatch.getPlayer());
 
-        return ResponseEntity.ok(playerDto);
+                return ResponseEntity.ok(playerDto);
 
-        // if the player ins`t found we will never reach this point so it is not
-        // necessary
-        // to create a not found ResponseEntity
-    }
+                // if the player ins`t found we will never reach this point so it is not
+                // necessary
+                // to create a not found ResponseEntity
+        }
 
-    @Operation(summary = "Get match of a playerMatch")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found playerMatch match", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = MatchDTO.class))
+        @Operation(summary = "Get match of a playerMatch")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Found playerMatch match", content = {
+                                        @Content(mediaType = "application/json", schema = @Schema(implementation = MatchDTO.class))
 
-            }),
-            @ApiResponse(responseCode = "404", description = "playerMatch not found", content = @Content)
-    })
-    @GetMapping("/{id}/match")
-    public ResponseEntity<MatchDTO> getMatch(@PathVariable long id) {
-        PlayerMatch playerMatch = restService.findPlayerMatchById(id)
-                .orElseThrow(() -> new ElementNotFoundException("No existe el partido de ese jugador"));
+                        }),
+                        @ApiResponse(responseCode = "404", description = "playerMatch not found", content = @Content)
+        })
+        @GetMapping("/{id}/match")
+        public ResponseEntity<MatchDTO> getMatch(@PathVariable long id) {
+                PlayerMatch playerMatch = restService.findPlayerMatchById(id)
+                                .orElseThrow(() -> new ElementNotFoundException("No existe el partido de ese jugador"));
 
-        MatchDTO matchDto = new MatchDTO(playerMatch.getMatch());
+                MatchDTO matchDto = new MatchDTO(playerMatch.getMatch());
 
-        return ResponseEntity.ok(matchDto);
+                return ResponseEntity.ok(matchDto);
 
-        // if the player ins`t found we will never reach this point so it is not
-        // necessary
-        // to create a not found ResponseEntity
-    }
+                // if the player ins`t found we will never reach this point so it is not
+                // necessary
+                // to create a not found ResponseEntity
+        }
+        // endregion
 
-    @Operation(summary = "Delete a PlayerMatch")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "PlayerMatch Deleted", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = PlayerMatch.class))
+        // region Delete
 
-            }),
-            @ApiResponse(responseCode = "404", description = "PlayerMatch not found", content = @Content),
-            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
-    })
-    @DeleteMapping("/{id}")
-    public ResponseEntity<PlayerMatch> deletePlayersMatch(@PathVariable long id) {
-        // We don`t need this because is redundant, is already controlled in
-        // SecurityConfig
+        @Operation(summary = "Delete a PlayerMatch")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "PlayerMatch Deleted", content = {
+                                        @Content(mediaType = "application/json", schema = @Schema(implementation = PlayerMatch.class))
 
-        PlayerMatch playerMatch = restService.findPlayerMatchById(id)
-                .orElseThrow(() -> new ElementNotFoundException("No existe el partido de ese jugador"));
+                        }),
+                        @ApiResponse(responseCode = "404", description = "PlayerMatch not found", content = @Content),
+                        @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
+        })
+        @DeleteMapping("/{id}")
+        public ResponseEntity<PlayerMatch> deletePlayersMatch(@PathVariable long id) {
+                // We don`t need this because is redundant, is already controlled in
+                // SecurityConfig
 
-        Match match = restService.findMatchById(playerMatch.getMatch().getId())
-                .orElseThrow(() -> new ElementNotFoundException("No existe un partido con ese id"));
+                PlayerMatch playerMatch = restService.findPlayerMatchById(id)
+                                .orElseThrow(() -> new ElementNotFoundException("No existe el partido de ese jugador"));
 
-        Player player = restService.findPlayerByName(playerMatch.getName())
-                .orElseThrow(() -> new ElementNotFoundException("No existe un jugador con ese nombre"));
+                Match match = restService.findMatchById(playerMatch.getMatch().getId())
+                                .orElseThrow(() -> new ElementNotFoundException("No existe un partido con ese id"));
 
-        restService.deletePlayerMatch(playerMatch, match, player);
+                Player player = restService.findPlayerByName(playerMatch.getName())
+                                .orElseThrow(() -> new ElementNotFoundException("No existe un jugador con ese nombre"));
 
-        return ResponseEntity.ok(playerMatch);
+                restService.deletePlayerMatch(playerMatch, match, player);
 
-        // if the match or the player ins`t found we will never reach this point so it
-        // is not necessary
-        // to create a not found ResponseEntity
-    }
+                return ResponseEntity.ok(playerMatch);
 
-    @Operation(summary = "Update a PlayerMatch")
+                // if the match or the player ins`t found we will never reach this point so it
+                // is not necessary
+                // to create a not found ResponseEntity
+        }
+        // endregion
+
+        // region Put
+
+        @Operation(summary = "Update a PlayerMatch")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "PlayerMatch Updated", content = {
                                         @Content(mediaType = "application/json", schema = @Schema(implementation = PlayerMatchDTO.class))
@@ -174,40 +181,41 @@ public class PlayerMatchController {
                         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
                         @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content)
         })
-    @PutMapping("/{id}")
-    public ResponseEntity<PlayerMatchDTO> putPlayersMatch(HttpServletRequest request, @PathVariable long id,
-            @RequestBody PlayerMatchDTO playerMatchDto) {
-        // We don`t need this because is redundant, is already controlled in
-        // SecurityConfig
+        @PutMapping("/{id}")
+        public ResponseEntity<PlayerMatchDTO> putPlayersMatch(HttpServletRequest request, @PathVariable long id,
+                        @RequestBody PlayerMatchDTO playerMatchDto) {
+                // We don`t need this because is redundant, is already controlled in
+                // SecurityConfig
 
-        PlayerMatch oldPlayerMatch = restService.findPlayerMatchById(id)
-                .orElseThrow(() -> new ElementNotFoundException("No existe el partido de ese jugador"));
+                PlayerMatch oldPlayerMatch = restService.findPlayerMatchById(id)
+                                .orElseThrow(() -> new ElementNotFoundException("No existe el partido de ese jugador"));
 
-        // We have to do this comprobation here because we have to know if the team
-        // exists
-        Match match = restService.findMatchById(playerMatchDto.getMatch())
-                .orElseThrow(() -> new ElementNotFoundException("No existe un partido con ese nombre"));
+                // We have to do this comprobation here because we have to know if the team
+                // exists
+                Match match = restService.findMatchById(playerMatchDto.getMatch())
+                                .orElseThrow(() -> new ElementNotFoundException("No existe un partido con ese nombre"));
 
-        Player player = new Player();
+                Player player = new Player();
 
-        // We have to do this comprobation here because we have to know if the player
-        // exists
-        if (playerMatchDto.getName() == null) {
-            player = oldPlayerMatch.getPlayer();
-        } else {
-            player = restService.findPlayerByName(playerMatchDto.getName())
-                    .orElseThrow(() -> new ElementNotFoundException(
-                            "No existe un jugadoer con ese nombre"));
+                // We have to do this comprobation here because we have to know if the player
+                // exists
+                if (playerMatchDto.getName() == null) {
+                        player = oldPlayerMatch.getPlayer();
+                } else {
+                        player = restService.findPlayerByName(playerMatchDto.getName())
+                                        .orElseThrow(() -> new ElementNotFoundException(
+                                                        "No existe un jugadoer con ese nombre"));
+                }
+
+                restService.updatePlayerMatch(oldPlayerMatch, playerMatchDto, match, player);
+
+                PlayerMatchDTO newPlayerMatchDto = new PlayerMatchDTO(oldPlayerMatch);
+
+                return ResponseEntity.ok(newPlayerMatchDto);
+
+                // if the match or the player ins`t found we will never reach this point so it
+                // is not necessary
+                // to create a not found ResponseEntity
         }
-
-        restService.updatePlayerMatch(oldPlayerMatch, playerMatchDto, match, player);
-
-        PlayerMatchDTO newPlayerMatchDto = new PlayerMatchDTO(oldPlayerMatch);
-
-        return ResponseEntity.ok(newPlayerMatchDto);
-
-        // if the match or the player ins`t found we will never reach this point so it
-        // is not necessary
-        // to create a not found ResponseEntity
-    }
+        // endregion
 }

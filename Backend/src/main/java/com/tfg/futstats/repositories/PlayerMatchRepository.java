@@ -11,15 +11,15 @@ import org.springframework.data.repository.query.Param;
 import com.tfg.futstats.models.PlayerMatch;
 
 @Repository
-public interface PlayerMatchRepository extends JpaRepository<PlayerMatch, Long>  {
-    
+public interface PlayerMatchRepository extends JpaRepository<PlayerMatch, Long> {
+
     @Query("SELECT p FROM PlayerMatch p WHERE p.match.id = :match")
     List<PlayerMatch> findAllByMatch(@Param("match") Long match);
 
     @Query("SELECT p FROM PlayerMatch p WHERE p.player.id = :player")
     List<PlayerMatch> findAllByPlayer(@Param("player") Long player);
 
-    // Player stats 
+    // Player stats
     @Query("SELECT COALESCE(COUNT(jp),0) FROM PlayerMatch jp WHERE jp.player.id = :playerId")
     int matchesByPlayer(@Param("playerId") Long playerId);
 
@@ -55,7 +55,7 @@ public interface PlayerMatchRepository extends JpaRepository<PlayerMatch, Long> 
 
     @Query("SELECT COALESCE(SUM(jp.redCards),0) FROM PlayerMatch jp WHERE jp.player.id = :playerId")
     int redCardsByPlayer(@Param("playerId") Long playerId);
-    
+
     @Query("SELECT COALESCE(SUM(jp.passes),0) FROM PlayerMatch jp WHERE jp.player.id = :playerId")
     int passesByPlayer(@Param("playerId") Long playerId);
 
@@ -139,6 +139,6 @@ public interface PlayerMatchRepository extends JpaRepository<PlayerMatch, Long> 
     int ballLossesByTeam(@Param("matchId") Long matchId, @Param("teamId") Long teamId);
 
     List<PlayerMatch> findByPlayerId(Long playerId);
-    
+
     List<PlayerMatch> findByMatchId(Long matchId);
 }

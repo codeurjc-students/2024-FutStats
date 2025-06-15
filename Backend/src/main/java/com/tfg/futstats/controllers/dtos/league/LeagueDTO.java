@@ -3,23 +3,28 @@ package com.tfg.futstats.controllers.dtos.league;
 import com.tfg.futstats.models.League;
 
 public class LeagueDTO {
-    // dto attributes
+    // region attributes
     private long id;
     private String name;
     private String president;
     private String nationality;
     private boolean image;
+    // endregion
 
-    public LeagueDTO(){}
+    // region constructors
+    public LeagueDTO() {
+    }
 
-    public LeagueDTO(League league){
+    public LeagueDTO(League league) {
         this.id = league.getId();
         this.name = league.getName();
         this.nationality = league.getNationality();
         this.president = league.getPresident();
         this.image = league.getImage();
     }
-    // Getters & setters
+    // endregion
+
+    // region getters & setters
     public long getId() {
         return id;
     }
@@ -52,11 +57,12 @@ public class LeagueDTO {
         this.nationality = nationality;
     }
 
-	public boolean getImage() {
-		return this.image;
-	}
+    public boolean getImage() {
+        return this.image;
+    }
 
-	public void setImage(boolean image) {
-		this.image = image;
-	}
+    public void setImage(boolean image) {
+        this.image = image;
+    }
+    // endregion
 }

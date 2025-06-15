@@ -1,5 +1,6 @@
 package com.tfg.futstats.controllers;
 
+// region imports
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,6 +45,7 @@ import java.net.URI;
 import java.sql.Blob;
 import java.util.List;
 import java.sql.SQLException;
+//endregion
 
 @RestController
 @RequestMapping("/api/v1/players")
@@ -53,6 +55,8 @@ public class Playercontroller {
         RestService restService;
 
         // ------------------------------- Player CRUD operations
+
+        // region Get
         @Operation(summary = "Get all the players")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "Found players", content = {
@@ -114,14 +118,14 @@ public class Playercontroller {
                         @ApiResponse(responseCode = "404", description = "player not found", content = @Content)
         })
         @GetMapping("/{id}/image")
-        public ResponseEntity<Object> getImage(HttpServletRequest request, @PathVariable long id)throws SQLException {
+        public ResponseEntity<Object> getImage(HttpServletRequest request, @PathVariable long id) throws SQLException {
                 Player player = restService.findPlayerById(id)
-                        .orElseThrow(() -> new ElementNotFoundException("No esta registrado"));
+                                .orElseThrow(() -> new ElementNotFoundException("No esta registrado"));
 
                 Resource file = new InputStreamResource(player.getImageFile().getBinaryStream());
- 
+
                 return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
-		        .contentLength(player.getImageFile().length()).body(file);
+                                .contentLength(player.getImageFile().length()).body(file);
         }
 
         @Operation(summary = "Get league of a player")
@@ -179,8 +183,12 @@ public class Playercontroller {
 
         }
 
+        // endregion
+
         // From this point the only one that can use this methods is the admin so we
-        // have to create security for that
+        // have to create security
+
+        // region Post
 
         @Operation(summary = "Create a player")
         @ApiResponses(value = {
@@ -196,7 +204,8 @@ public class Playercontroller {
 
         })
         @PostMapping("/")
-        public ResponseEntity<PlayerResponseDTO> postPlayers(HttpServletRequest request, @RequestBody PlayerDTO playerDto) {
+        public ResponseEntity<PlayerResponseDTO> postPlayers(HttpServletRequest request,
+                        @RequestBody PlayerDTO playerDto) {
                 // We don`t need this because it is already controlled in SecurityConfig
 
                 Player newPlayer = new Player(playerDto);
@@ -248,6 +257,10 @@ public class Playercontroller {
                 return ResponseEntity.ok(playerDto);
         }
 
+        // endregion
+
+        // region Delete
+
         @Operation(summary = "Delete a Player")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "Player Deleted", content = {
@@ -296,6 +309,10 @@ public class Playercontroller {
 
                 return ResponseEntity.ok(playerDto);
         }
+
+        // endregion
+
+        // region Put
 
         @Operation(summary = "Update a Player")
         @ApiResponses(value = {
@@ -346,4 +363,6 @@ public class Playercontroller {
 
                 return ResponseEntity.ok(newPlayerDto);
         }
+
+        // endregion
 }

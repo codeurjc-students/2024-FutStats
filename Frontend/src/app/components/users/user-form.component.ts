@@ -2,6 +2,7 @@ import { User } from 'src/app/models/user.model';
 import { UsersService } from 'src/app/services/user.service';
 import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Team } from 'src/app/models/team.model';
 
 @Component({
     templateUrl: './user-form.component.html',
@@ -13,8 +14,8 @@ export class UserFormComponent {
     user: User;
     removeImage: boolean;
 
-    @ViewChild("file")
-    file: any;
+    @ViewChild('uploadImage', { static: false })
+    fileInput: any;
 
     constructor(
         private router: Router,
@@ -51,60 +52,59 @@ export class UserFormComponent {
 
     save() {
         if (this.newUser) {
-            if (this.user.image && this.removeImage) {
-                this.user.image = false;
-            }
-            this.user.roles.push('user');
-            this.service.addUser(this.user).subscribe(
-                (user: User) => this.uploadImage(user),
-                error => alert('Error creating new league: ' + error)
-            );
+          if (this.removeImage) {
+            this.user.image = false;
+          }
+          this.service.addUser(this.user).subscribe(
+            (user: User) => this.uploadImage(user),
+            error => alert('Error creating new user: ' + error)
+          );
         } else {
-            if (this.user.image && this.removeImage) {
-                this.user.image = false;
-            }
-            this.service.updateUser(this.user).subscribe(
-                (user: User,) => this.uploadImage(user),
-                error => alert('Error creating new league: ' + error)
-            );
+          if (this.removeImage) {
+            this.user.image = false;
+          }
+          this.service.updateUser(this.user).subscribe(
+            (user: User,) => this.uploadImage(user),
+            error => alert('Error creating new user: ' + error)
+          );
         }
-    }
-
-    uploadImage(user: User): void {
-
-        if (this.file) {
-            const image = this.file.nativeElement.files[0];
-            if (image) {
-                let formData = new FormData();
-                formData.append("imageFile", image);
-                this.service.addImage(user, formData).subscribe(
-                    _ => this.afterUploadImage(user),
-                    error => alert('Error uploading user image: ' + error)
-                );
-            } else if (this.removeImage) {
-                this.service.deleteImage(user).subscribe(
-                    _ => this.afterUploadImage(user),
-                    error => alert('Error deleting user image: ' + error)
-                );
-            }
-        } 
+      }
+    
+      uploadImage(user: User): void {
+        if (this.fileInput) {
+          const image = this.fileInput.nativeElement.files[0];
+          if (image) {
+            let formData = new FormData();
+            formData.append("imageFile", image);
+            this.service.addImage(user, formData).subscribe(
+              _ => this.afterUploadImage(user),
+              error => alert('Error uploading user image: ' + error)
+            );
+          } else if (this.removeImage) {
+            this.service.deleteImage(user).subscribe(
+              _ => this.afterUploadImage(user),
+                error => alert('Error deleting user image: ' + error)
+            );
+          }
+        }
         this.afterUploadImage(user);
-        
-    }
-
-    onFileSelected(event: any): void {
+      }
+    
+      onFileSelected(event: any): void {
         const fileInput = event.target.files[0];
         if (fileInput) {
           console.log('Archivo seleccionado:', fileInput.name);
         }
       }
+    
+      private afterUploadImage(user: User) {
+        this.router.navigate(['/leagues']);
+      }
+      
 
     userImage() {
         return this.user.image ? "api/v1/users/" + this.user.id + "/image" : 'assets/no_image.jpg';
     }
 
-    private afterUploadImage(user: User) {
-
-        this.router.navigate(['/leagues']);
-    }
+    
 }

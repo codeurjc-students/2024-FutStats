@@ -42,7 +42,7 @@ public class LeagueListTest extends BaseTest{
         assertNotNull(loginButton, "El botón 'Iniciar sesión' no se encontró.");
 
         usernameField.sendKeys("user0");
-        passwordField.sendKeys("pass");
+        passwordField.sendKeys("pasS123");
         loginButton.click();
     }
 

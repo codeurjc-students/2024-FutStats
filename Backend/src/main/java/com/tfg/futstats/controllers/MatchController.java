@@ -1,5 +1,6 @@
 package com.tfg.futstats.controllers;
 
+// region imports
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,6 +36,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.net.URI;
 import java.util.List;
+//endregion
 
 @RestController
 @RequestMapping("/api/v1/matches")
@@ -44,6 +46,8 @@ public class MatchController {
         RestService restService;
 
         // ------------------------------- Match CRUD operations
+
+        // region Get
         @Operation(summary = "Get all the matches")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "Found matches", content = {
@@ -55,7 +59,7 @@ public class MatchController {
         public ResponseEntity<List<MatchDTO>> getMatches() {
                 return ResponseEntity.ok(restService.findAllMatches());
         }
-        
+
         @Operation(summary = "Get match by id")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "Found match", content = {
@@ -186,9 +190,12 @@ public class MatchController {
                 // to create a not found ResponseEntity
         }
 
-        // From this point the only one that can use this methods is the admin so we
-        // have to create security for that
+        // endregion
 
+        // From this point the only one that can use this methods is the admin so we
+        // have to create security
+
+        // region Post
         @Operation(summary = "Create a match")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "201", description = "Match Created", content = {
@@ -227,6 +234,9 @@ public class MatchController {
 
                 return ResponseEntity.created(location).body(newMatchDto);
         }
+        // endregion
+
+        // region Delete
 
         @Operation(summary = "Delete a match")
         @ApiResponses(value = {
@@ -255,6 +265,10 @@ public class MatchController {
                 // necessary
                 // to create a not found ResponseEntity
         }
+
+        // endregion
+
+        // region Put
 
         @Operation(summary = "Update a Match")
         @ApiResponses(value = {
@@ -312,7 +326,6 @@ public class MatchController {
                                                         "No existe una equipo con ese nombre"));
                 }
 
-                
                 restService.updateMatch(oldMatch, matchDto, league, team1, team2);
 
                 MatchDTO newMatchDto = new MatchDTO(oldMatch);
@@ -323,6 +336,10 @@ public class MatchController {
                 // necessary
                 // to create a not found ResponseEntity
         }
+
+        // endregion
+
+        // region PostPlayerMatch
 
         @Operation(summary = "Create a playerMatch")
         @ApiResponses(value = {
@@ -363,4 +380,6 @@ public class MatchController {
                 // is not necessary
                 // to create a not found ResponseEntity
         }
+
+        // endregion
 }

@@ -1,5 +1,6 @@
 package com.tfg.futstats.models;
 
+// region imports
 import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,17 +20,20 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
+//endregion
 
 //As we want that this class be kept in the database we have to put this notation
 @Entity
 public class Team {
+
+    // region Attributes
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Auto generated ID
     private Long id;
 
     // Team attributes
-     @Column(unique = true)
-     @NotNull
+    @Column(unique = true)
+    @NotNull
     private String name;
     private int trophies;
     private String nationality;
@@ -40,23 +44,19 @@ public class Team {
     private int points;
 
     @Lob
-	@JsonIgnore
-	private Blob imageFile;
+    @JsonIgnore
+    private Blob imageFile;
 
-	private boolean image;
+    private boolean image;
 
     // Realtions with other models in DB
     @ManyToOne
     @JsonIgnore
     private League league;
 
-    // @OneToMany(cascade = CascadeType.ALL)
-    // @JsonIgnore
-    // private List<Match> matches;
-
     @OneToMany(cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Player> players; 
+    private List<Player> players;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
@@ -65,7 +65,7 @@ public class Team {
     @ManyToMany(mappedBy = "belongedTeams")
     @JsonIgnore
     private List<User> users;
-    
+
     // team stats
     private int totalMatches;
 
@@ -101,7 +101,7 @@ public class Team {
     private int centers;
     private int ballLosses;
 
-    //Goalkeeper
+    // Goalkeeper
     private int shootsReceived;
     private int goalsConceded;
     private float goalsReceivedPerMatch;
@@ -115,10 +115,10 @@ public class Team {
     private int lostMatches;
     private int drawMatches;
     private float wonMatchesAvg;
+    // endregion
 
-    // Constructors
+    // region Constructors
     public Team() {
-        //this.matches = new ArrayList<Match>();
         this.players = new ArrayList<Player>();
         this.teamMatches = new ArrayList<TeamMatch>();
         this.users = new ArrayList<User>();
@@ -133,9 +133,7 @@ public class Team {
             String president,
             String stadium,
             Blob imageFile,
-            boolean image
-            ) {
-        //this.matches = new ArrayList<Match>();
+            boolean image) {
         this.players = new ArrayList<Player>();
         this.teamMatches = new ArrayList<TeamMatch>();
         this.users = new ArrayList<User>();
@@ -149,7 +147,7 @@ public class Team {
         this.stadium = stadium;
         this.image = image;
         this.imageFile = imageFile;
-        
+
     }
 
     public Team(TeamCreationDTO team) {
@@ -200,8 +198,9 @@ public class Team {
         this.stadium = team.getStadium();
         this.image = team.getImage();
     }
+    // endregion
 
-    // Getters & Setters
+    // region Getters & Setters
     // ------------------------------------ LEAGUE
     public League getLeague() {
         return this.league;
@@ -218,24 +217,6 @@ public class Team {
     public void deleteLeague() {
         this.league = null;
     }
-
-    // --------------------------------------- MATCH
-    // public List<Match> getMatches() {
-    //     return this.matches;
-    // }
-
-    // public void setMatches(List<Match> matches) {
-    //     this.matches = matches;
-    // }
-
-    // public void setMatch(Match match) {
-    //     this.matches.add(match);
-    //     match.setLeague(this.league);
-    // }
-
-    // public void deleteMatch(Match match) {
-    //     this.matches.remove(match);
-    // }
 
     // --------------------------------------- PLAYER
     public List<Player> getPlayers() {
@@ -276,7 +257,7 @@ public class Team {
         this.teamMatches = null;
     }
 
-    // --------------------------------------- USER 
+    // --------------------------------------- USER
     public List<User> getUsers() {
         return this.users;
     }
@@ -304,20 +285,20 @@ public class Team {
     }
 
     public Blob getImageFile() {
-		return imageFile;
-	}
+        return imageFile;
+    }
 
-	public void setImageFile(Blob image) {
-		this.imageFile = image;
-	}
+    public void setImageFile(Blob image) {
+        this.imageFile = image;
+    }
 
-	public boolean getImage() {
-		return this.image;
-	}
+    public boolean getImage() {
+        return this.image;
+    }
 
-	public void setImage(boolean image) {
-		this.image = image;
-	}
+    public void setImage(boolean image) {
+        this.image = image;
+    }
 
     public String getName() {
         return name;
@@ -377,12 +358,12 @@ public class Team {
 
     public int getPoints() {
         if (this.wonMatches == 0) {
-            if(this.drawMatches == 0){
+            if (this.drawMatches == 0) {
                 return 0;
             }
         }
         points = wonMatches * 3 + drawMatches * 1;
-        return  points;
+        return points;
     }
 
     public void setPoints(int wonMatches) {
@@ -630,19 +611,19 @@ public class Team {
         this.ballLosses = ballLosses;
     }
 
-    public int getShootsReceived(){
+    public int getShootsReceived() {
         return shootsReceived;
     }
 
-    public void getShootsReceived(int shootsReceived){
+    public void getShootsReceived(int shootsReceived) {
         this.shootsReceived = shootsReceived;
     }
 
-    public int getGoalsConceded(){
+    public int getGoalsConceded() {
         return goalsConceded;
     }
 
-    public void setGoalsConceded(int goalsConceded){
+    public void setGoalsConceded(int goalsConceded) {
         this.goalsConceded = goalsConceded;
     }
 
@@ -654,35 +635,35 @@ public class Team {
         return goalsReceivedPerMatch;
     }
 
-    public int getSaves(){
+    public int getSaves() {
         return saves;
     }
 
-    public void setSaves(int saves){
+    public void setSaves(int saves) {
         this.saves = saves;
     }
 
-    public float getSavesAvg(){
-        if(shootsReceived == 0) {
+    public float getSavesAvg() {
+        if (shootsReceived == 0) {
             return 0;
         }
         savesAvg = (float) saves / shootsReceived;
         return savesAvg;
     }
 
-    public int getOutBoxSaves(){
+    public int getOutBoxSaves() {
         return outBoxSaves;
     }
 
-    public void setOutBoxSaves(int outBoxSaves){
+    public void setOutBoxSaves(int outBoxSaves) {
         this.outBoxSaves = outBoxSaves;
     }
 
-    public int getInBoxSaves(){
+    public int getInBoxSaves() {
         return inBoxSaves;
     }
 
-    public void setInBoxSaves(int inBoxSaves){
+    public void setInBoxSaves(int inBoxSaves) {
         this.inBoxSaves = inBoxSaves;
     }
 
@@ -721,5 +702,7 @@ public class Team {
     // As it is an average it only needs a getter it doesn´t need to be setted
     // because
     // it`s calculated from other stadistics.
+
+    // endregion
 
 }

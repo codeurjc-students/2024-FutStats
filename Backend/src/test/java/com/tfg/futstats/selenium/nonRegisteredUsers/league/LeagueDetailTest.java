@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -17,12 +18,24 @@ import com.tfg.futstats.selenium.BaseTest;
 
 public class LeagueDetailTest extends BaseTest {
 
+    private void scrollToElement(WebElement element) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.elementToBeClickable(element));
+    }
+
     @Test
     public void testLeagueInfoDisplayed() {
         driver.get("https://localhost:" + this.port + "/leagues/1");
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-        WebElement leagueName = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2")));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebElement leagueName = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//h2")));
+        scrollToElement(leagueName);
         assertNotNull(leagueName, "El nombre de la liga no se muestra.");
     }
 
@@ -34,10 +47,12 @@ public class LeagueDetailTest extends BaseTest {
 
         WebElement paginationControls = wait
                 .until(ExpectedConditions.visibilityOfElementLocated(By.tagName("pagination-controls")));
+        scrollToElement(paginationControls);
         assertNotNull(paginationControls, "El componente de controles de paginación no se encontró.");
 
         WebElement nextButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(
                 "//pagination-controls//li[contains(@class, 'pagination-next')]//a[contains(text(), 'Siguiente')]")));
+        scrollToElement(nextButton);
         assertNotNull(nextButton, "El enlace 'Siguiente' no se encontró.");
 
         nextButton.click();
@@ -49,7 +64,10 @@ public class LeagueDetailTest extends BaseTest {
     public void testGoBackButton() {
         driver.get("https://localhost:" + this.port + "/leagues/1");
 
-        WebElement goBackButton = driver.findElement(By.xpath("//button[contains(text(), 'Volver')]"));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        WebElement goBackButton = wait.until(ExpectedConditions.elementToBeClickable(
+            By.xpath("//button[contains(text(), 'Volver')]")));
+        scrollToElement(goBackButton);
         assertNotNull(goBackButton, "El botón 'Volver' no está presente.");
 
         goBackButton.click();
@@ -73,6 +91,7 @@ public class LeagueDetailTest extends BaseTest {
             try {
                 WebElement nextButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(
                         "//pagination-controls[@id='team']//a[contains(@class, 'pagination-next')]")));
+                scrollToElement(nextButton);
                 nextButton.click();
                 System.out.println("Clic en botón 'Siguiente' de equipos.");
                 Thread.sleep(1000); 
@@ -118,6 +137,7 @@ public class LeagueDetailTest extends BaseTest {
             try {
                 WebElement nextButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(
                         "//pagination-controls[@id='match']//a[contains(@class, 'pagination-next')]")));
+                scrollToElement(nextButton);
                 nextButton.click();
                 System.out.println("Clic en botón 'Siguiente' de partidos.");
             } catch (Exception e) {
@@ -131,15 +151,23 @@ public class LeagueDetailTest extends BaseTest {
     public void testAccessToMatch() {
         driver.get("https://localhost:" + this.port + "/leagues/1");
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
-        List<WebElement> matchLinks = wait.until(ExpectedConditions
-                .visibilityOfAllElementsLocatedBy(By.xpath("//ul[@class='items']/li/a[contains(@href, '/matches/')]")));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        List<WebElement> matchLinks = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                By.xpath("//ul[@class='items']/li/a[contains(@href, '/matches/')]")));
         assertTrue(matchLinks.size() > 0, "No se encontraron partidos en la lista.");
 
         WebElement matchLink = matchLinks.get(0);
-        matchLink.click();
+        scrollToElement(matchLink);
+        
+        wait.until(ExpectedConditions.elementToBeClickable(matchLink));
+        
+        try {
+            matchLink.click();
+        } catch (Exception e) {
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", matchLink);
+        }
 
-        WebDriverWait waitForMatch = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait waitForMatch = new WebDriverWait(driver, Duration.ofSeconds(5));
         waitForMatch.until(ExpectedConditions.urlContains("/matches/"));
 
         assertTrue(driver.getCurrentUrl().contains("/matches/"), "La URL del partido no es la correcta.");

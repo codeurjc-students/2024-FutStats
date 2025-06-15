@@ -1,5 +1,6 @@
 package com.tfg.futstats.services;
 
+// region imports
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ import com.tfg.futstats.repositories.PlayerMatchRepository;
 import java.util.Optional;
 import java.util.ArrayList;
 import java.util.List;
+//endregion
 
 @Service
 public class RestService {
@@ -55,7 +57,7 @@ public class RestService {
     @Autowired
     UserRepository userRepository;
 
-    // --------------------------------------- LEAGUE CRUD OPERATIONS
+    // region LEAGUE CRUD OPERATIONS
     public List<LeagueDTO> findAllLeagues() {
         List<League> leagues = leagueRepository.findAll();
 
@@ -134,8 +136,9 @@ public class RestService {
                 .map(league -> new LeagueDTO(league))
                 .toList();
     }
+    // endregion
 
-    // --------------------------------------- TEAM CRUD OPERATIONS
+    // region TEAM CRUD OPERATIONS
     public List<TeamResponseDTO> findAllTeams() {
         List<Team> teams = teamRepository.findAll();
         return teams.stream()
@@ -281,7 +284,7 @@ public class RestService {
 
     }
 
-    public void saveTeamMatch(TeamMatch teamMatch){
+    public void saveTeamMatch(TeamMatch teamMatch) {
         teamMatchRepository.save(teamMatch);
     }
 
@@ -316,15 +319,15 @@ public class RestService {
             team.deleteTeamMatch(teamMatch);
             teamMatch.setTeam(null);
         }
-    
+
         if (match != null) {
             match.deleteTeamMatch(teamMatch);
             teamMatch.setMatch(null);
         }
-    
+
         teamMatchRepository.delete(teamMatch);
 
-        updateTeamInfo(team) ;
+        updateTeamInfo(team);
     }
 
     public void updateTeamMatch(Match match, Team team) {
@@ -343,8 +346,9 @@ public class RestService {
         }
 
     }
+    // endregion
 
-    // --------------------------------------- PLAYER CRUD OPERATIONS
+    // region PLAYER CRUD OPERATIONS
     public List<PlayerResponseDTO> findAllPlayers() {
         List<Player> players = playerRepository.findAll();
         return players.stream()
@@ -691,8 +695,9 @@ public class RestService {
 
         playerRepository.save(player);
     }
+    // endregion
 
-    // --------------------------------------- MATCH CRUD OPERATIONS
+    // region MATCH CRUD OPERATIONS
     public List<MatchDTO> findAllMatches() {
         List<Match> matches = matchRepository.findAll();
 
@@ -768,41 +773,40 @@ public class RestService {
         if (oldMatch == null || matchDto == null || league == null || team1 == null || team2 == null) {
             throw new IllegalArgumentException("One or more arguments are null");
         }
-    
+
         oldMatch.setName(team1.getName() + '-' + team2.getName());
-    
-         oldMatch.setPlace(team1.getStadium());
-   
-    
+
+        oldMatch.setPlace(team1.getStadium());
+
         TeamMatch teamMatch1 = teamMatchRepository.findByMatchAndTeamId(oldMatch.getId(), oldMatch.getTeam1().getId());
         TeamMatch teamMatch2 = teamMatchRepository.findByMatchAndTeamId(oldMatch.getId(), oldMatch.getTeam2().getId());
-    
+
         if (teamMatch1 != null) {
             deleteTeamMatch(teamMatch1, oldMatch, oldMatch.getTeam1());
         }
-    
+
         if (teamMatch2 != null) {
             deleteTeamMatch(teamMatch2, oldMatch, oldMatch.getTeam2());
         }
-    
+
         teamMatchRepository.flush();
-    
+
         if (teamMatchRepository.findByMatchAndTeamId(oldMatch.getId(), team1.getId()) == null) {
             TeamMatch teamMatch3 = new TeamMatch();
             createTeamMatch(teamMatch3, oldMatch, team1);
         }
-    
+
         if (teamMatchRepository.findByMatchAndTeamId(oldMatch.getId(), team2.getId()) == null) {
             TeamMatch teamMatch4 = new TeamMatch();
             createTeamMatch(teamMatch4, oldMatch, team2);
         }
-    
+
         teamMatchRepository.flush();
 
         oldMatch.getLeague().deleteMatch(oldMatch);
         Team team1Old = oldMatch.getTeam1();
         Team team2Old = oldMatch.getTeam2();
-    
+
         oldMatch.setLeague(league);
         oldMatch.setTeam1(team1);
         oldMatch.setTeam2(team2);
@@ -813,7 +817,7 @@ public class RestService {
 
         updateTeamInfo(team1Old);
         updateTeamInfo(team2Old);
-    
+
         updateMatchInfo(oldMatch);
     }
 
@@ -870,4 +874,5 @@ public class RestService {
         updateTeamMatch(match, match.getTeam1());
         updateTeamMatch(match, match.getTeam2());
     }
+    // endregion
 }

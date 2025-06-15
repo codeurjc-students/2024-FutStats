@@ -4,12 +4,15 @@ import com.tfg.futstats.models.TeamMatch;
 
 public class TeamMatchDTO {
 
+    // region attributes
     private long id;
     private String name;
     private String matchName;
     private long match;
     private int points;
+    // endregion
 
+    // region Constructors
     public TeamMatchDTO() {
     }
 
@@ -20,7 +23,9 @@ public class TeamMatchDTO {
         this.match = team.getMatch().getId();
         this.points = team.getPoints();
     }
+    // endregion
 
+    // region Getters & setters
     public long getId() {
         return id;
     }
@@ -60,4 +65,5 @@ public class TeamMatchDTO {
     public void setPoints(int points) {
         this.points = points;
     }
+    // endregion
 }

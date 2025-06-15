@@ -1,5 +1,6 @@
 package com.tfg.futstats.controllers;
 
+// region imports
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -14,6 +15,7 @@ import com.tfg.futstats.security.jwt.AuthResponse.Status;
 import com.tfg.futstats.security.jwt.UserLoginService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+//endregion
 
 @RestController
 @RequestMapping("/api/v1")
@@ -22,6 +24,7 @@ public class LoginController {
     @Autowired
     private UserLoginService userService;
 
+    // region Post
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(
             @CookieValue(name = "accessToken", required = false) String accessToken,
@@ -43,4 +46,5 @@ public class LoginController {
 
         return ResponseEntity.ok(new AuthResponse(Status.SUCCESS, userService.logout(request, response)));
     }
+    // endregion
 }

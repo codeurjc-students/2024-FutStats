@@ -120,23 +120,13 @@ export class PlayerFormComponent implements OnInit {
   }
 
   private afterUploadImage(player: Player) {
-    if (this.player.team) {
-      this.teamService.getTeamByName(this.player.team).subscribe({
-        next: (team) => {
-          if (team && team.id) {
-            this.router.navigate(['/teams', team.id]);
-          } else {
-            console.error('Team not found');
-            this.router.navigate(['/teams']);
-          }
-        },
-        error: (error) => {
-          console.error('Error getting team:', error);
-          this.router.navigate(['/teams']);
+    if (player.id) {
+    this.service.getPlayer(player.id).subscribe({
+      next: (updatedPlayer) => {
+        this.player = updatedPlayer;
+          this.router.navigate(['/players', this.player.id]);
         }
       });
-    } else {
-      this.router.navigate(['/teams']);
     }
   }
 

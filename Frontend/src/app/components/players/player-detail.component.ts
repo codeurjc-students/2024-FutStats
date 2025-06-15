@@ -97,44 +97,46 @@ export class PlayerDetailComponent implements OnInit {
   }
 
   crearGrafica(matchNames: string[], goals: number[]) {
-    const chartElement = document.getElementById('golesChart') as HTMLCanvasElement;
-
-    if (!chartElement) {
-      return;
-    }
-    new Chart('golesChart', {
-      type: 'line',
-      data: {
-        labels: matchNames,
-        datasets: [
-          {
-            label: 'Goles por Partido',
-            data: goals,
-            fill: false,
-            borderColor: 'rgba(75, 192, 192, 1)',
-            tension: 0.2,
-            pointBackgroundColor: 'rgba(75, 192, 192, 1)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(75, 192, 192, 1)',
+    setTimeout(() => {
+      const chartElement = document.getElementById('golesChart') as HTMLCanvasElement;
+      if (!chartElement) {
+        console.error('Canvas element not found');
+        return;
+      }
+      new Chart(chartElement, {
+        type: 'line',
+        data: {
+          labels: matchNames,
+          datasets: [
+            {
+              label: 'Goles por Partido',
+              data: goals,
+              fill: false,
+              borderColor: 'rgba(75, 192, 192, 1)',
+              tension: 0.2,
+              pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+              pointBorderColor: '#fff',
+              pointHoverBackgroundColor: '#fff',
+              pointHoverBorderColor: 'rgba(75, 192, 192, 1)',
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
           },
-        ],
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+            },
           },
         },
-        plugins: {
-          legend: {
-            display: true,
-            position: 'top',
-          },
-        },
-      },
-    });
+      });
+    }, 0);
   }
 
   playerImage() {

@@ -1,5 +1,6 @@
 package com.tfg.futstats.services;
 
+// region imports
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import com.tfg.futstats.models.Player;
 import com.tfg.futstats.controllers.dtos.user.UserDTO;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+//endregion
 
 @Service
 public class UserService {
@@ -34,6 +36,7 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    // region Methods
     public List<UserResponseDTO> findAllUsers() {
         List<User> users = userRepository.findAll();
 
@@ -58,10 +61,9 @@ public class UserService {
 
         try {
             emailService.sendEmail(
-                user.getEmail(), 
-                "Bienvenido a FutStats", 
-                "<h1>Bienvenido, " + user.getName() + "!</h1><p>Gracias por unirte a FutStats.</p>"
-            );
+                    user.getEmail(),
+                    "Bienvenido a FutStats",
+                    "<h1>Bienvenido, " + user.getName() + "!</h1><p>Gracias por unirte a FutStats.</p>");
         } catch (MessagingException e) {
             e.printStackTrace();
         }
@@ -141,6 +143,5 @@ public class UserService {
         user.removePlayer(player);
         userRepository.save(user);
     }
-
-    
+    // endregion
 }

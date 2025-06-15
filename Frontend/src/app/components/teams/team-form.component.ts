@@ -115,7 +115,14 @@ export class TeamFormComponent implements OnInit {
   }
 
   private afterUploadImage(team: Team) {
-    this.router.navigate(['/teams', this.team.id]);
+    if (team.id) {
+      this.service.getTeam(team.id).subscribe({
+        next: (updatedTeam) => {
+          this.team = updatedTeam;
+          this.router.navigate(['/teams', this.team.id]);
+        }
+      });
+    }
   }
   
   teamImage() {

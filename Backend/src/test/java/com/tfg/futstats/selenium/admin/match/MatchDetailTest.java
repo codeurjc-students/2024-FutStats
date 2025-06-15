@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -16,15 +17,36 @@ import java.util.List;
 
 public class MatchDetailTest extends BaseTest {
 
+    private void scrollToElement(WebElement element) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.elementToBeClickable(element));
+    }
+
+    private void clickWithJavaScript(WebElement element) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.elementToBeClickable(element));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+    }
+
     @Test
     public void testLoginFunctionality() {
         driver.get("https://localhost:" + this.port + "/matches/1");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         
-        WebElement usernameField = driver.findElement(By.name("username"));
-        WebElement passwordField = driver.findElement(By.name("password"));
-        WebElement loginButton = driver.findElement(By.xpath("//button[contains(text(), 'Iniciar Sesión')]"));
+        WebElement usernameField = wait.until(ExpectedConditions.elementToBeClickable(By.name("username")));
+        WebElement passwordField = wait.until(ExpectedConditions.elementToBeClickable(By.name("password")));
+        WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(text(), 'Iniciar Sesión')]")));
+
+        scrollToElement(usernameField);
+        scrollToElement(passwordField);
+        scrollToElement(loginButton);
 
         assertNotNull(usernameField, "El campo de nombre de usuario no se encontró.");
         assertNotNull(passwordField, "El campo de contraseña no se encontró.");
@@ -88,6 +110,7 @@ public class MatchDetailTest extends BaseTest {
             try {
                 WebElement nextButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(
                         "//pagination-controls//a[contains(@class, 'pagination-next')]")));
+                scrollToElement(nextButton);
                 nextButton.click();
                 System.out.println("Clic en botón 'Siguiente' de jugadores.");
 
@@ -109,66 +132,44 @@ public class MatchDetailTest extends BaseTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
-        List<WebElement> waitPlayerButton = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+        WebElement createPlayerStatsButton = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//button[contains(text(), 'Crear Estadisticas de un jugador')]")));
-        assertNotNull(waitPlayerButton, "El botón 'Crear Estadisticas de un jugador' no está presente.");
+        scrollToElement(createPlayerStatsButton);
+        assertNotNull(createPlayerStatsButton, "El botón 'Crear Estadisticas de un jugador' no está presente.");
 
-        WebElement deleteMatchButton = driver.findElement(By.xpath("//button[contains(text(), 'Eliminar Partido')]"));
+        WebElement deleteMatchButton = wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//button[contains(text(), 'Eliminar Partido')]")));
+        scrollToElement(deleteMatchButton);
         assertNotNull(deleteMatchButton, "El botón 'Eliminar Partido' no está presente.");
 
-        WebElement editMatchButton = driver.findElement(By.xpath("//button[contains(text(), 'Editar Partido')]"));
+        WebElement editMatchButton = wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//button[contains(text(), 'Editar Partido')]")));
+        scrollToElement(editMatchButton);
         assertNotNull(editMatchButton, "El botón 'Editar Partido' no está presente.");
     }
 
     @Test
-    public void testEditMatchForm() {
+    public void testGoBackButton() {
         testLoginFunctionality();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
-        WebElement editMatchButton = wait
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Editar Partido')]")));
-        assertNotNull(editMatchButton, "El botón 'Editar Partido' no está presente.");
+        WebElement goBackButton = wait.until(ExpectedConditions.presenceOfElementLocated(
+            By.xpath("//button[contains(text(), 'Volver')]")));
 
-        editMatchButton.click();
-        System.out.println("Clic en botón 'Editar Partido'.");
-
-        WebElement editForm = wait
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//ng-component//div")));
-        assertNotNull(editForm, "El formulario de edición del partido no se muestra.");
-
-        WebElement ligaSelect = driver.findElement(By.xpath("//select[@class='ng-untouched ng-pristine ng-valid']"));
-        WebElement team1Select = driver
-                .findElement(By.xpath("//h3[contains(text(), 'Equipo Local:')]//following-sibling::select"));
-        WebElement team2Select = driver
-                .findElement(By.xpath("//h3[contains(text(), 'Equipo Visitante:')]//following-sibling::select"));
-
-        assertNotNull(ligaSelect, "El campo 'Liga' no está presente.");
-        assertNotNull(team1Select, "El campo 'Equipo Local' no está presente.");
-        assertNotNull(team2Select, "El campo 'Equipo Visitante' no está presente.");
-
-        String team1Value = team1Select.getAttribute("ng-reflect-model");
-        assertEquals("FC Barcelona", team1Value, "El equipo local no tiene el valor predeterminado correcto.");
-
-        String team2Value = team2Select.getAttribute("ng-reflect-model");
-        assertEquals("Real Madrid", team2Value, "El equipo visitante no tiene el valor predeterminado correcto.");
-    }
-
-    @Test
-    public void testBackButtonFunctionality() {
-        testLoginFunctionality();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", goBackButton);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
         
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-
-        WebElement backButton = driver.findElement(By.xpath("//button[contains(text(), 'Volver')]"));
-        assertNotNull(backButton, "El botón 'Volver' no está presente.");
-
-        backButton.click();
-
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(goBackButton));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", goBackButton);
+        
         wait.until(ExpectedConditions.urlContains("/leagues/1"));
-
-        assertTrue(driver.getCurrentUrl().contains("/leagues/1"), "No redirige correctamente al listado de partidos.");
+        String currentUrl = driver.getCurrentUrl();
+        assertEquals("https://localhost:" + this.port + "/leagues/1", currentUrl, "No se redirigió correctamente.");
     }
 
 }

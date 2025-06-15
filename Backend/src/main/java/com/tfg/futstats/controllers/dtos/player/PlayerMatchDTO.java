@@ -4,6 +4,8 @@ import com.tfg.futstats.models.PlayerMatch;
 
 public class PlayerMatchDTO {
 
+   // region attributes
+
    private long id;
    private String name;
    private String matchName;
@@ -40,10 +42,12 @@ public class PlayerMatchDTO {
    private int saves;
    private int outBoxSaves;
    private int inBoxSaves;
+   // endregion
 
    // We dont put the averages here because we only need the stadistics from were
    // it`s made
 
+   // region Constructors
    public PlayerMatchDTO() {
    }
 
@@ -77,8 +81,9 @@ public class PlayerMatchDTO {
       this.outBoxSaves = player.getOutBoxSaves();
       this.inBoxSaves = player.getInBoxSaves();
    }
+   // endregion
 
-   // Getters & setters
+   // region Getters & setters
    public long getId() {
       return id;
    }
@@ -302,4 +307,5 @@ public class PlayerMatchDTO {
    public void setInBoxSaves(int inBoxSaves) {
       this.inBoxSaves = inBoxSaves;
    }
+   // endregion
 }

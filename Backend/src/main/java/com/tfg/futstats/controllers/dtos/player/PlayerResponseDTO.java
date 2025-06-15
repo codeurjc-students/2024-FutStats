@@ -3,7 +3,8 @@ package com.tfg.futstats.controllers.dtos.player;
 import com.tfg.futstats.models.Player;
 
 public class PlayerResponseDTO {
-    // dto attributes
+
+    // region attributes
     private long id;
     private String league;
     private String team;
@@ -47,7 +48,9 @@ public class PlayerResponseDTO {
     private int saves;
     private int outBoxSaves;
     private int inBoxSaves;
+    // endregion
 
+    // region Constructors
     public PlayerResponseDTO() {
     }
 
@@ -61,34 +64,35 @@ public class PlayerResponseDTO {
         this.team = player.getTeam().getName();
         this.image = player.getImage();
         this.totalMatches = player.getTotalMatches();
-        this.totalShoots= player.getTotalShoots();
-        this.totalGoals= player.getTotalGoals();
-        this.penaltys= player.getPenaltys();
-        this.faultsReceived= player.getFaultsReceived();
-        this.offsides= player.getOffsides();
-        this.commitedFaults= player.getCommitedFaults();
-        this.recovers= player.getRecovers();
-        this.duels= player.getDuels();
-        this.wonDuels= player.getWonDuels();
-        this.cards= player.getCards();
-        this.yellowCards= player.getYellowCards();
-        this.redCards= player.getRedCards();
-        this.passes= player.getPasses();
-        this.goodPasses= player.getGoodPasses();
-        this.shortPasses= player.getShortPasses();
-        this.longPasses= player.getLongPasses();
-        this.assists= player.getAssists();
-        this.dribles= player.getDribles();
-        this.centers= player.getCenters();
-        this.ballLosses= player.getBallLosses();
-        this.shootsReceived= player.getShootsReceived();
-        this.goalsConceded= player.getGoalsConceded();
-        this.saves= player.getSaves();
-        this.outBoxSaves= player.getOutBoxSaves();
-        this.inBoxSaves= player.getInBoxSaves();
+        this.totalShoots = player.getTotalShoots();
+        this.totalGoals = player.getTotalGoals();
+        this.penaltys = player.getPenaltys();
+        this.faultsReceived = player.getFaultsReceived();
+        this.offsides = player.getOffsides();
+        this.commitedFaults = player.getCommitedFaults();
+        this.recovers = player.getRecovers();
+        this.duels = player.getDuels();
+        this.wonDuels = player.getWonDuels();
+        this.cards = player.getCards();
+        this.yellowCards = player.getYellowCards();
+        this.redCards = player.getRedCards();
+        this.passes = player.getPasses();
+        this.goodPasses = player.getGoodPasses();
+        this.shortPasses = player.getShortPasses();
+        this.longPasses = player.getLongPasses();
+        this.assists = player.getAssists();
+        this.dribles = player.getDribles();
+        this.centers = player.getCenters();
+        this.ballLosses = player.getBallLosses();
+        this.shootsReceived = player.getShootsReceived();
+        this.goalsConceded = player.getGoalsConceded();
+        this.saves = player.getSaves();
+        this.outBoxSaves = player.getOutBoxSaves();
+        this.inBoxSaves = player.getInBoxSaves();
     }
+    // endregion
 
-    // Getters & setters
+    // region Getters & setters
     public long getId() {
         return id;
     }

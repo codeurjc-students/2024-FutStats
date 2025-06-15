@@ -11,10 +11,10 @@ import org.springframework.data.repository.query.Param;
 import com.tfg.futstats.models.TeamMatch;
 
 @Repository
-public interface TeamMatchRepository extends JpaRepository<TeamMatch, Long>  {
-    
+public interface TeamMatchRepository extends JpaRepository<TeamMatch, Long> {
+
     List<TeamMatch> findByTeamId(Long teamId);
-    
+
     List<TeamMatch> findByMatchId(Long matchId);
 
     @Query("SELECT t FROM TeamMatch t WHERE t.match.id = :match AND t.team.id = :team")

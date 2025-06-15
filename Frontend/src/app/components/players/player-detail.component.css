@@ -102,18 +102,24 @@ p {
 }
 
 .pagination-controls button {
-  background-color: #007bff;
+  background-color: #222;
   color: #fff;
-  border: none;
-  padding: 0.5rem 1rem;
-  margin: 0 0.5rem;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s;
+  border: 1px solid #222;
+  opacity: 1;
+  transition: background 0.2s, color 0.2s, opacity 0.2s;
 }
 
-.pagination-controls button:hover {
-  background-color: #0056b3;
+.pagination-controls button:hover:not(:disabled) {
+  background-color: #444;
+  color: #fff;
+}
+
+.pagination-controls button:disabled {
+  background-color: #fff;
+  color: #222;
+  border: 1px solid #ccc;
+  cursor: not-allowed;
+  opacity: 1;
 }
 
 img {
