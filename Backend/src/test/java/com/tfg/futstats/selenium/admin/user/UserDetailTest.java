@@ -21,6 +21,8 @@ public class UserDetailTest extends BaseTest {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
     @Test
@@ -29,13 +31,11 @@ public class UserDetailTest extends BaseTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         
-        // Esperar y hacer scroll hasta los elementos de login
         WebElement usernameField = wait.until(ExpectedConditions.presenceOfElementLocated(By.name("username")));
         WebElement passwordField = wait.until(ExpectedConditions.presenceOfElementLocated(By.name("password")));
         WebElement loginButton = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//button[contains(text(), 'Iniciar Sesión')]")));
 
-        // Hacer scroll hasta los elementos y esperar un momento
         scrollToElement(usernameField);
         scrollToElement(passwordField);
         scrollToElement(loginButton);
@@ -47,8 +47,7 @@ public class UserDetailTest extends BaseTest {
         usernameField.sendKeys("admin");
         passwordField.sendKeys("pass");
         
-        // Intentar hacer click con JavaScript directamente
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", loginButton);
+        loginButton.click();
     }
 
     @Test

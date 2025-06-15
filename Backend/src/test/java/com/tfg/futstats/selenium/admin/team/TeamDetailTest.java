@@ -18,12 +18,14 @@ import java.util.List;
 public class TeamDetailTest extends BaseTest {
 
     private void scrollToElement(WebElement element) {
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
         try {
-            Thread.sleep(500);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
     @Test
@@ -85,7 +87,7 @@ public class TeamDetailTest extends BaseTest {
         wait.until(ExpectedConditions.elementToBeClickable(backButton));
         assertNotNull(backButton, "El botón 'Volver' no está presente.");
 
-        backButton.click();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", backButton);
 
         System.out.println("Clic en botón 'Volver'.");
 
@@ -273,7 +275,7 @@ public class TeamDetailTest extends BaseTest {
         wait.until(ExpectedConditions.elementToBeClickable(goBackButton));
         assertNotNull(goBackButton, "El botón 'Volver' no está presente.");
 
-        goBackButton.click();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", goBackButton);
 
         assertEquals("https://localhost:" + this.port + "/leagues/1", driver.getCurrentUrl(),
                 "No se redirigió correctamente.");

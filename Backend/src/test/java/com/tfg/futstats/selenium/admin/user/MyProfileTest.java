@@ -74,6 +74,8 @@ public class MyProfileTest extends BaseTest {
         wait.until(ExpectedConditions.elementToBeClickable(myProfile));
         assertNotNull(myProfile, "No se ha redirigido a la página de perfil");
 
+        myProfile.click();
+
         wait.until(ExpectedConditions.urlContains("/myProfile"));
 
         String currentUrl = driver.getCurrentUrl();

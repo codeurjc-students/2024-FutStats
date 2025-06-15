@@ -47,12 +47,18 @@ public class LeagueDetailTest extends BaseTest {
 
         WebElement paginationControls = wait
                 .until(ExpectedConditions.visibilityOfElementLocated(By.tagName("pagination-controls")));
+
         scrollToElement(paginationControls);
+
+        wait.until(ExpectedConditions.elementToBeClickable(paginationControls));
         assertNotNull(paginationControls, "El componente de controles de paginación no se encontró.");
 
         WebElement nextButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(
                 "//pagination-controls//li[contains(@class, 'pagination-next')]//a[contains(text(), 'Siguiente')]")));
+
         scrollToElement(nextButton);
+
+        wait.until(ExpectedConditions.elementToBeClickable(nextButton));
         assertNotNull(nextButton, "El enlace 'Siguiente' no se encontró.");
 
         nextButton.click();
@@ -65,9 +71,13 @@ public class LeagueDetailTest extends BaseTest {
         driver.get("https://localhost:" + this.port + "/leagues/1");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+
         WebElement goBackButton = wait.until(ExpectedConditions.elementToBeClickable(
             By.xpath("//button[contains(text(), 'Volver')]")));
+
         scrollToElement(goBackButton);
+
+        wait.until(ExpectedConditions.elementToBeClickable(goBackButton));
         assertNotNull(goBackButton, "El botón 'Volver' no está presente.");
 
         goBackButton.click();
@@ -83,6 +93,7 @@ public class LeagueDetailTest extends BaseTest {
 
         List<WebElement> teamItems = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
                 By.xpath("//ul[@class='items']/li")));
+
         assertTrue(teamItems.size() > 0, "No hay equipos disponibles para paginar.");
 
         System.out.println("Número inicial de equipos mostrados: " + teamItems.size());
@@ -91,9 +102,14 @@ public class LeagueDetailTest extends BaseTest {
             try {
                 WebElement nextButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(
                         "//pagination-controls[@id='team']//a[contains(@class, 'pagination-next')]")));
+
                 scrollToElement(nextButton);
+
+                wait.until(ExpectedConditions.elementToBeClickable(nextButton));
+                assertNotNull(nextButton, "El botón 'Ver Usuarios' no está presente.");
+                
                 nextButton.click();
-                System.out.println("Clic en botón 'Siguiente' de equipos.");
+
                 Thread.sleep(1000); 
             } catch (Exception e) {
                 System.out.println("Botón 'Siguiente' no está disponible. Fin de la paginación de equipos.");
@@ -107,8 +123,10 @@ public class LeagueDetailTest extends BaseTest {
         driver.get("https://localhost:" + this.port + "/leagues/1");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
+
         List<WebElement> teamLinks = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
                 By.xpath("//ul[@class='items']/li/a[not(contains(@href, '/matches/'))]")));
+
         assertTrue(teamLinks.size() > 0, "No se encontraron equipos en la lista.");
 
         WebElement teamLink = teamLinks.get(0);
@@ -137,7 +155,12 @@ public class LeagueDetailTest extends BaseTest {
             try {
                 WebElement nextButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(
                         "//pagination-controls[@id='match']//a[contains(@class, 'pagination-next')]")));
+
                 scrollToElement(nextButton);
+
+                wait.until(ExpectedConditions.elementToBeClickable(nextButton));
+                assertNotNull(nextButton, "El botón 'Ver Usuarios' no está presente.");
+                
                 nextButton.click();
                 System.out.println("Clic en botón 'Siguiente' de partidos.");
             } catch (Exception e) {

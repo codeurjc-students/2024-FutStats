@@ -20,13 +20,15 @@ import java.util.List;
 public class LeagueDetailTest extends BaseTest {
 
         private void scrollToElement(WebElement element) {
-                ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+                ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
                 try {
-                        Thread.sleep(500);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
+                    Thread.currentThread().interrupt();
                 }
-        }
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+                wait.until(ExpectedConditions.elementToBeClickable(element));
+            }
 
         @Test
         public void testLoginFunctionality() {
@@ -194,6 +196,9 @@ public class LeagueDetailTest extends BaseTest {
                 assertNotNull(editLeagueButton, "El botón 'Editar Liga' no está presente.");
 
                 deleteLeagueButton.click();
+                wait.until(ExpectedConditions.alertIsPresent());
+                driver.switchTo().alert().dismiss();
+
                 editLeagueButton.click();
         }
 

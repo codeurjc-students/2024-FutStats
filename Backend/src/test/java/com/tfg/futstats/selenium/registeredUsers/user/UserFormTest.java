@@ -120,7 +120,7 @@ public class UserFormTest extends BaseTest {
         
         scrollToElement(cancelButton);
         wait.until(ExpectedConditions.elementToBeClickable(cancelButton));
-        cancelButton.click();
+        cancelButton.click();   
 
         try {
             wait.until(ExpectedConditions.alertIsPresent());

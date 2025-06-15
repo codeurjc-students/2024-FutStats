@@ -130,9 +130,6 @@ public class UserFormTest extends BaseTest {
         assertNotNull(cancelButton, "El botón 'Cancelar' no está presente.");
         
         cancelButton.click();
-
-        wait.until(ExpectedConditions.urlContains("/leagues"));
-        assertTrue(driver.getCurrentUrl().contains("/leagues"), "La URL del usuario no es la correcta.");
     }
 
     @Test

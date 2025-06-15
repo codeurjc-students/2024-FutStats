@@ -17,11 +17,10 @@ public class PlayerDetailTest extends BaseTest {
     private void scrollToElement(WebElement element) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
         try {
-            Thread.sleep(1000); // Aumentamos el tiempo de espera
+            Thread.sleep(1000); 
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-        // Esperar a que el elemento sea clickeable
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.elementToBeClickable(element));
     }
@@ -53,11 +52,7 @@ public class PlayerDetailTest extends BaseTest {
         usernameField.sendKeys("user0");
         passwordField.sendKeys("pasS123");
         
-        try {
-            loginButton.click();
-        } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", loginButton);
-        }
+        loginButton.click();
     }
 
     @Test
@@ -134,18 +129,13 @@ public class PlayerDetailTest extends BaseTest {
 
         WebElement backButton = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//button[contains(text(), 'Volver')]")));
-        scrollToElement(backButton);
-        assertNotNull(backButton, "El botón 'Volver' no está presente.");
 
-        // Esperar a que el botón sea clickeable después del scroll
-        wait.until(ExpectedConditions.elementToBeClickable(backButton));
+        scrollToElement(backButton);
         
-        // Intentar hacer click con JavaScript si el click normal falla
-        try {
-            backButton.click();
-        } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", backButton);
-        }
+        wait.until(ExpectedConditions.elementToBeClickable(backButton));
+        assertNotNull(backButton, "El botón 'Volver' no está presente.");
+        
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", backButton);
         
         System.out.println("Clic en botón 'Volver'.");
 
@@ -174,17 +164,13 @@ public class PlayerDetailTest extends BaseTest {
 
         WebElement addButton = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//button[contains(text(), 'Añadir Jugador a favoritos')]")));
+                
         scrollToElement(addButton);
-        assertNotNull(addButton, "El botón 'Añadir Jugador a favoritos' no está presente.");
-
-        // Esperar a que el botón sea clickeable después del scroll
-        wait.until(ExpectedConditions.elementToBeClickable(addButton));
         
-        // Intentar hacer click con JavaScript si el click normal falla
-        try {
-            addButton.click();
-        } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", addButton);
-        }
+        wait.until(ExpectedConditions.elementToBeClickable(addButton));
+        assertNotNull(addButton, "El botón 'Añadir Jugador a favoritos' no está presente.");
+        
+        addButton.click();
+
     }
 }

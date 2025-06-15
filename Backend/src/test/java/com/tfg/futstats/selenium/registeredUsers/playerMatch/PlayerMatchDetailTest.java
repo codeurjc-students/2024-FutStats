@@ -17,11 +17,10 @@ public class PlayerMatchDetailTest extends BaseTest {
     private void scrollToElement(WebElement element) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
         try {
-            Thread.sleep(1000); // Aumentamos el tiempo de espera
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-        // Esperar a que el elemento sea clickeable
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.elementToBeClickable(element));
     }
@@ -32,7 +31,6 @@ public class PlayerMatchDetailTest extends BaseTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         
-        // Esperar a que el formulario de login esté visible
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("navbar-form")));
         
         WebElement usernameField = wait.until(ExpectedConditions.elementToBeClickable(By.name("username")));
@@ -53,11 +51,7 @@ public class PlayerMatchDetailTest extends BaseTest {
         usernameField.sendKeys("user0");
         passwordField.sendKeys("pasS123");
         
-        try {
-            loginButton.click();
-        } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", loginButton);
-        }
+        loginButton.click();
     }
 
     @Test
@@ -123,16 +117,13 @@ public class PlayerMatchDetailTest extends BaseTest {
 
         WebElement backButton = wait.until(ExpectedConditions.elementToBeClickable(
             By.xpath("//button[contains(text(), 'Volver')]")));
+            
         scrollToElement(backButton);
-        assertNotNull(backButton, "El botón 'Volver' no está presente.");
 
         wait.until(ExpectedConditions.elementToBeClickable(backButton));
+        assertNotNull(backButton, "El botón 'Volver' no está presente.");
         
-        try {
-            backButton.click();
-        } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", backButton);
-        }
+        backButton.click();
 
         WebElement matchTitle = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//h2")));
         scrollToElement(matchTitle);

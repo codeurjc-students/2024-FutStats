@@ -15,14 +15,14 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.tfg.futstats.selenium.BaseTest;
 
 public class PlayerMatchFormTest extends BaseTest {
+    
     private void scrollToElement(WebElement element) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
         try {
-            Thread.sleep(1000); // Aumentamos el tiempo de espera
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-        // Esperar a que el elemento sea clickeable
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.elementToBeClickable(element));
     }

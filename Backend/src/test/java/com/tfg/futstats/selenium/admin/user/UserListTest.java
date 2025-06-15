@@ -46,8 +46,7 @@ public class UserListTest extends BaseTest {
         usernameField.sendKeys("admin");
         passwordField.sendKeys("pass");
         
-        // Intentar hacer click con JavaScript directamente
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", loginButton);
+        loginButton.click();
     }
 
     @Test
@@ -126,10 +125,7 @@ public class UserListTest extends BaseTest {
 
         WebElement createUserButton = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//button[contains(text(), 'Crear Usuario')]")));
-
         scrollToElement(createUserButton);
-
-        wait.until(ExpectedConditions.elementToBeClickable(createUserButton));
         assertNotNull(createUserButton, "El botón 'Crear Usuario' no está presente.");
     }
 
@@ -156,15 +152,12 @@ public class UserListTest extends BaseTest {
 
         wait.until(ExpectedConditions.elementToBeClickable(backButton));
         assertNotNull(backButton, "El botón 'Volver' no está presente.");
-        
+
         backButton.click();
 
         WebElement previousPageHeader = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//h2")));
-
         scrollToElement(previousPageHeader);
-
-        wait.until(ExpectedConditions.elementToBeClickable(previousPageHeader));
         assertNotNull(previousPageHeader, "No se ha redirigido correctamente.");
     }
 }

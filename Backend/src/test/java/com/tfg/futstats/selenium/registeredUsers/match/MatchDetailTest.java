@@ -54,15 +54,9 @@ public class MatchDetailTest extends BaseTest {
         usernameField.sendKeys("user0");
         passwordField.sendKeys("pasS123");
         
-        // Esperar a que el botón sea clickeable después del scroll
         wait.until(ExpectedConditions.elementToBeClickable(loginButton));
-        
-        // Intentar hacer click con JavaScript si el click normal falla
-        try {
-            loginButton.click();
-        } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", loginButton);
-        }
+
+        loginButton.click();
     }
 
     @Test
@@ -145,14 +139,11 @@ public class MatchDetailTest extends BaseTest {
         WebElement goBackButton = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//button[contains(text(), 'Volver')]")));
 
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", goBackButton);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        scrollToElement(goBackButton);
         
         wait.until(ExpectedConditions.elementToBeClickable(goBackButton));
+        assertNotNull(goBackButton, "El botón 'Volver' no está presente.");
+        
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", goBackButton);
         
         wait.until(ExpectedConditions.urlContains("/leagues/1"));

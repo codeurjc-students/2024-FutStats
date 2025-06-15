@@ -31,13 +31,11 @@ public class TeamDetailTest extends BaseTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Esperar y hacer scroll hasta los elementos de login
         WebElement usernameField = wait.until(ExpectedConditions.presenceOfElementLocated(By.name("username")));
         WebElement passwordField = wait.until(ExpectedConditions.presenceOfElementLocated(By.name("password")));
         WebElement loginButton = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//button[contains(text(), 'Iniciar Sesión')]")));
 
-        // Hacer scroll hasta los elementos y esperar un momento
         scrollToElement(usernameField);
         scrollToElement(passwordField);
         scrollToElement(loginButton);
@@ -49,8 +47,7 @@ public class TeamDetailTest extends BaseTest {
         usernameField.sendKeys("user0");
         passwordField.sendKeys("pasS123");
         
-        // Intentar hacer click con JavaScript directamente
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", loginButton);
+        loginButton.click();
     }
 
     @Test
@@ -59,14 +56,12 @@ public class TeamDetailTest extends BaseTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Esperar y hacer scroll hasta los elementos del equipo
         WebElement teamName = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//h1")));
         WebElement trophies = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//p[contains(text(), 'Trofeos:')]")));
         WebElement nationality = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//p[contains(text(), 'Nacionalidad:')]")));
         WebElement trainer = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//p[contains(text(), 'Entrenador:')]")));
         WebElement president = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//p[contains(text(), 'Presidente:')]")));
 
-        // Hacer scroll hasta los elementos y esperar un momento
         scrollToElement(teamName);
         scrollToElement(trophies);
         scrollToElement(nationality);
@@ -86,21 +81,16 @@ public class TeamDetailTest extends BaseTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Esperar y hacer scroll hasta el botón de volver
         WebElement backButton = wait.until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//button[contains(text(), 'Volver')]")));
         
-        // Hacer scroll hasta el elemento y esperar un momento
         scrollToElement(backButton);
         
-        // Esperar a que el elemento sea clickeable después del scroll
         wait.until(ExpectedConditions.elementToBeClickable(backButton));
         assertNotNull(backButton, "El botón 'Volver' no está presente.");
 
-        // Intentar hacer click con JavaScript directamente
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", backButton);
 
-        // Verificar que se ha redirigido correctamente
         WebElement teamsListHeader = wait.until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//h2")));
         scrollToElement(teamsListHeader);
@@ -113,12 +103,10 @@ public class TeamDetailTest extends BaseTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Esperar y hacer scroll hasta los elementos del equipo
         WebElement teamName = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//h2")));
         WebElement teamStats = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//p[contains(text(), 'Goles')]")));
         
-        // Hacer scroll hasta los elementos y esperar un momento
         scrollToElement(teamName);
         scrollToElement(teamStats);
         
@@ -132,7 +120,6 @@ public class TeamDetailTest extends BaseTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Esperar y hacer scroll hasta la lista de jugadores
         List<WebElement> playerItems = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
             By.xpath("//ul[@class='items']/li")));
 
@@ -143,14 +130,11 @@ public class TeamDetailTest extends BaseTest {
                 WebElement nextButton = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(
                     "//pagination-controls//a[contains(@class, 'pagination-next')]")));
                 
-                // Hacer scroll hasta el botón y esperar un momento
                 scrollToElement(nextButton);
                 
-                // Esperar a que el elemento sea clickeable después del scroll
                 wait.until(ExpectedConditions.elementToBeClickable(nextButton));
                 
-                // Intentar hacer click con JavaScript directamente
-                ((JavascriptExecutor) driver).executeScript("arguments[0].click();", nextButton);
+                nextButton.click();
 
                 wait.until(ExpectedConditions.stalenessOf(playerItems.get(0)));
 
@@ -168,18 +152,14 @@ public class TeamDetailTest extends BaseTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Esperar y hacer scroll hasta el botón de favoritos
         WebElement addButton = wait.until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//button[contains(text(), 'Añadir equipo a favoritos')]")));
         
-        // Hacer scroll hasta el elemento y esperar un momento
         scrollToElement(addButton);
         
-        // Esperar a que el elemento sea clickeable después del scroll
         wait.until(ExpectedConditions.elementToBeClickable(addButton));
         assertNotNull(addButton, "El botón 'Añadir Equipo' no está presente.");
 
-        // Intentar hacer click con JavaScript directamente
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", addButton);
+        addButton.click();
     }
 }

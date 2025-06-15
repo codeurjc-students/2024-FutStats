@@ -83,7 +83,12 @@ public class MatchDetailTest extends BaseTest {
             try {
                 WebElement nextButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(
                         "//pagination-controls//a[contains(@class, 'pagination-next')]")));
+
                 scrollToElement(nextButton);
+
+                wait.until(ExpectedConditions.elementToBeClickable(nextButton));
+                assertNotNull(nextButton, "El botón 'Ver Usuarios' no está presente.");
+                
                 nextButton.click();
                 System.out.println("Clic en botón 'Siguiente' de jugadores.");
 
@@ -109,13 +114,9 @@ public class MatchDetailTest extends BaseTest {
             By.xpath("//button[contains(text(), 'Volver')]")));
 
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", goBackButton);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
         
         wait.until(ExpectedConditions.elementToBeClickable(goBackButton));
+        
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", goBackButton);
         
         wait.until(ExpectedConditions.urlContains("/leagues/1"));

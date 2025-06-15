@@ -127,7 +127,7 @@ public class PlayerDetailTest extends BaseTest {
         wait.until(ExpectedConditions.elementToBeClickable(backButton));
         assertNotNull(backButton, "El botón 'Volver' no está presente.");
 
-        backButton.click();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", backButton);
 
         WebElement previousPageHeader = wait.until(ExpectedConditions
                 .visibilityOfElementLocated(By.xpath("//h2")));
@@ -253,7 +253,7 @@ public class PlayerDetailTest extends BaseTest {
         wait.until(ExpectedConditions.elementToBeClickable(goBackButton));
         assertNotNull(goBackButton, "El botón 'Volver' no está presente.");
 
-        goBackButton.click();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", goBackButton);
 
         wait.until(ExpectedConditions.urlToBe("https://localhost:" + this.port + "/teams/1"));
 

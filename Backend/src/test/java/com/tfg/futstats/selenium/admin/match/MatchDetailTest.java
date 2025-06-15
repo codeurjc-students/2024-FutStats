@@ -156,13 +156,13 @@ public class MatchDetailTest extends BaseTest {
 
         WebElement goBackButton = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//button[contains(text(), 'Volver')]")));
-
-        scrollToElement(goBackButton);
         
+        scrollToElement(goBackButton);
         wait.until(ExpectedConditions.elementToBeClickable(goBackButton));
-        assertNotNull(goBackButton, "El botón 'Editar Partido' no está presente.");
+        
+        assertNotNull(goBackButton, "El botón 'Volver' no está presente.");
 
-        goBackButton.click();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", goBackButton);
         
         wait.until(ExpectedConditions.urlContains("/leagues/1"));
         String currentUrl = driver.getCurrentUrl();

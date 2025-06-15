@@ -5,7 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
+import org.openqa.selenium.JavascriptExecutor;
 import com.tfg.futstats.selenium.BaseTest;
 
 import java.time.Duration;
@@ -13,6 +13,17 @@ import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LeagueListTest extends BaseTest {
+
+    private void scrollToElement(WebElement element) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.elementToBeClickable(element));
+    }
 
     @Test
     public void testLoginFunctionality() {
@@ -77,19 +88,14 @@ public class LeagueListTest extends BaseTest {
         WebElement createButton = wait.until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//button[contains(text(), 'Crear una liga')]")));
 
-        createButton = wait.until(ExpectedConditions.elementToBeClickable(createButton));
+        scrollToElement(createButton);
+        
+        wait.until(ExpectedConditions.elementToBeClickable(createButton));
+        assertNotNull(createButton, "El botón 'Crear Liga' no está presente.");
 
-        if (createButton.isDisplayed() && createButton.isEnabled()) {
-            createButton.click();
+        createButton.click();
 
-            WebElement createLeagueForm = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                    By.id("league-form")));
-
-            assertNotNull(createLeagueForm, "El formulario de creación de ligas no se cargó.");
-        } else {
-            fail("El botón 'Crear Liga' no está disponible o clickeable.");
-        }
-
+        wait.until(ExpectedConditions.urlContains("/leagues/new"));
     }
 
     @Test

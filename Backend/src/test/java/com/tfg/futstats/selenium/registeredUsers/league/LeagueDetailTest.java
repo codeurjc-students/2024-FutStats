@@ -55,11 +55,7 @@ public class LeagueDetailTest extends BaseTest {
         
         wait.until(ExpectedConditions.elementToBeClickable(loginButton));
         
-        try {
-            loginButton.click();
-        } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", loginButton);
-        }
+        loginButton.click();
     }
 
     @Test
@@ -83,7 +79,10 @@ public class LeagueDetailTest extends BaseTest {
 
         WebElement addFavoriteButton = driver
                 .findElement(By.xpath("//button[contains(text(), 'Añadir Liga a favoritos')]"));
+
         scrollToElement(addFavoriteButton);
+
+        wait.until(ExpectedConditions.elementToBeClickable(addFavoriteButton));
         assertNotNull(addFavoriteButton, "El botón 'Añadir Liga a favoritos' no está visible.");
 
         addFavoriteButton.click();
