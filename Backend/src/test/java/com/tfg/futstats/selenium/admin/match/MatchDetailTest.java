@@ -28,12 +28,6 @@ public class MatchDetailTest extends BaseTest {
         wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
-    private void clickWithJavaScript(WebElement element) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.elementToBeClickable(element));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
-    }
-
     @Test
     public void testLoginFunctionality() {
         driver.get("https://localhost:" + this.port + "/matches/1");
@@ -135,16 +129,22 @@ public class MatchDetailTest extends BaseTest {
         WebElement createPlayerStatsButton = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//button[contains(text(), 'Crear Estadisticas de un jugador')]")));
         scrollToElement(createPlayerStatsButton);
+        
+        wait.until(ExpectedConditions.elementToBeClickable(createPlayerStatsButton));
         assertNotNull(createPlayerStatsButton, "El botón 'Crear Estadisticas de un jugador' no está presente.");
 
         WebElement deleteMatchButton = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//button[contains(text(), 'Eliminar Partido')]")));
         scrollToElement(deleteMatchButton);
+        
+        wait.until(ExpectedConditions.elementToBeClickable(deleteMatchButton));
         assertNotNull(deleteMatchButton, "El botón 'Eliminar Partido' no está presente.");
 
         WebElement editMatchButton = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//button[contains(text(), 'Editar Partido')]")));
         scrollToElement(editMatchButton);
+
+        wait.until(ExpectedConditions.elementToBeClickable(editMatchButton));
         assertNotNull(editMatchButton, "El botón 'Editar Partido' no está presente.");
     }
 
@@ -157,15 +157,12 @@ public class MatchDetailTest extends BaseTest {
         WebElement goBackButton = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//button[contains(text(), 'Volver')]")));
 
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", goBackButton);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        scrollToElement(goBackButton);
         
         wait.until(ExpectedConditions.elementToBeClickable(goBackButton));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", goBackButton);
+        assertNotNull(goBackButton, "El botón 'Editar Partido' no está presente.");
+
+        goBackButton.click();
         
         wait.until(ExpectedConditions.urlContains("/leagues/1"));
         String currentUrl = driver.getCurrentUrl();

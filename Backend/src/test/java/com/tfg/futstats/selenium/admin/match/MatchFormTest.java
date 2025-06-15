@@ -1,8 +1,6 @@
 package com.tfg.futstats.selenium.admin.match;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -108,32 +106,21 @@ public class MatchFormTest extends BaseTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Esperar y hacer scroll hasta el botón de editar
         WebElement editMatchButton = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//button[contains(text(), 'Editar Partido')]")));
         
-        // Hacer scroll hasta el elemento y esperar un momento
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", editMatchButton);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        scrollToElement(editMatchButton);
         
-        // Esperar a que el elemento sea clickeable después del scroll
         wait.until(ExpectedConditions.elementToBeClickable(editMatchButton));
         assertNotNull(editMatchButton, "El botón 'Editar Partido' no está presente.");
 
-        // Intentar hacer click con JavaScript directamente
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", editMatchButton);
+        editMatchButton.click();
 
-        // Esperar a que el formulario se cargue
         WebElement editForm = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//ng-component//div")));
         scrollToElement(editForm);
         assertNotNull(editForm, "El formulario de edición del partido no se muestra.");
 
-        // Verificar los botones del formulario
         WebElement cancelButton = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//button[contains(text(), 'Cancelar')]")));
         WebElement saveButton = wait.until(ExpectedConditions.presenceOfElementLocated(
@@ -152,32 +139,21 @@ public class MatchFormTest extends BaseTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Esperar y hacer scroll hasta el botón de editar
         WebElement editMatchButton = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//button[contains(text(), 'Editar Partido')]")));
         
-        // Hacer scroll hasta el elemento y esperar un momento
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", editMatchButton);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        scrollToElement(editMatchButton);
         
-        // Esperar a que el elemento sea clickeable después del scroll
         wait.until(ExpectedConditions.elementToBeClickable(editMatchButton));
         assertNotNull(editMatchButton, "El botón 'Editar Partido' no está presente.");
 
-        // Intentar hacer click con JavaScript directamente
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", editMatchButton);
+        editMatchButton.click();
 
-        // Esperar a que el formulario se cargue
         WebElement editForm = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//ng-component//div")));
         scrollToElement(editForm);
         assertNotNull(editForm, "El formulario de edición del partido no se muestra.");
 
-        // Verificar los selectores
         WebElement ligaSelect = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//label[h3[contains(text(), 'Liga:')]]/select")));
         scrollToElement(ligaSelect);

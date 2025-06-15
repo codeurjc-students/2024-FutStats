@@ -12,7 +12,7 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class LeagueListTest extends BaseTest{
+public class LeagueListTest extends BaseTest {
 
     @Test
     public void testLoginFunctionality() {
@@ -74,38 +74,32 @@ public class LeagueListTest extends BaseTest{
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(By.xpath("//button[contains(text(), 'Crear una liga')]")));
 
+        WebElement createButton = wait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//button[contains(text(), 'Crear una liga')]")));
 
-        try {
-            WebElement createButton = wait.until(ExpectedConditions.presenceOfElementLocated(
-                    By.xpath("//button[contains(text(), 'Crear una liga')]")
-                    ));
+        createButton = wait.until(ExpectedConditions.elementToBeClickable(createButton));
 
-            createButton = wait.until(ExpectedConditions.elementToBeClickable(createButton));
+        if (createButton.isDisplayed() && createButton.isEnabled()) {
+            createButton.click();
 
-            if (createButton.isDisplayed() && createButton.isEnabled()) {
-                createButton.click();
+            WebElement createLeagueForm = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.id("league-form")));
 
-                WebElement createLeagueForm = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                        By.id("league-form")));
-
-                assertNotNull(createLeagueForm, "El formulario de creación de ligas no se cargó.");
-            } else {
-                fail("El botón 'Crear Liga' no está disponible o clickeable.");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-
+            assertNotNull(createLeagueForm, "El formulario de creación de ligas no se cargó.");
+        } else {
+            fail("El botón 'Crear Liga' no está disponible o clickeable.");
         }
+
     }
 
     @Test
     public void testAdminOptionsVisibility() {
         testLoginFunctionality();
-        
+
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         wait.until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//h3[contains(text(), 'Opciones de Administrador')]")));
+                ExpectedConditions
+                        .presenceOfElementLocated(By.xpath("//h3[contains(text(), 'Opciones de Administrador')]")));
 
         WebElement adminOptions = driver.findElement(By.xpath("//h3[contains(text(), 'Opciones de Administrador')]"));
         assertTrue(adminOptions.isDisplayed(), "Las opciones de administrador no están visibles.");

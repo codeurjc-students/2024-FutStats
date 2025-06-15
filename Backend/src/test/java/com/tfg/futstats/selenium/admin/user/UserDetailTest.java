@@ -57,19 +57,21 @@ public class UserDetailTest extends BaseTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Esperar y hacer scroll hasta el botón de mi perfil
         WebElement myProfile = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//button[contains(text(), 'Mi perfil')]")));
+
         scrollToElement(myProfile);
+
+        wait.until(ExpectedConditions.elementToBeClickable(myProfile));
         assertNotNull(myProfile, "El boton de mi perfil no se muestra correctamente.");
 
-        // Intentar hacer click con JavaScript directamente
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", myProfile);
+        myProfile.click();
 
-        // Esperar y hacer scroll hasta el nombre de usuario
         WebElement userName = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//p[contains(text(), 'admin')]")));
+
         scrollToElement(userName);
+
         assertNotNull(userName, "El nombre del usuario no se muestra correctamente.");
     }
 
@@ -79,16 +81,16 @@ public class UserDetailTest extends BaseTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Esperar y hacer scroll hasta el botón de mi perfil
         WebElement myProfile = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//button[contains(text(), 'Mi perfil')]")));
+
         scrollToElement(myProfile);
+
+        wait.until(ExpectedConditions.elementToBeClickable(myProfile));
         assertNotNull(myProfile, "El boton de mi perfil no se muestra correctamente.");
 
-        // Intentar hacer click con JavaScript directamente
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", myProfile);
+        myProfile.click();
 
-        // Esperar y hacer scroll hasta los elementos de ligas, equipos y jugadores
         WebElement firstLeague = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//div[h3[contains(text(),'Ligas')]]")));
         WebElement firstTeam = wait.until(ExpectedConditions.presenceOfElementLocated(
@@ -107,19 +109,21 @@ public class UserDetailTest extends BaseTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Esperar y hacer scroll hasta el botón de mi perfil
         WebElement myProfile = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//button[contains(text(), 'Mi perfil')]")));
+
         scrollToElement(myProfile);
+
+        wait.until(ExpectedConditions.elementToBeClickable(myProfile));
         assertNotNull(myProfile, "El boton de mi perfil no se muestra correctamente.");
 
-        // Intentar hacer click con JavaScript directamente
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", myProfile);
+        myProfile.click();
 
-        // Esperar y hacer scroll hasta el botón de borrar usuario
         WebElement removeUserButton = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//button[contains(text(), 'Borrar User')]")));
+
         scrollToElement(removeUserButton);
+
         assertNotNull(removeUserButton, "El botón 'Borrar Usuario' no está presente.");
     }
 
@@ -129,19 +133,21 @@ public class UserDetailTest extends BaseTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Esperar y hacer scroll hasta el botón de mi perfil
         WebElement myProfile = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//button[contains(text(), 'Mi perfil')]")));
+
         scrollToElement(myProfile);
+
+        wait.until(ExpectedConditions.elementToBeClickable(myProfile));
         assertNotNull(myProfile, "El boton de mi perfil no se muestra correctamente.");
 
-        // Intentar hacer click con JavaScript directamente
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", myProfile);
+        myProfile.click();
 
-        // Esperar y hacer scroll hasta el botón de editar usuario
         WebElement editUserButton = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//button[contains(text(), 'Editar Usuario')]")));
+
         scrollToElement(editUserButton);
+
         assertNotNull(editUserButton, "El botón 'Editar Usuario' no está presente.");
     }
 
@@ -151,31 +157,32 @@ public class UserDetailTest extends BaseTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Esperar y hacer scroll hasta el botón de mi perfil
         WebElement myProfile = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//button[contains(text(), 'Mi perfil')]")));
+
         scrollToElement(myProfile);
+
+        wait.until(ExpectedConditions.elementToBeClickable(myProfile));
         assertNotNull(myProfile, "El boton de mi perfil no se muestra correctamente.");
 
-        // Intentar hacer click con JavaScript directamente
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", myProfile);
+        myProfile.click();
 
-        // Esperar y hacer scroll hasta el botón de volver
         WebElement backButton = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//button[contains(text(), 'Volver')]")));
+
         scrollToElement(backButton);
+
         assertNotNull(backButton, "El botón 'Volver' no está presente.");
 
-        // Esperar a que el elemento sea clickeable después del scroll
         wait.until(ExpectedConditions.elementToBeClickable(backButton));
 
-        // Intentar hacer click con JavaScript directamente
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", backButton);
+        backButton.click();
 
-        // Verificar que se ha redirigido correctamente
         WebElement previousPageHeader = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//h2[contains(text(), 'Ligas')]")));
+
         scrollToElement(previousPageHeader);
+        
         assertNotNull(previousPageHeader, "No se ha redirigido correctamente.");
     }
 }

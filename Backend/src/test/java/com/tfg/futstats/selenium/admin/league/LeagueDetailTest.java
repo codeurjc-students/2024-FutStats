@@ -178,15 +178,23 @@ public class LeagueDetailTest extends BaseTest {
                 testLoginFunctionality();
 
                 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-                wait.until(
-                                ExpectedConditions.presenceOfElementLocated(
-                                                By.xpath("//button[contains(text(), 'Borrar Liga')]")));
+                
+                WebElement deleteLeagueButton = wait.until(ExpectedConditions.elementToBeClickable(
+                    By.xpath("//button[contains(text(), 'Borrar Liga')]")));
+                WebElement editLeagueButton = wait.until(ExpectedConditions.elementToBeClickable(
+                    By.xpath("//button[contains(text(), 'Editar Liga')]")));
 
-                WebElement deleteLeagueButton = driver
-                                .findElement(By.xpath("//button[contains(text(), 'Borrar Liga')]"));
-                WebElement editLeagueButton = driver.findElement(By.xpath("//button[contains(text(), 'Editar Liga')]"));
-                assertTrue(deleteLeagueButton.isDisplayed(), "El botón 'Borrar Liga' no está visible.");
-                assertTrue(editLeagueButton.isDisplayed(), "El botón 'Editar Liga' no está visible.");
+                scrollToElement(deleteLeagueButton);
+                scrollToElement(editLeagueButton);
+
+                wait.until(ExpectedConditions.elementToBeClickable(deleteLeagueButton));
+                wait.until(ExpectedConditions.elementToBeClickable(editLeagueButton));
+
+                assertNotNull(deleteLeagueButton, "El botón 'Borrar Liga' no está presente.");
+                assertNotNull(editLeagueButton, "El botón 'Editar Liga' no está presente.");
+
+                deleteLeagueButton.click();
+                editLeagueButton.click();
         }
 
         @Test

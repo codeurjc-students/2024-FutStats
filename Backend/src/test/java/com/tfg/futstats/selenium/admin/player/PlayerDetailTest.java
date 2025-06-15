@@ -19,31 +19,14 @@ import com.tfg.futstats.selenium.BaseTest;
 public class PlayerDetailTest extends BaseTest {
 
     private void scrollToElement(WebElement element) {
-        ((JavascriptExecutor) driver).executeScript(
-            "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", 
-            element
-        );
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-        
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        try {
-            wait.until(ExpectedConditions.elementToBeClickable(element));
-        } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript(
-                "arguments[0].scrollIntoView({block: 'center'});", 
-                element
-            );
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ie) {
-                Thread.currentThread().interrupt();
-            }
-            wait.until(ExpectedConditions.elementToBeClickable(element));
-        }
+        wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
     @Test
@@ -51,11 +34,11 @@ public class PlayerDetailTest extends BaseTest {
         driver.get("https://localhost:" + this.port + "/players/1");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-        
+
         WebElement usernameField = wait.until(ExpectedConditions.elementToBeClickable(By.name("username")));
         WebElement passwordField = wait.until(ExpectedConditions.elementToBeClickable(By.name("password")));
         WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(
-            By.xpath("//button[contains(text(), 'Iniciar Sesión')]")));
+                By.xpath("//button[contains(text(), 'Iniciar Sesión')]")));
 
         scrollToElement(usernameField);
         scrollToElement(passwordField);
@@ -122,7 +105,8 @@ public class PlayerDetailTest extends BaseTest {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
         WebElement removeButton = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Borrar Jugador')]")));
+                ExpectedConditions
+                        .visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Borrar Jugador')]")));
         assertNotNull(removeButton, "El boton 'Borrar Jugador' no está presente.");
 
         WebElement editButton = driver.findElement(By.xpath("//button[contains(text(), 'Editar Jugador')]"));
@@ -137,18 +121,13 @@ public class PlayerDetailTest extends BaseTest {
 
         WebElement backButton = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//button[contains(text(), 'Volver')]")));
+
         scrollToElement(backButton);
-        assertNotNull(backButton, "El botón 'Volver' no está presente.");
 
         wait.until(ExpectedConditions.elementToBeClickable(backButton));
-        
-        try {
-            backButton.click();
-        } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", backButton);
-        }
-        
-        System.out.println("Clic en botón 'Volver'.");
+        assertNotNull(backButton, "El botón 'Volver' no está presente.");
+
+        backButton.click();
 
         WebElement previousPageHeader = wait.until(ExpectedConditions
                 .visibilityOfElementLocated(By.xpath("//h2")));
@@ -162,16 +141,14 @@ public class PlayerDetailTest extends BaseTest {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
         List<WebElement> matchItems = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
-            By.xpath("//ul[@class='items']/li")));
+                By.xpath("//ul[@class='items']/li")));
 
         assertTrue(matchItems.size() > 0, "No hay partidos disponibles para paginar.");
-
-        System.out.println("Número inicial de partidos mostrados: " + matchItems.size());
 
         while (true) {
             try {
                 WebElement nextButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(
-                    "//pagination-controls//a[contains(@class, 'pagination-next')]")));
+                        "//pagination-controls//a[contains(@class, 'pagination-next')]")));
                 scrollToElement(nextButton);
                 nextButton.click();
                 System.out.println("Clic en botón 'Siguiente' de partidos.");
@@ -208,18 +185,13 @@ public class PlayerDetailTest extends BaseTest {
 
         WebElement editButton = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//button[contains(text(), 'Editar Jugador')]")));
+
         scrollToElement(editButton);
-        assertNotNull(editButton, "El botón 'Editar Jugador' no está presente.");
 
         wait.until(ExpectedConditions.elementToBeClickable(editButton));
-        
-        try {
-            editButton.click();
-        } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", editButton);
-        }
-        
-        System.out.println("Clic en botón 'Editar Jugador'.");
+        assertNotNull(editButton, "El botón 'Editar Jugador' no está presente.");
+
+        editButton.click();
 
         WebElement editPlayerHeader = wait.until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//h2")));
@@ -234,17 +206,14 @@ public class PlayerDetailTest extends BaseTest {
 
         WebElement deleteButton = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//button[contains(text(), 'Borrar Jugador')]")));
+
         scrollToElement(deleteButton);
-        assertNotNull(deleteButton, "El botón 'Eliminar Jugador' no está presente.");
 
         wait.until(ExpectedConditions.elementToBeClickable(deleteButton));
-        
-        try {
-            deleteButton.click();
-        } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", deleteButton);
-        }
-        
+        assertNotNull(deleteButton, "El botón 'Borrar Jugador' no está presente.");
+
+        deleteButton.click();
+
         System.out.println("Clic en botón 'Borrar Jugador'.");
     }
 
@@ -255,12 +224,18 @@ public class PlayerDetailTest extends BaseTest {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
         WebElement playerName = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2")));
+
         scrollToElement(playerName);
+
+        wait.until(ExpectedConditions.elementToBeClickable(playerName));
         assertNotNull(playerName, "El nombre del jugador no se muestra.");
 
         WebElement playerStats = wait.until(ExpectedConditions.visibilityOfElementLocated(
-            By.xpath("//p[contains(text(), 'Goles')]")));
+                By.xpath("//p[contains(text(), 'Goles')]")));
+
         scrollToElement(playerStats);
+
+        wait.until(ExpectedConditions.elementToBeClickable(playerStats));
         assertNotNull(playerStats, "Las estadísticas del jugador no se muestran.");
     }
 
@@ -269,25 +244,21 @@ public class PlayerDetailTest extends BaseTest {
         testLoginFunctionality();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        
+
         WebElement goBackButton = wait.until(ExpectedConditions.presenceOfElementLocated(
-            By.xpath("//button[contains(text(), 'Volver')]")));
-        
+                By.xpath("//button[contains(text(), 'Volver')]")));
+
         scrollToElement(goBackButton);
+
         wait.until(ExpectedConditions.elementToBeClickable(goBackButton));
-        
         assertNotNull(goBackButton, "El botón 'Volver' no está presente.");
 
-        try {
-            goBackButton.click();
-        } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", goBackButton);
-        }
+        goBackButton.click();
 
         wait.until(ExpectedConditions.urlToBe("https://localhost:" + this.port + "/teams/1"));
-        
-        assertEquals("https://localhost:" + this.port + "/teams/1", driver.getCurrentUrl(), 
-            "No se redirigió correctamente.");
+
+        assertEquals("https://localhost:" + this.port + "/teams/1", driver.getCurrentUrl(),
+                "No se redirigió correctamente.");
     }
 
     @Test
@@ -297,45 +268,49 @@ public class PlayerDetailTest extends BaseTest {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         WebElement editPlayerButton = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//button[contains(text(), 'Editar Jugador')]")));
+
         scrollToElement(editPlayerButton);
-        assertNotNull(editPlayerButton, "El botón 'Editar Jugador' no está presente.");
 
         wait.until(ExpectedConditions.elementToBeClickable(editPlayerButton));
-        
-        try {
-            editPlayerButton.click();
-        } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", editPlayerButton);
-        }
+        assertNotNull(editPlayerButton, "El botón 'Editar Jugador' no está presente.");
+
+        editPlayerButton.click();
 
         WebElement editForm = wait.until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//ng-component//div")));
-        scrollToElement(editForm);
-        assertNotNull(editForm, "El formulario de edición del jugador no se muestra.");
 
+        scrollToElement(editForm);
+
+        assertNotNull(editForm, "El formulario de edición del jugador no se muestra.");
         WebElement nameInput = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//input[@placeholder='Nombre']")));
-        scrollToElement(nameInput);
-        assertNotNull(nameInput, "El campo 'Nombre' no está presente.");
 
+        scrollToElement(nameInput);
+
+        assertNotNull(nameInput, "El campo 'Nombre' no está presente.");
         WebElement ageInput = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//input[@placeholder='Edad']")));
-        scrollToElement(ageInput);
-        assertNotNull(ageInput, "El campo 'Edad' no está presente.");
 
+        scrollToElement(ageInput);
+
+        assertNotNull(ageInput, "El campo 'Edad' no está presente.");
         WebElement positionInput = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//input[@placeholder='Posición']")));
-        scrollToElement(positionInput);
-        assertNotNull(positionInput, "El campo 'Posición' no está presente.");
 
+        scrollToElement(positionInput);
+
+        assertNotNull(positionInput, "El campo 'Posición' no está presente.");
         WebElement nationalityInput = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//input[@placeholder='Nacionalidad']")));
-        scrollToElement(nationalityInput);
-        assertNotNull(nationalityInput, "El campo 'Nacionalidad' no está presente.");
 
+        scrollToElement(nationalityInput);
+
+        assertNotNull(nationalityInput, "El campo 'Nacionalidad' no está presente.");
         WebElement teamSelect = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//select[@name='teamName']")));
+
         scrollToElement(teamSelect);
+
         assertNotNull(teamSelect, "El campo 'Equipo' no está presente.");
     }
 
@@ -346,28 +321,26 @@ public class PlayerDetailTest extends BaseTest {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
         WebElement editButton = wait.until(ExpectedConditions.elementToBeClickable(
-            By.xpath("//button[contains(text(), 'Editar')]")));
+                By.xpath("//button[contains(text(), 'Editar')]")));
+
         scrollToElement(editButton);
+
+        wait.until(ExpectedConditions.elementToBeClickable(editButton));
         assertNotNull(editButton, "El botón 'Editar' no está presente.");
 
-        try {
-            editButton.click();
-        } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", editButton);
-        }
+        editButton.click();
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2")));
 
         WebElement cancelButton = wait.until(ExpectedConditions.presenceOfElementLocated(
-            By.xpath("//button[contains(text(), 'Cancel')]")));
-        scrollToElement(cancelButton);
-        assertNotNull(cancelButton, "El botón 'Cancel' no está presente.");
+                By.xpath("//button[contains(text(), 'Cancel')]")));
 
-        try {
-            cancelButton.click();
-        } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", cancelButton);
-        }
+        scrollToElement(cancelButton);
+
+        wait.until(ExpectedConditions.elementToBeClickable(cancelButton));
+        assertNotNull(cancelButton, "El botón 'Cancel' no está presente.");
+        
+        cancelButton.click();
 
         WebElement playerName = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1")));
         assertNotNull(playerName, "No se ha redirigido correctamente a la página de detalles del jugador.");

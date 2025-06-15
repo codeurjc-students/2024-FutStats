@@ -20,11 +20,10 @@ public class LeagueFormTest extends BaseTest {
     private void scrollToElement(WebElement element) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
         try {
-            Thread.sleep(1000); // Aumentamos el tiempo de espera
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-        // Esperar a que el elemento sea clickeable
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.elementToBeClickable(element));
     }
@@ -55,11 +54,7 @@ public class LeagueFormTest extends BaseTest {
         
         wait.until(ExpectedConditions.elementToBeClickable(loginButton));
         
-        try {
-            loginButton.click();
-        } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", loginButton);
-        }
+        loginButton.click();
     }
 
     @Test
@@ -74,11 +69,7 @@ public class LeagueFormTest extends BaseTest {
 
         wait.until(ExpectedConditions.elementToBeClickable(createButton));
         
-        try {
-            createButton.click();
-        } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", createButton);
-        }
+        createButton.click();
 
         WebElement form = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//div[h2[text()='Nueva Liga']]")));
@@ -127,11 +118,7 @@ public class LeagueFormTest extends BaseTest {
 
         wait.until(ExpectedConditions.elementToBeClickable(createButton));
         
-        try {
-            createButton.click();
-        } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", createButton);
-        }
+        createButton.click();
         
         WebDriverWait waitForLeague = new WebDriverWait(driver, Duration.ofSeconds(5));
         waitForLeague.until(ExpectedConditions.urlContains("/leagues/"));
@@ -152,12 +139,8 @@ public class LeagueFormTest extends BaseTest {
 
         wait.until(ExpectedConditions.elementToBeClickable(cancelButton));
         
-        try {
-            cancelButton.click();
-        } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", cancelButton);
-        }
-
+        cancelButton.click();
+        
         assertTrue(driver.getCurrentUrl().contains("/leagues"), "La URL de la liga no es la correcta.");
         System.out.println("Acceso correcto a las ligas " + driver.getCurrentUrl());
     }

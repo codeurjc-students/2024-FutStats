@@ -35,7 +35,7 @@ public class TeamDetailTest extends BaseTest {
         WebElement usernameField = wait.until(ExpectedConditions.elementToBeClickable(By.name("username")));
         WebElement passwordField = wait.until(ExpectedConditions.elementToBeClickable(By.name("password")));
         WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(
-            By.xpath("//button[contains(text(), 'Iniciar Sesión')]")));
+                By.xpath("//button[contains(text(), 'Iniciar Sesión')]")));
 
         scrollToElement(usernameField);
         scrollToElement(passwordField);
@@ -77,31 +77,24 @@ public class TeamDetailTest extends BaseTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Esperar y hacer scroll hasta el botón de volver
         WebElement backButton = wait.until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//button[contains(text(), 'Volver')]")));
-        
-        // Hacer scroll hasta el elemento y esperar un momento
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", backButton);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        
-        // Esperar a que el elemento sea clickeable después del scroll
+
+        scrollToElement(backButton);
+
         wait.until(ExpectedConditions.elementToBeClickable(backButton));
         assertNotNull(backButton, "El botón 'Volver' no está presente.");
 
-        // Intentar hacer click con JavaScript directamente
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", backButton);
+        backButton.click();
+
         System.out.println("Clic en botón 'Volver'.");
 
-        // Verificar que se ha redirigido correctamente
         WebElement teamsListHeader = wait.until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//h2")));
+
         scrollToElement(teamsListHeader);
         assertNotNull(teamsListHeader, "No se redirigió correctamente.");
+
     }
 
     @Test
@@ -113,6 +106,7 @@ public class TeamDetailTest extends BaseTest {
         WebElement removeButton = wait.until(
                 ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(), 'Borrar Equipo')]")));
         assertNotNull(removeButton, "El boton 'Borrar Jugador' no está presente.");
+
         WebElement editButton = driver.findElement(By.xpath("//button[contains(text(), 'Editar Equipo')]"));
         assertNotNull(editButton, "El boton 'Editar Equipo' no está presente.");
 
@@ -124,28 +118,19 @@ public class TeamDetailTest extends BaseTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Esperar y hacer scroll hasta el botón de editar
         WebElement editButton = wait.until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//button[contains(text(), 'Editar Equipo')]")));
-        
-        // Hacer scroll hasta el elemento y esperar un momento
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", editButton);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        
-        // Esperar a que el elemento sea clickeable después del scroll
+
+        scrollToElement(editButton);
+
         wait.until(ExpectedConditions.elementToBeClickable(editButton));
         assertNotNull(editButton, "El botón 'Editar Equipo' no está presente.");
 
-        // Intentar hacer click con JavaScript directamente
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", editButton);
+        editButton.click();
 
-        // Verificar que se ha redirigido correctamente
         WebElement editTeamHeader = wait.until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//h2")));
+
         scrollToElement(editTeamHeader);
         assertNotNull(editTeamHeader, "No se ha redirigido correctamente a la página de edición del equipo.");
     }
@@ -158,17 +143,13 @@ public class TeamDetailTest extends BaseTest {
 
         WebElement deleteButton = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//button[contains(text(), 'Borrar Equipo')]")));
+
         scrollToElement(deleteButton);
-        assertNotNull(deleteButton, "El botón 'Eliminar Equipo' no está presente.");
 
         wait.until(ExpectedConditions.elementToBeClickable(deleteButton));
-        
-        try {
-            deleteButton.click();
-        } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", deleteButton);
-        }
-        
+        assertNotNull(deleteButton, "El botón 'Borrar Equipo' no está presente.");
+
+        deleteButton.click();
         System.out.println("Clic en botón 'Borrar Equipo'.");
     }
 
@@ -178,29 +159,20 @@ public class TeamDetailTest extends BaseTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Esperar y hacer scroll hasta el enlace del jugador
         WebElement playerMatchLink = wait.until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//ul[@class='items']/li[1]/a"))); 
-        assertNotNull(playerMatchLink, "El enlace del 'Player Match' no está presente.");
-        
-        // Hacer scroll hasta el elemento y esperar un momento
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", playerMatchLink);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        
-        // Esperar a que el elemento sea clickeable después del scroll
+                By.xpath("//ul[@class='items']/li[1]/a")));
+
+        scrollToElement(playerMatchLink);
+
         wait.until(ExpectedConditions.elementToBeClickable(playerMatchLink));
-        
-        // Intentar hacer click con JavaScript directamente
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", playerMatchLink);
+        assertNotNull(playerMatchLink, "El enlace del 'Player Match' no está presente.");
+
+        playerMatchLink.click();
         System.out.println("Clic en el 'Player Match' (Partido 1).");
 
-        // Verificar que se ha redirigido correctamente
         WebElement playerTitle = wait.until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//h2")));
+
         scrollToElement(playerTitle);
         assertNotNull(playerTitle, "No se ha redirigido correctamente al jugador.");
     }
@@ -211,28 +183,19 @@ public class TeamDetailTest extends BaseTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Esperar y hacer scroll hasta el botón de crear jugador
         WebElement createPlayerButton = wait.until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//button[contains(text(), 'Crear Jugador')]")));
-        
-        // Hacer scroll hasta el elemento y esperar un momento
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", createPlayerButton);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        
-        // Esperar a que el elemento sea clickeable después del scroll
+
+        scrollToElement(createPlayerButton);
+
         wait.until(ExpectedConditions.elementToBeClickable(createPlayerButton));
         assertNotNull(createPlayerButton, "El botón 'Crear Jugador' no está presente.");
 
-        // Intentar hacer click con JavaScript directamente
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", createPlayerButton);
+        createPlayerButton.click();
 
-        // Verificar que se ha redirigido correctamente
         WebElement createPlayerHeader = wait.until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//h2[contains(text(), 'Nuevo Jugador')]")));
+
         scrollToElement(createPlayerHeader);
         assertNotNull(createPlayerHeader, "No se ha redirigido correctamente a la página de creación del jugador.");
     }
@@ -258,7 +221,7 @@ public class TeamDetailTest extends BaseTest {
         assertNotNull(teamName, "El nombre del equipo no se muestra.");
 
         WebElement teamStats = wait.until(ExpectedConditions.visibilityOfElementLocated(
-            By.xpath("//p[contains(text(), 'Goles')]")));
+                By.xpath("//p[contains(text(), 'Goles')]")));
         scrollToElement(teamStats);
         assertNotNull(teamStats, "Las estadísticas del equipo no se muestran.");
     }
@@ -270,7 +233,7 @@ public class TeamDetailTest extends BaseTest {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
         List<WebElement> playerItems = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
-            By.xpath("//ul[@class='items']/li")));
+                By.xpath("//ul[@class='items']/li")));
 
         assertTrue(playerItems.size() > 0, "No hay jugadores disponibles para paginar.");
 
@@ -279,7 +242,7 @@ public class TeamDetailTest extends BaseTest {
         while (true) {
             try {
                 WebElement nextButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(
-                    "//pagination-controls//a[contains(@class, 'pagination-next')]")));
+                        "//pagination-controls//a[contains(@class, 'pagination-next')]")));
                 scrollToElement(nextButton);
                 nextButton.click();
                 System.out.println("Clic en botón 'Siguiente' de jugadores.");
@@ -302,27 +265,18 @@ public class TeamDetailTest extends BaseTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Esperar y hacer scroll hasta el botón de volver
         WebElement goBackButton = wait.until(ExpectedConditions.presenceOfElementLocated(
-            By.xpath("//button[contains(text(), 'Volver')]")));
-        
-        // Hacer scroll hasta el elemento y esperar un momento
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", goBackButton);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        
-        // Esperar a que el elemento sea clickeable después del scroll
+                By.xpath("//button[contains(text(), 'Volver')]")));
+
+        scrollToElement(goBackButton);
+
         wait.until(ExpectedConditions.elementToBeClickable(goBackButton));
         assertNotNull(goBackButton, "El botón 'Volver' no está presente.");
 
-        // Intentar hacer click con JavaScript directamente
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", goBackButton);
+        goBackButton.click();
 
-        // Verificar la redirección
-        assertEquals("https://localhost:" + this.port + "/leagues/1", driver.getCurrentUrl(), "No se redirigió correctamente.");
+        assertEquals("https://localhost:" + this.port + "/leagues/1", driver.getCurrentUrl(),
+                "No se redirigió correctamente.");
     }
 
     @Test

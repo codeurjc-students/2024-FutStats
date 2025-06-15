@@ -61,11 +61,14 @@ public class UserFormTest extends BaseTest {
 
         WebElement formTitle = wait.until(
                 ExpectedConditions.presenceOfElementLocated(By.xpath("//h2[contains(text(), 'Nuevo Usuario')]")));
+
         scrollToElement(formTitle);
+
         assertNotNull(formTitle, "El título del formulario 'Nuevo Usuario' no se muestra.");
 
         WebElement nameField = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//input[@placeholder='Nombre']")));
+
         WebElement passwordField = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//input[@placeholder='Contraseña']")));
 
@@ -84,6 +87,7 @@ public class UserFormTest extends BaseTest {
 
         WebElement nameField = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//input[@placeholder='Nombre']")));
+
         WebElement passwordField = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//input[@placeholder='Contraseña']")));
 
@@ -97,6 +101,7 @@ public class UserFormTest extends BaseTest {
 
         assertEquals("Juan Pérez", nameField.getAttribute("value"),
                 "El campo 'Nombre' no se ha actualizado correctamente.");
+
         assertEquals("contraseña123", passwordField.getAttribute("value"),
                 "El campo 'Contraseña' no se ha actualizado correctamente.");
     }
@@ -109,6 +114,7 @@ public class UserFormTest extends BaseTest {
 
         WebElement nameField = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//input[@placeholder='Nombre']")));
+
         WebElement passwordField = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//input[@placeholder='Contraseña']")));
 
@@ -119,15 +125,14 @@ public class UserFormTest extends BaseTest {
             By.xpath("//button[contains(text(), 'Cancelar')]")));
         
         scrollToElement(cancelButton);
+
         wait.until(ExpectedConditions.elementToBeClickable(cancelButton));
+        assertNotNull(cancelButton, "El botón 'Cancelar' no está presente.");
+        
         cancelButton.click();
 
-        try {
-            wait.until(ExpectedConditions.alertIsPresent());
-            driver.switchTo().alert().accept();
-        } catch (Exception e) {
-            // No alert present, continue
-        }
+        wait.until(ExpectedConditions.urlContains("/leagues"));
+        assertTrue(driver.getCurrentUrl().contains("/leagues"), "La URL del usuario no es la correcta.");
     }
 
     @Test
@@ -138,6 +143,7 @@ public class UserFormTest extends BaseTest {
 
         WebElement nameField = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//input[@placeholder='Nombre']")));
+
         WebElement passwordField = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//input[@placeholder='Contraseña']")));
 
@@ -153,16 +159,10 @@ public class UserFormTest extends BaseTest {
             By.xpath("//button[contains(text(), 'Guardar')]")));
         
         scrollToElement(saveButton);
+
         wait.until(ExpectedConditions.elementToBeClickable(saveButton));
         saveButton.click();
-
-        try {
-            wait.until(ExpectedConditions.alertIsPresent());
-            driver.switchTo().alert().accept();
-        } catch (Exception e) {
-            // No alert present, continue
-        }
-
+        
         wait.until(ExpectedConditions.urlContains("/leagues"));
         assertTrue(driver.getCurrentUrl().contains("/leagues"), "La URL del usuario no es la correcta.");
     }
@@ -175,7 +175,10 @@ public class UserFormTest extends BaseTest {
 
         WebElement imageFileInput = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//input[@type='file']")));
+
         scrollToElement(imageFileInput);
+
+        wait.until(ExpectedConditions.elementToBeClickable(imageFileInput));
         assertNotNull(imageFileInput, "El campo de carga de imagen no está presente.");
 
         File file = new File("src/main/resources/static/no_image.jpg");

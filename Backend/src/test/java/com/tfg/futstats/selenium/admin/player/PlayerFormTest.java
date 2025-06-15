@@ -1,9 +1,6 @@
 package com.tfg.futstats.selenium.admin.player;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -32,14 +29,14 @@ public class PlayerFormTest extends BaseTest {
         driver.get("https://localhost:" + this.port + "/players/1");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        
+
         // Esperar a que el formulario de login esté visible
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("navbar-form")));
-        
+
         WebElement usernameField = wait.until(ExpectedConditions.elementToBeClickable(By.name("username")));
         WebElement passwordField = wait.until(ExpectedConditions.elementToBeClickable(By.name("password")));
         WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(
-            By.xpath("//button[contains(text(), 'Iniciar Sesión')]")));
+                By.xpath("//button[contains(text(), 'Iniciar Sesión')]")));
 
         scrollToElement(usernameField);
         scrollToElement(passwordField);
@@ -53,7 +50,7 @@ public class PlayerFormTest extends BaseTest {
         passwordField.clear();
         usernameField.sendKeys("admin");
         passwordField.sendKeys("pass");
-        
+
         try {
             loginButton.click();
         } catch (Exception e) {
@@ -69,25 +66,26 @@ public class PlayerFormTest extends BaseTest {
 
         WebElement editButton = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//button[contains(text(), 'Editar Jugador')]")));
+
         scrollToElement(editButton);
-        assertNotNull(editButton, "El boton 'Editar Jugador' no está presente.");
 
         wait.until(ExpectedConditions.elementToBeClickable(editButton));
-        
-        try {
-            editButton.click();
-        } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", editButton);
-        }
+        assertNotNull(editButton, "El botón 'Editar Jugador' no está presente.");
+
+        editButton.click();
 
         WebElement formTitle = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//h2")));
         scrollToElement(formTitle);
         assertNotNull(formTitle, "El título del formulario 'Nuevo Jugador' no se muestra.");
 
-        WebElement nameField = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Nombre']")));
-        WebElement ageField = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Edad']")));
-        WebElement positionField = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Posición']")));
-        WebElement nationalityField = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Nacionalidad']")));
+        WebElement nameField = wait
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Nombre']")));
+        WebElement ageField = wait
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Edad']")));
+        WebElement positionField = wait
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Posición']")));
+        WebElement nationalityField = wait
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Nacionalidad']")));
 
         scrollToElement(nameField);
         scrollToElement(ageField);
@@ -108,25 +106,26 @@ public class PlayerFormTest extends BaseTest {
 
         WebElement editButton = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//button[contains(text(), 'Editar Jugador')]")));
+
         scrollToElement(editButton);
-        assertNotNull(editButton, "El boton 'Editar Jugador' no está presente.");
 
         wait.until(ExpectedConditions.elementToBeClickable(editButton));
-        
-        try {
-            editButton.click();
-        } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", editButton);
-        }
+        assertNotNull(editButton, "El botón 'Editar' no está presente.");
+
+        editButton.click();
 
         WebElement formTitle = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//h2")));
         scrollToElement(formTitle);
         assertNotNull(formTitle, "El título del formulario 'Nuevo Jugador' no se muestra.");
 
-        WebElement nameField = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Nombre']")));
-        WebElement ageField = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Edad']")));
-        WebElement positionField = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Posición']")));
-        WebElement nationalityField = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Nacionalidad']")));
+        WebElement nameField = wait
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Nombre']")));
+        WebElement ageField = wait
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Edad']")));
+        WebElement positionField = wait
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Posición']")));
+        WebElement nationalityField = wait
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Nacionalidad']")));
 
         scrollToElement(nameField);
         scrollToElement(ageField);
@@ -152,29 +151,21 @@ public class PlayerFormTest extends BaseTest {
 
         WebElement editButton = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//button[contains(text(), 'Editar Jugador')]")));
+
         scrollToElement(editButton);
-        assertNotNull(editButton, "El boton 'Editar Jugador' no está presente.");
 
         wait.until(ExpectedConditions.elementToBeClickable(editButton));
-        
-        try {
-            editButton.click();
-        } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", editButton);
-        }
+        assertNotNull(editButton, "El botón 'Editar' no está presente.");
+
+        editButton.click();
 
         WebElement cancelButton = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//button[contains(text(), 'Cancel')]")));
+
         scrollToElement(cancelButton);
-        assertNotNull(cancelButton, "El botón 'Cancelar' no está presente.");
 
         wait.until(ExpectedConditions.elementToBeClickable(cancelButton));
-        
-        try {
-            cancelButton.click();
-        } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", cancelButton);
-        }
+        assertNotNull(cancelButton, "El botón 'Cancelar' no está presente.");
 
         System.out.println("Clic en botón 'Cancelar'.");
 
@@ -191,26 +182,30 @@ public class PlayerFormTest extends BaseTest {
 
         WebElement editButton = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//button[contains(text(), 'Editar Jugador')]")));
+
         scrollToElement(editButton);
-        assertNotNull(editButton, "El boton 'Editar Jugador' no está presente.");
 
         wait.until(ExpectedConditions.elementToBeClickable(editButton));
-        
-        try {
-            editButton.click();
-        } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", editButton);
-        }
+        assertNotNull(editButton, "El botón 'Editar' no está presente.");
+
+        editButton.click();
 
         WebElement saveButton = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//button[contains(text(), 'Save')]")));
+
         scrollToElement(saveButton);
+
+        wait.until(ExpectedConditions.elementToBeClickable(saveButton));
         assertNotNull(saveButton, "El botón 'Save' no está presente.");
 
-        WebElement nameField = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Nombre']")));
-        WebElement ageField = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Edad']")));
-        WebElement positionField = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Posición']")));
-        WebElement nationalityField = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Nacionalidad']")));
+        WebElement nameField = wait
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Nombre']")));
+        WebElement ageField = wait
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Edad']")));
+        WebElement positionField = wait
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Posición']")));
+        WebElement nationalityField = wait
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Nacionalidad']")));
 
         scrollToElement(nameField);
         scrollToElement(ageField);
@@ -228,7 +223,7 @@ public class PlayerFormTest extends BaseTest {
         nationalityField.sendKeys("Brasil");
 
         wait.until(ExpectedConditions.elementToBeClickable(saveButton));
-        
+
         try {
             saveButton.click();
         } catch (Exception e) {
@@ -237,13 +232,4 @@ public class PlayerFormTest extends BaseTest {
 
         System.out.println("Clic en botón 'Save'.");
     }
-
-    private boolean isEditingPlayer() {
-        testLoginFunctionality();
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-
-        return driver.findElements(By.xpath("//h2[contains(text(), 'Nuevo Jugador')]")).isEmpty();
-    }
-
 }

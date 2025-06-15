@@ -58,22 +58,28 @@ public class UserListTest extends BaseTest {
 
         WebElement userListButton = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//button[contains(text(), 'Ver Usuarios')]")));
+
         scrollToElement(userListButton);
+
+        wait.until(ExpectedConditions.elementToBeClickable(userListButton));
         assertNotNull(userListButton, "El botón 'Ver Usuarios' no está presente.");
 
-        // Intentar hacer click con JavaScript directamente
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", userListButton);
+        userListButton.click();
 
-        // Verificar que la lista de usuarios está visible
         WebElement userListHeader = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//h2[contains(text(), 'Usuarios')]")));
+
         scrollToElement(userListHeader);
+
+        wait.until(ExpectedConditions.elementToBeClickable(userListHeader));
         assertNotNull(userListHeader, "El encabezado 'Usuarios' no está presente.");
 
-        // Verificar que los usuarios están listados
         WebElement firstUser = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//ul[@class='items']/li[1]/a")));
+
         scrollToElement(firstUser);
+
+        wait.until(ExpectedConditions.elementToBeClickable(firstUser));
         assertNotNull(firstUser, "No se muestra ningún usuario en la lista.");
     }
 
@@ -85,23 +91,30 @@ public class UserListTest extends BaseTest {
 
         WebElement userListButton = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//button[contains(text(), 'Ver Usuarios')]")));
+
         scrollToElement(userListButton);
+
+        wait.until(ExpectedConditions.elementToBeClickable(userListButton));
         assertNotNull(userListButton, "El botón 'Ver Usuarios' no está presente.");
 
-        // Intentar hacer click con JavaScript directamente
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", userListButton);
+        userListButton.click();
 
         WebElement firstUserLink = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//ul[@class='items']/li[1]/a")));
+
         scrollToElement(firstUserLink);
+
+        wait.until(ExpectedConditions.elementToBeClickable(firstUserLink));
         assertNotNull(firstUserLink, "El enlace al primer usuario no está presente.");
 
-        // Intentar hacer click con JavaScript directamente
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", firstUserLink);
+        firstUserLink.click();
 
         WebElement userDetailHeader = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//h2")));
+
         scrollToElement(userDetailHeader);
+
+        wait.until(ExpectedConditions.elementToBeClickable(userDetailHeader));
         assertNotNull(userDetailHeader, "No se ha redirigido correctamente a la página de detalles del usuario.");
     }
 
@@ -113,7 +126,10 @@ public class UserListTest extends BaseTest {
 
         WebElement createUserButton = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//button[contains(text(), 'Crear Usuario')]")));
+
         scrollToElement(createUserButton);
+
+        wait.until(ExpectedConditions.elementToBeClickable(createUserButton));
         assertNotNull(createUserButton, "El botón 'Crear Usuario' no está presente.");
     }
 
@@ -123,45 +139,32 @@ public class UserListTest extends BaseTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Esperar y hacer scroll hasta el botón de ver usuarios
         WebElement userListButton = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//button[contains(text(), 'Ver Usuarios')]")));
+
         scrollToElement(userListButton);
+
+        wait.until(ExpectedConditions.elementToBeClickable(userListButton));
         assertNotNull(userListButton, "El botón 'Ver Usuarios' no está presente.");
 
-        // Intentar hacer click con JavaScript directamente
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", userListButton);
+        userListButton.click();
 
-        // Esperar y hacer scroll hasta el botón de volver
         WebElement backButton = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//button[contains(text(), 'Volver')]")));
         
-        // Hacer scroll al botón y esperar a que sea clickeable
         scrollToElement(backButton);
+
         wait.until(ExpectedConditions.elementToBeClickable(backButton));
-        
-        // Asegurarse de que el botón está visible en el viewport
-        ((JavascriptExecutor) driver).executeScript(
-            "arguments[0].scrollIntoView({block: 'center', behavior: 'smooth'});", 
-            backButton
-        );
-        
-        // Esperar un momento adicional para asegurar que el scroll se ha completado
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        
         assertNotNull(backButton, "El botón 'Volver' no está presente.");
+        
+        backButton.click();
 
-        // Intentar hacer click con JavaScript directamente
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", backButton);
-
-        // Verificar que se ha redirigido correctamente
         WebElement previousPageHeader = wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//h2")));
+
         scrollToElement(previousPageHeader);
+
+        wait.until(ExpectedConditions.elementToBeClickable(previousPageHeader));
         assertNotNull(previousPageHeader, "No se ha redirigido correctamente.");
     }
 }
