@@ -76,19 +76,18 @@ describe('TeamFormComponent', () => {
     expect(component.leagues.length).toBe(0);
   });
 
-  it('should add a new team if it is a new team', () => {
+  it('should call addTeam on save for new teams', () => {
     component.newTeam = true;
-    component.team = { name: 'New Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1' };
-    mockTeamsService.addTeam.and.returnValue(of({ name: 'New Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1' }));
-
+    component.team = { name: 'New Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1'};
     component.save();
 
     expect(mockTeamsService.addTeam).toHaveBeenCalledWith(component.team);
+    expect(mockTeamsService.addImage).not.toHaveBeenCalled();
   });
 
-  it('should update an existing team', () => {
+  it('should call updateTeam on save for existing teams', () => {
     component.newTeam = false;
-    component.team = { id: 1, name: 'Update Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1'};
+    component.team = { id: 1, name: 'Updated Team 1', trophies: 1, nationality: 'Española', trainer: 'Mourinho', secondTrainer: 'Pepe', president: 'Paco', stadium: 'Bernabeu', points: 1, image: false, league: 'League 1'};
     
     mockTeamsService.updateTeam.and.returnValue(of(component.team));
     mockTeamsService.getTeam.and.returnValue(of(component.team));
