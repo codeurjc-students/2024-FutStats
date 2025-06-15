@@ -1,31 +1,41 @@
-<div *ngIf="user">
-    
-    <h2 *ngIf="!user.id">Nuevo Usuario</h2>
-    <h2 *ngIf="user.id">"{{user.name}}"</h2>
+<body>
+    <div class="container" *ngIf="user">
 
-    <div>
-        <label>Nombre: </label>
-        <input [(ngModel)]="user.name" placeholder="Nombre" />
+        <h2 *ngIf="!user.id">Nuevo Usuario</h2>
+        <h2 *ngIf="user.id">"{{user.name}}"</h2>
+
+        <div>
+            <h3>Nombre: </h3>
+            <input [(ngModel)]="user.name" placeholder="Nombre" />
+        </div>
+        <br>
+        <div>
+            <h3>Contraseña: </h3>
+            <input [(ngModel)]="user.password" placeholder="Contraseña" />
+        </div>
+
+        <div>
+            <h3>Dirección de correo electrónico: </h3>
+            <input [(ngModel)]="user.email" placeholder="email@gmail.com" />
+        </div>
+
+        <p>Image: </p>
+        <img [src]="userImage()"><br>
+
+        <ng-template [ngIf]="user.id">
+            <br>
+            <label>Quitar imagen</label>
+            <input type='checkbox' name='removeImage' [(ngModel)]="removeImage">
+            <br>
+            <label for="uploadImage">Subir imagen:</label>
+            <input type="file" id="uploadImage" #uploadImage (change)="onFileSelected($event)" />
+        </ng-template>
+
+        <input #file type='file' name='imageFile' accept=".jpg, .jpeg" />
+
+        <p>
+            <button (click)="cancel()">Cancelar</button>
+            <button (click)="save()">Guardar</button>
+        </p>
     </div>
-    <br>
-    <div>
-        <label>Contraseña: </label>
-        <input [(ngModel)]="user.password" placeholder="Contraseña" />
-    </div>
-
-    <p>Image: </p>
-    <img [src]="userImage()"><br>
-
-    <ng-template [ngIf]="user.id">
-        <br><input type='checkbox' name='removeImage' [(ngModel)]="removeImage"> <label>Quitar imagen</label><br>
-
-        <label>Subir imágen: </label><br>  
-    </ng-template>
-
-    <input #file type='file' name='imageFile' accept=".jpg, .jpeg" />
-
-    <p>
-        <button (click)="cancel()">Cancelar</button>
-        <button (click)="save()">Guardar</button>
-    </p>
-</div>
+</body>

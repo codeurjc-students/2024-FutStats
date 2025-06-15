@@ -11,14 +11,15 @@ import { Player } from 'src/app/models/player.model';
 @Component({
     selector: 'user-detail',
     templateUrl: './user-detail.component.html',
+    styleUrls: ['./user-detail.component.css'],
     standalone: false
 })
 export class UserDetailComponent implements OnInit {
 
     user: User;
     leagues: League[];
-    teams: Team[] = [];  // To store the players
-    players: Player[] = []; // To store the players
+    teams: Team[] = [];
+    players: Player[] = [];
     errorMessage: string;
 
     constructor(
@@ -43,7 +44,6 @@ export class UserDetailComponent implements OnInit {
                     }
                 );
 
-                // Once we have the league we get the teams
                 this.service.getTeams(id).subscribe(
                     (teams: Team[]) => {
                         this.teams = teams;
@@ -53,7 +53,6 @@ export class UserDetailComponent implements OnInit {
                     }
                 );
 
-                // Once we have the league we get the matches
                 this.service.getPlayers(id).subscribe(
                     (players: Player[]) => {
                         this.players = players;
@@ -70,7 +69,7 @@ export class UserDetailComponent implements OnInit {
     }
 
     userImage(){
-        return this.user.image? this.service.getImage(this.user.id) : 'assets/no_image.jpg';
+        return this.user.image?  "api/v1/users/" + this.user.id + "/image" : 'assets/no_image.jpg';
     }
 
     removeUser() {
@@ -84,30 +83,33 @@ export class UserDetailComponent implements OnInit {
     }
 
     removeLeague(league: League){
+        const id = this.activatedRoute.snapshot.params['id'];
         const okResponse = window.confirm('Quieres borrar esta Liga');
         if (okResponse) {
             this.service.deleteLeague(this.user, league).subscribe(
-                _ => window.location.reload(),
+                _ => this.router.navigate(['/users/' + id]),
                 error => console.error(error)
             );
         }
     }
 
     removeTeam(team: Team){
+        const id = this.activatedRoute.snapshot.params['id'];
         const okResponse = window.confirm('Quieres borrar este Equipo');
         if (okResponse) {
             this.service.deleteTeam(this.user, team).subscribe(
-                _ => window.location.reload(),
+                _ => this.router.navigate(['/users/' + id]),
                 error => console.error(error)
             );
         }
     }
 
     removePlayer(player: Player){
+        const id = this.activatedRoute.snapshot.params['id'];
         const okResponse = window.confirm('Quieres borrar este Jugador');
         if (okResponse) {
             this.service.deletePlayer(this.user, player).subscribe(
-                _ => window.location.reload(),
+                _ => this.router.navigate(['/users/' + id]),
                 error => console.error(error)
             );
         }

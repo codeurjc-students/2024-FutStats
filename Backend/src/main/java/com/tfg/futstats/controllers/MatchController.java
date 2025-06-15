@@ -1,5 +1,6 @@
 package com.tfg.futstats.controllers;
 
+// region imports
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,6 +36,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.net.URI;
 import java.util.List;
+//endregion
 
 @RestController
 @RequestMapping("/api/v1/matches")
@@ -45,11 +47,11 @@ public class MatchController {
 
         // ------------------------------- Match CRUD operations
 
+        // region Get
         @Operation(summary = "Get all the matches")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "Found matches", content = {
                                         @Content(mediaType = "application/json", schema = @Schema(implementation = MatchDTO.class))
-
                         }),
                         @ApiResponse(responseCode = "204", description = "No content", content = @Content)
         })
@@ -188,9 +190,12 @@ public class MatchController {
                 // to create a not found ResponseEntity
         }
 
-        // From this point the only one that can use this methods is the admin so we
-        // have to create security for that
+        // endregion
 
+        // From this point the only one that can use this methods is the admin so we
+        // have to create security
+
+        // region Post
         @Operation(summary = "Create a match")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "201", description = "Match Created", content = {
@@ -219,7 +224,7 @@ public class MatchController {
                 Team team2 = restService.findTeamByName(matchDto.getTeam2())
                                 .orElseThrow(() -> new ElementNotFoundException("No existe un equipo con ese nombre"));
 
-                restService.createMatch(newMatch, league, team1, team2);
+                newMatch = restService.createMatch(newMatch, league, team1, team2);
 
                 URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                                 .buildAndExpand(newMatch.getId())
@@ -229,6 +234,9 @@ public class MatchController {
 
                 return ResponseEntity.created(location).body(newMatchDto);
         }
+        // endregion
+
+        // region Delete
 
         @Operation(summary = "Delete a match")
         @ApiResponses(value = {
@@ -257,6 +265,10 @@ public class MatchController {
                 // necessary
                 // to create a not found ResponseEntity
         }
+
+        // endregion
+
+        // region Put
 
         @Operation(summary = "Update a Match")
         @ApiResponses(value = {
@@ -325,6 +337,10 @@ public class MatchController {
                 // to create a not found ResponseEntity
         }
 
+        // endregion
+
+        // region PostPlayerMatch
+
         @Operation(summary = "Create a playerMatch")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "201", description = "playerMatch Created", content = {
@@ -364,4 +380,6 @@ public class MatchController {
                 // is not necessary
                 // to create a not found ResponseEntity
         }
+
+        // endregion
 }

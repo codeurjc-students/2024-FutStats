@@ -1,5 +1,6 @@
 package com.tfg.futstats.models;
 
+// region imports
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,11 +16,15 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotNull;
+//endregion
 
 //As we want that this class be kept in the database we have to put this notation
 @Entity
 @Table(name = "`match`")
 public class Match {
+
+    // region Attributes
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Auto generated ID
     private Long id;
@@ -37,16 +42,17 @@ public class Match {
     @JsonIgnore
     private Team team2;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<PlayerMatch> playerMatches;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<TeamMatch> teamMatches = new ArrayList<TeamMatch>();;
+    private List<TeamMatch> teamMatches = new ArrayList<TeamMatch>();
 
     // Match attributes
     @Column(unique = true)
+    @NotNull
     private String name;
     private String place;
 
@@ -101,9 +107,11 @@ public class Match {
     private int saves2;
     private int outBoxSaves2;
     private int inBoxSaves2;
+    // endregion
 
-    // Constructors
+    // region Constructors
     public Match() {
+        this.playerMatches = new ArrayList<PlayerMatch>();
     }
 
     public Match(League league,
@@ -169,8 +177,9 @@ public class Match {
         this.outBoxSaves2 = match.getOutBoxSaves2();
         this.inBoxSaves2 = match.getInBoxSaves2();
     }
+    // endregion
 
-    // Getters & Setters
+    // region Getters & Setters
     // ------------------------------------ LEAGUE
     public League getLeague() {
         return this.league;
@@ -251,7 +260,7 @@ public class Match {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -654,4 +663,5 @@ public class Match {
     public void setInBoxSaves2(int inBoxSaves) {
         this.inBoxSaves2 = inBoxSaves;
     }
+    // endregion
 }

@@ -1,35 +1,36 @@
-<div *ngIf="league">
-    
-    <h2 *ngIf="!league.id">Nueva Liga</h2>
-    <h2 *ngIf="league.id">"{{league.name}}"</h2>
+<body>
+    <div class="container" *ngIf="league">
 
-    <div>
-        <label>Nombre: </label>
-        <input [(ngModel)]="league.name" placeholder="Nombre" />
-    </div>
-    <br>
-    <p>Image: </p>
-    <img [src]="leagueImage()"><br>
-  
-    <ng-template [ngIf]="league.id">
-      <br><input type='checkbox' name='removeImage' [(ngModel)]="removeImage"> <label>Quitar imagen</label><br>
-  
-      <label>Subir imágen: </label><br>
-    </ng-template>
-    <br>
-    <div>
-        <label>Nacionalidad: </label>
-        <input [(ngModel)]="league.nationality" placeholder="Nacionalidad" />
-    </div>
-    <br>
-    <div>
-        <label>Presidente: </label>
-        <input [(ngModel)]="league.president" placeholder="Presidente">
-    </div>
-    <br>
+        <h2 *ngIf="!league.id">Nueva Liga</h2>
+        <h2 *ngIf="league.id">"{{league.name}}"</h2>
 
-    <p>
-        <button (click)="cancel()">Cancelar</button>
-        <button (click)="save()">Crear Liga</button>
-    </p>
-</div>
+        <div>
+            <h3>Nombre: </h3>
+            <input [(ngModel)]="league.name" placeholder="Nombre" />
+        </div>
+        <br>
+        <label>Image: </label>
+        <img [src]="leagueImage()"><br>
+
+        <ng-template [ngIf]="league.id">
+            <br>
+            <label>Quitar imagen</label>
+            <input type='checkbox' name='removeImage' [(ngModel)]="removeImage"> 
+            <br>
+            <label for="uploadImage">Subir imagen:</label>
+            <input type="file" id="uploadImage" #uploadImage (change)="onFileSelected($event)" />
+        </ng-template>
+        <br>
+        <div>
+            <p>Nacionalidad: </p>
+            <input [(ngModel)]="league.nationality" placeholder="Nacionalidad" />
+            <p>Presidente: </p>
+            <input [(ngModel)]="league.president" placeholder="Presidente">
+        </div>
+        <br>
+        <p>
+            <button (click)="cancel()">Cancelar</button>
+            <button (click)="save()">Crear Liga</button>
+        </p>
+    </div>
+</body>

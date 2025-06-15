@@ -1,69 +1,56 @@
-<div *ngIf="team">
-    
-    <h2 *ngIf="!team.id">Nuevo Equipo</h2>
-    <h2 *ngIf="team.id">"{{team.name}}"</h2>
+<body>
+    <div class="container" *ngIf="team">
 
-    <div>
-        <label>Nombre: </label>
-        <input [(ngModel)]="team.name" placeholder="Nombre" />
-    </div>
-    <br>
-    <p>Image: </p>
-    <img [src]="teamImage()"><br>
+        <h2 *ngIf="!team.id">Nuevo Equipo</h2>
+        <h2 *ngIf="team.id">"{{team.name}}"</h2>
 
-    <ng-template [ngIf]="team.id">
-        <br><input type='checkbox' name='removeImage' [(ngModel)]="removeImage"> <label>Quitar imagen</label><br>
+        <div>
+            <h3>Nombre: </h3>
+            <input [(ngModel)]="team.name" placeholder="Nombre" />
+        </div>
+        <br>
+        <label>Image: </label>
+        <img [src]="teamImage()"><br>
 
-        <label>Subir imágen: </label><br>  
-    </ng-template>
-    <br>    
-    <div>
-        <label>Trofeos: </label>
-        <input [(ngModel)]="team.trophies" placeholder="Trofeos" />
-    </div>
-    <br>
-    <div>
-        <label>Nacionalidad: </label>
-        <input [(ngModel)]="team.nationality" placeholder="Nacionalidad" />
-    </div>
-    <br>
-    <div>
-        <label>Entrenador: </label>
-        <input [(ngModel)]="team.trainer" placeholder="Entrenador" />
-    </div>
-    <br>
-    <div>
-        <label>Segundo Entrenador: </label>
-        <input [(ngModel)]="team.secondTrainer" placeholder="Segundo Entrenador" />
-    </div>
-    <br>
-    <div>
-        <label>Presidente: </label>
-        <input [(ngModel)]="team.president" placeholder="Entrenador">
-    </div>
-    <br>
-    <div>
-        <label>Estadio: </label>
-        <input [(ngModel)]="team.stadium" placeholder="Estadio" />
-    </div>
-    <br>
-    <div>
-        <label>Puntos: </label>
-        <input [(ngModel)]="team.points" placeholder="Puntos" />
-    </div>
-    <br>
-    <label>
-        Liga:
-        <select [(ngModel)]="team.league" name="leagueName" required>
-          <option *ngFor="let league of leagues" [value]="league.name">
-            {{ league.name }}
-          </option>
-        </select>
-      </label>
-      <br />
+        <ng-template [ngIf]="team.id">
+            <br>
+            <label>Quitar imagen</label>
+            <input type='checkbox' name='removeImage' [(ngModel)]="removeImage">
+            <br>
+            <label for="uploadImage">Subir imagen:</label>
+            <input type="file" id="uploadImage" #uploadImage (change)="onFileSelected($event)" />
+        </ng-template>
+        <br>
+        <div>
+            <p>Trofeos: </p>
+            <input [(ngModel)]="team.trophies" placeholder="Trofeos" />
+            <p>Nacionalidad: </p>
+            <input [(ngModel)]="team.nationality" placeholder="Nacionalidad" />
+            <p>Entrenador: </p>
+            <input [(ngModel)]="team.trainer" placeholder="Entrenador" />
+            <p>Segundo Entrenador: </p>
+            <input [(ngModel)]="team.secondTrainer" placeholder="Segundo Entrenador" />
+            <p>Presidente: </p>
+            <input [(ngModel)]="team.president" placeholder="Entrenador">
+            <p>Estadio: </p>
+            <input [(ngModel)]="team.stadium" placeholder="Estadio" />
+            <p>Puntos: </p>
+            <input [(ngModel)]="team.points" placeholder="Puntos" />
+        </div>
 
-    <p>
-        <button (click)="cancel()">Cancel</button>
-        <button (click)="save()">Save</button>
-    </p>
-</div>
+        <label>
+            <h3>Liga:</h3>
+            <select [(ngModel)]="team.league" name="leagueName" required>
+                <option *ngFor="let league of leagues" [value]="league.name">
+                    {{ league.name }}
+                </option>
+            </select>
+        </label>
+
+
+        <p>
+            <button (click)="cancel()">Cancel</button>
+            <button (click)="save()">Save</button>
+        </p>
+    </div>
+</body>

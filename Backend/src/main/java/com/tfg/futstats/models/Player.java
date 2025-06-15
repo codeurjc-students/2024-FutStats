@@ -1,7 +1,12 @@
 package com.tfg.futstats.models;
 
+// region imports
 import java.sql.Blob;
+import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tfg.futstats.controllers.dtos.player.PlayerDTO;
@@ -16,37 +21,44 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotNull;
+//endregion
 
 //As we want that this class be kept in the database we have to put this notation
 @Entity
 public class Player {
+
+    // region Attributes
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Auto generated ID
     private Long id;
 
     // player info
-     @Column(unique = true)
+    @Column(unique = true)
+    @NotNull
     private String name;
     private int age;
     private String nationality;
     private String position;
 
     @Lob
-	@JsonIgnore
-	private Blob imageFile;
+    @JsonIgnore
+    private Blob imageFile;
 
-	private boolean image;
+    private boolean image;
 
     // Realtions with other models in DB
     @ManyToOne
     @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private League league;
 
     @ManyToOne
     @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Team team;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<PlayerMatch> playerMatches;
 
@@ -88,7 +100,7 @@ public class Player {
     private int centers;
     private int ballLosses;
 
-    //Goalkeeper
+    // Goalkeeper
     private int shootsReceived;
     private int goalsConceded;
     private float goalsReceivedPerMatch;
@@ -96,10 +108,12 @@ public class Player {
     private float savesAvg;
     private int outBoxSaves;
     private int inBoxSaves;
+    // endregion
 
-    // Constructors
+    // region Constructors
     public Player() {
-
+        this.playerMatches = new ArrayList<PlayerMatch>();
+        this.users = new ArrayList<User>();
     }
 
     public Player(League league,
@@ -109,8 +123,7 @@ public class Player {
             String nationality,
             String position,
             Blob imageFile,
-            boolean image
-            ) {
+            boolean image) {
         this.league = league;
         this.team = team;
         this.name = name;
@@ -119,6 +132,8 @@ public class Player {
         this.image = image;
         this.nationality = nationality;
         this.position = position;
+        this.playerMatches = new ArrayList<PlayerMatch>();
+        this.users = new ArrayList<User>();
     }
 
     public Player(PlayerDTO player) {
@@ -128,8 +143,9 @@ public class Player {
         this.position = player.getPosition();
         this.image = player.getImage();
     }
+    // endregion
 
-    // Getters & Setters
+    // region Getters & Setters
     // ------------------------------------ LEAGUE
     // -------------------------------------
     public League getLeague() {
@@ -166,7 +182,7 @@ public class Player {
         this.team = null;
     }
 
-    // ------------------------------------ PLAYER MATCH   
+    // ------------------------------------ PLAYER MATCH
     // ------------------------------------
     public List<PlayerMatch> getPlayerMatches() {
         return this.playerMatches;
@@ -180,7 +196,7 @@ public class Player {
         this.playerMatches = playerMatches;
     }
 
-    public void deletePlayerMatch(PlayerMatch playerMatch){
+    public void deletePlayerMatch(PlayerMatch playerMatch) {
         this.playerMatches.remove(playerMatch);
     }
 
@@ -188,7 +204,7 @@ public class Player {
         this.playerMatches = null;
     }
 
-    // --------------------------------------- USER 
+    // --------------------------------------- USER
     public List<User> getUsers() {
         return this.users;
     }
@@ -211,7 +227,7 @@ public class Player {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -239,29 +255,29 @@ public class Player {
         this.nationality = nationality;
     }
 
-    public String getPosition(){
+    public String getPosition() {
         return position;
     }
 
-    public void setPosition(String position){
+    public void setPosition(String position) {
         this.position = position;
     }
 
     public Blob getImageFile() {
-		return imageFile;
-	}
+        return imageFile;
+    }
 
-	public void setImageFile(Blob image) {
-		this.imageFile = image;
-	}
+    public void setImageFile(Blob image) {
+        this.imageFile = image;
+    }
 
-	public boolean getImage() {
-		return this.image;
-	}
+    public boolean getImage() {
+        return this.image;
+    }
 
-	public void setImage(boolean image) {
-		this.image = image;
-	}
+    public void setImage(boolean image) {
+        this.image = image;
+    }
 
     public int getTotalMatches() {
         return totalMatches;
@@ -295,7 +311,8 @@ public class Player {
         return shootsPerMatch;
     }
 
-    // As it is an average it only needs a getter it doesn´t need to be setted because
+    // As it is an average it only needs a getter it doesn´t need to be setted
+    // because
     // it`s calculated from other stadistics.
 
     public float getGoalsPerMatch() {
@@ -306,7 +323,8 @@ public class Player {
         return goalsPerMatch;
     }
 
-    // As it is an average it only needs a getter it doesn´t need to be setted because
+    // As it is an average it only needs a getter it doesn´t need to be setted
+    // because
     // it`s calculated from other stadistics.
 
     public float getScoreAvg() {
@@ -317,7 +335,8 @@ public class Player {
         return scoreAvg;
     }
 
-    // As it is an average it only needs a getter it doesn´t need to be setted because
+    // As it is an average it only needs a getter it doesn´t need to be setted
+    // because
     // it`s calculated from other stadistics.
 
     public int getPenaltys() {
@@ -384,7 +403,8 @@ public class Player {
         return duelAvg;
     }
 
-    // As it is an average it only needs a getter it doesn´t need to be setted because
+    // As it is an average it only needs a getter it doesn´t need to be setted
+    // because
     // it`s calculated from other stadistics.
 
     public int getCards() {
@@ -424,7 +444,8 @@ public class Player {
         return passesPerMatch;
     }
 
-    // As it is an average it only needs a getter it doesn´t need to be setted because
+    // As it is an average it only needs a getter it doesn´t need to be setted
+    // because
     // it`s calculated from other stadistics.
 
     public int getGoodPasses() {
@@ -443,7 +464,8 @@ public class Player {
         return passesAvg;
     }
 
-    // As it is an average it only needs a getter it doesn´t need to be setted because
+    // As it is an average it only needs a getter it doesn´t need to be setted
+    // because
     // it`s calculated from other stadistics.
 
     public int getShortPasses() {
@@ -494,19 +516,19 @@ public class Player {
         this.ballLosses = ballLosses;
     }
 
-    public int getShootsReceived(){
+    public int getShootsReceived() {
         return shootsReceived;
     }
 
-    public void getShootsReceived(int shootsReceived){
+    public void getShootsReceived(int shootsReceived) {
         this.shootsReceived = shootsReceived;
     }
 
-    public int getGoalsConceded(){
+    public int getGoalsConceded() {
         return goalsConceded;
     }
 
-    public void setGoalsConceded(int goalsConceded){
+    public void setGoalsConceded(int goalsConceded) {
         this.goalsConceded = goalsConceded;
     }
 
@@ -518,35 +540,36 @@ public class Player {
         return goalsReceivedPerMatch;
     }
 
-    public int getSaves(){
+    public int getSaves() {
         return saves;
     }
 
-    public void setSaves(int saves){
+    public void setSaves(int saves) {
         this.saves = saves;
     }
 
-    public float getSavesAvg(){
-        if(shootsReceived == 0) {
+    public float getSavesAvg() {
+        if (shootsReceived == 0) {
             return 0;
         }
         savesAvg = (float) saves / shootsReceived;
         return savesAvg;
     }
 
-    public int getOutBoxSaves(){
+    public int getOutBoxSaves() {
         return outBoxSaves;
     }
 
-    public void setOutBoxSaves(int outBoxSaves){
+    public void setOutBoxSaves(int outBoxSaves) {
         this.outBoxSaves = outBoxSaves;
     }
 
-    public int getInBoxSaves(){
+    public int getInBoxSaves() {
         return inBoxSaves;
     }
 
-    public void setInBoxSaves(int inBoxSaves){
+    public void setInBoxSaves(int inBoxSaves) {
         this.inBoxSaves = inBoxSaves;
     }
+    // endregion
 }

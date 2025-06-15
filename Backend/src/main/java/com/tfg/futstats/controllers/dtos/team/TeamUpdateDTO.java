@@ -1,7 +1,8 @@
 package com.tfg.futstats.controllers.dtos.team;
 
 public class TeamUpdateDTO {
-    // dto attributes
+
+    // region attributes
     private long id;
     private String name;
     public String league;
@@ -12,8 +13,14 @@ public class TeamUpdateDTO {
     private String president;
     private String stadium;
     private boolean image;
+    // endregion
 
-    // Getters & setters
+    // region Constructors
+    public TeamUpdateDTO() {
+    }
+    // endregion
+
+    // region Getters & setters
     public long getId() {
         return id;
     }
@@ -30,11 +37,11 @@ public class TeamUpdateDTO {
         this.name = name;
     }
 
-    public void setLeague(String league){
+    public void setLeague(String league) {
         this.league = league;
     }
 
-    public String getLeague(){
+    public String getLeague() {
         return this.league;
     }
 
@@ -86,11 +93,12 @@ public class TeamUpdateDTO {
         this.stadium = stadium;
     }
 
-	public boolean getImage() {
-		return this.image;
-	}
+    public boolean getImage() {
+        return this.image;
+    }
 
-	public void setImage(boolean image) {
-		this.image = image;
-	}
+    public void setImage(boolean image) {
+        this.image = image;
+    }
+    // endregion
 }

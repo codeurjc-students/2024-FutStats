@@ -2,9 +2,11 @@
   text-align: center;
   padding: 50px;
   font-family: Arial, sans-serif;
-  background: url('src/assets/403-background.jpg') no-repeat center center;
-  background-size: contain; /* Ajusta la imagen al tamaño del contenedor sin deformarla */
-  background-position: center; /* Asegura que la imagen esté centrada */
+  background: url('src/assets/401-background.webp') no-repeat center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
   color: white;
   min-height: 100vh;
   display: flex;
@@ -17,36 +19,35 @@
 .title {
   font-size: 48px;
   margin-bottom: 10px;
-  color: #ffeb3b; /* Un amarillo brillante que resalta sobre el fondo */
+  color: #ffeb3b;
   text-transform: uppercase;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Agrega sombra para mejor legibilidad */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
 }
 
 .message {
   font-size: 20px;
   margin-bottom: 30px;
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7); /* Mejora la legibilidad del texto */
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
 }
 
 .btn-home {
   display: inline-block;
   padding: 12px 25px;
-  background-color: rgba(33, 150, 243, 0.9); /* Fondo azul con transparencia */
+  background-color: rgba(33, 150, 243, 0.9);
   color: white;
   text-decoration: none;
   border-radius: 5px;
   transition: background-color 0.3s, transform 0.2s;
   font-size: 18px;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* Ligera sombra para el texto */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .btn-home:hover {
   background-color: rgba(25, 118, 210, 0.9);
-  transform: scale(1.1); /* Efecto de agrandamiento */
+  transform: scale(1.1);
 }
 
 .btn-home:focus {
-  outline: 2px solid #ffeb3b; /* Resalta el botón al enfocarse */
+  outline: 2px solid #ffeb3b;
   outline-offset: 2px;
 }
-

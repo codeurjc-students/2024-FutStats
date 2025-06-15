@@ -9,6 +9,7 @@ import { TeamsService } from 'src/app/services/team.service';
 
 @Component({
     templateUrl: './player-form.component.html',
+    styleUrls: ['./player-form.component.css'],
     standalone: false
 })
 export class PlayerFormComponent implements OnInit {
@@ -20,8 +21,8 @@ export class PlayerFormComponent implements OnInit {
   team: Team;
   removeImage: boolean;
 
-  @ViewChild("file")
-  file: any;
+  @ViewChild('uploadImage', { static: false })
+  fileInput: any;
 
   constructor(
     private router: Router,
@@ -53,92 +54,87 @@ export class PlayerFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadLeagues();
+    this.loadTeams();
+    this.playerImage();
   }
 
-  private loadLeagues() {
+  loadLeagues() {
     this.leagueService.getLeagues().subscribe({
       next: (leagues) => (this.leagues = leagues),
       error: (error) => console.error('Error loading leagues:', error),
     });
   }
 
-  onLeagueChange() {
-    console.log('Liga seleccionada:', this.selectedLeagueId);
-    if (this.selectedLeagueId) {
-      this.leagueService.getTeamsByName(this.selectedLeagueId).subscribe({
-        next: (teams) => {
-          console.log('Equipos cargados:', teams);
-          this.teams = teams;
-        },
-        error: (error) => console.error('Error al cargar equipos:', error),
-      });
-    } else {
-      console.log('No se seleccionó ninguna liga, limpiando equipos');
-      this.teams = [];
-    }
+  loadTeams() {
+    this.teamService.getTeams().subscribe({
+      next: (teams) => (this.teams = teams),
+      error: (error) => console.error('Error loading teams:', error),
+    });
   }
 
   save() {
     if (this.newPlayer) {
-      if (this.player.image && this.removeImage) {
+      if (this.removeImage) {
         this.player.image = false;
       }
-      this.player.league = this.selectedLeagueId;
-      this.service.addPlayer(this.player).subscribe({
-        next: (player: Player) => this.uploadImage(player),
-        error: (error) => alert('Error creating new player: ' + error),
-      });
+      this.service.addPlayer(this.player).subscribe(
+        (player: Player) => this.uploadImage(player),
+        error => alert('Error creating new player: ' + error)
+      );
     } else {
-      if (this.player.image && this.removeImage) {
+      if (this.removeImage) {
         this.player.image = false;
       }
       this.service.updatePlayer(this.player).subscribe(
-        (player: Player) => this.uploadImage(player),
-        error => alert('Error updating player: ' + error)
+        (player: Player,) => this.uploadImage(player),
+        error => alert('Error creating new player: ' + error)
       );
     }
   }
 
   uploadImage(player: Player): void {
-
-    if (this.file) {
-      const image = this.file.nativeElement.files[0];
+    if (this.fileInput) {
+      const image = this.fileInput.nativeElement.files[0];
       if (image) {
         let formData = new FormData();
         formData.append("imageFile", image);
         this.service.addImage(player, formData).subscribe(
           _ => this.afterUploadImage(player),
-          error => alert('Error uploading user image: ' + error)
+          error => alert('Error uploading player image: ' + error)
         );
       } else if (this.removeImage) {
         this.service.deleteImage(player).subscribe(
           _ => this.afterUploadImage(player),
-          error => alert('Error deleting user image: ' + error)
+          error => alert('Error deleting player image: ' + error)
         );
       }
     }
     this.afterUploadImage(player);
+  }
 
+  onFileSelected(event: any): void {
+    const fileInput = event.target.files[0];
+    if (fileInput) {
+      console.log('Archivo seleccionado:', fileInput.name);
+    }
   }
 
   private afterUploadImage(player: Player) {
-    this.teamService.getTeamByName(this.player.team).subscribe({
-      next: (team: Team) => {
-        this.team = team;
-        this.router.navigate(['/teams', this.team.id]);
-      },
-      error: (error) => {
-        console.error('Error fetching team:', error);
-        alert('Failed to fetch league details. Please try again.');
-      },
-    });
+    if (player.id) {
+    this.service.getPlayer(player.id).subscribe({
+      next: (updatedPlayer) => {
+        this.player = updatedPlayer;
+          this.router.navigate(['/players', this.player.id]);
+        }
+      });
+    }
   }
 
   playerImage() {
-    return this.player.image ? this.service.getImage(this.player.id) : 'assets/no_image.png';
+    return this.player.image ? "api/v1/players/" + this.player.id + "/image" : 'assets/no_image.jpg';
   }
 
   cancel() {
-    window.history.back(); // Volver atrás sin guardar
+    window.history.back(); 
   }
 }

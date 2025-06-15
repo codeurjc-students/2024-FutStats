@@ -12,6 +12,7 @@ import { Chart } from 'chart.js/auto';
 
 @Component({
   templateUrl: './team-detail.component.html',
+  styleUrls: ['./team-detail.component.css'],
   standalone: false
 })
 export class TeamDetailComponent implements OnInit {
@@ -85,43 +86,50 @@ export class TeamDetailComponent implements OnInit {
   }
 
   crearGrafica(matchNames: string[], points: number[]) {
-    new Chart('pointsChart', {
-      type: 'line',
-      data: {
-        labels: matchNames,
-        datasets: [
-          {
-            label: 'Puntos por Partido',
-            data: points,
-            fill: false,
-            borderColor: 'rgba(75, 192, 192, 1)',
-            tension: 0.2, // Suaviza las líneas
-            pointBackgroundColor: 'rgba(75, 192, 192, 1)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(75, 192, 192, 1)',
+    setTimeout(() => {
+      const chartElement = document.getElementById('pointsChart') as HTMLCanvasElement;
+      if (!chartElement) {
+        console.error('Canvas element not found');
+        return;
+      }
+      new Chart(chartElement, {
+        type: 'line',
+        data: {
+          labels: matchNames,
+          datasets: [
+            {
+              label: 'Puntos por Partido',
+              data: points,
+              fill: false,
+              borderColor: 'rgba(75, 192, 192, 1)',
+              tension: 0.2,
+              pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+              pointBorderColor: '#fff',
+              pointHoverBackgroundColor: '#fff',
+              pointHoverBorderColor: 'rgba(75, 192, 192, 1)',
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
           },
-        ],
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+            },
           },
         },
-        plugins: {
-          legend: {
-            display: true,
-            position: 'top',
-          },
-        },
-      },
-    });
+      });
+    }, 0);
   }
 
   teamImage() {
-    return this.team.image ? this.service.getImage(this.team.id) : 'assets/no_image.jpg';
+    return this.team.image ? "api/v1/teams/" + this.team.id + "/image" : 'assets/no_image.jpg';
   }
 
   createPlayer(): void {

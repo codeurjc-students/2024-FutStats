@@ -1,13 +1,14 @@
 package com.tfg.futstats.services;
 
+// region imports
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tfg.futstats.controllers.dtos.league.LeagueDTO;
 import com.tfg.futstats.controllers.dtos.player.PlayerDTO;
-import com.tfg.futstats.controllers.dtos.player.PlayerResponseDTO;
 import com.tfg.futstats.controllers.dtos.player.PlayerMatchDTO;
+import com.tfg.futstats.controllers.dtos.player.PlayerResponseDTO;
 import com.tfg.futstats.controllers.dtos.team.TeamResponseDTO;
 import com.tfg.futstats.controllers.dtos.team.TeamUpdateDTO;
 import com.tfg.futstats.controllers.dtos.team.TeamMatchDTO;
@@ -26,11 +27,11 @@ import com.tfg.futstats.repositories.TeamRepository;
 import com.tfg.futstats.repositories.UserRepository;
 import com.tfg.futstats.repositories.MatchRepository;
 import com.tfg.futstats.repositories.PlayerMatchRepository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.ArrayList;
 import java.util.List;
+//endregion
 
 @Service
 public class RestService {
@@ -56,7 +57,7 @@ public class RestService {
     @Autowired
     UserRepository userRepository;
 
-    // --------------------------------------- LEAGUE CRUD OPERATIONS
+    // region LEAGUE CRUD OPERATIONS
     public List<LeagueDTO> findAllLeagues() {
         List<League> leagues = leagueRepository.findAll();
 
@@ -91,36 +92,43 @@ public class RestService {
             league.getUsers().clear();
         }
 
+        List<Player> players = playerRepository.findByLeagueId(league.getId());
+        for (Player player : players) {
+            league.deletePlayer(player);
+            playerRepository.delete(player);
+        }
+
+        List<Match> matches = matchRepository.findByLeagueId(league.getId());
+        for (Match match : matches) {
+            league.deleteMatch(match);
+            matchRepository.delete(match);
+        }
+
         List<Team> teams = teamRepository.findByLeagueId(league.getId());
         for (Team team : teams) {
-            deleteTeam(team);
+            league.deleteTeam(team);
+            teamRepository.delete(team);
         }
 
         leagueRepository.delete(league);
     }
 
-    public void updateLeague(League oldLeague, League newLeague, LeagueDTO leagueDto) {
+    public void updateLeague(League league, LeagueDTO leagueDto) {
         // If the admin has not intruduced any data, it will get
         // the data from the unmodified league
         if (leagueDto.getName() != null) {
-            newLeague.setName(oldLeague.getName());
+            league.setName(leagueDto.getName());
         }
         if (leagueDto.getPresident() != null) {
-            newLeague.setPresident(oldLeague.getPresident());
+            league.setPresident(leagueDto.getPresident());
         }
         if (leagueDto.getNationality() != null) {
-            newLeague.setNationality(oldLeague.getNationality());
+            league.setNationality(leagueDto.getNationality());
         }
 
-        newLeague.setTeams(oldLeague.getTeams());
-        newLeague.setMatches(oldLeague.getMatches());
-        newLeague.setPlayers(oldLeague.getPlayers());
-        newLeague.setUsers(oldLeague.getUsers());
-
-        leagueRepository.save(newLeague);
+        leagueRepository.save(league);
     }
 
-    @Transactional
     public List<LeagueDTO> findLeaguesByUser(User u) {
         List<League> leagues = leagueRepository.findAllByUsers(u);
 
@@ -128,11 +136,11 @@ public class RestService {
                 .map(league -> new LeagueDTO(league))
                 .toList();
     }
+    // endregion
 
-    // --------------------------------------- TEAM CRUD OPERATIONS
+    // region TEAM CRUD OPERATIONS
     public List<TeamResponseDTO> findAllTeams() {
         List<Team> teams = teamRepository.findAll();
-
         return teams.stream()
                 .map(team -> new TeamResponseDTO(team))
                 .toList();
@@ -166,23 +174,24 @@ public class RestService {
         teamRepository.save(team);
     }
 
-    public void createTeam(Team team, League league) {
+    public Team createTeam(Team team, League league) {
         team.setLeague(league);
         league.setTeam(team);
         teamRepository.save(team);
+        return team;
     }
 
-    @Transactional
     public void deleteTeam(Team team) {
         // Eliminar PlayerMatch relacionado
         List<Player> players = playerRepository.findByTeamId(team.getId());
         for (Player player : players) {
-            deletePlayer(player);
+            team.deletePlayer(player);
+            playerRepository.delete(player);
         }
 
         List<Match> matches = matchRepository.findAllByTeam(team.getId());
         for (Match match : matches) {
-            deleteMatch(match);
+            matchRepository.delete(match);
         }
 
         if (team.getUsers() != null) {
@@ -275,8 +284,16 @@ public class RestService {
 
     }
 
-    public void createTeamMatch(Match match, Team team) {
-        TeamMatch teamMatch = new TeamMatch();
+    public void saveTeamMatch(TeamMatch teamMatch) {
+        teamMatchRepository.save(teamMatch);
+    }
+
+    public Optional<TeamMatch> findTeamMatchById(long id) {
+        return teamMatchRepository.findById(id);
+    }
+
+    public void createTeamMatch(TeamMatch teamMatch, Match match, Team team) {
+
         teamMatch.setMatch(match);
         teamMatch.setTeam(team);
         teamMatch.setName(team.getName());
@@ -287,8 +304,6 @@ public class RestService {
 
         team.setTeamMatch(teamMatch);
         match.setTeamMatch(teamMatch);
-
-        
     }
 
     public List<TeamMatchDTO> findAllTeamMatchesByTeam(long id) {
@@ -300,37 +315,42 @@ public class RestService {
     }
 
     public void deleteTeamMatch(TeamMatch teamMatch, Match match, Team team) {
+        if (team != null) {
+            team.deleteTeamMatch(teamMatch);
+            teamMatch.setTeam(null);
+        }
 
-        teamMatch.setMatch(null);
-        teamMatch.setTeam(null);
-
-        match.deleteTeamMatch(teamMatch);
-        team.deleteTeamMatch(teamMatch);
-
-        matchRepository.save(match);
-        teamRepository.save(team);
+        if (match != null) {
+            match.deleteTeamMatch(teamMatch);
+            teamMatch.setMatch(null);
+        }
 
         teamMatchRepository.delete(teamMatch);
+
+        updateTeamInfo(team);
     }
 
     public void updateTeamMatch(Match match, Team team) {
-        
-        TeamMatch TeamMatch = teamMatchRepository.findByMatchAndTeamId(match.getId(), team.getId());
 
-        if(matchRepository.findWinnerByTeam(match.getId(), team.getId()) == team.getId())
-            TeamMatch.setPoints(3);
-        else if(matchRepository.findDrawByTeam(match.getId(), team.getId()) == team.getId())
-            TeamMatch.setPoints(1);
-        else
-            TeamMatch.setPoints(0);
+        TeamMatch teamMatch = teamMatchRepository.findByMatchAndTeamId(match.getId(), team.getId());
 
-        teamMatchRepository.save(TeamMatch);
+        if (teamMatch != null) {
+            if (matchRepository.findWinnerByTeam(match.getId(), team.getId()) == team.getId())
+                teamMatch.setPoints(3);
+            else if (matchRepository.findDrawByTeam(match.getId(), team.getId()) == team.getId())
+                teamMatch.setPoints(1);
+            else
+                teamMatch.setPoints(0);
+
+            teamMatchRepository.save(teamMatch);
+        }
+
     }
+    // endregion
 
-    // --------------------------------------- PLAYER CRUD OPERATIONS
+    // region PLAYER CRUD OPERATIONS
     public List<PlayerResponseDTO> findAllPlayers() {
         List<Player> players = playerRepository.findAll();
-
         return players.stream()
                 .map(player -> new PlayerResponseDTO(player))
                 .toList();
@@ -388,7 +408,7 @@ public class RestService {
         playerRepository.save(player);
     }
 
-    public void createPlayer(Player player, League league, Team team) {
+    public Player createPlayer(Player player, League league, Team team) {
         league.setPlayer(player);
         team.setPlayer(player);
 
@@ -396,6 +416,8 @@ public class RestService {
         player.setTeam(team);
 
         playerRepository.save(player);
+
+        return player;
     }
 
     public void createPlayerMatch(PlayerMatch newPlayerMatch, Match match, Player player) {
@@ -408,14 +430,32 @@ public class RestService {
         match.setPlayerMatch(newPlayerMatch);
 
         playerMatchRepository.save(newPlayerMatch);
+
         updatePlayerInfo(player);
         updateMatchInfo(match);
     }
 
-    @Transactional
+    public void savePlayerMatch(PlayerMatch playerMatch, Match match, Player player) {
+        playerMatch.setMatch(match);
+        playerMatch.setPlayer(player);
+        playerMatch.setName(player.getName());
+        playerMatch.setMatchName(match.getName());
+
+        playerMatchRepository.save(playerMatch);
+    }
+
     public void deletePlayer(Player player) {
-        List<PlayerMatch> playerMatches = playerMatchRepository.findByPlayerId(player.getId());
-        playerMatchRepository.deleteAll(playerMatches);
+        if (player.getTeam() != null) {
+            Team team = player.getTeam();
+            player.setTeam(null);
+            team.deletePlayer(player);
+        }
+
+        if (player.getLeague() != null) {
+            League league = player.getLeague();
+            player.setLeague(null);
+            league.deletePlayer(player);
+        }
 
         if (player.getUsers() != null) {
             List<User> usersToRemove = new ArrayList<>(player.getUsers());
@@ -532,104 +572,98 @@ public class RestService {
 
     }
 
-    public void updatePlayerMatch(PlayerMatch oldPlayerMatch, PlayerMatch newPlayerMatch, PlayerMatchDTO playerMatchDto,
-            Match match, Player player) {
-        newPlayerMatch.setId(oldPlayerMatch.getId());
-        newPlayerMatch.setName(oldPlayerMatch.getName());
-        newPlayerMatch.setMatchName(oldPlayerMatch.getMatchName());
+    public void updatePlayerMatch(PlayerMatch oldPlayerMatch, PlayerMatchDTO playerMatchDto, Match match,
+            Player player) {
 
-        if (playerMatchDto.getShoots() == 0) {
-            newPlayerMatch.setShoots(oldPlayerMatch.getShoots());
+        if (playerMatchDto.getShoots() != 0) {
+            oldPlayerMatch.setShoots(playerMatchDto.getShoots());
         }
-        if (playerMatchDto.getGoals() == 0) {
-            newPlayerMatch.setGoals(oldPlayerMatch.getGoals());
+        if (playerMatchDto.getGoals() != 0) {
+            oldPlayerMatch.setGoals(playerMatchDto.getGoals());
         }
-        if (playerMatchDto.getPenaltys() == 0) {
-            newPlayerMatch.setPenaltys(oldPlayerMatch.getPenaltys());
+        if (playerMatchDto.getPenaltys() != 0) {
+            oldPlayerMatch.setPenaltys(playerMatchDto.getPenaltys());
         }
-        if (playerMatchDto.getFaultsReceived() == 0) {
-            newPlayerMatch.setFaultsReceived(oldPlayerMatch.getFaultsReceived());
+        if (playerMatchDto.getFaultsReceived() != 0) {
+            oldPlayerMatch.setFaultsReceived(playerMatchDto.getFaultsReceived());
         }
-        if (playerMatchDto.getOffsides() == 0) {
-            newPlayerMatch.setOffsides(oldPlayerMatch.getOffsides());
+        if (playerMatchDto.getOffsides() != 0) {
+            oldPlayerMatch.setOffsides(playerMatchDto.getOffsides());
         }
-        if (playerMatchDto.getFaultsReceived() == 0) {
-            newPlayerMatch.setFaultsReceived(oldPlayerMatch.getFaultsReceived());
+        if (playerMatchDto.getFaultsReceived() != 0) {
+            oldPlayerMatch.setFaultsReceived(playerMatchDto.getFaultsReceived());
         }
-        if (playerMatchDto.getCommitedFaults() == 0) {
-            newPlayerMatch.setCommitedFaults(oldPlayerMatch.getCommitedFaults());
+        if (playerMatchDto.getCommitedFaults() != 0) {
+            oldPlayerMatch.setCommitedFaults(playerMatchDto.getCommitedFaults());
         }
-        if (playerMatchDto.getRecovers() == 0) {
-            newPlayerMatch.setRecovers(oldPlayerMatch.getRecovers());
+        if (playerMatchDto.getRecovers() != 0) {
+            oldPlayerMatch.setRecovers(playerMatchDto.getRecovers());
         }
-        if (playerMatchDto.getFaultsReceived() == 0) {
-            newPlayerMatch.setFaultsReceived(oldPlayerMatch.getFaultsReceived());
+        if (playerMatchDto.getFaultsReceived() != 0) {
+            oldPlayerMatch.setFaultsReceived(playerMatchDto.getFaultsReceived());
         }
-        if (playerMatchDto.getFaultsReceived() == 0) {
-            newPlayerMatch.setFaultsReceived(oldPlayerMatch.getFaultsReceived());
+        if (playerMatchDto.getFaultsReceived() != 0) {
+            oldPlayerMatch.setFaultsReceived(playerMatchDto.getFaultsReceived());
         }
-        if (playerMatchDto.getDuels() == 0) {
-            newPlayerMatch.setDuels(oldPlayerMatch.getDuels());
+        if (playerMatchDto.getDuels() != 0) {
+            oldPlayerMatch.setDuels(playerMatchDto.getDuels());
         }
-        if (playerMatchDto.getWonDuels() == 0) {
-            newPlayerMatch.setWonDuels(oldPlayerMatch.getWonDuels());
+        if (playerMatchDto.getWonDuels() != 0) {
+            oldPlayerMatch.setWonDuels(playerMatchDto.getWonDuels());
         }
-        if (playerMatchDto.getYellowCards() == 0) {
-            newPlayerMatch.setYellowCards(oldPlayerMatch.getYellowCards());
+        if (playerMatchDto.getYellowCards() != 0) {
+            oldPlayerMatch.setYellowCards(playerMatchDto.getYellowCards());
         }
-        if (playerMatchDto.getRedCards() == 0) {
-            newPlayerMatch.setRedCards(oldPlayerMatch.getRedCards());
+        if (playerMatchDto.getRedCards() != 0) {
+            oldPlayerMatch.setRedCards(playerMatchDto.getRedCards());
         }
-        if (playerMatchDto.getPasses() == 0) {
-            newPlayerMatch.setPasses(oldPlayerMatch.getPasses());
+        if (playerMatchDto.getPasses() != 0) {
+            oldPlayerMatch.setPasses(playerMatchDto.getPasses());
         }
-        if (playerMatchDto.getGoodPasses() == 0) {
-            newPlayerMatch.setGoodPasses(oldPlayerMatch.getGoodPasses());
+        if (playerMatchDto.getGoodPasses() != 0) {
+            oldPlayerMatch.setGoodPasses(playerMatchDto.getGoodPasses());
         }
-        if (playerMatchDto.getShortPasses() == 0) {
-            newPlayerMatch.setShortPasses(oldPlayerMatch.getShortPasses());
+        if (playerMatchDto.getShortPasses() != 0) {
+            oldPlayerMatch.setShortPasses(playerMatchDto.getShortPasses());
         }
-        if (playerMatchDto.getLongPasses() == 0) {
-            newPlayerMatch.setLongPasses(oldPlayerMatch.getLongPasses());
+        if (playerMatchDto.getLongPasses() != 0) {
+            oldPlayerMatch.setLongPasses(playerMatchDto.getLongPasses());
         }
-        if (playerMatchDto.getAssists() == 0) {
-            newPlayerMatch.setAssists(oldPlayerMatch.getAssists());
+        if (playerMatchDto.getAssists() != 0) {
+            oldPlayerMatch.setAssists(playerMatchDto.getAssists());
         }
-        if (playerMatchDto.getDribles() == 0) {
-            newPlayerMatch.setDribles(oldPlayerMatch.getDribles());
+        if (playerMatchDto.getDribles() != 0) {
+            oldPlayerMatch.setDribles(playerMatchDto.getDribles());
         }
-        if (playerMatchDto.getCenters() == 0) {
-            newPlayerMatch.setCenters(oldPlayerMatch.getCenters());
+        if (playerMatchDto.getCenters() != 0) {
+            oldPlayerMatch.setCenters(playerMatchDto.getCenters());
         }
-        if (playerMatchDto.getBallLosses() == 0) {
-            newPlayerMatch.setBallLosses(oldPlayerMatch.getBallLosses());
+        if (playerMatchDto.getBallLosses() != 0) {
+            oldPlayerMatch.setBallLosses(playerMatchDto.getBallLosses());
         }
-        if (playerMatchDto.getShootsReceived() == 0) {
-            newPlayerMatch.setShootsReceived(oldPlayerMatch.getShootsReceived());
+        if (playerMatchDto.getShootsReceived() != 0) {
+            oldPlayerMatch.setShootsReceived(playerMatchDto.getShootsReceived());
         }
-        if (playerMatchDto.getGoalsConceded() == 0) {
-            newPlayerMatch.setGoalsConceded(oldPlayerMatch.getGoalsConceded());
+        if (playerMatchDto.getGoalsConceded() != 0) {
+            oldPlayerMatch.setGoalsConceded(playerMatchDto.getGoalsConceded());
         }
-        if (playerMatchDto.getGoalsConceded() == 0) {
-            newPlayerMatch.setGoalsConceded(oldPlayerMatch.getGoalsConceded());
+        if (playerMatchDto.getGoalsConceded() != 0) {
+            oldPlayerMatch.setGoalsConceded(playerMatchDto.getGoalsConceded());
         }
-        if (playerMatchDto.getSaves() == 0) {
-            newPlayerMatch.setSaves(oldPlayerMatch.getSaves());
+        if (playerMatchDto.getSaves() != 0) {
+            oldPlayerMatch.setSaves(playerMatchDto.getSaves());
         }
-        if (playerMatchDto.getGoalsConceded() == 0) {
-            newPlayerMatch.setGoalsConceded(oldPlayerMatch.getGoalsConceded());
+        if (playerMatchDto.getGoalsConceded() != 0) {
+            oldPlayerMatch.setGoalsConceded(playerMatchDto.getGoalsConceded());
         }
-        if (playerMatchDto.getOutBoxSaves() == 0) {
-            newPlayerMatch.setOutBoxSaves(oldPlayerMatch.getOutBoxSaves());
+        if (playerMatchDto.getOutBoxSaves() != 0) {
+            oldPlayerMatch.setOutBoxSaves(playerMatchDto.getOutBoxSaves());
         }
-        if (playerMatchDto.getInBoxSaves() == 0) {
-            newPlayerMatch.setInBoxSaves(oldPlayerMatch.getInBoxSaves());
+        if (playerMatchDto.getInBoxSaves() != 0) {
+            oldPlayerMatch.setInBoxSaves(playerMatchDto.getInBoxSaves());
         }
 
-        newPlayerMatch.setMatch(oldPlayerMatch.getMatch());
-        newPlayerMatch.setPlayer(oldPlayerMatch.getPlayer());
-
-        playerMatchRepository.save(newPlayerMatch);
+        playerMatchRepository.save(oldPlayerMatch);
 
         updatePlayerInfo(player);
         updateMatchInfo(match);
@@ -661,8 +695,9 @@ public class RestService {
 
         playerRepository.save(player);
     }
+    // endregion
 
-    // --------------------------------------- MATCH CRUD OPERATIONS
+    // region MATCH CRUD OPERATIONS
     public List<MatchDTO> findAllMatches() {
         List<Match> matches = matchRepository.findAll();
 
@@ -699,7 +734,8 @@ public class RestService {
         matchRepository.save(match);
     }
 
-    public void createMatch(Match newMatch, League league, Team team1, Team team2) {
+    public Match createMatch(Match newMatch, League league, Team team1, Team team2) {
+
         newMatch.setLeague(league);
         newMatch.setTeam1(team1);
         newMatch.setTeam2(team2);
@@ -707,10 +743,10 @@ public class RestService {
         newMatch.setPlace(team1.getStadium());
 
         league.setMatch(newMatch);
-        team1.setMatch(newMatch);
-        team2.setMatch(newMatch);
 
         matchRepository.save(newMatch);
+
+        matchRepository.flush();
 
         leagueRepository.save(league);
         teamRepository.save(team1);
@@ -719,34 +755,68 @@ public class RestService {
         updateTeamInfo(team1);
         updateTeamInfo(team2);
 
-        createTeamMatch(newMatch, team1);
-        createTeamMatch(newMatch, team2);
+        TeamMatch teamMatch1 = new TeamMatch();
+        TeamMatch teamMatch2 = new TeamMatch();
+
+        createTeamMatch(teamMatch1, newMatch, team1);
+        createTeamMatch(teamMatch2, newMatch, team2);
+
+        return newMatch;
     }
 
-    @Transactional
     public void deleteMatch(Match match) {
-
-        List<PlayerMatch> playerMatches = playerMatchRepository.findByMatchId(match.getId());
-        playerMatchRepository.deleteAll(playerMatches);
-
-        List<TeamMatch> teamMatches = teamMatchRepository.findByMatchId(match.getId());
-        teamMatchRepository.deleteAll(teamMatches);
-
-        // Eliminar Match
         matchRepository.deleteById(match.getId());
     }
 
     public void updateMatch(Match oldMatch, MatchDTO matchDto, League league, Team team1, Team team2) {
 
+        if (oldMatch == null || matchDto == null || league == null || team1 == null || team2 == null) {
+            throw new IllegalArgumentException("One or more arguments are null");
+        }
+
         oldMatch.setName(team1.getName() + '-' + team2.getName());
 
-        if (matchDto.getPlace() != null) {
-            oldMatch.setPlace(matchDto.getPlace());
+        oldMatch.setPlace(team1.getStadium());
+
+        TeamMatch teamMatch1 = teamMatchRepository.findByMatchAndTeamId(oldMatch.getId(), oldMatch.getTeam1().getId());
+        TeamMatch teamMatch2 = teamMatchRepository.findByMatchAndTeamId(oldMatch.getId(), oldMatch.getTeam2().getId());
+
+        if (teamMatch1 != null) {
+            deleteTeamMatch(teamMatch1, oldMatch, oldMatch.getTeam1());
         }
+
+        if (teamMatch2 != null) {
+            deleteTeamMatch(teamMatch2, oldMatch, oldMatch.getTeam2());
+        }
+
+        teamMatchRepository.flush();
+
+        if (teamMatchRepository.findByMatchAndTeamId(oldMatch.getId(), team1.getId()) == null) {
+            TeamMatch teamMatch3 = new TeamMatch();
+            createTeamMatch(teamMatch3, oldMatch, team1);
+        }
+
+        if (teamMatchRepository.findByMatchAndTeamId(oldMatch.getId(), team2.getId()) == null) {
+            TeamMatch teamMatch4 = new TeamMatch();
+            createTeamMatch(teamMatch4, oldMatch, team2);
+        }
+
+        teamMatchRepository.flush();
+
+        oldMatch.getLeague().deleteMatch(oldMatch);
+        Team team1Old = oldMatch.getTeam1();
+        Team team2Old = oldMatch.getTeam2();
 
         oldMatch.setLeague(league);
         oldMatch.setTeam1(team1);
         oldMatch.setTeam2(team2);
+
+        league.setMatch(oldMatch);
+
+        matchRepository.save(oldMatch);
+
+        updateTeamInfo(team1Old);
+        updateTeamInfo(team2Old);
 
         updateMatchInfo(oldMatch);
     }
@@ -804,4 +874,5 @@ public class RestService {
         updateTeamMatch(match, match.getTeam1());
         updateTeamMatch(match, match.getTeam2());
     }
+    // endregion
 }

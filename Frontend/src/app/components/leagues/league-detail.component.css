@@ -1,0 +1,189 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    background-image: url('src/assets/Backend.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    height: 100%;
+}
+
+.container {
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+h2 {
+    font-size: 1.8rem;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.items {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+.items li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    margin: 0.5rem 0;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.items li:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.items a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+
+.items a:hover {
+    color: #0056b3;
+}
+
+.team-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #555;
+    width: 100%;
+}
+
+.team-stats p {
+    margin: 0;
+    padding: 0;
+}
+
+.team-stats .header {
+    font-weight: bold;
+    color: #333;
+    grid-column: span 4;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+pagination-controls {
+    display: flex;
+    justify-content: center;
+    margin: 1.5rem 0;
+}
+
+pagination-controls button {
+    background-color: #222;
+    color: #fff;
+    border: 1px solid #222;
+    opacity: 1;
+    padding: 0.5rem 1rem;
+    margin: 0 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, opacity 0.2s;
+}
+
+pagination-controls button:hover:not(:disabled) {
+    background-color: #444;
+    color: #fff;
+}
+
+pagination-controls button:disabled {
+    background-color: #fff;
+    color: #222;
+    border: 1px solid #ccc;
+    cursor: not-allowed;
+    opacity: 1;
+}
+
+img {
+    display: block;
+    margin: 1rem auto;
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+div {
+    width: 100%;
+    margin: 1rem 0;
+    padding: 1rem;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+div p {
+    margin: 0.5rem 0;
+}
+
+p {
+    font-size: 1rem;
+    color: #333;
+    margin: 0.5rem 0;
+    line-height: 1.5;
+    text-align: center;
+}
+
+h3 {
+    font-size: 1.5rem;
+    color: #fff;
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+h4 {
+    font-size: 1.5rem;
+    color: #333;
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+button {
+    display: block;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    margin: 1rem auto;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}

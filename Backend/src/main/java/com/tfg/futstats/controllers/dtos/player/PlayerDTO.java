@@ -3,7 +3,7 @@ package com.tfg.futstats.controllers.dtos.player;
 import com.tfg.futstats.models.Player;
 
 public class PlayerDTO {
-   // dto attributes
+   // region attributes
    private long id;
    private String league;
    private String team;
@@ -12,10 +12,13 @@ public class PlayerDTO {
    private String nationality;
    private String position;
    private boolean image;
+   // endregion
 
-   public PlayerDTO(){}
+   // region Constructors
+   public PlayerDTO() {
+   }
 
-   public PlayerDTO(Player player){
+   public PlayerDTO(Player player) {
       this.id = player.getId();
       this.name = player.getName();
       this.age = player.getAge();
@@ -24,14 +27,14 @@ public class PlayerDTO {
       this.league = player.getLeague().getName();
       this.team = player.getTeam().getName();
    }
+   // endregion
 
-
-   // Getters & setters
+   // region Getters & setters
    public long getId() {
       return id;
    }
 
-   public void setId(Long id) {
+   public void setId(long id) {
       this.id = id;
    }
 
@@ -75,19 +78,20 @@ public class PlayerDTO {
       return nationality;
    }
 
-   public String getPosition(){
+   public String getPosition() {
       return position;
-  }
+   }
 
-  public void setPosition(String position){
+   public void setPosition(String position) {
       this.position = position;
-  }
+   }
 
-  public boolean getImage() {
-   return this.image;
-}
+   public boolean getImage() {
+      return this.image;
+   }
 
-public void setImage(boolean image) {
-   this.image = image;
-}
+   public void setImage(boolean image) {
+      this.image = image;
+   }
+   // endregion
 }

@@ -1,9 +1,11 @@
 package com.tfg.futstats.controllers;
 
+// region imports
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,8 +39,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+
 import java.io.IOException;
+import java.net.URI;
 import java.util.List;
+import java.sql.SQLException;
+//endregion
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -49,6 +58,10 @@ public class UserController {
 
         @Autowired
         UserService userService;
+
+        // ------------------------------- User CRUD operations
+
+        // region Get
 
         @Operation(summary = "Get all the users")
         @ApiResponses(value = {
@@ -77,14 +90,13 @@ public class UserController {
 
                 if (request.getUserPrincipal() != null) {
                         User user = userService.findUserByName(request.getUserPrincipal().getName())
-                                 .orElseThrow(() -> new ElementNotFoundException("No esta registrado"));
+                                        .orElseThrow(() -> new ElementNotFoundException("No esta registrado"));
                         if (!request.getUserPrincipal().getName().equals(user.getName())) {
                                 return ResponseEntity.badRequest().build();
-                        }
-                        else{
+                        } else {
                                 UserResponseDTO userDto = new UserResponseDTO(user);
 
-                return ResponseEntity.ok(userDto);
+                                return ResponseEntity.ok(userDto);
                         }
                 } else {
                         return ResponseEntity.badRequest().build();
@@ -104,7 +116,9 @@ public class UserController {
                 User user = userService.findUserById(id)
                                 .orElseThrow(() -> new ElementNotFoundException("No esta registrado"));
 
-                if (!request.getUserPrincipal().getName().equals(user.getName())) {
+                String name = request.getUserPrincipal().getName();
+
+                if (!userService.findUserByName(name).get().getRoles().contains("[admin]")) {
                         return ResponseEntity.badRequest().build();
                 }
 
@@ -122,16 +136,18 @@ public class UserController {
                         @ApiResponse(responseCode = "404", description = "user not found", content = @Content)
         })
         @GetMapping("/{id}/image")
-        public ResponseEntity<Blob> getImage(HttpServletRequest request, @PathVariable long id) {
+        public ResponseEntity<Object> getImage(HttpServletRequest request, @PathVariable long id) throws SQLException {
                 User user = userService.findUserById(id)
                                 .orElseThrow(() -> new ElementNotFoundException("No esta registrado"));
 
-                if (!request.getUserPrincipal().getName().equals(user.getName())) {
-                        return ResponseEntity.badRequest().build();
-                }
+                Resource file = new InputStreamResource(user.getImageFile().getBinaryStream());
 
-                return ResponseEntity.ok(user.getImageFile());
+                return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
+                                .contentLength(user.getImageFile().length()).body(file);
         }
+        // endregion
+
+        // region Post
 
         @Operation(summary = "Create an user")
         @ApiResponses(value = {
@@ -147,13 +163,19 @@ public class UserController {
 
         })
         @PostMapping("/")
-        public ResponseEntity<UserResponseDTO> postUser(HttpServletRequest request, @RequestBody UserDTO user) {
+        public ResponseEntity<UserResponseDTO> postUser(HttpServletRequest request, @RequestBody UserDTO userDto) {
 
-                UserResponseDTO userDto = new UserResponseDTO(
-                                userService.createUser(user.getName(), user.getPassword(), null, user.getImage(),
-                                                user.getRoles()));
+                User user = new User(userDto);
 
-                return ResponseEntity.ok(userDto);
+                userService.createUser(user);
+
+                UserResponseDTO newUserDto = new UserResponseDTO(user);
+
+                URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                                .buildAndExpand(newUserDto.getId())
+                                .toUri();
+
+                return ResponseEntity.created(location).body(newUserDto);
         }
 
         @Operation(summary = "Create an User image")
@@ -183,6 +205,9 @@ public class UserController {
 
                 return ResponseEntity.ok(userDto);
         }
+        // endregion
+
+        // region Put
 
         @Operation(summary = "Update an User")
         @ApiResponses(value = {
@@ -215,6 +240,9 @@ public class UserController {
                 // if the user ins`t found we will never reach this point so it is not necessary
                 // to create a not found ResponseEntity
         }
+        // endregion
+
+        // region Delete
 
         @Operation(summary = "Delete an User")
         @ApiResponses(value = {
@@ -269,6 +297,9 @@ public class UserController {
 
                 return ResponseEntity.ok(userDto);
         }
+        // endregion
+
+        // region GetLeague
 
         @Operation(summary = "Get leagues of a user")
         @ApiResponses(value = {
@@ -284,15 +315,19 @@ public class UserController {
                 User user = userService.findUserById(id)
                                 .orElseThrow(() -> new ElementNotFoundException("No existe un usuario con ese id"));
 
-                if (!request.getUserPrincipal().getName().equals(userService.findUserById(id)
-                                .orElseThrow(() -> new ElementNotFoundException("No existe un usuario con ese id"))
-                                .getName())) {
+                String name = request.getUserPrincipal().getName();
+
+                if (!name.equals(user.getName())
+                                && !userService.findUserByName(name).get().getRoles().contains("[admin]")) {
                         return ResponseEntity.badRequest().build();
                 }
                 // We can use directly the method .get() because we have already proved that the
                 // user exists
                 return ResponseEntity.ok(restService.findLeaguesByUser(user));
         }
+        // endregion
+
+        // region PutLeague
 
         @Operation(summary = "Update an User leagues")
         @ApiResponses(value = {
@@ -323,6 +358,9 @@ public class UserController {
 
                 return ResponseEntity.ok(restService.findLeaguesByUser(user));
         }
+        // endregion
+
+        // region DeleteLeague
 
         @Operation(summary = "Delete an User league")
         @ApiResponses(value = {
@@ -355,6 +393,9 @@ public class UserController {
                 // necessary
                 // to create a not found ResponseEntity
         }
+        // endregion
+
+        // region GetTeam
 
         @Operation(summary = "Get teams of a user")
         @ApiResponses(value = {
@@ -370,7 +411,10 @@ public class UserController {
                 User user = userService.findUserById(id)
                                 .orElseThrow(() -> new ElementNotFoundException("No existe un usuario con ese id"));
 
-                if (!request.getUserPrincipal().getName().equals(user.getName())) {
+                String name = request.getUserPrincipal().getName();
+
+                if (!name.equals(user.getName())
+                                && !userService.findUserByName(name).get().getRoles().contains("[admin]")) {
                         return ResponseEntity.badRequest().build();
                 }
 
@@ -378,6 +422,9 @@ public class UserController {
                 // user exists
                 return ResponseEntity.ok(restService.findTeamsByUser(user));
         }
+        // endregion
+
+        // region PutTeam
 
         @Operation(summary = "Update an User matches")
         @ApiResponses(value = {
@@ -411,6 +458,9 @@ public class UserController {
                 // if the team ins`t found we will never reach this point so it is not necessary
                 // to create a not found ResponseEntity
         }
+        // endregion
+
+        // region DeleteTeam
 
         @Operation(summary = "Delete an User team")
         @ApiResponses(value = {
@@ -442,6 +492,9 @@ public class UserController {
                 // if the team ins`t found we will never reach this point so it is not necessary
                 // to create a not found ResponseEntity
         }
+        // endregion
+
+        // region GetPlayer
 
         @Operation(summary = "Get players of a user")
         @ApiResponses(value = {
@@ -457,7 +510,10 @@ public class UserController {
                 User user = userService.findUserById(id)
                                 .orElseThrow(() -> new ElementNotFoundException("No existe un usuario con ese id"));
 
-                if (!request.getUserPrincipal().getName().equals(user.getName())) {
+                String name = request.getUserPrincipal().getName();
+
+                if (!name.equals(user.getName())
+                                && !userService.findUserByName(name).get().getRoles().contains("[admin]")) {
                         return ResponseEntity.badRequest().build();
                 }
 
@@ -465,6 +521,9 @@ public class UserController {
                 // user exists
                 return ResponseEntity.ok(restService.findPlayersByUser(user));
         }
+        // endregion
+
+        // region PutPlayer
 
         @Operation(summary = "Update an User players")
         @ApiResponses(value = {
@@ -498,6 +557,9 @@ public class UserController {
                 /// necessary
                 // to create a not found ResponseEntity
         }
+        // endregion
+
+        // region DeletePlayer
 
         @Operation(summary = "Delete an User player")
         @ApiResponses(value = {
@@ -530,4 +592,5 @@ public class UserController {
                 // necessary
                 // to create a not found ResponseEntity
         }
+        // endregion
 }

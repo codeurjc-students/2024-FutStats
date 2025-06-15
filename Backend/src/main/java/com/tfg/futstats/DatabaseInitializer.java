@@ -8,7 +8,9 @@ import org.springframework.stereotype.Component;
 import com.tfg.futstats.models.User;
 import com.tfg.futstats.models.League;
 import com.tfg.futstats.models.Player;
+import com.tfg.futstats.models.PlayerMatch;
 import com.tfg.futstats.models.Team;
+import com.tfg.futstats.models.TeamMatch;
 import com.tfg.futstats.models.Match;
 import com.tfg.futstats.repositories.UserRepository;
 import com.tfg.futstats.services.RestService;
@@ -16,6 +18,7 @@ import com.tfg.futstats.services.RestService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 
 @Component
 public class DatabaseInitializer {
@@ -29,22 +32,23 @@ public class DatabaseInitializer {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	@Transactional
 	@PostConstruct
 	void init() throws IOException {
 
-		User a = new User("admin", passwordEncoder.encode("pass"), null, false, "[user]", "[admin]");
+		User a = new User("admin", passwordEncoder.encode("pass"), "example-1@gmail.com", null, false, "[user]", "[admin]");
 		ur.save(a);
 
 		for (int i = 0; i < 10; i++) {
 
-			User u = new User("user" + i, passwordEncoder.encode("pass"), null, false, "[user]");
+			User u = new User("user" + i, passwordEncoder.encode("pasS123"), "example"+i+"@gmail.com", null, false, "[user]");
 			ur.save(u);
 
 		}
 
 		for (int i = 10; i < 20; i++) {
 
-			User u = new User("admin" + i, passwordEncoder.encode("pass"), null, false, "[admin]");
+			User u = new User("admin" + i, passwordEncoder.encode("pass"), "example"+i+"@gmail.com", null, false, "[admin]");
 			ur.save(u);
 		}
 
@@ -81,17 +85,25 @@ public class DatabaseInitializer {
 		league.setPlayer(player4);
 		barcelona.setPlayer(player4);
 
-		Match match = new Match(league, realMadrid, barcelona, realMadrid.getName() + '-' + barcelona.getName(), realMadrid.getStadium());
+		Match match = new Match(league, barcelona, realMadrid, barcelona.getName() + '-' + realMadrid.getName(), barcelona.getStadium());
 		s.saveMatch(match);
 		league.setMatch(match);
-		barcelona.setMatch(match);
-		realMadrid.setMatch(match);
 		s.updateTeamInfo(barcelona);
         s.updateTeamInfo(realMadrid);
-		s.createTeamMatch(match, barcelona);
-		s.createTeamMatch(match, realMadrid);
-
-
+		TeamMatch teamMatch1 = new TeamMatch(barcelona, match);
+		match.setTeamMatch(teamMatch1);
+		barcelona.setTeamMatch(teamMatch1);
+		TeamMatch teamMatch2 = new TeamMatch(realMadrid, match);
+		match.setTeamMatch(teamMatch2);
+		realMadrid.setTeamMatch(teamMatch2);
+		s.saveTeamMatch(teamMatch1);
+		s.saveTeamMatch(teamMatch2);
+		PlayerMatch playerMatch1 = new PlayerMatch();
+		s.savePlayerMatch(playerMatch1, match, player1);
+		PlayerMatch playerMatch2 = new PlayerMatch();
+		s.savePlayerMatch(playerMatch2, match, player2);
+		
+		
 		League league1 = new League("Premier League", "Richard Masters", "Inglesa", null, false);
 		s.saveLeague(league1);
 
@@ -125,11 +137,31 @@ public class DatabaseInitializer {
 		league1.setPlayer(player8);
 		manchesterCity.setPlayer(player8);
 
+		Match match1 = new Match(league1, manchesterUnited, manchesterCity, manchesterUnited.getName() + '-' + manchesterCity.getName(), manchesterUnited.getStadium());
+		s.saveMatch(match1);
+		league1.setMatch(match1);
+		s.updateTeamInfo(manchesterUnited);
+        s.updateTeamInfo(manchesterCity);
+		TeamMatch teamMatch3 = new TeamMatch(manchesterUnited, match1);
+		match1.setTeamMatch(teamMatch3);
+		manchesterUnited.setTeamMatch(teamMatch3);
+		TeamMatch teamMatch4 = new TeamMatch(manchesterCity, match1);
+		match1.setTeamMatch(teamMatch4);
+		manchesterCity.setTeamMatch(teamMatch4);
+		s.saveTeamMatch(teamMatch3);
+		s.saveTeamMatch(teamMatch4);
+		PlayerMatch playerMatch3 = new PlayerMatch();
+		s.savePlayerMatch(playerMatch3, match1, player5);
+		PlayerMatch playerMatch4 = new PlayerMatch();
+		s.savePlayerMatch(playerMatch4, match1, player6);
+
+		a.setLeague(league1);
+
 		League league2 = new League("Bundesliga", "Donata Hopfen", "Alemana", null, false);
 		s.saveLeague(league2);
 
 		Team bayernMunich = new Team(league2, "Bayern Munich", 83, "Germany", "Thomas Tuchel", "Arno Michels",
-				"Herbert Hainer", "Allianz Arena", null, false);
+			"Herbert Hainer", "Allianz Arena", null, false);
 		s.saveTeam(bayernMunich);
 		league2.setTeam(bayernMunich);
 
@@ -138,6 +170,8 @@ public class DatabaseInitializer {
 		s.saveTeam(borussiaDortmund);
 		league2.setTeam(borussiaDortmund);
 
+		a.setLeague(league);
+		a.setTeam(borussiaDortmund);
+		a.setPlayer(player8);
 	}
-
 }

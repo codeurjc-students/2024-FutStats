@@ -10,6 +10,7 @@ import { MatchesService } from 'src/app/services/match.service';
 
 @Component({
     templateUrl: './playerMatch-form.component.html',
+    styleUrls: ['./playerMatch-form.component.css'],
     standalone: false
 })
 export class PlayerMatchFormComponent implements OnInit {
@@ -18,6 +19,7 @@ export class PlayerMatchFormComponent implements OnInit {
   players: Player[] = [];
   matches: Match[] = [];
   match: Match;
+  id: number;
   selectedPlayerId: string;
   selectedMatchId: number;
 
@@ -28,9 +30,9 @@ export class PlayerMatchFormComponent implements OnInit {
     private playerService: PlayersService,
     private service: PlayerMatchesService
   ) {
-    const id = activatedRoute.snapshot.params['id'];
-    if (id) {
-      service.getPlayerMatch(id).subscribe(
+    this.id = activatedRoute.snapshot.params['id'];
+    if (this.id) {
+      service.getPlayerMatch(this.id).subscribe(
         playerMatch => this.playerMatch = playerMatch,
         error => console.error(error)
       );
@@ -71,7 +73,6 @@ export class PlayerMatchFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.matchService.getMatches().subscribe({
       next: (matches: Match[]) => {
         this.matches = matches;
@@ -89,29 +90,35 @@ export class PlayerMatchFormComponent implements OnInit {
 
   save() {
     if (this.newPlayerMatch) {
-      this.matchService.getMatchByName(this.playerMatch.matchName).subscribe(
-        (match: Match) => {
+      this.matchService.getMatchByName(this.playerMatch.matchName).subscribe({
+        next: (match: Match) => {
           this.match = match;
-
           this.playerMatch.match = this.match.id;
-          console.log(this.match.id);
-          console.log(this.playerMatch.match);
-          console.log(this.playerMatch);
           this.matchService.addPlayerMatch(this.playerMatch).subscribe({
             next: (playerMatch: PlayerMatch) => this.afterSave(playerMatch),
             error: (error) => alert('Error creating new player match: ' + error),
           });
-        });
+        },
+        error: (error) => alert('Error finding match: ' + error)
+      });
     } else {
-      this.service.updatePlayerMatch(this.playerMatch.match, this.playerMatch).subscribe(
-        (playerMatch: PlayerMatch) => this.afterSave(playerMatch),
-        error => alert('Error creating new league: ' + error)
-      );
+      this.service.updatePlayerMatch(this.playerMatch.match, this.playerMatch).subscribe({
+        next: (playerMatch: PlayerMatch) => this.afterSave(playerMatch),
+        error: (error) => alert('Error updating player match: ' + error)
+      });
     }
   }
 
   private afterSave(playerMatch: PlayerMatch) {
-    this.router.navigate(['/leagues']);
+    if (playerMatch && playerMatch.matchName) {
+      this.matchService.getMatchByName(playerMatch.matchName).subscribe({
+        next: (match) => {
+          if (match && match.id) {
+            this.router.navigate(['/matches', match.id]);
+          }
+        }
+      });
+    }
   }
 
   cancel() {

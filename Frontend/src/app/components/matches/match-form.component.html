@@ -1,43 +1,45 @@
-<div *ngIf="match">
-    
-  <h2 *ngIf="!match.id">Nuevo Partido</h2>
-  <h2 *ngIf="match.id">"{{match.name}}"</h2>
+<body>
+  <div class="container" *ngIf="match">
 
-  <br>
-  <label>
-      Liga:
+    <h2 *ngIf="!match.id">Nuevo Partido</h2>
+    <h2 *ngIf="match.id">"{{match.name}}"</h2>
+
+    <br>
+    <label>
+      <h3>Liga:</h3>
       <select [(ngModel)]="selectedLeagueId" (change)="onLeagueChange()">
         <option *ngFor="let league of leagues" [value]="league.name">
           {{ league.name }}
         </option>
       </select>
-  </label>
-  <br />
+    </label>
+    <br />
 
-  <br>
-  <label>
-      Equipo Local:
+    <br>
+    <label>
+      <h3>Equipo Local:</h3>
       <select [(ngModel)]="match.team1" name="teamName" required>
-          <option *ngFor="let team of teams" [value]="team.name">
-            {{ team.name }}
-          </option>
+        <option *ngFor="let team of teams" [value]="team.name">
+          {{ team.name }}
+        </option>
       </select>
-  </label>
-  <br />
+    </label>
+    <br />
 
-  <br>
-  <label>
-      Equipo Visitante:
+    <br>
+    <label>
+      <h3>Equipo Visitante:</h3>
       <select [(ngModel)]="match.team2" name="teamName" required>
-          <option *ngFor="let team of teams" [value]="team.name">
-            {{ team.name }}
-          </option>
+        <option *ngFor="let team of teams" [value]="team.name">
+          {{ team.name }}
+        </option>
       </select>
-  </label>
-  <br />
+    </label>
+    <br/>
 
-  <p>
+    <p>
       <button (click)="cancel()">Cancelar</button>
       <button (click)="save()">Crear Partido</button>
-  </p>
-</div>
+    </p>
+  </div>
+</body>

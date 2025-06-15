@@ -1,5 +1,7 @@
 package com.tfg.futstats.repositories;
 
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +12,7 @@ import com.tfg.futstats.models.Team;
 import com.tfg.futstats.models.League;
 import com.tfg.futstats.models.User;
 
+@Repository
 public interface PlayerRepository extends JpaRepository<Player, Long> {
     // Find a player by his name.
     Optional<Player> findByNameIgnoreCase(String name);
@@ -21,4 +24,6 @@ public interface PlayerRepository extends JpaRepository<Player, Long> {
     List<Player> findPlayersByTeam(Team team);
 
     List<Player> findByTeamId(Long teamId);
+
+    List<Player> findByLeagueId(Long teamId);
 }

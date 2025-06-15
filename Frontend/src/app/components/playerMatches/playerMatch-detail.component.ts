@@ -12,6 +12,7 @@ import { PlayersService } from 'src/app/services/player.service';
 
 @Component({
     templateUrl: './playerMatch-detail.component.html',
+    styleUrls: ['./playerMatch-detail.component.css'],
     standalone: false
 })
 export class PlayerMatchDetailComponent implements OnInit {
@@ -42,10 +43,22 @@ export class PlayerMatchDetailComponent implements OnInit {
                 console.error(error);
             }
         );
-        
+
+        this.service.getMatch(id).subscribe(
+            (match: Match) => {
+                this.match = match;
+                console.log(this.match);
+            },
+            (error: any) => {
+                this.errorMessage = 'Error finding match';
+                console.error(error);
+            }
+        );
+
         this.service.getPlayer(id).subscribe(
             (player: Player) => {
                 this.player = player;
+                console.log(this.player);
             },
             (error: any) => {
                 this.errorMessage = 'Error finding player';
@@ -64,15 +77,11 @@ export class PlayerMatchDetailComponent implements OnInit {
         }
     }
 
-    playerImage() {
-        return this.player.image ? this.playerService.getImage(this.player.id) : 'assets/no_image.jpg';
-      }
-
     editPlayerMatch(){
         this.router.navigate(['/playerMatch/edit', this.playerMatch.id]);
     }
 
     goBack(): void {
-        this.router.navigate(['/players', this.player.id]);
+        this.router.navigate(['/matches', this.match.id]);
     }
 }

@@ -9,6 +9,7 @@ import { League } from 'src/app/models/league.model';
 
 @Component({
     templateUrl: './match-form.component.html',
+    styleUrls: ['./match-form.component.css'],
     standalone: false
 })
 export class MatchFormComponent implements OnInit {
@@ -17,7 +18,7 @@ export class MatchFormComponent implements OnInit {
   leagues: League[] = [];
   teams: Team[] = [];
   league: League;
-  selectedLeagueId: string; // Liga seleccionada
+  selectedLeagueId: string;
 
   constructor(
     private router: Router,
@@ -46,7 +47,7 @@ export class MatchFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadLeagues(); // Cargar todas las ligas al iniciar
+    this.loadLeagues();
   }
 
   private loadLeagues() {
@@ -80,6 +81,7 @@ export class MatchFormComponent implements OnInit {
         error => alert('Error creating new league: ' + error)
       );
       }else{
+        this.match.league = this.selectedLeagueId;
         this.service.updateMatch(this.match).subscribe(
           (match: Match) => this.afterSave(match),
           error => alert('Error creating new league: ' + error)
@@ -87,11 +89,11 @@ export class MatchFormComponent implements OnInit {
       }
   }
 
-  private afterSave(match: Match) {
+  afterSave(match: Match) {
     this.leagueService.getLeagueByName(this.match.league).subscribe({
       next: (league: League) => {
         this.league = league;
-        this.router.navigate(['/leagues', this.league.id]);
+        this.router.navigate(['/matches', this.match.id]);
       },
       error: (error) => {
         console.error('Error fetching league:', error);
@@ -101,6 +103,6 @@ export class MatchFormComponent implements OnInit {
   }
 
   cancel() {
-    window.history.back(); // Volver atrás sin guardar
+    this.router.navigate(['/leagues']);
   }
 }

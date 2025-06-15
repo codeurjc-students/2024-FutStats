@@ -6,6 +6,7 @@ import { League } from './../../models/league.model';
 
 @Component({
     templateUrl: './league-form.component.html',
+    styleUrls: ['./league-form.component.css'],
     standalone: false
 })
 export class LeagueFormComponent {
@@ -15,9 +16,9 @@ export class LeagueFormComponent {
 
   removeImage: boolean;
 
-  @ViewChild("file")
-  file: any;
-
+  @ViewChild('uploadImage', { static: false })
+  fileInput: any;
+  
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -36,13 +37,18 @@ export class LeagueFormComponent {
     }
   }
 
+  ngOnInit(): void {
+    this.leagueImage();
+  }
+
+
   cancel() {
-    window.history.back();
+    this.router.navigate(['/leagues']);
   }
 
   save() {
     if (this.newLeague) {
-      if (this.league.image && this.removeImage) {
+      if (this.removeImage) {
         this.league.image = false;
       }
       this.service.addLeague(this.league).subscribe(
@@ -50,42 +56,56 @@ export class LeagueFormComponent {
         error => alert('Error creating new league: ' + error)
       );
     } else {
-      if (this.league.image && this.removeImage) {
+      if (this.removeImage) {
         this.league.image = false;
       }
       this.service.updateLeague(this.league).subscribe(
         (league: League) => this.uploadImage(league),
-        error => alert('Error creating new league: ' + error)
+        error => alert('Error updating league: ' + error)
       );
     }
   }
-
+  
   uploadImage(league: League): void {
-    if (this.file) {
-      const image = this.file.nativeElement.files[0];
-      if (image) {
+    if (this.fileInput) {
+      const file = this.fileInput.nativeElement.files[0];
+      if (file) {
         let formData = new FormData();
-        formData.append("imageFile", image);
+        formData.append('imageFile', file);
         this.service.addImage(league, formData).subscribe(
-          _ => this.afterUploadImage(league),
-          error => alert('Error uploading user image: ' + error)
+          () => this.afterUploadImage(league),
+          error => alert('Error uploading image: ' + error)
         );
       } else if (this.removeImage) {
         this.service.deleteImage(league).subscribe(
-          _ => this.afterUploadImage(league),
-          error => alert('Error deleting user image: ' + error)
+          () => this.afterUploadImage(league),
+          error => alert('Error deleting image: ' + error)
         );
       }
     }
     this.afterUploadImage(league);
-
   }
-
+  
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      console.log('Archivo seleccionado:', file.name);
+    }
+  }
+  
   leagueImage() {
-    return this.league.image ? this.service.getImage(this.league.id) : 'assets/no_image.png';
+    return this.league.image ? "api/v1/leagues/" + this.league.id + "/image" : 'assets/no_image.jpg';
   }
 
   private afterUploadImage(league: League) {
-    this.router.navigate(['/leagues', league.id]);
+    if (league.id) {
+      this.service.getLeagueById(league.id).subscribe({
+        next: (updatedLeague) => {
+          this.league = updatedLeague;
+          this.router.navigate(['/leagues', this.league.id]);
+        },
+        error: () => this.router.navigate(['/leagues'])
+      });
+    }
   }
 }

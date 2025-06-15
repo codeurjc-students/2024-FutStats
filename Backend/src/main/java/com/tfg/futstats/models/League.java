@@ -1,5 +1,6 @@
 package com.tfg.futstats.models;
 
+// region imports
 import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,25 +17,30 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Column;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotNull;
+//endregion
 
 //As we want that this class be kept in the database we have to put this notation
 @Entity
 public class League {
+
+    // region Attributes
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Auto generated ID
     private Long id;
 
     // League attributes
     @Column(unique = true)
+    @NotNull
     private String name;
     private String president;
     private String nationality;
 
     @Lob
-	@JsonIgnore
-	private Blob imageFile;
+    @JsonIgnore
+    private Blob imageFile;
 
-	private boolean image;
+    private boolean image;
 
     // Realtions with other models in DB
     @OneToMany(cascade = CascadeType.ALL)
@@ -45,16 +51,22 @@ public class League {
     @JsonIgnore
     private List<Match> matches;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JsonIgnore
     private List<Player> players;
 
     @ManyToMany(mappedBy = "belongedLeagues")
     @JsonIgnore
     private List<User> users;
+    // endregion
 
-    // Constructors
-    public League() {}
+    // region Constructors
+    public League() {
+        this.teams = new ArrayList<Team>();
+        this.matches = new ArrayList<Match>();
+        this.players = new ArrayList<Player>();
+        this.users = new ArrayList<User>();
+    }
 
     public League(String name, String president, String nationality, Blob imageFile, boolean image) {
         this.name = name;
@@ -65,17 +77,20 @@ public class League {
         this.teams = new ArrayList<Team>();
         this.matches = new ArrayList<Match>();
         this.players = new ArrayList<Player>();
+        this.users = new ArrayList<User>();
     }
 
     public League(LeagueDTO league) {
+        this.id = league.getId();
         this.name = league.getName();
         this.president = league.getPresident();
         this.nationality = league.getNationality();
         this.image = league.getImage();
     }
+    // endregion
 
-    // Getters & Setters
-    // --------------------------------------- TEAM 
+    // region Getters & Setters
+    // --------------------------------------- TEAM
     public List<Team> getTeams() {
         return this.teams;
     }
@@ -129,7 +144,7 @@ public class League {
         this.players.remove(player);
     }
 
-    // --------------------------------------- USER 
+    // --------------------------------------- USER
     public List<User> getUsers() {
         return this.users;
     }
@@ -152,7 +167,7 @@ public class League {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -181,18 +196,19 @@ public class League {
     }
 
     public Blob getImageFile() {
-		return imageFile;
-	}
+        return imageFile;
+    }
 
-	public void setImageFile(Blob image) {
-		this.imageFile = image;
-	}
+    public void setImageFile(Blob image) {
+        this.imageFile = image;
+    }
 
-	public boolean getImage() {
-		return this.image;
-	}
+    public boolean getImage() {
+        return this.image;
+    }
 
-	public void setImage(boolean image) {
-		this.image = image;
-	}
+    public void setImage(boolean image) {
+        this.image = image;
+    }
+    // endregion
 }

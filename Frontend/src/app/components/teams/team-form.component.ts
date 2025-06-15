@@ -7,6 +7,7 @@ import { LeaguesService } from 'src/app/services/league.service';
 
 @Component({
     templateUrl: './team-form.component.html',
+    styleUrls: ['./team-form.component.css'],
     standalone: false
 })
 export class TeamFormComponent implements OnInit {
@@ -17,8 +18,8 @@ export class TeamFormComponent implements OnInit {
 
   removeImage: boolean;
 
-  @ViewChild("file")
-  file: any;
+  @ViewChild('uploadImage', { static: false })
+  fileInput: any;
 
   constructor(
     private router: Router,
@@ -45,16 +46,16 @@ export class TeamFormComponent implements OnInit {
         stadium: '',
         points: 0,
         league: '',
-      }; // Valores predeterminados
+      };
       this.newTeam = true;
     }
   }
 
   ngOnInit(): void {
-    this.loadLeagues(); // Cargar ligas al iniciar el componente
+    this.loadLeagues(); 
+    this.teamImage();
   }
 
-  // Cargar las ligas desde el servicio
   private loadLeagues() {
     this.leagueService.getLeagues().subscribe({
       next: (leagues) => (this.leagues = leagues),
@@ -68,28 +69,27 @@ export class TeamFormComponent implements OnInit {
 
   save() {
     if (this.newTeam) {
-      if (this.team.image && this.removeImage) {
+      if (this.removeImage) {
         this.team.image = false;
       }
       this.service.addTeam(this.team).subscribe(
         (team: Team) => this.uploadImage(team),
-        error => alert('Error creating new league: ' + error)
+        error => alert('Error creating new team: ' + error)
       );
     } else {
-      if (this.team.image && this.removeImage) {
+      if (this.removeImage) {
         this.team.image = false;
       }
       this.service.updateTeam(this.team).subscribe(
         (team: Team,) => this.uploadImage(team),
-        error => alert('Error creating new league: ' + error)
+        error => alert('Error creating new team: ' + error)
       );
     }
   }
 
   uploadImage(team: Team): void {
-
-    if (this.file) {
-      const image = this.file.nativeElement.files[0];
+    if (this.fileInput) {
+      const image = this.fileInput.nativeElement.files[0];
       if (image) {
         let formData = new FormData();
         formData.append("imageFile", image);
@@ -103,26 +103,29 @@ export class TeamFormComponent implements OnInit {
           error => alert('Error deleting team image: ' + error)
         );
       }
-    } else {
-      this.afterUploadImage(team);
+    }
+    this.afterUploadImage(team);
+  }
+
+  onFileSelected(event: any): void {
+    const fileInput = event.target.files[0];
+    if (fileInput) {
+      console.log('Archivo seleccionado:', fileInput.name);
     }
   }
 
   private afterUploadImage(team: Team) {
-    this.leagueService.getLeagueByName(this.team.league).subscribe({
-      next: (league: League) => {
-        this.league = league;
-        this.router.navigate(['/leagues', this.league.id]); // Navigate after league is fetched
-      },
-      error: (error) => {
-        console.error('Error fetching league:', error);
-        alert('Failed to fetch league details. Please try again.');
-      },
-    });
+    if (team.id) {
+      this.service.getTeam(team.id).subscribe({
+        next: (updatedTeam) => {
+          this.team = updatedTeam;
+          this.router.navigate(['/teams', this.team.id]);
+        }
+      });
+    }
   }
   
-
   teamImage() {
-    return this.team.image ? this.service.getImage(this.team.id) : 'assets/no_image.png';
+    return this.team.image ? "api/v1/teams/" + this.team.id + "/image" : 'assets/no_image.jpg';
   }
 }

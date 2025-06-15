@@ -14,7 +14,7 @@ export class TeamMatchesService {
     constructor(private httpClient: HttpClient) { }
 
     getPointsPerMatch(teamId: number): Observable<any> {
-        return this.httpClient.get<any>(BASE_URL + `/goals/${teamId}`).pipe(
+        return this.httpClient.get<any>(BASE_URL + `goals/${teamId}`).pipe(
             catchError(error => this.handleError(error))
         );
     }

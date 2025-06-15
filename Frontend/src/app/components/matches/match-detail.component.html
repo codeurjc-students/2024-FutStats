@@ -1,81 +1,88 @@
-<div *ngIf="match">
+<body>
+    <div class="container" *ngIf="match">
 
-    <h1>"{{match.name}}"</h1>
-    <div>
-        <p>{{match.place}}</p>
+        <h1>"{{match.name}}"</h1>
+        
+        <p>Estadio: {{match.place}}</p>
         <p>{{match.date}}</p>
+
+
+        <h2>"Estadísticas de {{team1?.name}}"</h2>
+        <img [src]="team1Image()">
+        <div>
+            <p>Disparos: {{ match.shoots1 }}</p>
+            <p>Goles: {{ match.scores1 }}</p>
+            <p>Penales: {{ match.penaltys1 }}</p>
+            <p>Faltas recibidas: {{ match.faultsReceived1 }}</p>
+            <p>Fuera de juego: {{ match.offsides1 }}</p>
+            <p>Faltas cometidas: {{ match.commitedFaults1 }}</p>
+            <p>Recuperaciones: {{ match.recovers1 }}</p>
+            <p>Duelos: {{ match.duels1 }}</p>
+            <p>Duelos ganados: {{ match.wonDuels1 }}</p>
+            <p>Tarjetas amarillas: {{ match.yellowCards1 }}</p>
+            <p>Tarjetas rojas: {{ match.redCards1 }}</p>
+            <p>Posesión: {{ match.possesion1 }}</p>
+            <p>Pases: {{ match.passes1 }}</p>
+            <p>Pases buenos: {{ match.goodPasses1 }}</p>
+            <p>Pases cortos: {{ match.shortPasses1 }}</p>
+            <p>Pases largos: {{ match.longPasses1 }}</p>
+            <p>Asistencias: {{ match.assist1 }}</p>
+            <p>Regates: {{ match.dribles1 }}</p>
+            <p>Centros: {{ match.centers1 }}</p>
+            <p>Pérdidas de balón: {{ match.ballLosses1 }}</p>
+        </div>
+
+        <h2>"Estadísticas de {{team2?.name}}"</h2>
+        <img [src]="team2Image()">
+        <div>
+            <p>Disparos: {{ match.shoots2 }}</p>
+            <p>Goles: {{ match.scores2 }}</p>
+            <p>Penales: {{ match.penaltys2 }}</p>
+            <p>Faltas recibidas: {{ match.faultsReceived2 }}</p>
+            <p>Fuera de juego: {{ match.offsides2 }}</p>
+            <p>Faltas cometidas: {{ match.commitedFaults2 }}</p>
+            <p>Recuperaciones: {{ match.recovers2 }}</p>
+            <p>Duelos: {{ match.duels2 }}</p>
+            <p>Duelos ganados: {{ match.wonDuels2 }}</p>
+            <p>Tarjetas amarillas: {{ match.yellowCards2 }}</p>
+            <p>Tarjetas rojas: {{ match.redCards2 }}</p>
+            <p>Posesión: {{ match.possesion2 }}</p>
+            <p>Pases: {{ match.passes2 }}</p>
+            <p>Pases buenos: {{ match.goodPasses2 }}</p>
+            <p>Pases cortos: {{ match.shortPasses2 }}</p>
+            <p>Pases largos: {{ match.longPasses2 }}</p>
+            <p>Asistencias: {{ match.assist2 }}</p>
+            <p>Regates: {{ match.dribles2 }}</p>
+            <p>Centros: {{ match.centers2 }}</p>
+            <p>Pérdidas de balón: {{ match.ballLosses2 }}</p>
+        </div>
+
+        <h3>Estadisticas de los jugadores</h3>
+        <ul class="items">
+            <li *ngFor="let playerMatch of playerMatches | paginate: {itemsPerPage: 1, currentPage: playerMatchPage}">
+                <a [routerLink]="['/playerMatch', playerMatch.id]">{{playerMatch?.name}}</a>
+            </li>
+        </ul>
+
+        <pagination-controls (pageChange)="playerMatchPage = $event" previousLabel="Atrás"
+            nextLabel="Siguiente"></pagination-controls>
+
+        <p>
+            <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="createPlayerMatch()">Crear
+                Estadisticas de un jugador</button>
+        </p>
+
+        <h3 *ngIf="loginService.isLogged() && loginService.isAdmin()"> Opciones de Administrador</h3>
+
+        <p>
+            <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="removeMatch()">Eliminar
+                Partido</button>
+            <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="editMatch()">Editar
+                Partido</button>
+        </p>
+        <p>
+            <button (click)="goBack()">Volver</button>
+        </p>
     </div>
 
-    <h2>"Estadísticas de {{team1?.name}}"</h2>
-    <img [src]="team1Image()">
-    <div>
-        <p>Disparos: {{ match.shoots1 }}</p>
-        <p>Goles: {{ match.scores1 }}</p>
-        <p>Penales: {{ match.penaltys1 }}</p>
-        <p>Faltas recibidas: {{ match.faultsReceived1 }}</p>
-        <p>Fuera de juego: {{ match.offsides1 }}</p>
-        <p>Faltas cometidas: {{ match.commitedFaults1 }}</p>
-        <p>Recuperaciones: {{ match.recovers1 }}</p>
-        <p>Duelos: {{ match.duels1 }}</p>
-        <p>Duelos ganados: {{ match.wonDuels1 }}</p>
-        <p>Tarjetas amarillas: {{ match.yellowCards1 }}</p>
-        <p>Tarjetas rojas: {{ match.redCards1 }}</p>
-        <p>Posesión: {{ match.possesion1 }}</p>
-        <p>Pases: {{ match.passes1 }}</p>
-        <p>Pases buenos: {{ match.goodPasses1 }}</p>
-        <p>Pases cortos: {{ match.shortPasses1 }}</p>
-        <p>Pases largos: {{ match.longPasses1 }}</p>
-        <p>Asistencias: {{ match.assist1 }}</p>
-        <p>Regates: {{ match.dribles1 }}</p>
-        <p>Centros: {{ match.centers1 }}</p>
-        <p>Pérdidas de balón: {{ match.ballLosses1 }}</p>
-    </div>
-
-    <h2>"Estadísticas de {{team2?.name}}"</h2>
-    <img [src]="team2Image()">
-    <div>
-        <p>Disparos: {{ match.shoots2 }}</p>
-        <p>Goles: {{ match.scores2 }}</p>
-        <p>Penales: {{ match.penaltys2 }}</p>
-        <p>Faltas recibidas: {{ match.faultsReceived2 }}</p>
-        <p>Fuera de juego: {{ match.offsides2 }}</p>
-        <p>Faltas cometidas: {{ match.commitedFaults2 }}</p>
-        <p>Recuperaciones: {{ match.recovers2 }}</p>
-        <p>Duelos: {{ match.duels2 }}</p>
-        <p>Duelos ganados: {{ match.wonDuels2 }}</p>
-        <p>Tarjetas amarillas: {{ match.yellowCards2 }}</p>
-        <p>Tarjetas rojas: {{ match.redCards2 }}</p>
-        <p>Posesión: {{ match.possesion2 }}</p>
-        <p>Pases: {{ match.passes2 }}</p>
-        <p>Pases buenos: {{ match.goodPasses2 }}</p>
-        <p>Pases cortos: {{ match.shortPasses2 }}</p>
-        <p>Pases largos: {{ match.longPasses2 }}</p>
-        <p>Asistencias: {{ match.assist2 }}</p>
-        <p>Regates: {{ match.dribles2 }}</p>
-        <p>Centros: {{ match.centers2 }}</p>
-        <p>Pérdidas de balón: {{ match.ballLosses2 }}</p>
-    </div>
-
-    <h3>Estadisticas de los jugadores</h3>
-    <ul class="items">
-        <li *ngFor="let playerMatch of playerMatches | paginate: {itemsPerPage: 10, currentPage: playerMatchPage}">
-            <a [routerLink]="['/playerMatch', playerMatch.id]">{{playerMatch?.name}}</a>
-        </li>
-    </ul>
-
-    <pagination-controls (pageChange)="playerMatchPage = $event" previousLabel="Atrás" nextLabel="Siguiente"></pagination-controls>
-
-    <p>
-    <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="createPlayerMatch()">Crear Estadisticas de un jugador</button>
-    </p>
-
-    <h3 *ngIf="loginService.isLogged() && loginService.isAdmin()"> Opciones de Administrador</h3>
-
-    <p>
-        <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="removeMatch()">Eliminar Partido</button>
-        <button *ngIf="loginService.isLogged() && loginService.isAdmin()" (click)="editMatch()">Editar Partido</button>
-    </p>
-</div>
-<p>
-    <button (click)="goBack()">Volver</button>
-</p>
+</body>

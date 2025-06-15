@@ -1,5 +1,6 @@
 package com.tfg.futstats.controllers;
 
+// region imports
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
+//endregion
 
 @RestController
 @RequestMapping("/api/v1/teamMatches")
@@ -29,6 +31,7 @@ public class TeamMatchController {
     @Autowired
     RestService restService;
 
+    // region Get
     @Operation(summary = "Get points of a team")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found all the points of a team", content = {
@@ -38,7 +41,7 @@ public class TeamMatchController {
             @ApiResponse(responseCode = "404", description = "teamMatch not found", content = @Content)
     })
     @GetMapping("/goals/{teamId}")
-    public List<Map<String, Object>> getPointsPerMatch(@PathVariable Long teamId) {
+    public List<Map<String, Object>> getPointsPerMatch(@PathVariable long teamId) {
         List<TeamMatchDTO> teamMatches = restService.findAllTeamMatchesByTeam(teamId);
 
         return teamMatches.stream().map(teamMatch -> {
@@ -48,4 +51,5 @@ public class TeamMatchController {
             return map;
         }).collect(Collectors.toList());
     }
+    // endregion
 }

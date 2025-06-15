@@ -9,9 +9,11 @@ import { Player } from 'src/app/models/player.model';
 import { UsersService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user.model';
 import { UserFormComponent } from '../users/user-form.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
     templateUrl: './league-detail.component.html',
+    styleUrls: ['./league-detail.component.css'],
     standalone: false
 })
 export class LeagueDetailComponent implements OnInit {
@@ -22,8 +24,16 @@ export class LeagueDetailComponent implements OnInit {
   matches: Match[] = []; // To store the matches
   players: Player[] = []; // To store the players
   errorMessage: string;
-  public teamPage!: number;
-  public matchPage!: number;
+  teamPage: number = 1; 
+  matchPage: number = 1; 
+
+  onTeamPageChange(page: number) {
+    this.teamPage = page;
+  }
+
+  onMatchPageChange(page: number) {
+    this.matchPage = page; 
+  }
 
   constructor(
     private router: Router,
@@ -73,10 +83,12 @@ export class LeagueDetailComponent implements OnInit {
         this.errorMessage = 'Error fetching league details';
       }
     );
+
+    this.leagueImage();
   }
 
   leagueImage() {
-    return this.league.image ? this.service.getImage(this.league.id) : 'assets/no_image.jpg';
+    return this.league.image ? "api/v1/leagues/" + this.league.id + "/image" : 'assets/no_image.jpg';
   }
 
   removeLeague() {

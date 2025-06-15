@@ -3,7 +3,8 @@ package com.tfg.futstats.controllers.dtos.team;
 import com.tfg.futstats.models.Team;
 
 public class TeamResponseDTO {
-    
+
+    // region attributes
     private long id;
     private String name;
     public String league;
@@ -44,7 +45,7 @@ public class TeamResponseDTO {
     private int centers;
     private int ballLosses;
 
-    //Goalkeeper
+    // Goalkeeper
     private int shootsReceived;
     private int goalsConceded;
     private int saves;
@@ -55,13 +56,16 @@ public class TeamResponseDTO {
     private int wonMatches;
     private int lostMatches;
     private int drawMatches;
+    // endregion
 
     // We dont put the averages here because we only need the stadistics from were
     // it`s made
 
-    public TeamResponseDTO(){}
+    // region Constructors
+    public TeamResponseDTO() {
+    }
 
-    public TeamResponseDTO(Team team){
+    public TeamResponseDTO(Team team) {
         this.id = team.getId();
         this.name = team.getName();
         this.league = team.getLeague().getName();
@@ -102,8 +106,9 @@ public class TeamResponseDTO {
         this.lostMatches = team.getLostMatches();
         this.drawMatches = team.getDrawMatches();
     }
+    // endregion
 
-    // Getters & setters
+    // region Getters & setters
     public long getId() {
         return id;
     }
@@ -120,21 +125,21 @@ public class TeamResponseDTO {
         this.name = name;
     }
 
-    public void setLeague(String league){
+    public void setLeague(String league) {
         this.league = league;
     }
 
-    public String getLeague(){
+    public String getLeague() {
         return this.league;
     }
 
     public boolean getImage() {
-		return this.image;
-	}
+        return this.image;
+    }
 
-	public void setImage(boolean image) {
-		this.image = image;
-	}
+    public void setImage(boolean image) {
+        this.image = image;
+    }
 
     public int getTrophies() {
         return trophies;
@@ -352,43 +357,43 @@ public class TeamResponseDTO {
         this.ballLosses = ballLosses;
     }
 
-    public int getShootsReceived(){
+    public int getShootsReceived() {
         return shootsReceived;
     }
 
-    public void getShootsReceived(int shootsReceived){
+    public void getShootsReceived(int shootsReceived) {
         this.shootsReceived = shootsReceived;
     }
 
-    public int getGoalsConceded(){
+    public int getGoalsConceded() {
         return goalsConceded;
     }
 
-    public void setGoalsConceded(int goalsConceded){
+    public void setGoalsConceded(int goalsConceded) {
         this.goalsConceded = goalsConceded;
     }
 
-    public int getSaves(){
+    public int getSaves() {
         return saves;
     }
 
-    public void setSaves(int saves){
+    public void setSaves(int saves) {
         this.saves = saves;
     }
 
-    public int getOutBoxSaves(){
+    public int getOutBoxSaves() {
         return outBoxSaves;
     }
 
-    public void setOutBoxSaves(int outBoxSaves){
+    public void setOutBoxSaves(int outBoxSaves) {
         this.outBoxSaves = outBoxSaves;
     }
 
-    public int getInBoxSaves(){
+    public int getInBoxSaves() {
         return inBoxSaves;
     }
 
-    public void setInBoxSaves(int inBoxSaves){
+    public void setInBoxSaves(int inBoxSaves) {
         this.inBoxSaves = inBoxSaves;
     }
 
@@ -415,4 +420,5 @@ public class TeamResponseDTO {
     public void setDrawMatches(int drawMatches) {
         this.drawMatches = drawMatches;
     }
+    // endregion
 }
