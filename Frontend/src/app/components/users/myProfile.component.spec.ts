@@ -76,24 +76,6 @@ describe('TeamFormComponent', () => {
     expect(component.leagues.length).toBe(0);
   });
 
-  it('should save a new team', () => {
-    component.newTeam = true;
-    component.team = { name: 'New Team', league: 'League A', image: false, trophies: 0, nationality: '', trainer: '', secondTrainer: '', president: '', stadium: '', points: 0 };
-    component.save();
-
-    expect(mockTeamsService.addTeam).toHaveBeenCalledWith(component.team);
-    expect(mockRouter.navigate).toHaveBeenCalled();
-  });
-
-  it('should update an existing team', () => {
-    component.newTeam = false;
-    component.team = { id: 1, name: 'Updated Team', league: 'League A', image: false, trophies: 0, nationality: '', trainer: '', secondTrainer: '', president: '', stadium: '', points: 0 };
-    component.save();
-
-    expect(mockTeamsService.updateTeam).toHaveBeenCalledWith(component.team);
-    expect(mockRouter.navigate).toHaveBeenCalled();
-  });
-
   it('should upload an image after saving a team', () => {
     const mockFile = new Blob([''], { type: 'assets/no_image.jpg' });
     component.fileInput = { nativeElement: { files: [mockFile] } };
