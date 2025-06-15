@@ -85,8 +85,12 @@ describe('LeagueFormComponent', () => {
   it('should call updateLeague on save for existing leagues', () => {
     component.newLeague = false;
     component.league = { id: 1, name: 'Updated League', nationality: '', president: '', teams: [], image: false };
+    
+    service.updateLeague.and.returnValue(of(component.league));
+    service.getLeagueById.and.returnValue(of(component.league));
+    
     component.save();
-
+    
     expect(service.updateLeague).toHaveBeenCalledWith(component.league);
   });
 

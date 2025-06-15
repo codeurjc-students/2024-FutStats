@@ -82,12 +82,15 @@ describe('PlayerFormComponent', () => {
     expect(mockPlayersService.addPlayer).toHaveBeenCalledWith(component.player);
   });
 
-  it('should update an existing player', () => {
+  it('should call updatePlayer on save for existing players', () => {
     component.newPlayer = false;
-    component.player = { id: 1, name: 'Update Player 1', age: 25, nationality: 'Española', position: 'Delantero', image: false, team: 'Team1', league: 'League' };
-
+    component.player = { id: 1, name: 'Updated Player', age: 25, nationality: 'Española', position: 'Delantero', image: false, team: 'Team1', league: 'League' };
+    
+    mockPlayersService.updatePlayer.and.returnValue(of(component.player));
+    mockPlayersService.getPlayer.and.returnValue(of(component.player));  
+    
     component.save();
-
+    
     expect(mockPlayersService.updatePlayer).toHaveBeenCalledWith(component.player);
   });
 
