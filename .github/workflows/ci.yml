@@ -1,15 +1,24 @@
-name: CI - Run All Tests
+name: CD Docker Build
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  test:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    
+
+    services:
+      mysql:
+        image: mysql:8.0.22
+        options: >-
+          --env MYSQL_ROOT_PASSWORD=17042002
+          --env MYSQL_DATABASE=api_rest
+          --env MYSQL_USER=root
+          --env MYSQL_PASSWORD=17042002
+          --publish 3306:3306
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -24,15 +33,15 @@ jobs:
         run: |
             sudo apt-get update
             sudo apt-get install -y docker-compose
-
-      - name: Start MySQL container
-        run: docker-compose up -d db
+      - name: Levantar contenedores en segundo plano
+        run: docker-compose up -d --build
         working-directory: ./Docker
 
-      - name: Wait for MySQL
+      - name: Wait for MySQL in Docker
         run: |
           echo "Waiting for MySQL to be ready..."
           retries=12
+          # "db" es el servicio definido en docker-compose.yml
           until docker-compose exec -T db mysql -u root -p"17042002" -e "SELECT 1"; do
             if [ $retries -le 0 ]; then
               echo "MySQL not ready after multiple attempts, failing..."
@@ -53,21 +62,20 @@ jobs:
       - name: Install Angular CLI Globally
         run: npm install -g @angular/cli
 
-      - name: Install Frontend Dependencies
+      - name: Install Angular Dependencies
         run: npm install
         working-directory: ./Frontend
-
-      - name: Run Frontend Tests
-        run: ng test --watch=false
-        working-directory: ./Frontend
-
-      - name: Run Spring Boot Controller Tests
-        run: mvn test -Dtest="com.tfg.futstats.controllers.**"
-        working-directory: ./Backend
         
-      - name: Run Spring Boot Service Tests
-        run: mvn test -Dtest="com.tfg.futstats.services.**"
+      - name: Run Spring Boot tests Controllers
+        run:  mvn test -Dtest="com.tfg.futstats.controllers.**"
         working-directory: ./Backend
+      - name: Run Spring Boot tests Services
+        run:  mvn test -Dtest="com.tfg.futstats.services.**" 
+        working-directory: ./Backend
+
+      - name: Run Angular Unit Tests
+        run: ng test --watch=false --browsers=ChromeHeadless
+        working-directory: ./Frontend
 
       - name: Run Admin Selenium Tests
         run: mvn test -Dtest="com.tfg.futstats.selenium.admin.**"
@@ -80,8 +88,3 @@ jobs:
       - name: Run nonRegisteredUsers Selenium Tests
         run: mvn test -Dtest="com.tfg.futstats.selenium.nonRegisteredUsers.**"
         working-directory: ./Backend
-
-      - name: Cleanup Docker containers
-        if: always()
-        run: docker-compose down
-        working-directory: ./Docker 
