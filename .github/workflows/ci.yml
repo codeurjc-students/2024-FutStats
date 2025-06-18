@@ -1,0 +1,87 @@
+name: CI - Run All Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v2
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Install Docker Compose
+        run: |
+            sudo apt-get update
+            sudo apt-get install -y docker-compose
+
+      - name: Start MySQL container
+        run: docker-compose up -d db
+        working-directory: ./Docker
+
+      - name: Wait for MySQL
+        run: |
+          echo "Waiting for MySQL to be ready..."
+          retries=12
+          until docker-compose exec -T db mysql -u root -p"17042002" -e "SELECT 1"; do
+            if [ $retries -le 0 ]; then
+              echo "MySQL not ready after multiple attempts, failing..."
+              exit 1
+            fi
+            echo "MySQL not ready, waiting..."
+            retries=$((retries-1))
+            sleep 5
+          done
+          echo "MySQL is ready!"
+        working-directory: ./Docker
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '22.12.0'
+
+      - name: Install Angular CLI Globally
+        run: npm install -g @angular/cli
+
+      - name: Install Frontend Dependencies
+        run: npm install
+        working-directory: ./Frontend
+
+      - name: Run Frontend Tests
+        run: ng test --watch=false
+        working-directory: ./Frontend
+
+      - name: Run Spring Boot Controller Tests
+        run: mvn test -Dtest="com.tfg.futstats.controllers.**"
+        working-directory: ./Backend
+        
+      - name: Run Spring Boot Service Tests
+        run: mvn test -Dtest="com.tfg.futstats.services.**"
+        working-directory: ./Backend
+
+      - name: Run Admin Selenium Tests
+        run: mvn test -Dtest="com.tfg.futstats.selenium.admin.**"
+        working-directory: ./Backend
+
+      - name: Run registeredUsers Selenium Tests
+        run: mvn test -Dtest="com.tfg.futstats.selenium.registeredUsers.**"
+        working-directory: ./Backend
+
+      - name: Run nonRegisteredUsers Selenium Tests
+        run: mvn test -Dtest="com.tfg.futstats.selenium.nonRegisteredUsers.**"
+        working-directory: ./Backend
+
+      - name: Cleanup Docker containers
+        if: always()
+        run: docker-compose down
+        working-directory: ./Docker 

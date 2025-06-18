@@ -99,22 +99,22 @@ public class UserServiceUnitaryTests {
 
     @Test
     void testCreateUser() {
-        try{
-        String rawPassword = "password1";
-        String encodedPassword = "encodedPassword1";
-        Blob image = null;
-        User user = new User("user1", encodedPassword, "example@gmail.com", image, false, "[user]");
+        try {
+            String rawPassword = "password1";
+            String encodedPassword = "encodedPassword1";
+            Blob image = null;
+            User user = new User("user1", encodedPassword, "example@gmail.com", image, false, "[user]");
 
-        doNothing().when(emailService).sendEmail(anyString(), anyString(), anyString());
-        when(passwordEncoder.encode(rawPassword)).thenReturn(encodedPassword);
-        when(userRepository.save(any(User.class))).thenReturn(user);
+            doNothing().when(emailService).sendEmail(anyString(), anyString(), anyString());
+            when(passwordEncoder.encode(rawPassword)).thenReturn(encodedPassword);
+            when(userRepository.save(any(User.class))).thenReturn(user);
 
-        User result = userService.createUser(user);
+            User result = userService.createUser(user);
 
-        assertEquals("user1", result.getName());
+            assertEquals("user1", result.getName());
         } catch (MessagingException e) {
-        fail("MessagingException should not be thrown during the test");
-    }
+            fail("MessagingException should not be thrown during the test");
+        }
 
     }
 

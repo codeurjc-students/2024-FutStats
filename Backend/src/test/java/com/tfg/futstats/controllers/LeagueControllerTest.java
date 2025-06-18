@@ -107,11 +107,11 @@ public class LeagueControllerTest {
         mockMvc.perform(post("/api/v1/leagues/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newLeagueJson))
-                .andExpect(status().isCreated()) // Verifica que el estado es 201 Created
-                .andExpect(header().exists("Location")) // Verifica que se incluye la cabecera Location
-                .andExpect(jsonPath("$.name").value("Serie A")) // Verifica el nombre de la liga
-                .andExpect(jsonPath("$.nationality").value("Italiana")) // Verifica el país
-                .andExpect(jsonPath("$.president").value("Pellegrini")); // Verifica el año de fundación
+                .andExpect(status().isCreated())
+                .andExpect(header().exists("Location"))
+                .andExpect(jsonPath("$.name").value("Serie A"))
+                .andExpect(jsonPath("$.nationality").value("Italiana"))
+                .andExpect(jsonPath("$.president").value("Pellegrini"));
     }
 
     @Test
@@ -121,7 +121,6 @@ public class LeagueControllerTest {
         byte[] fileContent = "Test Image Content".getBytes();
         MockMultipartFile mockFile = new MockMultipartFile("imageFile", fileName, "no_image.jpg", fileContent);
 
-        // Realizar la llamada MockMvc
         mockMvc.perform(MockMvcRequestBuilders.multipart("/api/v1/leagues/{id}/image", 1)
                 .file(mockFile)
                 .with(request -> {
@@ -137,7 +136,7 @@ public class LeagueControllerTest {
     @Test
     @Transactional
     void testDeleteLeague() throws Exception {
-        mockMvc.perform(delete("/api/v1/leagues/{id}",1))
+        mockMvc.perform(delete("/api/v1/leagues/{id}", 1))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1));
     }
@@ -145,7 +144,7 @@ public class LeagueControllerTest {
     @Test
     @Transactional
     void testDeleteImage() throws Exception {
-        mockMvc.perform(delete("/api/v1/leagues/{id}/image",1))
+        mockMvc.perform(delete("/api/v1/leagues/{id}/image", 1))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.image").value(false));
     }
@@ -161,7 +160,7 @@ public class LeagueControllerTest {
                 }
                 """;
 
-        mockMvc.perform(put("/api/v1/leagues/{id}",1)
+        mockMvc.perform(put("/api/v1/leagues/{id}", 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newLeagueJson))
                 .andExpect(MockMvcResultMatchers.status().isOk())

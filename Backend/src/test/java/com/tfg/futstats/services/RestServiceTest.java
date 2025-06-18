@@ -358,7 +358,8 @@ public class RestServiceTest {
     @Transactional
     public void testCreatePlayer() {
         Player player = new Player(restService.findLeagueByName("LaLiga").get(),
-                restService.findTeamByName("Real Madrid").get(), "NuevoJugador", 20, "Española", "Defensa", null, false);
+                restService.findTeamByName("Real Madrid").get(), "NuevoJugador", 20, "Española", "Defensa", null,
+                false);
 
         League league = restService.findLeagueByName("LaLiga").get();
         Team team = restService.findTeamByName("Real Madrid").get();
@@ -531,7 +532,8 @@ public class RestServiceTest {
 
         match.get().getTeam1().setStadium("Prueba");
 
-        restService.updateMatch(match.get(), matchDto, restService.findLeagueByName("LaLiga").get(), restService.findTeamByName("Real Madrid").get(), restService.findTeamByName("FC Barcelona").get());
+        restService.updateMatch(match.get(), matchDto, restService.findLeagueByName("LaLiga").get(),
+                restService.findTeamByName("Real Madrid").get(), restService.findTeamByName("FC Barcelona").get());
 
         Optional<Match> returnMatch = restService.findMatchById(1);
 

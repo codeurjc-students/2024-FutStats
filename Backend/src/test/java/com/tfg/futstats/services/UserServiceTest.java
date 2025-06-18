@@ -74,7 +74,7 @@ public class UserServiceTest {
             byte[] imageBlob = convertImageToBlob("resources/static/piramide.jpeg");
             Blob blob = new SerialBlob(imageBlob);
 
-            User user = new User("prueba", "pass", "example@gmail.com", blob, true, "[user]","[admin]");
+            User user = new User("prueba", "pass", "example@gmail.com", blob, true, "[user]", "[admin]");
 
             userService.createUser(user);
 
@@ -123,7 +123,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testSaveuser(){
+    public void testSaveuser() {
 
         User user = new User("prueba", "pass", "example@gmail.com", null, false, "[user]");
 
@@ -138,7 +138,7 @@ public class UserServiceTest {
 
     @Test
     @Transactional
-    public void testAddUserLeague(){
+    public void testAddUserLeague() {
         userService.addUserLeague(userService.findUserById(1).get(), restService.findLeagueById(1).get());
 
         List<League> leagues = userService.findUserById(1).get().getLeagues();
@@ -149,7 +149,7 @@ public class UserServiceTest {
 
     @Test
     @Transactional
-    public void testDeleteUserLeague(){
+    public void testDeleteUserLeague() {
         userService.addUserLeague(userService.findUserById(1).get(), restService.findLeagueById(1).get());
 
         userService.deleteUserLeague(userService.findUserById(1).get(), restService.findLeagueById(1).get());
@@ -161,7 +161,7 @@ public class UserServiceTest {
 
     @Test
     @Transactional
-    public void testAddUserTeam(){
+    public void testAddUserTeam() {
         userService.addUserTeam(userService.findUserById(1).get(), restService.findTeamById(1).get());
 
         List<Team> teams = userService.findUserById(1).get().getTeams();
@@ -172,7 +172,7 @@ public class UserServiceTest {
 
     @Test
     @Transactional
-    public void testDeleteUserTeam(){
+    public void testDeleteUserTeam() {
         userService.addUserTeam(userService.findUserById(1).get(), restService.findTeamById(1).get());
 
         userService.deleteUserTeam(userService.findUserById(1).get(), restService.findTeamById(1).get());
@@ -184,7 +184,7 @@ public class UserServiceTest {
 
     @Test
     @Transactional
-    public void testAddUserPlayer(){
+    public void testAddUserPlayer() {
         userService.addUserPlayer(userService.findUserById(1).get(), restService.findPlayerById(1).get());
 
         List<Player> players = userService.findUserById(1).get().getPlayers();
@@ -195,9 +195,9 @@ public class UserServiceTest {
 
     @Test
     @Transactional
-    public void testDeleteUserPlayer(){
+    public void testDeleteUserPlayer() {
         userService.addUserPlayer(userService.findUserById(1).get(), restService.findPlayerById(1).get());
-        
+
         userService.deleteUserPlayer(userService.findUserById(1).get(), restService.findPlayerById(1).get());
 
         List<Player> players = userService.findUserById(1).get().getPlayers();
