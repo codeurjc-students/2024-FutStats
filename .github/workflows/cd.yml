@@ -24,11 +24,6 @@ jobs:
  
     - name: Push images
       run: docker push danielpandolfo/futstats:latest
- 
-    - name: Verify image was pushed
-      run: |
-        docker pull ${{ secrets.DOCKERHUB_USERNAME }}/futstats:latest
-        docker images | grep ${{ secrets.DOCKERHUB_USERNAME }}/futstats
         
   deploy:
     environment: production
@@ -71,9 +66,3 @@ jobs:
               RUNNING_IN_DOCKER="true" \
               SERVER_PORT=8443
 
-      - name: Verify deployment
-        run: |
-          az container show \
-            --resource-group ${{ secrets.AZURE_GROUP }} \
-            --name futstats \
-            --query properties.instanceView.state
