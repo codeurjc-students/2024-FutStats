@@ -11,33 +11,24 @@ jobs:
     
     steps:
     - uses: actions/checkout@v3
-    
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-    
+  
     - name: Login to Docker Hub
-      uses: docker/login-action@v2
+      uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-    - name: Build and load Docker image
-      run: |
-          docker buildx build --load -t $DOCKERHUB_USERNAME/futstats:latest .
-      env:
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-
+ 
+    - name: Build images
+      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/futstats:latest -f Dockerfile .
+ 
     - name: Push images
-      run: |
-          docker push $DOCKERHUB_USERNAME/futstats:latest
-      env:
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/futstats:latest
+ 
     - name: Verify image was pushed
       run: |
         docker pull ${{ secrets.DOCKERHUB_USERNAME }}/futstats:latest
         docker images | grep ${{ secrets.DOCKERHUB_USERNAME }}/futstats
-
+        
   deploy:
     environment: production
     permissions:
