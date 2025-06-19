@@ -21,11 +21,17 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Build images
-      run: docker buildx build --load -t ${{ secrets.DOCKERHUB_USERNAME }}/futstats:latest .
+    - name: Build and load Docker image
+      run: |
+          docker buildx build --load -t $DOCKERHUB_USERNAME/futstats:latest .
+      env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
 
     - name: Push images
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/futstats:latest
+      run: |
+          docker push $DOCKERHUB_USERNAME/futstats:latest
+      env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
 
     - name: Verify image was pushed
       run: |
