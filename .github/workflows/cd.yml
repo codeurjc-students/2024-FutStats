@@ -1,68 +1,97 @@
-name: CD Docker Build
+name: CD - Deploy to Azure
 
 on:
-  push:
-    branches:
+  workflow_run:
+    workflows: ["CI - Run All Tests"]
+    branches: [main]
+    types:
+      - completed
 
 jobs:
-  build-and-deploy:
+  publish:
     runs-on: ubuntu-latest
-
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    outputs:
+      tag: ${{ steps.meta.outputs.tag }}
+    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - uses: actions/checkout@v3
+    
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    
+    - name: Extract metadata for Docker
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        images: ${{ secrets.DOCKERHUB_USERNAME }}/futstats
+        tags: |
+          type=raw,value=latest,enable={{is_default_branch}}
+          type=sha,format=short
+          type=ref,event=branch
+    
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/futstats:buildcache
+        cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/futstats:buildcache,mode=max
 
-      - name: Set up Java 21
-        uses: actions/setup-java@v2
+    - name: Verify image was pushed
+      run: |
+        docker pull ${{ secrets.DOCKERHUB_USERNAME }}/futstats:latest
+        docker images | grep ${{ secrets.DOCKERHUB_USERNAME }}/futstats
+
+  deploy:
+    environment: production
+    permissions:
+      id-token: write
+    needs: publish
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Login to Azure
+        uses: azure/login@v2
         with:
-          java-version: '21'
-          distribution: 'temurin'
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Install Docker Compose
+      - name: Start MySQL database
         run: |
-            sudo apt-get update
-            sudo apt-get install -y docker-compose
-      - name: Levantar contenedores en segundo plano
-        run: docker-compose up -d --build
-        working-directory: ./Docker
+          az mysql flexible-server start \
+            --name futstats \
+            --resource-group ${{ secrets.AZURE_GROUP }}
 
-      - name: Wait for MySQL in Docker
+      - name: Deploy to Azure
         run: |
-          echo "Waiting for MySQL to be ready..."
-          retries=12
-          # "db" es el servicio definido en docker-compose.yml
-          until docker-compose exec -T db mysql -u root -p"17042002" -e "SELECT 1"; do
-            if [ $retries -le 0 ]; then
-              echo "MySQL not ready after multiple attempts, failing..."
-              exit 1
-            fi
-            echo "MySQL not ready, waiting..."
-            retries=$((retries-1))
-            sleep 5
-          done
-          echo "MySQL is ready!"
-        working-directory: ./Docker
+          az container create \
+            --resource-group ${{ secrets.AZURE_GROUP }} \
+            --name futstats \
+            --image ${{ secrets.DOCKERHUB_USERNAME }}/futstats:${{ needs.publish.outputs.tag }} \
+            --dns-name-label futstats-app \
+            --registry-login-server index.docker.io \
+            --registry-username ${{ secrets.DOCKERHUB_USERNAME }} \
+            --registry-password ${{ secrets.DOCKERHUB_AZURE_TOKEN }} \
+            --ports 8443 \
+            --os-type Linux \
+            --cpu 1 \
+            --memory 1.5 \
+            --environment-variables \
+              SPRING_DATASOURCE_URL="jdbc:mysql://futstats.mysql.database.azure.com:3306/apirest?useSSL=true" \
+              SPRING_DATASOURCE_USERNAME="${{ secrets.DATABASE_USERNAME }}" \
+              SPRING_DATASOURCE_PASSWORD="${{ secrets.DATABASE_PASSWORD }}" \
+              RUNNING_IN_DOCKER="true" \
+              SERVER_PORT=8443
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '22.12.0'
-
-      - name: Install Angular CLI Globally
-        run: npm install -g @angular/cli
-
-      - name: Install Angular Dependencies
-        run: npm install
-        working-directory: ./Frontend
-
-      - name: Run Admin Selenium Tests
-        run:  mvn test -Dtest="com.tfg.futstats.selenium.admin.**"
-        working-directory: ./Backend
-
-      - name: Run registeredUsers Selenium Tests
-        run:  mvn test -Dtest="com.tfg.futstats.selenium.registeredUsers.**"
-        working-directory: ./Backend
-
-      - name: Run nonRegisteredUsers Selenium Tests
-        run:  mvn test -Dtest="com.tfg.futstats.selenium.nonRegisteredUsers.**"
-        working-directory: ./Backend
+      - name: Verify deployment
+        run: |
+          az container show \
+            --resource-group ${{ secrets.AZURE_GROUP }} \
+            --name futstats \
+            --query properties.instanceView.state
