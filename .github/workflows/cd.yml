@@ -17,26 +17,14 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-    
-    - name: Extract metadata for Docker
-      id: meta
-      uses: docker/metadata-action@v4
-      with:
-        images: ${{ secrets.DOCKERHUB_USERNAME }}/futstats
-        tags: |
-          type=raw,value=latest,enable={{is_default_branch}}
-          type=sha,format=short
-          type=ref,event=branch
-    
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v4
-      with:
-        context: .
-        push: true
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/futstats:buildcache
-        cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/futstats:buildcache,mode=max
+
+    - name: Build images
+      working-directory: .
+      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/futstats:latest
+
+    - name: Push images
+      working-directory: .
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/futstats:latest
 
     - name: Verify image was pushed
       run: |
