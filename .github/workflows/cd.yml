@@ -64,7 +64,7 @@ jobs:
             --restart-policy Never
             --environment-variables \
               SPRING_DATASOURCE_URL="jdbc:mysql://futstats.mysql.database.azure.com:3306/apirest?useSSL=true" \
-              SPRING_DATASOURCE_USERNAME="${{ secrets.DATABASE_USERNAME }}" \
-              SPRING_DATASOURCE_PASSWORD="${{ secrets.DATABASE_PASSWORD }}" \
+              SPRING_DATASOURCE_USERNAME=adminuser \
+              SPRING_DATASOURCE_PASSWORD=17042002D@Ni \
               RUNNING_IN_DOCKER="true" \
               SERVER_PORT=443
