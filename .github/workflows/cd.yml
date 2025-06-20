@@ -25,11 +25,11 @@ jobs:
  
     - name: Build images
       run: |
-        docker build -t ${{ secrets.DOCKERHUB_USERNAME}}/futstats:latest -f Dockerfile .
+        docker build -t "${{ secrets.DOCKERHUB_USERNAME}}/futstats:latest" -f Dockerfile .
  
     - name: Push images
       run: |
-        docker push ${{ secrets.DOCKERHUB_USERNAME}}/futstats:latest
+        docker push "${{ secrets.DOCKERHUB_USERNAME}}/futstats:latest"
         
   deploy:
     runs-on: ubuntu-22.04
@@ -58,7 +58,6 @@ jobs:
             --registry-username ${{ secrets.DOCKERHUB_USERNAME }} \
             --registry-password ${{ secrets.DOCKERHUB_TOKEN }} \
             --ports 8443 \
-            --os-type Linux \
             --cpu 1 \
             --memory 1.5 \
             --environment-variables \
