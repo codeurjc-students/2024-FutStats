@@ -56,7 +56,7 @@ jobs:
             --registry-login-server index.docker.io \
             --registry-username ${{ secrets.DOCKERHUB_USERNAME }} \
             --registry-password ${{ secrets.DOCKERHUB_TOKEN }} \
-            --ports 8443 \
+            --ports 443 \
             --cpu 1 \
             --memory 1.5 \
             --os-type Linux \
@@ -65,4 +65,4 @@ jobs:
               SPRING_DATASOURCE_USERNAME="${{ secrets.DATABASE_USERNAME }}" \
               SPRING_DATASOURCE_PASSWORD="${{ secrets.DATABASE_PASSWORD }}" \
               RUNNING_IN_DOCKER="true" \
-              SERVER_PORT=8443
+              SERVER_PORT=443
