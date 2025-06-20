@@ -1,6 +1,5 @@
 name: CD - Deploy to Azure
  
- 
 on:
   push:
     branches:
