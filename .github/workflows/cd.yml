@@ -59,6 +59,7 @@ jobs:
             --ports 8443 \
             --cpu 1 \
             --memory 1.5 \
+            --os-type Linux \
             --environment-variables \
               SPRING_DATASOURCE_URL="jdbc:mysql://futstats.mysql.database.azure.com:3306/apirest?useSSL=true" \
               SPRING_DATASOURCE_USERNAME="${{ secrets.DATABASE_USERNAME }}" \
