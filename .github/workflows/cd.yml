@@ -1,37 +1,39 @@
 name: CD - Deploy to Azure
- 
+
 on:
   push:
     branches:
       - main
- 
+
 permissions:
   id-token: write
   contents: read
- 
+
 jobs:
   publish:
     runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v3
-  
+
     - name: Login to Docker Hub
       uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
- 
+
     - name: Build images
       run: |
         docker build -t "${{ secrets.DOCKERHUB_USERNAME}}/futstats:latest" -f Dockerfile .
- 
+
     - name: Push images
       run: |
         docker push "${{ secrets.DOCKERHUB_USERNAME}}/futstats:latest"
-        
+
   deploy:
+    needs: publish
     runs-on: ubuntu-22.04
+
     steps:
       - name: Login to Azure
         uses: azure/login@v2
@@ -39,13 +41,13 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
- 
+
       - name: Start MySQL database
         run: |
           az mysql flexible-server start \
             --name futstats \
             --resource-group ${{ secrets.AZURE_GROUP }}
- 
+
       - name: Deploy to Azure
         run: |
           az container create \
@@ -60,10 +62,9 @@ jobs:
             --cpu 1 \
             --memory 1.5 \
             --os-type Linux \
-            --restart-policy Never \
             --environment-variables \
               SPRING_DATASOURCE_URL="jdbc:mysql://futstats.mysql.database.azure.com:3306/apirest?useSSL=true" \
-              SPRING_DATASOURCE_USERNAME=adminuser \
-              SPRING_DATASOURCE_PASSWORD=17042002D@Ni \
+              SPRING_DATASOURCE_USERNAME="${{ secrets.DATABASE_USERNAME }}" \
+              SPRING_DATASOURCE_PASSWORD="${{ secrets.DATABASE_PASSWORD }}" \
               RUNNING_IN_DOCKER="true" \
               SERVER_PORT=443
