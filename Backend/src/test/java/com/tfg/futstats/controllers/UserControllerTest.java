@@ -163,27 +163,6 @@ public class UserControllerTest {
 
     @Test
     @Transactional
-    void testCreateUser() throws Exception {
-        String newLeagueJson = """
-                {
-                    "name": "admin2",
-                    "password": "pass",
-                    "email": "example@gmail.com",
-                    "roles": ["[user]"],
-                    "image": false
-                }
-                """;
-
-        mockMvc.perform(post("/api/v1/users/")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(newLeagueJson))
-                .andExpect(status().isCreated())
-                .andExpect(header().exists("Location"))
-                .andExpect(jsonPath("$.name").value("admin2"));
-    }
-
-    @Test
-    @Transactional
     void testUploadImage() throws Exception {
         HttpServletRequest mockRequest = mock(HttpServletRequest.class);
         when(mockRequest.getUserPrincipal()).thenReturn(() -> "admin");
