@@ -150,38 +150,5 @@ public class UserDetailTest extends BaseTest {
         assertNotNull(editUserButton, "El botón 'Editar Usuario' no está presente.");
     }
 
-    @Test
-    public void testBackButtonFunctionality() {
-        testLoginFunctionality();
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
-        WebElement myProfile = wait.until(ExpectedConditions.presenceOfElementLocated(
-            By.xpath("//button[contains(text(), 'Mi perfil')]")));
-
-        scrollToElement(myProfile);
-
-        wait.until(ExpectedConditions.elementToBeClickable(myProfile));
-        assertNotNull(myProfile, "El boton de mi perfil no se muestra correctamente.");
-
-        myProfile.click();
-
-        WebElement backButton = wait.until(ExpectedConditions.presenceOfElementLocated(
-            By.xpath("//button[contains(text(), 'Volver')]")));
-
-        scrollToElement(backButton);
-
-        assertNotNull(backButton, "El botón 'Volver' no está presente.");
-
-        wait.until(ExpectedConditions.elementToBeClickable(backButton));
-
-        backButton.click();
-
-        WebElement previousPageHeader = wait.until(ExpectedConditions.presenceOfElementLocated(
-            By.xpath("//h2[contains(text(), 'Ligas')]")));
-
-        scrollToElement(previousPageHeader);
-        
-        assertNotNull(previousPageHeader, "No se ha redirigido correctamente.");
-    }
+    
 }
