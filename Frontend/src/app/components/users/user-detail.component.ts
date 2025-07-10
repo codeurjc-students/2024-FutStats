@@ -120,6 +120,6 @@ export class UserDetailComponent implements OnInit {
     }
 
     goBack() {
-        this.router.navigate(['/leagues']);
+        this.router.navigate(['/users']);
     }
 }
