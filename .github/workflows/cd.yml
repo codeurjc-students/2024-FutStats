@@ -46,29 +46,29 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-    - name: Start MySQL database
-      run: |
-        az mysql flexible-server start \
-          --name futstats \
-          --resource-group ${{ secrets.AZURE_GROUP }}
+      - name: Start MySQL database
+        run: |
+          az mysql flexible-server start \
+            --name futstats \
+            --resource-group ${{ secrets.AZURE_GROUP }}
 
-    - name: Deploy to Azure
-      run: |
-        az container create \
-          --resource-group ${{ secrets.AZURE_GROUP }} \
-          --name futstats \
-          --image ${{ secrets.DOCKERHUB_USERNAME }}/futstats:latest \
-          --dns-name-label futstats-app \
-          --registry-login-server index.docker.io \
-          --registry-username ${{ secrets.DOCKERHUB_USERNAME }} \
-          --registry-password ${{ secrets.DOCKERHUB_TOKEN }} \
-          --ports 443 \
-          --cpu 1 \
-          --memory 1.5 \
-          --os-type Linux \
-          --environment-variables \
-            SPRING_DATASOURCE_URL="jdbc:mysql://futstats.mysql.database.azure.com:3306/apirest?useSSL=true" \
-            SPRING_DATASOURCE_USERNAME="${{ secrets.DATABASE_USERNAME }}" \
-            SPRING_DATASOURCE_PASSWORD="${{ secrets.DATABASE_PASSWORD }}" \
-            RUNNING_IN_DOCKER="true" \
-            SERVER_PORT=443
+      - name: Deploy to Azure
+        run: |
+          az container create \
+            --resource-group ${{ secrets.AZURE_GROUP }} \
+            --name futstats \
+            --image ${{ secrets.DOCKERHUB_USERNAME }}/futstats:latest \
+            --dns-name-label futstats-app \
+            --registry-login-server index.docker.io \
+            --registry-username ${{ secrets.DOCKERHUB_USERNAME }} \
+            --registry-password ${{ secrets.DOCKERHUB_TOKEN }} \
+            --ports 443 \
+            --cpu 1 \
+            --memory 1.5 \
+            --os-type Linux \
+            --environment-variables \
+              SPRING_DATASOURCE_URL=\"jdbc:mysql://futstats.mysql.database.azure.com:3306/apirest?useSSL=true\" \
+              SPRING_DATASOURCE_USERNAME=\"${{ secrets.DATABASE_USERNAME }}\" \
+              SPRING_DATASOURCE_PASSWORD=\"${{ secrets.DATABASE_PASSWORD }}\" \
+              RUNNING_IN_DOCKER=\"true\" \
+              SERVER_PORT=443
