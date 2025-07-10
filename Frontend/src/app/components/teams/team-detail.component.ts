@@ -23,6 +23,7 @@ export class TeamDetailComponent implements OnInit {
   players: Player[] = [];
   errorMessage: string;
   public playerPage!: number;
+  private chartInstance: Chart | null = null;
 
   constructor(
     private router: Router,
@@ -46,7 +47,7 @@ export class TeamDetailComponent implements OnInit {
             this.players = players;
             console.log(players);
           },
-          (error) => {
+          (error: any) => {
             this.errorMessage = 'Error fetching teams';
           }
         );
@@ -55,7 +56,7 @@ export class TeamDetailComponent implements OnInit {
           (league: League) => {
             this.league = league;
           },
-          (error) => {
+          (error: any) => {
             this.errorMessage = 'Error fetching teams';
           }
         );
@@ -64,7 +65,7 @@ export class TeamDetailComponent implements OnInit {
           (user: User) => {
             this.user = user;
           },
-          (error) => {
+          (error: any) => {
             this.errorMessage = 'Error finding user';
           }
         );
@@ -77,11 +78,16 @@ export class TeamDetailComponent implements OnInit {
   }
 
   cargarDatos(teamId: number) {
-    this.teamMatchService.getPointsPerMatch(teamId).subscribe((data) => {
+    this.teamMatchService.getPointsPerMatch(teamId).subscribe((data: any[]) => {
       const matchNames = data.map((d: any) => d.matchName);
       const points = data.map((d: any) => d.points);
-
-      this.crearGrafica(matchNames, points);
+      // Calcular el acumulado de puntos
+      const accumulatedPoints = points.reduce((acc: number[], curr: number, idx: number) => {
+        if (idx === 0) acc.push(curr);
+        else acc.push(acc[idx - 1] + curr);
+        return acc;
+      }, []);
+      this.crearGrafica(matchNames, accumulatedPoints);
     });
   }
 
@@ -92,7 +98,11 @@ export class TeamDetailComponent implements OnInit {
         console.error('Canvas element not found');
         return;
       }
-      new Chart(chartElement, {
+      // Destruir la gráfica anterior si existe
+      if (this.chartInstance) {
+        this.chartInstance.destroy();
+      }
+      this.chartInstance = new Chart(chartElement, {
         type: 'line',
         data: {
           labels: matchNames,
@@ -140,8 +150,8 @@ export class TeamDetailComponent implements OnInit {
     const okResponse = window.confirm('Quieres borrar este equipo?');
     if (okResponse) {
       this.service.deleteTeam(this.team).subscribe(
-        _ => this.router.navigate(['/leagues']),
-        error => console.error(error)
+        (_: any) => this.router.navigate(['/leagues']),
+        (error: any) => console.error(error)
       );
     }
   }
@@ -154,8 +164,8 @@ export class TeamDetailComponent implements OnInit {
     const okResponse = window.confirm('Quieres añadir este equipo?');
     if (okResponse) {
       this.userService.addTeam(this.user, this.team).subscribe(
-        _ => this.router.navigate(['/users', this.user.id]),
-        error => console.error(error)
+        (_: any) => this.router.navigate(['/users', this.user.id]),
+        (error: any) => console.error(error)
       );
     }
   }

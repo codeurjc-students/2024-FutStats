@@ -83,7 +83,6 @@ public class RestService {
     }
 
     public void deleteLeague(League league) {
-
         if (league.getUsers() != null) {
             List<User> usersToRemove = new ArrayList<>(league.getUsers());
             for (User user : usersToRemove) {
@@ -92,22 +91,14 @@ public class RestService {
             league.getUsers().clear();
         }
 
-        List<Player> players = playerRepository.findByLeagueId(league.getId());
-        for (Player player : players) {
-            league.deletePlayer(player);
-            playerRepository.delete(player);
+        List<Team> teams = teamRepository.findByLeagueId(league.getId());
+        for (Team team : teams) {
+            deleteTeam(team);
         }
 
         List<Match> matches = matchRepository.findByLeagueId(league.getId());
         for (Match match : matches) {
-            league.deleteMatch(match);
-            matchRepository.delete(match);
-        }
-
-        List<Team> teams = teamRepository.findByLeagueId(league.getId());
-        for (Team team : teams) {
-            league.deleteTeam(team);
-            teamRepository.delete(team);
+            deleteMatch(match);
         }
 
         leagueRepository.delete(league);
@@ -182,16 +173,18 @@ public class RestService {
     }
 
     public void deleteTeam(Team team) {
-        // Eliminar PlayerMatch relacionado
+
         List<Player> players = playerRepository.findByTeamId(team.getId());
         for (Player player : players) {
-            team.deletePlayer(player);
-            playerRepository.delete(player);
+            deletePlayer(player);
         }
+
+        List<TeamMatch> teamMatches = teamMatchRepository.findByTeamId(team.getId());
+        teamMatchRepository.deleteAll(teamMatches);
 
         List<Match> matches = matchRepository.findAllByTeam(team.getId());
         for (Match match : matches) {
-            matchRepository.delete(match);
+            deleteMatch(match);
         }
 
         if (team.getUsers() != null) {
@@ -202,11 +195,13 @@ public class RestService {
             team.getUsers().clear();
         }
 
-        List<TeamMatch> teamMatches = teamMatchRepository.findByTeamId(team.getId());
-        teamMatchRepository.deleteAll(teamMatches);
+        if (team.getLeague() != null) {
+            League league = team.getLeague();
+            league.deleteTeam(team);
+            team.setLeague(null);
+        }
 
-        // Eliminar Player
-        teamRepository.deleteById(team.getId());
+        teamRepository.delete(team);
     }
 
     public void updateTeam(Team oldTeam, TeamUpdateDTO teamDto, League league) {
@@ -293,15 +288,17 @@ public class RestService {
     }
 
     public void createTeamMatch(TeamMatch teamMatch, Match match, Team team) {
-
         teamMatch.setMatch(match);
         teamMatch.setTeam(team);
         teamMatch.setName(team.getName());
         teamMatch.setMatchName(match.getName());
-        teamMatch.setPoints(team.getPoints());
-
+        if (matchRepository.findWinnerByTeam(match.getId(), team.getId()) == team.getId())
+            teamMatch.setPoints(3);
+        else if (matchRepository.findDrawByTeam(match.getId(), team.getId()) == team.getId())
+            teamMatch.setPoints(1);
+        else
+            teamMatch.setPoints(0);
         teamMatchRepository.save(teamMatch);
-
         team.setTeamMatch(teamMatch);
         match.setTeamMatch(teamMatch);
     }
@@ -765,7 +762,13 @@ public class RestService {
     }
 
     public void deleteMatch(Match match) {
-        matchRepository.deleteById(match.getId());
+        List<PlayerMatch> playerMatches = playerMatchRepository.findAllByMatch(match.getId());
+        playerMatchRepository.deleteAll(playerMatches);
+
+        List<TeamMatch> teamMatches = teamMatchRepository.findByMatchId(match.getId());
+        teamMatchRepository.deleteAll(teamMatches);
+
+        matchRepository.delete(match);
     }
 
     public void updateMatch(Match oldMatch, MatchDTO matchDto, League league, Team team1, Team team2) {

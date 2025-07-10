@@ -84,6 +84,17 @@ export class TeamsService {
 	private handleError(error: any) {
 		console.log("ERROR:");
 		console.error(error);
-		return throwError("Server error (" + error.status + "): " + error.text())
+		let message = "Unknown error";
+		if (error && error.status) {
+			if (typeof error.error === 'string') {
+				message = error.error;
+			} else if (error.error && error.error.message) {
+				message = error.error.message;
+			} else if (error.message) {
+				message = error.message;
+			}
+			return throwError(() => `Server error (${error.status}): ${message}`);
+		}
+		return throwError(() => `Server error: ${message}`);
 	}
 }

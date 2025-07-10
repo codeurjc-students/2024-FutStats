@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { PlayersService } from '../../services/player.service';
@@ -12,13 +12,14 @@ import { UsersService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user.model';
 import { PlayerMatchesService } from 'src/app/services/playerMatch.service';
 import { Chart } from 'chart.js/auto';
+import { Subscription } from 'rxjs';
 
 @Component({
   templateUrl: './player-detail.component.html',
   styleUrls: ['./player-detail.component.css'],
   standalone: false
 })
-export class PlayerDetailComponent implements OnInit {
+export class PlayerDetailComponent implements OnInit, OnDestroy {
 
   user: User;
   player: Player;
@@ -27,6 +28,8 @@ export class PlayerDetailComponent implements OnInit {
   league: League;
   playerMatches: PlayerMatch[] = [];
   public playerMatchPage!: number;
+  private chartInstance: Chart | null = null;
+  private routeSubscription: Subscription;
 
   constructor(
     private router: Router,
@@ -38,13 +41,33 @@ export class PlayerDetailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const id = this.activatedRoute.snapshot.params['id'];
-    this.cargarDatos(id);
-    this.service.getPlayer(id).subscribe(
+    // Suscribirse a los cambios de parámetros de ruta
+    this.routeSubscription = this.activatedRoute.params.subscribe(params => {
+      const id = params['id'];
+      if (id) {
+        this.cargarDatos(id);
+        this.cargarDatosJugador(id);
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    // Limpiar la suscripción al destruir el componente
+    if (this.routeSubscription) {
+      this.routeSubscription.unsubscribe();
+    }
+    // Destruir la gráfica si existe
+    if (this.chartInstance) {
+      this.chartInstance.destroy();
+    }
+  }
+
+  cargarDatosJugador(playerId: number) {
+    this.service.getPlayer(playerId).subscribe(
       (player: Player) => {
         this.player = player;
 
-        this.service.getLeague(id).subscribe(
+        this.service.getLeague(playerId).subscribe(
           (league: League) => {
             this.league = league;
           },
@@ -53,7 +76,7 @@ export class PlayerDetailComponent implements OnInit {
           }
         );
 
-        this.service.getTeam(id).subscribe(
+        this.service.getTeam(playerId).subscribe(
           (team: Team) => {
             this.team = team;
           },
@@ -62,7 +85,7 @@ export class PlayerDetailComponent implements OnInit {
           }
         );
 
-        this.service.getPlayerMatches(id).subscribe(
+        this.service.getPlayerMatches(playerId).subscribe(
           (playerMatches: PlayerMatch[] = []) => {
             this.playerMatches = playerMatches;
           },
@@ -91,8 +114,13 @@ export class PlayerDetailComponent implements OnInit {
     this.playerMatchService.getGoalsPerMatch(playerId).subscribe((data) => {
       const matchNames = data.map((d: any) => d.matchName);
       const goals = data.map((d: any) => d.goals);
-
-      this.crearGrafica(matchNames, goals);
+      // Calcular el acumulado de goles
+      const accumulatedGoals = goals.reduce((acc: number[], curr: number, idx: number) => {
+        if (idx === 0) acc.push(curr);
+        else acc.push(acc[idx - 1] + curr);
+        return acc;
+      }, []);
+      this.crearGrafica(matchNames, accumulatedGoals);
     });
   }
 
@@ -103,7 +131,10 @@ export class PlayerDetailComponent implements OnInit {
         console.error('Canvas element not found');
         return;
       }
-      new Chart(chartElement, {
+      if (this.chartInstance) {
+        this.chartInstance.destroy();
+      }
+      this.chartInstance = new Chart(chartElement, {
         type: 'line',
         data: {
           labels: matchNames,

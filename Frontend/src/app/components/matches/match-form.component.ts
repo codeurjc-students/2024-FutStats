@@ -93,7 +93,7 @@ export class MatchFormComponent implements OnInit {
     this.leagueService.getLeagueByName(this.match.league).subscribe({
       next: (league: League) => {
         this.league = league;
-        this.router.navigate(['/matches', this.match.id]);
+        this.router.navigate(['/leagues', this.league.id]);
       },
       error: (error) => {
         console.error('Error fetching league:', error);
