@@ -257,11 +257,11 @@ public class RestServiceUnitaryTests {
         Team team = new Team();
         team.setName("Osasuna");
         team.setId(1);
-        doNothing().when(teamRepository).deleteById(team.getId());
+        doNothing().when(teamRepository).delete(team);
 
         restService.deleteTeam(team);
 
-        verify(teamRepository, times(1)).deleteById(team.getId());
+        verify(teamRepository, times(1)).delete(team);
     }
 
     @Test
@@ -592,19 +592,16 @@ public class RestServiceUnitaryTests {
         Team team2 = new Team();
         team2.setId(2);
         team2.setName("Alaves");
-        Match match = new Match();
+        Match match = new Match(league, team1, team2, "Match1", "");
         match.setId(1);
-        match.setName("Match1");
-        match.setTeam1(team1);
-        match.setTeam2(team2);
 
         league.setMatch(match);
 
-        doNothing().when(matchRepository).deleteById(match.getId());
+        doNothing().when(matchRepository).delete(match);
 
         restService.deleteMatch(match);
 
-        verify(matchRepository, times(1)).deleteById(match.getId());
+        verify(matchRepository, times(1)).delete(match);
     }
 
     @Test
@@ -872,8 +869,10 @@ public class RestServiceUnitaryTests {
     public void testCreateTeamMatch() {
         Match match = new Match();
         match.setName("Match1");
+        match.setId(1);
         Team team = new Team();
         team.setName("Osasuna");
+        team.setId(1);
         TeamMatch teamMatch = new TeamMatch();
         teamMatch.setId(1);
 
