@@ -26,6 +26,7 @@ describe('PlayerDetailComponent', () => {
     };
 
     mockActivatedRoute = {
+      params: of({ id: 1 }),
       snapshot: {
         params: { id: 1 },
       },
