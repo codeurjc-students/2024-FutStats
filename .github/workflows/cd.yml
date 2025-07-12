@@ -1,5 +1,5 @@
 name: CD - Deploy to Azure
-
+ 
 on:
   workflow_run:
     workflows: ["CD Docker Build"]
